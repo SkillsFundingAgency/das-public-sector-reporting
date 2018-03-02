@@ -1,0 +1,16 @@
+﻿@using SFA.DAS.AssessorService.Api.Types.Models
+@model SFA.DAS.AssessorService.Api.Types.Models.Organisation
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_AuthLayout";
+}
+
+<div class="row">
+    <h1>You are logged in.  Your EPAO details are: </h1>
+    <br/>
+    <h3>Name: @Model.EndPointAssessorName</h3>
+</div>
+
+
+<a asp-controller="Search" asp-action="Index" class="button">Search for an Apprentice</a>
