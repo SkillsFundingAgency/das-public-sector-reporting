@@ -74,6 +74,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.2.3.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
     <Reference Include="TechTalk.SpecRun, Version=1.7.0.0, Culture=neutral, PublicKeyToken=d0fc5cc18b3b389b, processorArchitecture=MSIL">
       <HintPath>..\packages\SpecRun.NUnit.1.7.0\lib\net40\TechTalk.SpecRun.dll</HintPath>
     </Reference>
@@ -95,7 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContactsQuery.feature</DependentUpon>
     </Compile>
-    <Compile Include="Contacts\Query\WhenRetrieveContactByUserName.cs" />
+    <Compile Include="Contacts\Query\WhenSearchContactsByUserName.cs" />
     <Compile Include="Contacts\Query\WhenRetrieveAllContacts.cs" />
     <Compile Include="DatabaseUtils\DatabaseUtilities.cs" />
     <Compile Include="Extensions\HttpClientExtensions.cs" />
@@ -167,5 +170,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
+    <Error Condition="!Exists('..\packages\SpecFlow.2.3.0\build\SpecFlow.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpecFlow.2.3.0\build\SpecFlow.targets'))" />
   </Target>
+  <Import Project="..\packages\SpecFlow.2.3.0\build\SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.3.0\build\SpecFlow.targets')" />
 </Project>
