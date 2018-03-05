@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "templateBaseUrl": {
-            "value": "https://raw.githubusercontent.com/SkillsFundingAgency/das-assessor-service/master/azure/"
+            "value": "https://raw.githubusercontent.com/SkillsFundingAgency/das-public-sector-reporting/master/azure/"
         },
         "environmentName": {
             "value": ""

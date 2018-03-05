@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.AssessorService.ViewModel\SFA.DAS.AssessorService.ViewModel.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.ViewModel\SFA.DAS.PSRService.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

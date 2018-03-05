@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="WebAPI\Contacts\Post\Validators\**" />
+    <EmbeddedResource Remove="WebAPI\Contacts\Post\Validators\**" />
+    <None Remove="WebAPI\Contacts\Post\Validators\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Validators\UkPrnValidator\WhenUkPrnValidatorValidatesSuccess.cs" />
+    <Compile Remove="WebAPI\Contacts\Get\WhenGetAssessmentProvidersGetCannotFindUkPrn.cs" />
+    <Compile Remove="WebAPI\Contacts\Get\WhenGetAssessmentProvidersValidationFails.cs" />
+    <Compile Remove="WebAPI\Contacts\Put\Validators\OrganisationUpdateViewModelValidatorFails.cs" />
+    <Compile Remove="WebAPI\Contacts\Put\Validators\OrganisationUpdateViewModelValidatorSucceeds.cs" />
+    <Compile Remove="WebAPI\Contacts\Put\Validators\OrganisationUpdateViewModelValidatorTestBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="WebAPI\Contacts\Post\Validators\ReportCreateViewModelValidatorTestBase.cs" />
+    <Compile Include="WebAPI\Contacts\Post\Validators\WhenReportCreateViewModelValidatorFails.cs" />
+    <Compile Include="WebAPI\Contacts\Post\Validators\WhenReportCreateViewModelValidatorSuccceeds.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dotnet-test-mspec" Version="0.2.0" />
+    <PackageReference Include="FluentAssertions" Version="5.0.0-rc0004" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.6.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="moq" Version="4.8.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="nbuilder" Version="5.0.0" />
+    <PackageReference Include="nunit" Version="3.9.0" />
+    <PackageReference Include="Nunit3testadapter" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.PSRService.Api.Types\SFA.DAS.PSRService.Api.Types.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Application.Api\SFA.DAS.PSRService.Application.Api.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj" />
+  </ItemGroup>
+
+</Project>
