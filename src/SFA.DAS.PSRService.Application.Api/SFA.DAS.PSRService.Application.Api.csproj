@@ -41,10 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Validators\ContactUpdateViewModelValidator.Designer.cs">
+    <Compile Update="Resources\Validators\ReportUpdateViewModelValidator.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ContactUpdateViewModelValidator.resx</DependentUpon>
+      <DependentUpon>ReportUpdateViewModelValidator.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -64,11 +64,11 @@
     <EmbeddedResource Update="Resources\Orchestrators\GetOrganisationsOrchestrator.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validators\ContactUpdateViewModelValidator.resx">
+    <EmbeddedResource Update="Resources\Validators\ReportUpdateViewModelValidator.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ContactUpdateViewModelValidator.Designer.cs</LastGenOutput>
+      <LastGenOutput>ReportUpdateViewModelValidator.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validators\ContactCreateViewModelValidator.en.resx">
+    <EmbeddedResource Update="Resources\Validators\ReportCreateViewModelValidator.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Validators\UKPrnValidator.en.resx">
