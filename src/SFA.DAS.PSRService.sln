@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Applicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Data", "SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj", "{A5A5E353-A6B4-4809-83F4-1199572AAF11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Settings", "SFA.DAS.PSRService.Settings\SFA.DAS.PSRService.Settings.csproj", "{16E01083-F698-4E7F-9822-B76D251B8655}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{F85262CD-4210-4352-B691-30F40D99B4D2}"
 	ProjectSection(SolutionItems) = preProject
 		..\azure\parameters.json = ..\azure\parameters.json
@@ -65,10 +63,6 @@ Global
 		{A5A5E353-A6B4-4809-83F4-1199572AAF11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5A5E353-A6B4-4809-83F4-1199572AAF11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5A5E353-A6B4-4809-83F4-1199572AAF11}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16E01083-F698-4E7F-9822-B76D251B8655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16E01083-F698-4E7F-9822-B76D251B8655}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16E01083-F698-4E7F-9822-B76D251B8655}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16E01083-F698-4E7F-9822-B76D251B8655}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

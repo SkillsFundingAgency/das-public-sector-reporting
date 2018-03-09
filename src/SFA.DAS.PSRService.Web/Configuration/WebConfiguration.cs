@@ -1,15 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-namespace SFA.DAS.PSRService.Settings
+namespace SFA.DAS.PSRService.Web.Configuration
 {
     public class WebConfiguration : IWebConfiguration
     {
         [JsonRequired]
         public AuthSettings Authentication { get; set; }
-        [JsonRequired]
-        public ApiAuthentication ApiAuthentication { get; set; }
-        [JsonRequired]
-        public ClientApiAuthentication ClientApiAuthentication { get; set; }
         [JsonRequired]
         public string SqlConnectionString { get; set; }
     }

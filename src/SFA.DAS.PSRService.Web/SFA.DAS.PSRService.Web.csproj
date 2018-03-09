@@ -26,7 +26,6 @@
     <ProjectReference Include="..\SFA.DAS.PSRService.Application\SFA.DAS.PSRService.Application.csproj" />
     <ProjectReference Include="..\SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj" />
     <ProjectReference Include="..\SFA.DAS.PSRService.Domain\SFA.DAS.PSRService.Domain.csproj" />
-    <ProjectReference Include="..\SFA.DAS.PSRService.Settings\SFA.DAS.PSRService.Settings.csproj" />
   </ItemGroup>
 
   <ItemGroup>

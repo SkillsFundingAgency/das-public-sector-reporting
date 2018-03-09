@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
-using SFA.DAS.PSRService.Settings;
+using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;

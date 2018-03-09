@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace SFA.DAS.PSRService.Settings
+namespace SFA.DAS.PSRService.Web.Configuration
 {
-    public class AuthSettings : IAuthSettings
+    public class AuthSettings
     {
         [JsonRequired]
         public string WtRealm { get; set; }

@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
+using SFA.DAS.PSRService.Web.Configuration;
 
-namespace SFA.DAS.PSRService.Settings
+namespace SFA.DAS.PSRService.Web.Services
 {
     public static class ConfigurationService
     {
