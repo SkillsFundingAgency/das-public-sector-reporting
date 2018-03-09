@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using SFA.DAS.PSRService.Api.Types.Models;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="4.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNEtCore.Authentication.WsFederation" Version="2.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc2" />
@@ -22,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.PSRService.Application.Api.Client\SFA.DAS.PSRService.Application.Api.Client.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Application\SFA.DAS.PSRService.Application.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Domain\SFA.DAS.PSRService.Domain.csproj" />
     <ProjectReference Include="..\SFA.DAS.PSRService.Settings\SFA.DAS.PSRService.Settings.csproj" />
   </ItemGroup>
 

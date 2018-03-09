@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Application.Api", "SFA.DAS.PSRService.Application.Api\SFA.DAS.PSRService.Application.Api.csproj", "{7D3308DD-5535-49B4-BC33-2F8030027592}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Web", "SFA.DAS.PSRService.Web\SFA.DAS.PSRService.Web.csproj", "{CC8BD1D6-B3DB-454C-BC39-C035ED99CF56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Web.UnitTests", "SFA.DAS.PSRService.Web.UnitTests\SFA.DAS.PSRService.Web.UnitTests.csproj", "{F8E42D52-9A76-4475-92FA-CF8FF286EF4C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Application.Api.UnitTests", "SFA.DAS.PSRService.Application.Api.UnitTests\SFA.DAS.PSRService.Application.Api.UnitTests.csproj", "{E6E3A82F-A269-42E3-A1C6-0B157CFF4408}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EB54D000-867F-48CA-AE28-BDBE0CCE1322}"
 EndProject
@@ -22,8 +18,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Data", "SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj", "{A5A5E353-A6B4-4809-83F4-1199572AAF11}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Settings", "SFA.DAS.PSRService.Settings\SFA.DAS.PSRService.Settings.csproj", "{16E01083-F698-4E7F-9822-B76D251B8655}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Application.Api.Client", "SFA.DAS.PSRService.Application.Api.Client\SFA.DAS.PSRService.Application.Api.Client.csproj", "{37C0A946-56FB-454D-9D17-5D56B45689EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{F85262CD-4210-4352-B691-30F40D99B4D2}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployments", "deployments"
 		..\azure\deployments\storage-resources.json = ..\azure\deployments\storage-resources.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Api.Types", "SFA.DAS.PSRService.Api.Types\SFA.DAS.PSRService.Api.Types.csproj", "{C6D53D77-B520-426F-B5D5-00AEDC0FE4E0}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.PSRService.Database", "SFA.DAS.PSRService.Database\SFA.DAS.PSRService.Database.sqlproj", "{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D3308DD-5535-49B4-BC33-2F8030027592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D3308DD-5535-49B4-BC33-2F8030027592}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D3308DD-5535-49B4-BC33-2F8030027592}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D3308DD-5535-49B4-BC33-2F8030027592}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC8BD1D6-B3DB-454C-BC39-C035ED99CF56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC8BD1D6-B3DB-454C-BC39-C035ED99CF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC8BD1D6-B3DB-454C-BC39-C035ED99CF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,10 +49,6 @@ Global
 		{F8E42D52-9A76-4475-92FA-CF8FF286EF4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8E42D52-9A76-4475-92FA-CF8FF286EF4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8E42D52-9A76-4475-92FA-CF8FF286EF4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6E3A82F-A269-42E3-A1C6-0B157CFF4408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6E3A82F-A269-42E3-A1C6-0B157CFF4408}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6E3A82F-A269-42E3-A1C6-0B157CFF4408}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6E3A82F-A269-42E3-A1C6-0B157CFF4408}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95283279-6151-4580-A781-93903696A1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95283279-6151-4580-A781-93903696A1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95283279-6151-4580-A781-93903696A1A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,21 +69,18 @@ Global
 		{16E01083-F698-4E7F-9822-B76D251B8655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E01083-F698-4E7F-9822-B76D251B8655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E01083-F698-4E7F-9822-B76D251B8655}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37C0A946-56FB-454D-9D17-5D56B45689EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37C0A946-56FB-454D-9D17-5D56B45689EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37C0A946-56FB-454D-9D17-5D56B45689EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37C0A946-56FB-454D-9D17-5D56B45689EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6D53D77-B520-426F-B5D5-00AEDC0FE4E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6D53D77-B520-426F-B5D5-00AEDC0FE4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6D53D77-B520-426F-B5D5-00AEDC0FE4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6D53D77-B520-426F-B5D5-00AEDC0FE4E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F8E42D52-9A76-4475-92FA-CF8FF286EF4C} = {EB54D000-867F-48CA-AE28-BDBE0CCE1322}
-		{E6E3A82F-A269-42E3-A1C6-0B157CFF4408} = {EB54D000-867F-48CA-AE28-BDBE0CCE1322}
 		{4C41B95D-C9E5-461A-B198-F1F36A61176A} = {EB54D000-867F-48CA-AE28-BDBE0CCE1322}
 		{3B16AB0E-5C83-4E5D-82B0-7021AB4C5B9F} = {F85262CD-4210-4352-B691-30F40D99B4D2}
 	EndGlobalSection

@@ -1,34 +1,34 @@
-﻿using SFA.DAS.PSRService.Api.Types.Models;
+﻿using System;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using Dapper;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
-using Report = SFA.DAS.PSRService.Api.Types.Models.Report;
 
 namespace SFA.DAS.PSRService.Data
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using Domain.Enums;
-    using Domain.Exceptions;
-    using Microsoft.EntityFrameworkCore;
-
     public class ReportRepository : IReportRepository
     {
+        private readonly string _connectionString;
+
+        public ReportRepository(string connectionString)
+        {
+            this._connectionString = connectionString;
+        }
+
         public Task<Report> CreateNewContact(ReportCreateDomainModel newContact)
         {
             throw new NotImplementedException();
         }
 
-        public Task Update(UpdateReportRequest organisationUpdateViewModel)
+        public string Get(Guid reportId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(string userName)
-        {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var json = connection.ExecuteScalar<string>("select top 1 ReportingData from Report");
+                return json;
+            }
         }
     }
 }

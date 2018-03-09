@@ -3,7 +3,8 @@
     using System;
     using Enums;
 
-    public class Report : BaseEntity
+    public class Report
     {
+        public string Data { get; set; }
     }
 }

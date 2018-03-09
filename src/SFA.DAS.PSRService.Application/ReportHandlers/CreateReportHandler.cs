@@ -1,17 +1,10 @@
-﻿using SFA.DAS.PSRService.Api.Types.Models;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
-using Report = SFA.DAS.PSRService.Api.Types.Models.Report;
 
-namespace SFA.DAS.PSRService.Application.ContactHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    using AutoMapper;
-    using Domain;
-    using MediatR;
-    using Interfaces;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class CreateReportHandler : IRequestHandler<CreateReportRequest, Report>
     {
         public Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)

@@ -1,15 +1,16 @@
 ﻿using System;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.PSRService.Application.Api.Client;
-using SFA.DAS.PSRService.Application.Api.Client.Clients;
+using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Application.ReportHandlers;
+using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Settings;
-using SFA.DAS.PSRService.Web.Infrastructure;
+using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
-using SessionCache = SFA.DAS.PSRService.Application.Api.Client.SessionCache;
 
 namespace SFA.DAS.PSRService.Web
 {
@@ -46,13 +47,27 @@ namespace SFA.DAS.PSRService.Web
                     _.WithDefaultConventions();
                 });
 
-                config.For<IHttpClient>().Use<StandardHttpClient>();
-                config.For<ICache>().Use<SessionCache>();
-                config.For<ITokenService>().Use<TokenService>();
+                //config.For<IHttpClient>().Use<StandardHttpClient>();
+                //config.For<ICache>().Use<SessionCache>();
+                //config.For<ITokenService>().Use<TokenService>();
                 config.For<IWebConfiguration>().Use(Configuration);
-                config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
+                //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
+                config.For<IReportService>().Use<ReportService>();
+                config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
 
                 config.Populate(services);
+
+
+                config.Scan(scanner =>
+                {
+                    scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
+                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
+                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
+                    scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+                });
+                config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
+                config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
+                config.For<IMediator>().Use<Mediator>();
             });
 
             return container.GetInstance<IServiceProvider>();

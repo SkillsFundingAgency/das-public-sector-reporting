@@ -1,11 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using JWT.Algorithms;
-using JWT.Builder;
-using Microsoft.AspNetCore.Authentication;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.PSRService.Settings;
 

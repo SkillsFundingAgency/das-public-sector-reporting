@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Web
                     {
                         options.Listen(IPAddress.Loopback, 5015, listenOptions =>
                         {
-                            listenOptions.UseHttps("SFA.DAS.PSRService.pfx", "C0ventry18");
+                            //listenOptions.UseHttps("SFA.DAS.PSRService.pfx", "C0ventry18");
                         });
                     }
                 })

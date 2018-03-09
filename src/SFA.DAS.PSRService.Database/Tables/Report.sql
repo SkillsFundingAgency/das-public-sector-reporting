@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Report]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWSEQUENTIALID(), 
+    [EmployerId] NVARCHAR(MAX) NOT NULL, 
+    [ReportingPeriod] NVARCHAR(4) NOT NULL, 
+    [ReportingData] NVARCHAR(MAX) NOT NULL, 
+    [Submitted] NVARCHAR(1) NOT NULL DEFAULT 'N'
+)
