@@ -2,25 +2,20 @@
 
 @{
     ViewData["Title"] = "Public sector reporting";
-    Layout = "_UnAuthLayout";
 }
 
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h1 class="heading-xlarge">Public sector reporting</h1>
+        <h1 class="heading-xlarge">Annual apprenticeship return</h1>
 
-        <p>This service is for End Point Assessor registered with the apprenticeship service.</p>
-        <ul class="list list-bullet">
-            <li>add details of the certificates for apprentices they have assessed'</li>
-            <li>request printing and delivery of the apprentices' certificates</li>
-        </ul>
-
-        <h2 class="heading-medium">Before you start</h2>
+        <p>You can submit a new report for the year 1 April 2017 to 31 March 2018 or review previously submitted reports.</p>
+        
+        <h2 class="heading-medium">What do you want to do?</h2>
 
         <div style="white-space: pre">@Model</div>
 
         <div class="form-group">
-            <a asp-action="SignIn" asp-controller="Account" class="button">Click here to login to your account</a> 
+            <a asp-action="SignIn" asp-controller="Account" class="button">Continue</a> 
         </div>
 
 
