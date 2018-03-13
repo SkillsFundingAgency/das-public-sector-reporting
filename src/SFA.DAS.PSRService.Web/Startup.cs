@@ -86,6 +86,7 @@ namespace SFA.DAS.PSRService.Web
             }
             
             app.UseStaticFiles()
+                .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()
                 .UseMvc(routes =>
