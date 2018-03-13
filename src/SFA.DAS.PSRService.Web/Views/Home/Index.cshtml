@@ -12,12 +12,26 @@
         
         <h2 class="heading-medium">What do you want to do?</h2>
 
-        <div style="white-space: pre">@Model</div>
+        <form action="">
+            <label class="form-label-bold" for="">What do you want to do?</label>
 
-        <div class="form-group">
-            <a asp-action="SignIn" asp-controller="Account" class="button">Continue</a> 
+
+            <input id="source" name="source" type="hidden" value="employer">
+            <fieldset>
+                <legend class="visuallyhidden">No, I want to find new training and providers</legend>
+                <div class="multiple-choice">
+                    <input id="radio-1" type="radio" name="radio-group" value="yes">
+                    <label for="radio-1">Create a new report</label>
+                </div>
+
+                <div class="multiple-choice">
+                    <input id="radio-4" type="radio" name="radio-group" value="no">
+                    <label for="radio-4">View a previously submitted report</label>
+                </div>
+            </fieldset>
+
+            <input class="button" id="saveAndContinue" type="submit" style="margin-top:30px" value="Continue">
+        </form>
+
         </div>
-
-
-    </div>
 </div>

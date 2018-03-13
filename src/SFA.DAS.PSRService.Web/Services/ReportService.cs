@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.PSRService.Application.ReportHandlers;
@@ -18,11 +19,26 @@ namespace SFA.DAS.PSRService.Web.Services
             _mediator = mediator;
         }
 
+        public Report CreateReport(long employerId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Report GetReport(Guid reportId)
         {
             var request = new GetReportRequest() {ReportId = reportId};
             var report = _mediator.Send(request).Result;
             return report;
+        }
+
+        public void SubmitReport(int reportId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Report> GetReports(long employerId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
