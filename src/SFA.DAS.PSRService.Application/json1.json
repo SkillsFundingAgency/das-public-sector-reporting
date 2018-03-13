@@ -3,6 +3,6 @@
     "WtRealm": "https://vacancyservicepoc",
     "MetadataAddress": "https://adfs.preprod.skillsfunding.service.gov.uk/FederationMetadata/2007-06/FederationMetadata.xml",
     "Role": "EPA"
-  },
+  }, 
   "SqlConnectionstring":"Data Source=.;Initial Catalog=SFA.DAS.PSRService;Integrated Security=True; MultipleActiveResultSets=True;"
 }
