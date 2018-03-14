@@ -13,10 +13,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         public IActionResult Submit(string action)
         {
-            if (action == "Create")
+            if (action == "create")
                 return new RedirectResult(Url.Action("Create", "Report"));
 
-            return new RedirectResult(Url.Action("List", "Report"));
+            if (action == "list")
+                return new RedirectResult(Url.Action("List", "Report"));
+
+            return new BadRequestResult();
         }
 
         public IActionResult Error()
