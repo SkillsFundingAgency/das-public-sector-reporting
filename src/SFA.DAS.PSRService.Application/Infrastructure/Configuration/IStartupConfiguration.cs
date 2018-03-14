@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.PSRService.Application.Infrastructure.Configuration
+﻿using SFA.DAS.PSRService.Domain.Configuration;
+
+namespace SFA.DAS.PSRService.Application.Infrastructure.Configuration
 {
     public interface IStartupConfiguration
     {

@@ -1,16 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Azure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using NLog;
+using SFA.DAS.Configuration;
+using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.Configuration.FileStorage;
+using SFA.DAS.PSRService.Application.Infrastructure.Configuration;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
+using SFA.DAS.PSRService.Domain.Configuration;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
+using ConfigurationService = SFA.DAS.PSRService.Web.Services.ConfigurationService;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace SFA.DAS.PSRService.Web
 {
@@ -28,6 +42,8 @@ namespace SFA.DAS.PSRService.Web
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddAndConfigureAuthentication(Configuration);
             services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
             services.AddSession();
@@ -75,6 +91,16 @@ namespace SFA.DAS.PSRService.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var config = GetConfigurationObject();
+
+            var logger = LogManager.GetLogger("Startup");
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
+
+            //app.UseCookieAuthentication()
+            
+
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -84,7 +110,10 @@ namespace SFA.DAS.PSRService.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+        
             
+
             app.UseStaticFiles()
                 .UseSession()
                 .UseAuthentication()
@@ -95,5 +124,69 @@ namespace SFA.DAS.PSRService.Web
                         template: "{controller=Home}/{action=Index}/{id?}");
                 });
         }
+
+        private static PSRSServiceConfiguration GetConfigurationObject()
+        {
+            var environment = Environment.GetEnvironmentVariable("DASENV");
+            if (string.IsNullOrEmpty(environment))
+            {
+                environment = CloudConfigurationManager.GetSetting("EnvironmentName");
+            }
+
+            var configurationRepository = GetConfigurationRepository();
+            var configurationService = new SFA.DAS.Configuration.ConfigurationService(
+                configurationRepository,
+                new ConfigurationOptions(ServiceName, environment, "1.0"));
+
+            var config = configurationService.Get<PSRSServiceConfiguration>();
+
+            return config;
+        }
+
+
+        private static IConfigurationRepository GetConfigurationRepository()
+        {
+            IConfigurationRepository configurationRepository;
+            if (bool.Parse(ConfigurationManager.AppSettings["LocalConfig"]))
+            {
+                configurationRepository = new FileStorageConfigurationRepository();
+            }
+            else
+            {
+                configurationRepository =
+                    new AzureTableStorageConfigurationRepository(
+                        CloudConfigurationManager.GetSetting("ConfigurationStorageConnectionString"));
+            }
+
+            return configurationRepository;
+        }
+
+    }
+
+    public class Constants
+    {
+        private readonly string _baseUrl;
+        public IdentityServerConfiguration Configuration { get; set; }
+        public Constants(IdentityServerConfiguration configuration)
+        {
+            this.Configuration = configuration;
+            _baseUrl = configuration.ClaimIdentifierConfiguration.ClaimsBaseUrl;
+        }
+
+        public string AuthorizeEndpoint() => $"{Configuration.BaseAddress}{Configuration.AuthorizeEndPoint}";
+        public string LogoutEndpoint() => $"{Configuration.BaseAddress}{Configuration.LogoutEndpoint}";
+        public string TokenEndpoint() => $"{Configuration.BaseAddress}{Configuration.TokenEndpoint}";
+        public string UserInfoEndpoint() => $"{Configuration.BaseAddress}{Configuration.UserInfoEndpoint}";
+        public string ChangePasswordLink() => Configuration.BaseAddress.Replace("/identity", "") + string.Format(Configuration.ChangePasswordLink, Configuration.ClientId);
+        public string ChangeEmailLink() => Configuration.BaseAddress.Replace("/identity", "") + string.Format(Configuration.ChangeEmailLink, Configuration.ClientId);
+        public string RegisterLink() => Configuration.BaseAddress.Replace("/identity", "") + string.Format(Configuration.RegisterLink, Configuration.ClientId);
+
+
+        public string Id() => _baseUrl + Configuration.ClaimIdentifierConfiguration.Id;
+        public string Email() => _baseUrl + Configuration.ClaimIdentifierConfiguration.Email;
+        public string GivenName() => _baseUrl + Configuration.ClaimIdentifierConfiguration.GivenName;
+        public string FamilyName() => _baseUrl + Configuration.ClaimIdentifierConfiguration.FamilyName;
+        public string DisplayName() => _baseUrl + Configuration.ClaimIdentifierConfiguration.DisplayName;
+        public string RequiresVerification() => _baseUrl + "requires_verification";
     }
 }

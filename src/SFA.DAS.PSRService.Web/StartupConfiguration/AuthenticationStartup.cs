@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
@@ -17,17 +20,21 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             services.AddAuthentication(sharedOptions =>
                 {
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultSignOutScheme = WsFederationDefaults.AuthenticationScheme;
+      
                 })
-                .AddWsFederation(options =>
+                .AddOpenIdConnect(options =>
                 {
-                    options.Wtrealm = configuration.Authentication.WtRealm;
-                    options.MetadataAddress = configuration.Authentication.MetadataAddress;
-                    options.Events.OnSecurityTokenValidated = OnTokenValidated;
-                    options.CallbackPath = "/Account/SignedIn";
+                    options.ClientId = "";
+                    options.ClientSecret = "";
+                    options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
+                    options.Authority = "";
+                    options.SignInScheme = "";
+                    options.Configuration = new OpenIdConnectConfiguration();
+                    options.SaveTokens = true;
                 })
+                
                 .AddCookie(options => { options.ReturnUrlParameter = "/Account/SignedIn"; });
         }
 
