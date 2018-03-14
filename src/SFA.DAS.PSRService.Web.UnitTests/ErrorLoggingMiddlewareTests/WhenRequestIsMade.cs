@@ -13,9 +13,10 @@ using Assert = NUnit.Framework.Assert;
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 {
     [TestFixture]
-    public class WhenHttpRequestIsMade
+    public class WhenHttpRequestIsMadeAnd
     {
         private ErrorLoggingMiddleware _errorLoggingMiddleware;
+        private ErrorLoggingMiddleware _errorLoggingMiddlewareException;
         private Mock<RequestDelegate> _requestDelegateMock;
         private Mock<ILogger<ErrorLoggingMiddleware>> _loggingMock;
 
@@ -23,19 +24,24 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         public void SetUp()
         {
             _loggingMock = new Mock<ILogger<ErrorLoggingMiddleware>>(MockBehavior.Strict);
-            
-        }
-
-        [Test]
-        public void AndNoErrorIsRaisedThenOk()
-        {
-            // arrange
            
+
+            
+
             _errorLoggingMiddleware = new ErrorLoggingMiddleware(next: async (innerHttpContext) =>
             {
                 await innerHttpContext.Response.WriteAsync("test response body");
             }, logger: _loggingMock.Object);
-           
+
+
+             _errorLoggingMiddlewareException = new ErrorLoggingMiddleware(next: (innerHttpContext) => throw new Exception("Error Logging Middleware Exception Raised"), logger: _loggingMock.Object);
+
+        }
+
+        [Test]
+        public void NoErrorIsRaisedThenOk()
+        {
+            // arrange
             
             // act
             var result = _errorLoggingMiddleware.InvokeAsync(new DefaultHttpContext());
@@ -54,15 +60,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
         [Test]
         [ExpectedException(typeof(Exception), "No Error Logging Middleware Exception Raised")]
-        public void AndErrorIsRaisedThenExceptionReturned()
+        public void ErrorIsRaisedThenExceptionReturned()
         {
             // arrange
 
-            _errorLoggingMiddleware = new ErrorLoggingMiddleware(next: (innerHttpContext) => throw new Exception("Error Logging Middleware Exception Raised"), logger: _loggingMock.Object);
-
-
             // act
-            var result = _errorLoggingMiddleware.InvokeAsync(new DefaultHttpContext());
+            var result = _errorLoggingMiddlewareException.InvokeAsync(new DefaultHttpContext());
 
             // assert
             _loggingMock.VerifyAll();
@@ -73,5 +76,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             Assert.IsTrue(result.IsCompleted);
             Assert.IsTrue(result.IsFaulted);
         }
+
     }
 }
