@@ -8,16 +8,13 @@
         "environmentName": {
             "value": ""
         },
-        "appServiceNames": {
-            "value": []
-        },
-        "functionAppNames": {
-            "value": []
-        },
-        "storageAccountName": {
+        "appServiceName": {
             "value": ""
         },
-        "serviceBusName": {
+        "keyvaultCertificateName": {
+            "value": ""
+        },
+        "customHostname": {
             "value": ""
         },
         "sharedAppServicePlanName": {
@@ -27,6 +24,9 @@
             "value": ""
         },
         "configurationStorageConnectionString": {
+            "value": ""
+        },
+        "loggingRedisConnectionString": {
             "value": ""
         }
     }
