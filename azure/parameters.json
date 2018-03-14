@@ -3,13 +3,28 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "templateBaseUrl": {
-            "value": "https://raw.githubusercontent.com/SkillsFundingAgency/das-public-sector-reporting/master/azure/"
+            "value": "https://raw.githubusercontent.com/SkillsFundingAgency/das-assessor-service/master/azure/"
         },
         "environmentName": {
             "value": ""
         },
-        "appServiceNames": {
-            "value": []
+        "uiAppServiceName": {
+            "value": ""
+        },
+        "apiAppServiceName": {
+            "value": ""
+        },
+        "uiKeyvaultCertificateName": {
+            "value": ""
+        },
+        "apiKeyvaultCertificateName": {
+            "value": ""
+        },
+        "uiCustomHostname": {
+            "value": ""
+        },
+        "apiCustomHostname": {
+            "value": ""
         },
         "functionAppNames": {
             "value": []
@@ -27,6 +42,15 @@
             "value": ""
         },
         "configurationStorageConnectionString": {
+            "value": ""
+        },
+        "loggingRedisConnectionString": {
+            "value": ""
+        },
+        "sharedKeyVaultName": {
+            "value": ""
+        },
+        "sharedManagementResourceGroup": {
             "value": ""
         }
     }

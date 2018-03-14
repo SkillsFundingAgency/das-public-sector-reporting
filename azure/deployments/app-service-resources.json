@@ -13,6 +13,18 @@
         },
         "configEnvironmentName": {
             "type": "string"
+        },
+        "loggingRedisConnectionString": {
+            "type": "string"
+        },
+        "keyvaultCertificateName": {
+            "type": "string"
+        },
+        "sharedAppServicePlanResourceGroup": {
+            "type": "string"
+        },
+        "customHostname": {
+            "type": "string"
         }
     },
     "variables": {},
@@ -49,12 +61,31 @@
                             "name": "EnvironmentName",
                             "value": "[toUpper(parameters('configEnvironmentName'))]"
                         }
+                    ],
+                    "connectionStrings": [
+                        {
+                            "name": "Redis",
+                            "connectionString": "[parameters('loggingRedisConnectionString')]",
+                            "type": "Custom"
+                        }
                     ]
-                }
+                },
+                "httpsOnly": true
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Insights/components', parameters('appServiceName'))]"
             ]
+        },
+        {
+            "type": "Microsoft.Web/sites/hostnameBindings",
+            "condition" : "[greater(length(parameters('customHostname')) ,0)]",
+            "name": "[concat(parameters('appServiceName'), '/', parameters('customHostname'))]",
+            "apiVersion": "2016-03-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sslState": "SniEnabled",
+                "thumbprint": "[reference(resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyvaultCertificateName')), '2016-03-01').Thumbprint]"
+            }
         }
     ],
     "outputs": {}
