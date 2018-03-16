@@ -21,21 +21,23 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 {
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-      
+                    // sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.ClientId = "";
-                    options.ClientSecret = "";
+                    options.ClientId = "psrsdev";
+                    options.ClientSecret = "psrs-secret";
                     options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
-                    options.Authority = "";
-                    options.SignInScheme = "";
-                    options.Configuration = new OpenIdConnectConfiguration();
+                    options.Authority = "https://test-login.apprenticeships.sfa.bis.gov.uk/identity";
+                    options.ResponseType = "code";
+                    options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
                 })
-                
-                .AddCookie(options => { options.ReturnUrlParameter = "/Account/SignedIn"; });
+                .AddCookie();
+            //.AddCookie(options => { options.ReturnUrlParameter = "/Account/SignedIn"; });
         }
 
 

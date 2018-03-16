@@ -91,16 +91,6 @@ namespace SFA.DAS.PSRService.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            var config = GetConfigurationObject();
-
-            var logger = LogManager.GetLogger("Startup");
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap = new Dictionary<string, string>();
-
-            //app.UseCookieAuthentication()
-            
-
-
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -110,9 +100,6 @@ namespace SFA.DAS.PSRService.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-        
-            
 
             app.UseStaticFiles()
                 .UseSession()
