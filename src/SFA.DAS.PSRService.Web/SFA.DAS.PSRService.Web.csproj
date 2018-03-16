@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <Folder Include="Authentication\" />
+    <Folder Include="Pages\Home\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 

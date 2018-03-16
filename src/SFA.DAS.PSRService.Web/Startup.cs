@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
