@@ -12,7 +12,7 @@ using NLog;
 using SFA.DAS.Configuration;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.Configuration.FileStorage;
-using SFA.DAS.PSRService.Application.Infrastructure.Configuration;
+//using SFA.DAS.PSRService.Application.Infrastructure.Configuration;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using   SFA.DAS.PSRService.Application.Mapping;
