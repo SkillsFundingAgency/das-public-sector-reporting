@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -32,15 +33,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void And_The_Report_Exists_Then_Show_Summary_Page()
         {
             // arrange
-
             _mediatorMock.Setup(s => s.Send(It.IsAny<GetSubmittedRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<Report>());
+                .ReturnsAsync(new List<Report>().AsEnumerable());
             // act
             var result = _reportService.GetSubmittedReports(12345);
 
             _mediatorMock.Verify(m => m.Send(It.IsAny<GetSubmittedRequest>(), new CancellationToken()));
 
-            Assert.AreEqual(typeof(IEnumerable<Report>), result.GetType());
+            CollectionAssert.AllItemsAreInstancesOfType(result, typeof(Report));
 
         }
 
