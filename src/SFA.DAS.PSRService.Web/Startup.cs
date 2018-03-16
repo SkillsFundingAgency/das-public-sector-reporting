@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Configuration;
+//using System.Configuration;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -116,41 +116,41 @@ namespace SFA.DAS.PSRService.Web
                 });
         }
 
-        private static PSRSServiceConfiguration GetConfigurationObject()
-        {
-            var environment = Environment.GetEnvironmentVariable("DASENV");
-            if (string.IsNullOrEmpty(environment))
-            {
-                environment = CloudConfigurationManager.GetSetting("EnvironmentName");
-            }
+        //private static PSRSServiceConfiguration GetConfigurationObject()
+        //{
+        //    var environment = Environment.GetEnvironmentVariable("DASENV");
+        //    if (string.IsNullOrEmpty(environment))
+        //    {
+        //        environment = CloudConfigurationManager.GetSetting("EnvironmentName");
+        //    }
 
-            var configurationRepository = GetConfigurationRepository();
-            var configurationService = new SFA.DAS.Configuration.ConfigurationService(
-                configurationRepository,
-                new ConfigurationOptions(ServiceName, environment, "1.0"));
+        //    var configurationRepository = GetConfigurationRepository();
+        //    var configurationService = new SFA.DAS.Configuration.ConfigurationService(
+        //        configurationRepository,
+        //        new ConfigurationOptions(ServiceName, environment, "1.0"));
 
-            var config = configurationService.Get<PSRSServiceConfiguration>();
+        //    var config = configurationService.Get<PSRSServiceConfiguration>();
 
-            return config;
-        }
+        //    return config;
+        //}
 
 
-        private static IConfigurationRepository GetConfigurationRepository()
-        {
-            IConfigurationRepository configurationRepository;
-            if (bool.Parse(ConfigurationManager.AppSettings["LocalConfig"]))
-            {
-                configurationRepository = new FileStorageConfigurationRepository();
-            }
-            else
-            {
-                configurationRepository =
-                    new AzureTableStorageConfigurationRepository(
-                        CloudConfigurationManager.GetSetting("ConfigurationStorageConnectionString"));
-            }
+        //private static IConfigurationRepository GetConfigurationRepository()
+        //{
+        //    IConfigurationRepository configurationRepository;
+        //    if (bool.Parse(ConfigurationManager.AppSettings["LocalConfig"]))
+        //    {
+        //        configurationRepository = new FileStorageConfigurationRepository();
+        //    }
+        //    else
+        //    {
+        //        configurationRepository =
+        //            new AzureTableStorageConfigurationRepository(
+        //                CloudConfigurationManager.GetSetting("ConfigurationStorageConnectionString"));
+        //    }
 
-            return configurationRepository;
-        }
+        //    return configurationRepository;
+        //}
 
     }
 
