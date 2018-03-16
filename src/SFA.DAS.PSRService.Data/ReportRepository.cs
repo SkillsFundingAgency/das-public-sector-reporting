@@ -35,14 +35,14 @@ namespace SFA.DAS.PSRService.Data
             }
         }
 
-        public IList<ReportDto> GetSubmitted(long employerId)
+        public IEnumerable<ReportDto> GetSubmitted(long employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var reportData = connection.Query<ReportDto>("select * from Report where EmployerID = @EmployerId and Submitted = 1", new {EmployerId = employerId});
                 
             
-                return reportData.ToList();
+                return reportData;
             }
         }
 

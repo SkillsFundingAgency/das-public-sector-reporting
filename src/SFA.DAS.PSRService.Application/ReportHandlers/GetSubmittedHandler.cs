@@ -22,9 +22,19 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         public Task<IEnumerable<Report>> Handle(GetSubmittedRequest request, CancellationToken cancellationToken)
         {
+            IEnumerable<Report> reportList = new List<Report>();
+
+            if (request.EmployerId == 0)
+                return Task.FromResult(reportList);
+
             var reportDtoList = _reportRepository.GetSubmitted(request.EmployerId);
 
-            var reportList = reportDtoList.Select(data => _mapper.Map<Report>(data));
+          
+            if (reportDtoList != null)
+                reportList = reportDtoList.Select(data => _mapper.Map<Report>(data));
+
+
+
 
             return Task.FromResult(reportList);
         }

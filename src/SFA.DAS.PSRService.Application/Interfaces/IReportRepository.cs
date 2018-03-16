@@ -9,7 +9,7 @@ namespace SFA.DAS.PSRService.Application.Interfaces
     {       
         ReportDto Get(string period,long employerId);
 
-        IList<ReportDto> GetSubmitted(long employerId);
+        IEnumerable<ReportDto> GetSubmitted(long employerId);
 
 
     }

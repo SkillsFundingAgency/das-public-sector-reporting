@@ -12,12 +12,11 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public class ReportService : IReportService
     {
-        private readonly IWebConfiguration _config;
+        
         private IMediator _mediator;
 
-        public ReportService(IWebConfiguration config, IMediator mediator)
+        public ReportService(IMediator mediator)
         {
-            _config = config;
             _mediator = mediator;
         }
 
