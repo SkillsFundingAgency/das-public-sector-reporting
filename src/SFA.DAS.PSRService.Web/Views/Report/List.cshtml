@@ -1,8 +1,29 @@
-﻿@model object
+﻿@model IEnumerable<SFA.DAS.PSRService.Domain.Entities.Report>
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Sumbitted Results";
     Layout = "_Layout";
 }
 
-<h2>Old Reports</h2>
+<main id="content" role="main">
+    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+
+   
+            <h1>Submitted Reports</h1>
+            <p>Select the standard that you would like to record an assessment for.</p>
+
+            @foreach (var result in Model)
+            {
+                <div class="grid-row">
+                    <div class="column-two-thirds">
+                        @result.EmployerId
+                        @result.OrganisationName
+                    </div>
+                    <div class="column-one-third"><a href="#">View</a></div>
+                </div>
+                <hr/>
+
+            }
+
+   
+    </main>

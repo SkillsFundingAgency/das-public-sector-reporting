@@ -25,9 +25,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         {
             _loggingMock = new Mock<ILogger<ErrorLoggingMiddleware>>(MockBehavior.Strict);
            
-
             
-
             _errorLoggingMiddleware = new ErrorLoggingMiddleware(next: async (innerHttpContext) =>
             {
                 await innerHttpContext.Response.WriteAsync("test response body");
@@ -41,8 +39,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         [Test]
         public void NoErrorIsRaisedThenOk()
         {
-            // arrange
-            
             // act
             var result = _errorLoggingMiddleware.InvokeAsync(new DefaultHttpContext());
 
@@ -50,8 +46,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
           _loggingMock.VerifyAll();
 
            
-
-            
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsCompleted);
             Assert.IsFalse(result.IsFaulted);
@@ -69,7 +63,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             // assert
             _loggingMock.VerifyAll();
-
             
 
             Assert.IsNotNull(result);
