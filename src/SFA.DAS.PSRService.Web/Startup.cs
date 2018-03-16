@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +14,7 @@ using SFA.DAS.Configuration.FileStorage;
 using SFA.DAS.PSRService.Application.Infrastructure.Configuration;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
+using   SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Domain.Configuration;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -48,6 +46,10 @@ namespace SFA.DAS.PSRService.Web
             services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
             services.AddSession();
 
+            //This makes sure all automapper profiles are automatically configured for use
+            //Simply create a profile in code and this will register it
+            services.AddAutoMapper();
+
             return ConfigureIOC(services); 
         }
 
@@ -70,7 +72,7 @@ namespace SFA.DAS.PSRService.Web
                 //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
-
+                
                 config.Populate(services);
 
 
@@ -102,6 +104,7 @@ namespace SFA.DAS.PSRService.Web
             }
 
             app.UseStaticFiles()
+                .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()
                 .UseMvc(routes =>

@@ -13,9 +13,23 @@
         },
         "configEnvironmentName": {
             "type": "string"
+        },
+        "loggingRedisConnectionString": {
+            "type": "string"
+        },
+        "keyvaultCertificateName": {
+            "type": "string"
+        },
+        "sharedAppServicePlanResourceGroup": {
+            "type": "string"
+        },
+        "customHostname": {
+            "type": "string"
         }
     },
-    "variables": {},
+    "variables": {
+        "UseCustomHostname": "[greater(length(parameters('customHostname')) ,0)]"
+    },
     "resources": [
         {
             "apiVersion": "2015-05-01",
@@ -49,11 +63,33 @@
                             "name": "EnvironmentName",
                             "value": "[toUpper(parameters('configEnvironmentName'))]"
                         }
+                    ],
+                    "connectionStrings": [
+                        {
+                            "name": "Redis",
+                            "connectionString": "[parameters('loggingRedisConnectionString')]",
+                            "type": "Custom"
+                        }
                     ]
-                }
+                },
+                "httpsOnly": true
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Insights/components', parameters('appServiceName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/hostnameBindings",
+            "condition": "[variables('UseCustomHostname')]",
+            "name": "[concat(parameters('appServiceName'), '/', if(variables('UseCustomHostname'), parameters('customHostname'), 'placeholder'))]",
+            "apiVersion": "2016-03-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sslState": "SniEnabled",
+                "thumbprint": "[reference(resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyvaultCertificateName')), '2016-03-01').Thumbprint]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('appServiceName'))]"
             ]
         }
     ],

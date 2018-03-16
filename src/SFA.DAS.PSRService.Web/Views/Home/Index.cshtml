@@ -3,35 +3,39 @@
 @{
     ViewData["Title"] = "Public sector reporting";
 }
-
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-xlarge">Annual apprenticeship return</h1>
-
-        <p>You can submit a new report for the year 1 April 2017 to 31 March 2018 or review previously submitted reports.</p>
-        
-        <h2 class="heading-medium">What do you want to do?</h2>
-
-        <form action="">
-            <label class="form-label-bold" for="">What do you want to do?</label>
+<main id="content" role="main">
 
 
-            <input id="source" name="source" type="hidden" value="employer">
-            <fieldset>
-                <legend class="visuallyhidden">No, I want to find new training and providers</legend>
-                <div class="multiple-choice">
-                    <input id="radio-1" type="radio" name="radio-group" value="yes">
-                    <label for="radio-1">Create a new report</label>
+    <div class="grid-row">
+        <div class="column-two-thirds">
+            <a href="" class="link-back" onclick="goBack()">Cancel and return</a>
+            <h1 class="heading-xlarge">Annual apprenticeship return</h1>
+            <p>You can submit a new report for the year 1 April 2017 to 31 March 2018 or review previously submitted reports.</p>
+
+            <form action="@Url.Action("Submit")" method="post">
+                <div class="form-group">
+                    <fieldset>
+                        <legend>
+                            <h2 class="heading-medium">
+                                What do you want to do?
+                            </h2>
+                        </legend>
+                        <div class="multiple-choice">
+                            <input id="home-action-create" type="radio" name="action" value="create">
+                            <label for="home-action-create">Create a new report</label>
+                        </div>
+
+                        <div class="multiple-choice">
+                            <input id="home-action-list" type="radio" name="action" value="list">
+                            <label for="home-action-list">View a previously submitted report</label>
+                        </div>
+                    </fieldset>
                 </div>
-
-                <div class="multiple-choice">
-                    <input id="radio-4" type="radio" name="radio-group" value="no">
-                    <label for="radio-4">View a previously submitted report</label>
+                <div class="form-group">
+                    <input class="button" type="submit" value="Continue">
                 </div>
-            </fieldset>
-
-            <input class="button" id="saveAndContinue" type="submit" style="margin-top:30px" value="Continue">
-        </form>
+            </form>
 
         </div>
-</div>
+    </div>
+</main>
