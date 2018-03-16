@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
+using System.Linq;
 using Dapper;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
@@ -17,18 +21,32 @@ namespace SFA.DAS.PSRService.Data
             this._connectionString = connectionString;
         }
 
-        public Task<Report> CreateNewContact(ReportCreateDomainModel newContact)
-        {
-            throw new NotImplementedException();
-        }
 
-        public string Get(Guid reportId)
+
+        public ReportDto Get(string period, long employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var json = connection.ExecuteScalar<string>("select top 1 ReportingData from Report");
+                
+
+                var json = connection.Query<ReportDto>("select top 1 Id,EmployerId, ReportingPeriod, ReportingData, Submitted from Report").FirstOrDefault();
+                   
                 return json;
             }
         }
+
+        public IList<ReportDto> GetSubmitted(long employerId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var reportData = connection.Query<ReportDto>("select * from Report where EmployerID = @EmployerId and Submitted = 1", new {EmployerId = employerId});
+                
+            
+                return reportData.ToList();
+            }
+        }
+
+      
+       
     }
 }

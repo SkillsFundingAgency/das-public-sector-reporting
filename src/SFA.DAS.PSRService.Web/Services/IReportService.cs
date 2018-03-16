@@ -10,10 +10,9 @@ namespace SFA.DAS.PSRService.Web.Services
     public interface IReportService
     {
         Report CreateReport(long employerId);
-        Report GetReport(string period,long employeeId);
-        SubmittedStatus SubmitReport(string period, long employeeId, Submitted submittedDetails);
-        IList<Report> GetReports(long employerId);
+        Report GetReport(string period,long employerId);
+        SubmittedStatus SubmitReport(string period, long employerId, Submitted submittedDetails);
+        IEnumerable<Report> GetSubmittedReports(long employerId);
         bool IsSubmitValid(Report report);
-        bool IsEditValid(Report report);
     }
 }

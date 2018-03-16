@@ -11,12 +11,12 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class ReportController : Controller
     {
         private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
-        private long employeeId = 12345;
+        private long employerId = 123;
 
         public ReportController(ILogger<ReportController> logger, IReportService reportService)
         {
@@ -27,9 +27,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Edit(string period)
         {
             
-            var report = _reportService.GetReport(period, employeeId);
+            var report = _reportService.GetReport(period, employerId);
 
-            if (_reportService.IsEditValid(report) == false)
+            if (_reportService.IsSubmitValid(report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
 
             return View("Edit", report);
@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                var report = _reportService.CreateReport(employeeId);
+                var report = _reportService.CreateReport(employerId);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception ex)
@@ -54,22 +54,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             //need to get employee id, this needs to be moves somewhere
             
-            var reportList = _reportService.GetReports(employeeId);
+            var reportList = _reportService.GetSubmittedReports(employerId);
 
-            if (reportList.Count > 1)
+            
                 return View("List", reportList);
 
-            if (reportList.Any())
-                return new RedirectResult(Url.Action("Edit"));
-
-            return new RedirectResult(Url.Action("Index", "Home"));
+            
         }
 
         public IActionResult Summary(string period)
         {
             try
             {
-                var report = _reportService.GetReport(period, employeeId);
+                var report = _reportService.GetReport(period, employerId);
             
            
 
@@ -91,7 +88,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var submitted = new Submitted();
 
             
-           var submittedStatus = _reportService.SubmitReport(period,employeeId,submitted);
+           var submittedStatus = _reportService.SubmitReport(period,employerId,submitted);
 
             if (submittedStatus == SubmittedStatus.Invalid)
             {

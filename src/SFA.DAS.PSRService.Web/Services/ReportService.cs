@@ -26,17 +26,17 @@ namespace SFA.DAS.PSRService.Web.Services
             throw new NotImplementedException();
         }
 
-        public Report GetReport(string period, long employeeId)
+        public Report GetReport(string period, long employerId)
         {
-            var request = new GetReportRequest() {Period = period, EmployeeId = employeeId};
+            var request = new GetReportRequest() {Period = period, EmployerId = employerId};
             var report = _mediator.Send(request).Result;
             return report;
         }
 
-        public SubmittedStatus SubmitReport(string period, long employeeId, Submitted submittedDetails)
+        public SubmittedStatus SubmitReport(string period, long employerId, Submitted submittedDetails)
         {
 
-            var report = GetReport(period, employeeId);
+            var report = GetReport(period, employerId);
 
             if (IsSubmitValid(report) == false)
                 return SubmittedStatus.Invalid;
@@ -46,26 +46,25 @@ namespace SFA.DAS.PSRService.Web.Services
         }
 
        
-        public IList<Report> GetReports(long employerId)
+        public IEnumerable<Report> GetSubmittedReports(long employerId)
         {
-            throw new NotImplementedException();
+            var request = new GetSubmittedRequest(){EmployerId = employerId};
+
+            var submittedReports = _mediator.Send(request).Result;
+            return submittedReports;
         }
 
         public bool IsSubmitValid(Report report)
-        {
-            throw new NotImplementedException();
-        }
-
-        private bool IsCurrentPeriod(string reportingPeriod)
-        {
-            throw new NotImplementedException();
-        }
-        public bool IsEditValid(Report report)
         {
             if (report?.Submitted == false && IsCurrentPeriod(report?.ReportingPeriod))
                 return true;
 
             return false;
+        }
+
+        private bool IsCurrentPeriod(string reportingPeriod)
+        {
+            throw new NotImplementedException();
         }
 
        

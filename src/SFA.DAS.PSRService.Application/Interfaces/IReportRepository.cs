@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.Interfaces
 {
     public interface IReportRepository
     {       
-        string Get(Guid reportId);
+        ReportDto Get(string period,long employerId);
+
+        IList<ReportDto> GetSubmitted(long employerId);
+
+
     }
 }
