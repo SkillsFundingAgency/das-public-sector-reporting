@@ -1,0 +1,29 @@
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@model SFA.DAS.PSRService.Domain.Entities.Question
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+}
+
+<div class="grid-row">
+<div class="column-full">
+    <h2 class="heading-large">@Model.Id</h2>
+    @switch (Model.Type)
+    {
+
+        case QuestionType.LongText:
+
+            <textarea class="form-control form-control-3-4" style="width: 100%" name="textarea" id="textarea" rows="8"></textarea>
+
+            break;
+        case QuestionType.ShortText:
+            <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width: 6em">
+            break;
+        case QuestionType.Number:
+
+            <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width: 6em">
+            break;
+    }
+
+    </div>
+</div>

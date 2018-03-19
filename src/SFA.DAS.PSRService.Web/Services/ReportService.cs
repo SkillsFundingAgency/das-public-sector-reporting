@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MediatR;
@@ -61,11 +62,54 @@ namespace SFA.DAS.PSRService.Web.Services
             return false;
         }
 
+        public Section GetQuestionSection(string SectionId, Report report)
+        {
+          
+
+            var sectionsList = GetSections(report);
+
+            return sectionsList.Single(w => w.Id == SectionId);
+
+        }
+
         private bool IsCurrentPeriod(string reportingPeriod)
+
         {
             throw new NotImplementedException();
         }
 
-       
+        private IList<Section> GetSections(Report report)
+        {
+            List<Section> sectionList = new List<Section>();
+
+            if (report.Sections == null)
+                throw new Exception("No sections found for report, there must at least one section");
+
+            foreach (var reportSection in report.Sections)
+            {
+                sectionList.Add(reportSection);
+                sectionList.AddRange(GetSections(reportSection));
+            }
+
+            return sectionList;
+        }
+
+        private IEnumerable<Section> GetSections(Section section)
+        {
+            List<Section> sectionList = new List<Section>();
+            sectionList.Add(section);
+
+            if (section.SubSections != null)
+            {
+                foreach (var reportSection in section.SubSections)
+                {
+
+                    sectionList.AddRange(GetSections(reportSection));
+                }
+            }
+          
+
+            return sectionList;
+        }
     }
 }

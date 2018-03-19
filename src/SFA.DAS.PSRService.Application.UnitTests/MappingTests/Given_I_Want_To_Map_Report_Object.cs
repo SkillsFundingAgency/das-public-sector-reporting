@@ -148,7 +148,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
 
             var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
 
-            Assert.AreEqual(mappedReportDto.ReportingData, "{\"OrganisationName\":\"Organisation 1\",\"Questions\":\"\",\"Submitted\":null}");
+            Assert.AreEqual(mappedReportDto.ReportingData, "{\"OrganisationName\":\"Organisation 1\",\"Questions\":null,\"Submitted\":null}");
             Assert.AreEqual(mappedReportDto.Submitted, report.Submitted);
             Assert.AreEqual(mappedReportDto.EmployerId, report.EmployerId);
             Assert.AreEqual(mappedReportDto.Id, report.Id);

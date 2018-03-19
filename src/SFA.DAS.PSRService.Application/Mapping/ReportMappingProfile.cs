@@ -18,12 +18,14 @@ namespace SFA.DAS.PSRService.Application.Mapping
             CreateMap<ReportDto, Report>()
                 .ForMember(dest => dest.SubmittedDetails, opts => opts.Ignore())
                 .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
+                .ForMember(dest => dest.Sections, opts => opts.Ignore())
                 .AfterMap((src, dest) =>
                 {
 
                     dynamic dataObject = JObject.Parse(src.ReportingData);
 
                     dest.OrganisationName = dataObject.OrganisationName;
+                    dest.Sections = dataObject.Sections;
 
 
                 });
@@ -35,7 +37,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
 
         private string SerializeData(Report report)
         {
-            var serilizationObj = new { OrganisationName = report.OrganisationName, Questions = "", Submitted = report.SubmittedDetails };
+            var serilizationObj = new { OrganisationName = report.OrganisationName, Questions = report.Sections, Submitted = report.SubmittedDetails };
 
             return JsonConvert.SerializeObject(serilizationObj);
         }
