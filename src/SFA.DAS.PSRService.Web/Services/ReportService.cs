@@ -24,7 +24,18 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public Report CreateReport(long employerId)
         {
-            throw new NotImplementedException();
+            
+            var request = new CreateReportRequest(){Period = GetCurrentReportPeriod(), EmployerId = employerId};
+
+            var report = _mediator.Send(request).Result;
+
+
+            if (report?.Id == null)
+            {
+                throw new Exception("Unable to create a new report");
+            }
+
+            return report;
         }
 
         public Report GetReport(string period, long employerId)
