@@ -85,6 +85,7 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             return GetCurrentReportPeriod(DateTime.UtcNow.Date);
         }
+ 
 
         public string GetCurrentReportPeriodName(string period)
         {
@@ -98,7 +99,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         private bool IsCurrentPeriod(string reportingPeriod)
         {
-            throw new NotImplementedException();
+            return (GetCurrentReportPeriod() == reportingPeriod);
         }
 
        
