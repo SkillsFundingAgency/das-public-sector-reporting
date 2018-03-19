@@ -5,6 +5,7 @@ using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()

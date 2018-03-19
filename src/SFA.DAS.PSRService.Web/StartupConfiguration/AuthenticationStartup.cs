@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
 {
@@ -33,22 +35,14 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
                     options.Authority = "https://test-login.apprenticeships.sfa.bis.gov.uk/identity";
                     options.ResponseType = "code";
-                   // options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.ClaimActions.MapUniqueJsonKey("id", "sub");
-
                     options.ClaimActions.MapUniqueJsonKey("email", "name");
-
-                    //options.TokenValidationParameters = new TokenValidationParameters()
-                    //{
-                    //    NameClaimType = "http://das/employer/identity/claims/email_address"
-                    //};
-
                 })
                 .AddCookie();
-            //.AddCookie(options => { options.ReturnUrlParameter = "/Account/SignedIn"; });
+            
         }
 
 
@@ -69,6 +63,9 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             return Task.FromResult(0);
         }
 
-
+        private static async Task PopulateAccountsClaim(TokenValidatedContext ctx, IEmployerAccountService accountsSvc)
+        {
+            //var userId = ctx.Principal.Claims.First(c=>c.Type.Equals(EmployerAccountService.) )
+        }
     }
 }
