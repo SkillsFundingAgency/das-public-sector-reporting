@@ -8,13 +8,23 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="IdentityModel" Version="3.3.1" />
     <PackageReference Include="MediatR" Version="4.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
-    <PackageReference Include="Microsoft.AspNEtCore.Authentication.WsFederation" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNEtCore.Authentication.WsFederation" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.1.0-preview" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc2" />
+    <PackageReference Include="SFA.DAS.Account.Api.Client" Version="1.2.0.62882" />
+    <PackageReference Include="SFA.DAS.Configuration" Version="1.0.0.53229" />
+    <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="1.0.0.53229" />
+    <PackageReference Include="SFA.DAS.Configuration.FileStorage" Version="1.0.0.53229" />
+    <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.0.0.56651" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.4.0" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.1.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Authentication\" />
+    <Folder Include="Pages\Home\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 

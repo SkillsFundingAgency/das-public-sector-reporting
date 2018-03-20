@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
@@ -6,6 +7,7 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IReportService _reportService;
@@ -42,6 +44,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Authorize]
+        public IActionResult Protected()
+        {
+            return View();
         }
     }
 }

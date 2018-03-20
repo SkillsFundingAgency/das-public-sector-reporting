@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
+    [Authorize]
     public class QuestionController : Controller
     {
         public IActionResult Index()

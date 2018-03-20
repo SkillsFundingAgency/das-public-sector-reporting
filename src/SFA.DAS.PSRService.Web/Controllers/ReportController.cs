@@ -11,7 +11,7 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-   // [Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly ILogger<ReportController> _logger;

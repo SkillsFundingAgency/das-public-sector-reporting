@@ -1,8 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
 {
@@ -17,18 +24,25 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             services.AddAuthentication(sharedOptions =>
                 {
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultSignOutScheme = WsFederationDefaults.AuthenticationScheme;
+                    sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    // sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
                 })
-                .AddWsFederation(options =>
+                .AddOpenIdConnect(options =>
                 {
-                    options.Wtrealm = configuration.Authentication.WtRealm;
-                    options.MetadataAddress = configuration.Authentication.MetadataAddress;
-                    options.Events.OnSecurityTokenValidated = OnTokenValidated;
-                    options.CallbackPath = "/Account/SignedIn";
+                    options.ClientId = "psrsdev";
+                    options.ClientSecret = "psrs-secret";
+                    options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
+                    options.Authority = "https://test-login.apprenticeships.sfa.bis.gov.uk/identity";
+                    options.ResponseType = "code";
+                    options.SaveTokens = true;
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.ClaimActions.MapUniqueJsonKey("id", "sub");
+                    options.ClaimActions.MapUniqueJsonKey("email", "name");
                 })
-                .AddCookie(options => { options.ReturnUrlParameter = "/Account/SignedIn"; });
+                .AddCookie();
+            
         }
 
 
@@ -47,6 +61,11 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             //context.HttpContext.Session.SetString(ukprn, jwt);
 
             return Task.FromResult(0);
+        }
+
+        private static async Task PopulateAccountsClaim(TokenValidatedContext ctx, IEmployerAccountService accountsSvc)
+        {
+            //var userId = ctx.Principal.Claims.First(c=>c.Type.Equals(EmployerAccountService.) )
         }
     }
 }
