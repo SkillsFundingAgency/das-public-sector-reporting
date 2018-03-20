@@ -24,6 +24,10 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public Report CreateReport(long employerId)
         {
+            if (IsSubmissionsOpen() == false)
+            {
+                throw new Exception("Unable to create report after submissions is closed");
+            }
             
             var request = new CreateReportRequest(){Period = GetCurrentReportPeriod(), EmployerId = employerId};
 
@@ -68,7 +72,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public bool IsSubmitValid(Report report)
         {
-            if (report?.Submitted == false && IsCurrentPeriod(report?.ReportingPeriod))
+            if ((report?.Submitted == false && IsCurrentPeriod(report?.ReportingPeriod)) && IsSubmissionsOpen())
                 return true;
 
             return false;
@@ -77,8 +81,8 @@ namespace SFA.DAS.PSRService.Web.Services
         public string GetCurrentReportPeriod(DateTime utcToday)
         {
             var year = utcToday.Year;
-            if (utcToday.Month < 10) year--;
-            return string.Concat(year.ToString(CultureInfo.InvariantCulture).Substring(2), (year + 1).ToString(CultureInfo.InvariantCulture).Substring(2));
+            if (utcToday.Month < 4) year--;
+            return string.Concat((year -1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
         }
 
         public string GetCurrentReportPeriod()
@@ -100,6 +104,11 @@ namespace SFA.DAS.PSRService.Web.Services
         private bool IsCurrentPeriod(string reportingPeriod)
         {
             return (GetCurrentReportPeriod() == reportingPeriod);
+        }
+
+        public bool IsSubmissionsOpen()
+        {
+            return DateTime.UtcNow < _config.SubmissionClose;
         }
 
        
