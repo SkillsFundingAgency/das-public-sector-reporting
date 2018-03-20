@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace SFA.DAS.PSRService.Domain.Entities
+﻿namespace SFA.DAS.PSRService.Domain.Entities
 {
     using System;
-    using Enums;
 
     public class Report
     {

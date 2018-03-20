@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-            _controller = new HomeController {Url = _mockUrlHelper.Object};
+            _controller = new HomeController(null) {Url = _mockUrlHelper.Object};
         }
 
         [Test]

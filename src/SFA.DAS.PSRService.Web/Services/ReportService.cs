@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MediatR;
@@ -23,7 +24,22 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public Report CreateReport(long employerId)
         {
-            throw new NotImplementedException();
+            if (IsSubmissionsOpen() == false)
+            {
+                throw new Exception("Unable to create report after submissions is closed");
+            }
+            
+            var request = new CreateReportRequest(){Period = GetCurrentReportPeriod(), EmployerId = employerId};
+
+            var report = _mediator.Send(request).Result;
+
+
+            if (report?.Id == null)
+            {
+                throw new Exception("Unable to create a new report");
+            }
+
+            return report;
         }
 
         public Report GetReport(string period, long employerId)
@@ -56,15 +72,43 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public bool IsSubmitValid(Report report)
         {
-            if (report?.Submitted == false && IsCurrentPeriod(report?.ReportingPeriod))
+            if ((report?.Submitted == false && IsCurrentPeriod(report?.ReportingPeriod)) && IsSubmissionsOpen())
                 return true;
 
             return false;
         }
 
+        public string GetCurrentReportPeriod(DateTime utcToday)
+        {
+            var year = utcToday.Year;
+            if (utcToday.Month < 4) year--;
+            return string.Concat((year -1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
+        }
+
+        public string GetCurrentReportPeriod()
+        {
+            return GetCurrentReportPeriod(DateTime.UtcNow.Date);
+        }
+ 
+
+        public string GetCurrentReportPeriodName(string period)
+        {
+            if (period == null || period.Length != 4)
+                throw new ArgumentException("Period string has to be 4 chars", nameof(period));
+
+            var year = int.Parse(period.Substring(0, 2)) + 2000;
+
+            return $"1 April {year} to 31 March {year + 1}";
+        }
+
         private bool IsCurrentPeriod(string reportingPeriod)
         {
-            throw new NotImplementedException();
+            return (GetCurrentReportPeriod() == reportingPeriod);
+        }
+
+        public bool IsSubmissionsOpen()
+        {
+            return DateTime.UtcNow < _config.SubmissionClose;
         }
 
        

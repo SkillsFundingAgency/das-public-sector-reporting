@@ -1,8 +1,9 @@
 ﻿{
-  "Authentication":{
+  "Authentication": {
     "WtRealm": "https://vacancyservicepoc",
     "MetadataAddress": "https://adfs.preprod.skillsfunding.service.gov.uk/FederationMetadata/2007-06/FederationMetadata.xml",
     "Role": "EPA"
-  }, 
-  "SqlConnectionstring":"Data Source=.;Initial Catalog=SFA.DAS.PSRService;Integrated Security=True; MultipleActiveResultSets=True;"
+  },
+  "SqlConnectionstring": "Data Source=.;Initial Catalog=SFA.DAS.PSRService;Integrated Security=True; MultipleActiveResultSets=True;",
+  "SubmissionClose": "2018-10-1T00:00:00.000Z"
 }

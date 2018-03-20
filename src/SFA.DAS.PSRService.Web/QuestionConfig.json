@@ -1,0 +1,74 @@
+﻿{
+  "OrganisationName": null,
+  "Questions": [
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "0",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "0",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "0",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "YourEmployees",
+          "Title": "",
+          "SummaryText": "Number of employees who work in England"
+        }
+      ],
+      "Questions": null,
+      "Id": "ReportNumbers",
+      "Title": "Report numbers in the following categories",
+      "SummaryText": null
+    },
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "0",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "0",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "0",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "YourEmployees",
+          "Title": "",
+          "SummaryText": "Number of employees who work in England"
+        }
+      ],
+      "Questions": null,
+      "Id": "ReportNumbers",
+      "Title": "Report numbers in the following categories",
+      "SummaryText": null
+    }
+  ],
+  "Submitted": null
+}

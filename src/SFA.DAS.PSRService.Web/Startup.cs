@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using NLog;
 using SFA.DAS.Configuration;
@@ -31,10 +32,13 @@ namespace SFA.DAS.PSRService.Web
     {
         private const string ServiceName = "SFA.DAS.PSRService";
         private const string Version = "1.0";
+        private IHostingEnvironment _hostingEnvironment;
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env)
         {
             Configuration = ConfigurationService.GetConfig(config["Environment"], config["ConnectionStrings:Storage"], Version, ServiceName).Result;
+
+            _hostingEnvironment = env;
         }
 
         public IWebConfiguration Configuration { get; }
@@ -50,6 +54,8 @@ namespace SFA.DAS.PSRService.Web
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
+
+           
 
             return ConfigureIOC(services); 
         }
@@ -73,7 +79,11 @@ namespace SFA.DAS.PSRService.Web
                 //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
-                
+
+                var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+                config.For<IFileProvider>().Singleton().Use(physicalProvider);
+
+
                 config.Populate(services);
 
 
