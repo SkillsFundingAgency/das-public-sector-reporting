@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IReportService _reportService;
-        private const long EmployerId = 123; // TODO: get this from context
+        private const long EmployerId = 12345; // TODO: get this from context
 
         public HomeController(IReportService reportService)
         {
@@ -34,6 +34,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             if (action == "create")
                 return new RedirectResult(Url.Action("Create", "Report"));
+            if (action == "edit")
+                return new RedirectResult(Url.Action("Edit", "Report"));
 
             if (action == "list")
                 return new RedirectResult(Url.Action("List", "Report"));

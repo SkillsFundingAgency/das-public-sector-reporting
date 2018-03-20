@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 }
             };
 
-           
+            _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
         }
 
     }

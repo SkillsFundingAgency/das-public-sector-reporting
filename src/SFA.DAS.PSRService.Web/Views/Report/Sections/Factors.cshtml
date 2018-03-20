@@ -1,0 +1,24 @@
+﻿@model SFA.DAS.PSRService.Domain.Entities.Section
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+}
+
+        <li>
+        <h2 class="heading-large">@Model.Title</h2>
+            <ul class="task-list-section">
+
+                @if (Model.SubSections != null)
+                {
+                foreach (var subSection in Model.SubSections)
+                {
+                    <li>
+                        <a href="/Question/Index/@subSection.Id">@subSection.SummaryText</a>
+
+
+                    </li>
+                }
+                }
+
+            </ul>
+        </li>

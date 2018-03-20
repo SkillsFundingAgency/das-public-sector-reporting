@@ -1,10 +1,27 @@
-﻿@model object
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
+<main id="content" role="main">
+    <h2>Reporting your progress towards the Public Sector Apprenticeship Target</h2>
+    <ol class="task-list">
 
-<h2>Reporting your progress towards the Public Sector Apprenticeship Target</h2>
 
-<button type="submit">REVIEW AND SUBMIT ></button>
+        @Html.Partial("Sections/OrganisationName")
+
+        @if (Model.Report.Sections != null)
+        {
+            foreach (var sectionItem in Model.Report.Sections)
+            {
+
+
+                @Html.Partial("Sections/" + sectionItem.Id, sectionItem)
+
+            }
+        }
+
+        @Html.Partial("Sections/Review")
+    </ol>
+</main>

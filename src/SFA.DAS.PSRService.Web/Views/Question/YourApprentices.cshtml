@@ -1,0 +1,60 @@
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@model SFA.DAS.PSRService.Domain.Entities.Section
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+}
+
+<div class="column-full">
+
+    <details>
+
+        <summary><span class="summary">Who counts as an employee</span></summary>
+        <div class="panel panel-border-narrow">
+            <ul class="list-bullet">
+
+                <li>things</li>
+                <li>stuff</li>
+                <li>Page 9 of the guidance has this list</li>
+            </ul><p></p>
+        </div>
+    </details>
+    <div style="margin-top:35px"></div>
+    <form id="myFormId">
+        <fieldset>
+           
+            <div class="form-group" style="">
+                <label class="form-label-bold" for="">
+                    Number of employees who were working in England on 31 March 2017
+
+                </label>
+                
+                <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width:6em">
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <div class="form-group" style="">
+                <label class="form-label-bold" for="">
+                    Number of employees who were working in England on 31 March 2018
+
+                </label>
+                <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width:6em">
+            </div>
+           
+        </fieldset>
+        <fieldset>
+            <!--hr style=""/-->
+           
+            <div class="form-group" style="">
+                <label class="form-label-bold" for="">
+                    Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
+
+                </label>
+                <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width:6em">
+            </div>
+        </fieldset>
+
+    </form>
+    
+</div>
