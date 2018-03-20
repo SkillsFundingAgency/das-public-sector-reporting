@@ -18,12 +18,12 @@ namespace SFA.DAS.PSRService.Data
     public class ReportRepository : IReportRepository
     {
         private readonly string _connectionString;
-        private readonly IFileProvider _fileProvider;
+     
 
-        public ReportRepository(string connectionString, IFileProvider fileProvider)
+        public ReportRepository(string connectionString)
         {
             this._connectionString = connectionString;
-            _fileProvider = fileProvider;
+          
         }
 
 
@@ -51,26 +51,9 @@ namespace SFA.DAS.PSRService.Data
             }
         }
 
-        public ReportDto Create(long employeeId, string period)
+        public ReportDto Create(ReportDto report)
         {
-            var questionsConfig = _fileProvider.GetFileInfo("/QuestionConfig.json");
-
-            var report = new ReportDto()
-            {
-                EmployerId = employeeId,
-                Submitted = false,
-                Id = Guid.NewGuid(),
-                ReportingPeriod = period
-            };
-
-            using (var jsonContents = questionsConfig.CreateReadStream())
-            {
-                using (StreamReader sr = new StreamReader(jsonContents))
-                {
-
-                    report.ReportingData = sr.ReadToEnd();
-                }
-            }
+           
             
          
 
