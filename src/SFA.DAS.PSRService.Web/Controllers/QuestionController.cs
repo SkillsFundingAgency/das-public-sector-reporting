@@ -17,14 +17,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class QuestionController : Controller
     {
         private readonly IReportService _reportService;
-        private readonly IEmployerAccountService _employerAccountService;
+       
         private int employeeId;
       
 
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService)
+        public QuestionController(IReportService reportService)
         {
             _reportService = reportService;
-            _employerAccountService = employerAccountService;
             employeeId = 12345;
         }
         [Route("/[controller]/{id}")]
