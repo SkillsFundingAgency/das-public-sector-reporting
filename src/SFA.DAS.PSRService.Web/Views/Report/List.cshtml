@@ -24,6 +24,17 @@
                 <hr/>
 
             }
+    
+    @if (Model.SubmittedReports.Count() == 0)
+    {
+        <hr/>
+        <div class="grid-row">
+            <div class="column-two-thirds">
+              There are currently no submitted reports to show
+            </div>
+         
+        </div>
+        <hr/>
+    }
 
-   
-    </main>
+</main>

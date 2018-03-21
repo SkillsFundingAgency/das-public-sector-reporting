@@ -17,6 +17,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
     {
         private QuestionController _controller;
         private Mock<IReportService> _reportService;
+        private Mock<IEmployerAccountService> _EmployerAccountServiceMock;
         private Mock<IUrlHelper> _mockUrlHelper;
 
 
@@ -24,9 +25,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-         
+         _EmployerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
-            _controller = new QuestionController(_reportService.Object) { Url = _mockUrlHelper.Object };
+            _controller = new QuestionController(_reportService.Object, _EmployerAccountServiceMock.Object) { Url = _mockUrlHelper.Object };
             _reportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
         }
 

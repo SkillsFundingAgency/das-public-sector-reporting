@@ -26,72 +26,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _reportService = reportService;
         }
 
-        public IActionResult EditTest()
-        {
-            var Questions = new List<Question>()
-            {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-                ,new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-            var Section = new Section()
-            {
-                Id = "ReportNumbers",
-                SubSections = new List<Section>() { new Section{
-                    Id = "YourEmployees",
-                    Questions = Questions,
-                    Title = "",
-                    SummaryText = "Number of employees who work in England"
-
-                }},
-                Questions = null,
-                Title = "Report numbers in the following categories"
-            };
-
-
-
-
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(Section);
-            sections.Add(Section);
-
-            var report = new Report()
-            {
-                Sections = sections
-            };
-
-            var reportVM = new ReportViewModel()
-            {
-                Report = report
-            };
-
-
-
-            return View("Edit", reportVM);
-        }
-
+    
     
         public IActionResult Edit(string period)
         {
@@ -106,7 +41,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Edit", reportViewModel);
         }
 
+
+        [HttpGet]
         public IActionResult Create()
+        {
+            return View("Create");
+        }
+
+        [HttpPost]
+        [Route("[controller]/Create")]
+        public IActionResult PostCreate()
         {
             try
             {

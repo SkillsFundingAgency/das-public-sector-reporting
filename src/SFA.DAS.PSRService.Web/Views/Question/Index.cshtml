@@ -7,15 +7,15 @@
 <main id="content" role="main">
     <div class="grid-row">
         <div class="column-two-thirds">
-            <h1 class="heading-xlarge">@Model.CurrentSection.Title</h1>
-
+            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
 
             @*@foreach (var question in Model.CurrentSection.Questions)
                 {*@
             @Html.Partial(Model.CurrentSection.Id, Model.CurrentSection)
             @*}*@
 
-            <button type="submit">Continue</button>
+          
         </div>
     </div>
+    <button type="submit">Continue</button>
 </main>

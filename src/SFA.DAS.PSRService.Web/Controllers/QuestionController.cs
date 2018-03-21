@@ -12,17 +12,22 @@ using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-   // [Authorize]
+    [Authorize]
+    [Route("Question")]
     public class QuestionController : Controller
     {
         private readonly IReportService _reportService;
-        private int employeeId = 12345;
+        private readonly IEmployerAccountService _employerAccountService;
+        private int employeeId;
       
 
-        public QuestionController(IReportService reportService)
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService)
         {
             _reportService = reportService;
+            _employerAccountService = employerAccountService;
+            employeeId = 12345;
         }
+        [Route("/[controller]/{id}")]
         public IActionResult Index(string id)
         {
 
