@@ -1,8 +1,11 @@
-﻿namespace SFA.DAS.PSRService.Web.Configuration
+﻿using SFA.DAS.EAS.Account.Api.Client;
+
+namespace SFA.DAS.PSRService.Web.Configuration
 {
     public interface IWebConfiguration
     {
-        AuthSettings Authentication { get; set; }
+        IdentityServerConfiguration Identity { get; set; }
+        AccountApiConfiguration AccountsApi { get; set; }
         string SqlConnectionString { get; set; }
     }
 }

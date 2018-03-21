@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Middleware;
 using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
@@ -16,8 +19,24 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
     public static class AuthenticationStartup
     {
         private static IWebConfiguration _configuration;
+        private const string HasEmployerAccountPolicyName = "HasEmployerAccount";
 
-        public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration)
+        public static void AddAuthorizationService(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(HasEmployerAccountPolicyName, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier);
+                    policy.Requirements.Add(new EmployerAccountRequirement());
+                });
+            });
+
+            services.AddSingleton<IAuthorizationHandler, EmployerAccountHandler>();
+        }
+
+        public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IEmployerAccountService accountsSvc)
         {
             _configuration = configuration;
 
@@ -30,21 +49,33 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.ClientId = "psrsdev";
-                    options.ClientSecret = "psrs-secret";
-                    options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
-                    options.Authority = "https://test-login.apprenticeships.sfa.bis.gov.uk/identity";
-                    options.ResponseType = "code";
-                    options.SaveTokens = true;
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.ClaimActions.MapUniqueJsonKey("id", "sub");
-                    options.ClaimActions.MapUniqueJsonKey("email", "name");
+                    options.ClientId = _configuration.Identity.ClientId;
+                    options.ClientSecret = _configuration.Identity.ClientSecret;
+                    options.AuthenticationMethod = (OpenIdConnectRedirectBehavior) _configuration.Identity.AuthenticationMethod;
+                    options.Authority = _configuration.Identity.Authority;
+                    options.ResponseType = _configuration.Identity.ResponseType;
+                    options.SaveTokens = _configuration.Identity.SaveTokens;
+                    var scopes = GetScopes();
+                    foreach (var scope in scopes)
+                    {
+                        options.Scope.Add(scope);
+                    }
+                    var mapUniqueJsonKeys = GetMapUniqueJsonKey();
+                    options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
+                    options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
                 })
                 .AddCookie();
-            
         }
 
+        private static IEnumerable<string> GetScopes()
+        {
+            return _configuration.Identity.Scopes.Split(' ').ToList();
+        }
+
+        private static List<string> GetMapUniqueJsonKey()
+        {
+            return _configuration.Identity.MapUniqueJsonKey.Split(' ').ToList();
+        }
 
         private static Task OnTokenValidated(SecurityTokenValidatedContext context)
         {
@@ -65,7 +96,12 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
 
         private static async Task PopulateAccountsClaim(TokenValidatedContext ctx, IEmployerAccountService accountsSvc)
         {
-            //var userId = ctx.Principal.Claims.First(c=>c.Type.Equals(EmployerAccountService.) )
+            var userId = ctx.Principal.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value;
+            var accounts = await accountsSvc.GetEmployerIdentifiersAsync(userId);
+            var accountsAsJson = JsonConvert.SerializeObject(accounts);
+            var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
+
+            ctx.Principal.Identities.First().AddClaim(associatedAccountsClaim);
         }
     }
 }

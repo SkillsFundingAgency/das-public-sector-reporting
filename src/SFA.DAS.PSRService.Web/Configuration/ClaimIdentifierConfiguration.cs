@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.PSRService.Domain.Configuration
+﻿namespace SFA.DAS.PSRService.Web.Configuration
 {
     public class ClaimIdentifierConfiguration
     {

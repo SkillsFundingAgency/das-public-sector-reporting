@@ -1,11 +1,15 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
+    //[Route("accounts/{employerAccountId}")]
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -29,10 +33,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
+
+            return Redirect("https://www.google.co.uk");
+        }
+
         [Authorize]
         public IActionResult Protected()
         {
-            return View();
+            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
+            return View(employerDetail);
         }
     }
 }
