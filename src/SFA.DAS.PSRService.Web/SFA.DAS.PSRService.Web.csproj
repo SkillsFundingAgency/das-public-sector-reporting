@@ -50,4 +50,8 @@
     <ProjectReference Include="..\SFA.DAS.PSRService.Domain\SFA.DAS.PSRService.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
 </Project>

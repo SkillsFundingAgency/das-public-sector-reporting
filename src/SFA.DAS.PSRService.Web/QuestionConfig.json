@@ -8,19 +8,19 @@
           "Questions": [
             {
               "Id": "atStart",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 0
             },
             {
               "Id": "atEnd",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 0
             },
             {
               "Id": "newThisPeriod",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 0
             }
@@ -34,19 +34,19 @@
           "Questions": [
             {
               "Id": "atStart",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 0
             },
             {
               "Id": "atEnd",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 0
             },
             {
               "Id": "newThisPeriod",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 0
             }
@@ -60,7 +60,7 @@
           "Questions": [
             {
               "Id": "atStart",
-              "Answer": "0",
+              "Answer": "",
               "Optional": true,
               "Type": 0
             }
@@ -84,7 +84,7 @@
           "Questions": [
             {
               "Id": "OutlineActions",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 2
             }
@@ -98,7 +98,7 @@
           "Questions": [
             {
               "Id": "Challenges",
-              "Answer": "0",
+              "Answer": "",
               "Optional": false,
               "Type": 2
             }
@@ -112,7 +112,7 @@
           "Questions": [
             {
               "Id": "AnythingElse",
-              "Answer": "0",
+              "Answer": "",
               "Optional": true,
               "Type": 2
             }

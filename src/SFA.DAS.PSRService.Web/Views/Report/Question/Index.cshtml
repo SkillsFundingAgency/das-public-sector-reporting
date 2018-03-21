@@ -1,0 +1,21 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.QuestionViewModel
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+}
+
+<main id="content" role="main">
+    <div class="grid-row">
+        <div class="column-two-thirds">
+            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+
+            @*@foreach (var question in Model.CurrentSection.Questions)
+                {*@
+            @Html.Partial(Model.CurrentSection.Id, Model.CurrentSection)
+            @*}*@
+
+          
+        </div>
+    </div>
+    <button type="submit">Continue</button>
+</main>
