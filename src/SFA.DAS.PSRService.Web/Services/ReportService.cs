@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -13,13 +14,14 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public class ReportService : IReportService
     {
-        private readonly IWebConfiguration _config;
+        
         private IMediator _mediator;
+        private IWebConfiguration _config;
 
         public ReportService(IWebConfiguration config, IMediator mediator)
         {
-            _config = config;
             _mediator = mediator;
+            _config = config;
         }
 
         public Report CreateReport(long employerId)
@@ -78,6 +80,17 @@ namespace SFA.DAS.PSRService.Web.Services
             return false;
         }
 
+        public Section GetQuestionSection(string SectionId, Report report)
+        {
+          
+
+            var sectionsList = GetSections(report);
+
+            return sectionsList.Single(w => w.Id == SectionId);
+
+        }
+
+
         public string GetCurrentReportPeriod(DateTime utcToday)
         {
             var year = utcToday.Year;
@@ -102,6 +115,7 @@ namespace SFA.DAS.PSRService.Web.Services
         }
 
         private bool IsCurrentPeriod(string reportingPeriod)
+
         {
             return (GetCurrentReportPeriod() == reportingPeriod);
         }
@@ -111,6 +125,38 @@ namespace SFA.DAS.PSRService.Web.Services
             return DateTime.UtcNow < _config.SubmissionClose;
         }
 
-       
+        private IList<Section> GetSections(Report report)
+        {
+            List<Section> sectionList = new List<Section>();
+
+            if (report.Sections == null)
+                throw new Exception("No sections found for report, there must at least one section");
+
+            foreach (var reportSection in report.Sections)
+            {
+                sectionList.Add(reportSection);
+                sectionList.AddRange(GetSections(reportSection));
+            }
+
+            return sectionList;
+        }
+
+        private IEnumerable<Section> GetSections(Section section)
+        {
+            List<Section> sectionList = new List<Section>();
+            sectionList.Add(section);
+
+            if (section.SubSections != null)
+            {
+                foreach (var reportSection in section.SubSections)
+                {
+
+                    sectionList.AddRange(GetSections(reportSection));
+                }
+            }
+          
+
+            return sectionList;
+        }
     }
 }

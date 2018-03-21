@@ -11,6 +11,7 @@ using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Services;
+using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 {
@@ -35,11 +36,13 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             Assert.AreEqual("List", listViewResult.ViewName,"View name does not match, should be: List");
             
             
-            var listViewModel = listViewResult.Model as IList<Report>;
+            var listViewModel = listViewResult.Model as ReportListViewModel;
             Assert.IsNotNull(listViewModel);
-            Assert.IsNotEmpty(listViewModel);
-            CollectionAssert.AllItemsAreInstancesOfType(listViewModel, typeof(Report));
-            CollectionAssert.AreEqual(listViewModel,_reportList);
+
+            var reportList = listViewModel.SubmittedReports;
+            Assert.IsNotEmpty(reportList);
+            CollectionAssert.AllItemsAreInstancesOfType(reportList, typeof(Report));
+            CollectionAssert.AreEqual(reportList, _reportList);
       
        
         }

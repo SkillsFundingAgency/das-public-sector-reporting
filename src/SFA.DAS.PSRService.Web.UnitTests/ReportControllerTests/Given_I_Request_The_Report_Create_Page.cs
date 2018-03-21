@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<long>())).Returns(new Report());
 
             // act
-            var result = _controller.Create();
+            var result = _controller.PostCreate();
 
 
             // assert
@@ -48,7 +48,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 .Throws(new Exception("Unable to create Report"));
         
             // act
-            var result = _controller.Create();
+            var result = _controller.PostCreate();
             
             // assert
             Assert.IsInstanceOf<BadRequestResult>(result);

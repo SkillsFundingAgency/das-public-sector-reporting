@@ -34,13 +34,13 @@ namespace SFA.DAS.PSRService.Data
             {
 
 
-                var json = connection.Query<ReportDto>("select top 1 Id,EmployerId, ReportingPeriod, ReportingData, Submitted from Report").FirstOrDefault();
+                var json = connection.Query<ReportDto>("select top 1 Id,EmployerId, ReportingPeriod, ReportingData, Submitted from Report where EmployerID = @EmployerId and ReportingPeriod = @ReportingPeriod", new { EmployerId = employerId, ReportingPeriod = period }).FirstOrDefault();
 
                 return json;
             }
         }
 
-        public IList<ReportDto> GetSubmitted(long employerId)
+        public IEnumerable<ReportDto> GetSubmitted(long employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
