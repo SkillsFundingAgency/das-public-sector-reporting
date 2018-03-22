@@ -1,24 +1,15 @@
 ﻿using System;
-//using System.Configuration;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using NLog;
-using SFA.DAS.Configuration;
-using SFA.DAS.Configuration.AzureTableStorage;
-using SFA.DAS.Configuration.FileStorage;
-//using SFA.DAS.PSRService.Application.Infrastructure.Configuration;
+using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
-using SFA.DAS.PSRService.Domain.Configuration;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
@@ -55,6 +46,7 @@ namespace SFA.DAS.PSRService.Web
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
             services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
+            //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
             services.AddSession();
 
             //This makes sure all automapper profiles are automatically configured for use
@@ -88,9 +80,6 @@ namespace SFA.DAS.PSRService.Web
 
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
-
-
-                config.For<IAccountApiClient>().Use<AccountApiClient>().Ctor<IAccountApiConfiguration>().Is(Configuration.AccountsApi);
 
                 config.Populate(services);
 
@@ -130,7 +119,7 @@ namespace SFA.DAS.PSRService.Web
                 {
                     routes.MapRoute(
                         name: "default",
-                        template: "{controller=Home}/{action=Index}/{id?}");
+                        template: "{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
                 });
         }
 

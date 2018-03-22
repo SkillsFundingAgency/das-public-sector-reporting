@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,14 +12,14 @@ namespace SFA.DAS.PSRService.Web.Middleware
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerAccountRequirement requirement)
         {
+
             if (context.Resource is AuthorizationFilterContext mvcContext && mvcContext.RouteData.Values.ContainsKey(RouteValues.EmployerAccountId))
             {
                 if (context.User.HasClaim(c=>c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
-                    //var accountIdFromUrl = mvcContext.RouteData.Values[RouteValues.EmployerAccountId].ToString().ToUpper();
+                    var accountIdFromUrl = mvcContext.RouteData.Values[RouteValues.EmployerAccountId].ToString().ToUpper();
                     var employerAccountClaim = context.User.FindFirst(c=>c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
                     var employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(employerAccountClaim?.Value);
-                    var accountIdFromUrl = employerAccounts.FirstOrDefault().Value.AccountId;
 
                     if (employerAccountClaim != null && employerAccounts.ContainsKey(accountIdFromUrl))
                     {

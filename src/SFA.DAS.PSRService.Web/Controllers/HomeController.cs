@@ -11,7 +11,6 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
-    //[Route("accounts/{employerAccountId}")]
     public class HomeController : Controller
     {
         private readonly IReportService _reportService;
@@ -30,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
-
+            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
             return View(model);
         }
 
@@ -61,7 +60,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Protected()
+        public IActionResult Protected(string empolyerId)
         {
             var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
             return View(employerDetail);
