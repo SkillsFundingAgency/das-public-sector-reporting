@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Services;
+using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
@@ -16,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
-        private long employerId = 123;
+        private long employerId = 12345;
 
         public ReportController(ILogger<ReportController> logger, IReportService reportService)
         {
@@ -24,18 +26,31 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _reportService = reportService;
         }
 
+    
+    
         public IActionResult Edit(string period)
         {
-            
-            var report = _reportService.GetReport(period, employerId);
 
-            if (_reportService.IsSubmitValid(report) == false)
+            var reportViewModel = new ReportViewModel();
+            
+            reportViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), employerId);
+
+            if (_reportService.IsSubmitValid(reportViewModel.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            return View("Edit", report);
+            return View("Edit", reportViewModel);
         }
 
+
+        [HttpGet]
         public IActionResult Create()
+        {
+            return View("Create");
+        }
+
+        [HttpPost]
+        [Route("[controller]/Create")]
+        public IActionResult PostCreate()
         {
             try
             {
@@ -53,11 +68,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult List()
         {
             //need to get employee id, this needs to be moves somewhere
-            
-            var reportList = _reportService.GetSubmittedReports(employerId);
+
+            var reportListViewmodel = new ReportListViewModel();
+
+            reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(employerId);
 
             
-                return View("List", reportList);
+                return View("List", reportListViewmodel);
 
             
         }

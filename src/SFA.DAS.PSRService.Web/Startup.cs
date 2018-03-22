@@ -1,14 +1,24 @@
 ﻿using System;
+//using System.Configuration;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.EAS.Account.Api.Client;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using NLog;
+using SFA.DAS.Configuration;
+using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.Configuration.FileStorage;
+//using SFA.DAS.PSRService.Application.Infrastructure.Configuration;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
+using SFA.DAS.PSRService.Domain.Configuration;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
@@ -22,10 +32,13 @@ namespace SFA.DAS.PSRService.Web
     {
         private const string ServiceName = "SFA.DAS.PSRService";
         private const string Version = "1.0";
+        private IHostingEnvironment _hostingEnvironment;
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env)
         {
             Configuration = ConfigurationService.GetConfig(config["Environment"], config["ConnectionStrings:Storage"], Version, ServiceName).Result;
+
+            _hostingEnvironment = env;
         }
 
         public IWebConfiguration Configuration { get; }
@@ -72,6 +85,11 @@ namespace SFA.DAS.PSRService.Web
                 //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
+
+                var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+                config.For<IFileProvider>().Singleton().Use(physicalProvider);
+
+
                 config.For<IAccountApiClient>().Use<AccountApiClient>().Ctor<IAccountApiConfiguration>().Is(Configuration.AccountsApi);
 
                 config.Populate(services);

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using SFA.DAS.EAS.Account.Api.Client;
 
 namespace SFA.DAS.PSRService.Web.Configuration
@@ -11,5 +12,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public AccountApiConfiguration AccountsApi { get; set; }
         [JsonRequired]
         public string SqlConnectionString { get; set; }
+        [JsonRequired]
+        public DateTime SubmissionClose { get; set; }
     }
 }

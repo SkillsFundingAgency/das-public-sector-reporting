@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model SFA.DAS.PSRService.Web.Models.Home.IndexViewModel
 
 @{
     ViewData["Title"] = "Public sector reporting";
@@ -10,7 +10,17 @@
         <div class="column-two-thirds">
             <a href="" class="link-back" onclick="goBack()">Cancel and return</a>
             <h1 class="heading-xlarge">Annual apprenticeship return</h1>
-            <p>You can submit a new report for the year 1 April 2017 to 31 March 2018 or review previously submitted reports.</p>
+            <p>
+                @if (Model.CanCreateReport || Model.CanEditReport)
+                {
+                    @:You can submit a new report for the year @Model.PeriodName or
+                }
+                else
+                {
+                    @:The report for the year @Model.PeriodName is already submitted, you can
+                }
+                review previously submitted reports.
+            </p>
 
             <form action="@Url.Action("Submit")" method="post">
                 <div class="form-group">
@@ -21,8 +31,21 @@
                             </h2>
                         </legend>
                         <div class="multiple-choice">
-                            <input id="home-action-create" type="radio" name="action" value="create">
-                            <label for="home-action-create">Create a new report</label>
+                            @if (Model.CanEditReport)
+                            {
+                                <input id="home-action-edit" type="radio" name="action" value="edit">
+                                <label for="home-action-edit">Edit report</label>
+                            }
+                            else if (Model.CanCreateReport)
+                            {
+                                <input id="home-action-create" type="radio" name="action" value="create">
+                                <label for="home-action-create">Create a new report</label>
+                            }
+                            else
+                            {
+                                <input id="home-action-create" type="radio" name="action" value="create" disabled="disabled">
+                                <label for="home-action-create">Create a new report</label>
+                            }
                         </div>
 
                         <div class="multiple-choice">

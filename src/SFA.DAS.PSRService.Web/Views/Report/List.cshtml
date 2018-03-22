@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SFA.DAS.PSRService.Domain.Entities.Report>
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportListViewModel
 
 @{
     ViewBag.Title = "Sumbitted Results";
@@ -12,7 +12,7 @@
             <h1>Submitted Reports</h1>
             <p>Select the standard that you would like to record an assessment for.</p>
 
-            @foreach (var result in Model)
+            @foreach (var result in Model.SubmittedReports)
             {
                 <div class="grid-row">
                     <div class="column-two-thirds">
@@ -24,6 +24,17 @@
                 <hr/>
 
             }
+    
+    @if (Model.SubmittedReports.Count() == 0)
+    {
+        <hr/>
+        <div class="grid-row">
+            <div class="column-two-thirds">
+              There are currently no submitted reports to show
+            </div>
+         
+        </div>
+        <hr/>
+    }
 
-   
-    </main>
+</main>

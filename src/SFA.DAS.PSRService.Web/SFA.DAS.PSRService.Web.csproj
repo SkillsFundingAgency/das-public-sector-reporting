@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authentication\**" />
+    <Compile Remove="Pages\**" />
+    <Content Remove="Authentication\**" />
+    <Content Remove="Pages\**" />
+    <EmbeddedResource Remove="Authentication\**" />
+    <EmbeddedResource Remove="Pages\**" />
+    <None Remove="Authentication\**" />
+    <None Remove="Pages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="IdentityModel" Version="3.3.1" />
     <PackageReference Include="MediatR" Version="4.0.1" />
@@ -40,8 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\" />
-    <Folder Include="Pages\Home\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
