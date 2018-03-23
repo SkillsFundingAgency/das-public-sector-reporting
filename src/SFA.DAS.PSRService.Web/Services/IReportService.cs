@@ -15,6 +15,7 @@ namespace SFA.DAS.PSRService.Web.Services
         IEnumerable<Report> GetSubmittedReports(long employerId);
         bool IsSubmitValid(Report report);
         Section GetQuestionSection(string SectionId, Report report);
+        void SaveQuestionSection(Section SectionId, Report report);
         string GetCurrentReportPeriod();
         string GetCurrentReportPeriodName(string period);
         bool IsSubmissionsOpen();

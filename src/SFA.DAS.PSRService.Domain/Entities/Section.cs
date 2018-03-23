@@ -31,14 +31,21 @@ namespace SFA.DAS.PSRService.Domain.Entities
                 }
                 else
                 {
-                    if (SubSections.Any(w => w.CompletionStatus == CompletionStatus.InProgress))
-                        return CompletionStatus.InProgress;
+                    if (SubSections != null && SubSections.Any())
+                    {
+                        if (SubSections.Any(w => w.CompletionStatus == CompletionStatus.InProgress))
+                            return CompletionStatus.InProgress;
 
-                    if (SubSections.All(w => w.CompletionStatus == CompletionStatus.Incomplete))
-                        return CompletionStatus.Incomplete;
+                        if (SubSections.All(w => w.CompletionStatus == CompletionStatus.Incomplete))
+                            return CompletionStatus.Incomplete;
 
-                    if (SubSections.All(w => w.CompletionStatus == CompletionStatus.Completed))
-                        return CompletionStatus.Completed;
+                        if (SubSections.All(w => w.CompletionStatus == CompletionStatus.Completed))
+                            return CompletionStatus.Completed;
+                    }
+                    else
+                    {
+                     return   CompletionStatus.Completed;
+                    }
                 }
 
                 return CompletionStatus.Incomplete;

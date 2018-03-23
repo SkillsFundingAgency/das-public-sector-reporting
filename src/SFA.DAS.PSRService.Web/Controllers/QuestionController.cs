@@ -30,28 +30,66 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Index(string id)
         {
 
-            var questionViewModel = new QuestionViewModel();
+            var sectionViewModel = new SectionViewModel();
 
-            questionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), employeeId);
+            sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), employeeId);
 
-            if (questionViewModel.Report == null || _reportService.IsSubmitValid(questionViewModel.Report) == false)
+            if (sectionViewModel.Report == null || _reportService.IsSubmitValid(sectionViewModel.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
 
             try
             {
-                questionViewModel.CurrentSection =
-                    _reportService.GetQuestionSection(id, questionViewModel.Report);
+                sectionViewModel.CurrentSection =
+                    _reportService.GetQuestionSection(id, sectionViewModel.Report);
             }
             catch (Exception ex)
             {
                 throw new Exception("Unable to get the Current Section, see inner Exception for more details", ex);
             }
-            
-            if (questionViewModel.CurrentSection == null)
+            if(sectionViewModel.CurrentSection?.Questions != null && sectionViewModel.CurrentSection.Questions.Any())
+            sectionViewModel.Questions = sectionViewModel.CurrentSection.Questions.Select(s => new QuestionViewModel(){Answer = s.Answer, Id = s.Id, Optional = s.Optional,Type = s.Type}).ToList();
+
+
+            if (sectionViewModel.CurrentSection == null)
                 return new BadRequestResult();
 
 
-            return View("Index", questionViewModel);
+            return View("Index", sectionViewModel);
         }
+
+        [Route("/[controller]/{id}")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Submit(SectionViewModel Section)
+        {
+            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, Section.Report.EmployerId);
+            Section.CurrentSection = _reportService.GetQuestionSection(Section.CurrentSection.Id, Section.Report);
+
+            if (Section.Report == null || _reportService.IsSubmitValid(Section.Report) == false)
+                return new RedirectResult(Url.Action("Index", "Home"));
+
+            if (Section.CurrentSection == null)
+                return new BadRequestResult();
+
+            if (ModelState.IsValid)
+            {
+
+                foreach (var sectionQuestion in Section.CurrentSection.Questions)
+                {
+                    sectionQuestion.Answer = Section.Questions.Single(w => w.Id == sectionQuestion.Id).Answer;
+                }
+          
+
+                _reportService.SaveQuestionSection(Section.CurrentSection, Section.Report);
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            }
+            else
+            {
+                return View("Index", Section);
+            }
+            
+          
+        }
+
     }
 }
