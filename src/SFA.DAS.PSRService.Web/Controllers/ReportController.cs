@@ -13,7 +13,7 @@ using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-   // [Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly ILogger<ReportController> _logger;
