@@ -119,7 +119,7 @@ namespace SFA.DAS.PSRService.Web
                 {
                     routes.MapRoute(
                         name: "default",
-                        template: "{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
+                        template: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
                 });
         }
 

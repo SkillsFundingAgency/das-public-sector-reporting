@@ -35,21 +35,21 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     OrganisationName = "Organisation 1"
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1617",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     OrganisationName = "Organisation 1"
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 56789,
+                    EmployerId = "VWXYZ",
                     OrganisationName = "Organisation 2"
                 }
             };

@@ -36,7 +36,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
             _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
-            _mockReportService.Setup(r => r.GetReport(period, 12345)).Returns((Report)null).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
 
             // act
             var result = _controller.Index();
@@ -64,7 +64,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
             _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
-            _mockReportService.Setup(r => r.GetReport(period, 12345)).Returns(report).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
 
             // act
             var result = _controller.Index();
@@ -92,7 +92,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
             _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
-            _mockReportService.Setup(r => r.GetReport(period, 12345)).Returns(report).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
 
             // act
             var result = _controller.Index();

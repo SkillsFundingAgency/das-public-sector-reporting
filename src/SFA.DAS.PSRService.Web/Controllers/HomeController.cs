@@ -14,7 +14,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IReportService _reportService;
-        private const long EmployerId = 12345; // TODO: get this from context
+        //private const string EmployerId = "ABCDE"; // TODO: get this from context
 
         public HomeController(IReportService reportService)
         {
@@ -25,7 +25,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var model = new IndexViewModel();
             var period = _reportService.GetCurrentReportPeriod();
-            var report = _reportService.GetReport(period, EmployerId);
+            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
+            var report = _reportService.GetReport(period, employerDetail.AccountId);
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;

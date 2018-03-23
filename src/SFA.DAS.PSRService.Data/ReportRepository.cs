@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Data
 
 
 
-        public ReportDto Get(string period, long employerId)
+        public ReportDto Get(string period, string employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -40,7 +40,7 @@ namespace SFA.DAS.PSRService.Data
             }
         }
 
-        public IEnumerable<ReportDto> GetSubmitted(long employerId)
+        public IEnumerable<ReportDto> GetSubmitted(string employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

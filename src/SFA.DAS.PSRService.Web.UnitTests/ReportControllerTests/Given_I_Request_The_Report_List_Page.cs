@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void And_More_Than_One_Report_Then_Show_List()
         {
             // arrange
-           _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<long>())).Returns(_reportList);
+           _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(_reportList);
 
             // act
             var result = _controller.List();
@@ -56,7 +56,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<long>())).Returns(_reportList.Take(1).ToList);
+            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(_reportList.Take(1).ToList);
             // act
             var result = _controller.List();
 
@@ -79,7 +79,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<long>())).Returns(new List<Report>());
+            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(new List<Report>());
             // act
             var result = _controller.List();
 
