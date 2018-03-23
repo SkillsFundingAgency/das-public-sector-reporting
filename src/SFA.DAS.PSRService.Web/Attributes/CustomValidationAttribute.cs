@@ -21,24 +21,24 @@ namespace SFA.DAS.PSRService.Web.Attributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var queationType = ((SFA.DAS.PSRService.Web.ViewModels.QuestionViewModel)validationContext.ObjectInstance).Type;
+            var questionType = ((SFA.DAS.PSRService.Web.ViewModels.QuestionViewModel)validationContext.ObjectInstance).Type;
 
             if (value != null)
             {
-                switch (queationType)
+                switch (questionType)
                 {
                     case QuestionType.Number:
                         int result = 0;
                         if (Int32.TryParse(value.ToString(), out result) == false)
-                        { return new ValidationResult(GetErrorMessage(queationType)); }
+                        { return new ValidationResult(GetErrorMessage(questionType)); }
                         break;
                     case QuestionType.ShortText:
                         if (value.ToString().Length > 100)
-                        { return new ValidationResult(GetErrorMessage(queationType)); }
+                        { return new ValidationResult(GetErrorMessage(questionType)); }
                         break;
                     case QuestionType.LongText:
                         if (value.ToString().Length > 250)
-                        { return new ValidationResult(GetErrorMessage(queationType)); }
+                        { return new ValidationResult(GetErrorMessage(questionType)); }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -73,20 +73,20 @@ namespace SFA.DAS.PSRService.Web.Attributes
 
 
 
-                var queationType = model.Questions[index].Type;
+                var questionType = model.Questions[index].Type;
 
                 MergeAttribute(context.Attributes, "data-val", "true");
 
-                switch (queationType)
+                switch (questionType)
                 {
                     case QuestionType.Number:
 
-                        MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(queationType));
+                        MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(questionType));
 
                         break;
 
                     case QuestionType.LongText:
-                        MergeAttribute(context.Attributes, "data-val-length", GetErrorMessage(queationType));
+                        MergeAttribute(context.Attributes, "data-val-length", GetErrorMessage(questionType));
                         MergeAttribute(context.Attributes, "data-val-length-max", "250");
                         break;
                     default:

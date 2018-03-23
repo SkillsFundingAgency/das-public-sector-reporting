@@ -34,7 +34,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         }
 
         [Test]
-        public void And_Employer_Id_And_Period_Is_Supplied_Then_Create_Report()
+        public void And_sectoin_And_Report_Supplied_Then_Create_Report()
         {
             //Arrange
             _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
