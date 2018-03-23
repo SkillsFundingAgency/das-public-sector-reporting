@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 {
@@ -11,12 +12,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
     {
         private HomeController _controller;
         private Mock<IUrlHelper> _mockUrlHelper;
+        private Mock<IEmployerAccountService> _employeeAccountServiceMock;
 
         [SetUp]
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-            _controller = new HomeController(null) {Url = _mockUrlHelper.Object};
+            _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+            _controller = new HomeController(null,_employeeAccountServiceMock.Object) {Url = _mockUrlHelper.Object};
         }
 
         [Test]

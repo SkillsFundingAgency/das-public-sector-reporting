@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Models;
+using Microsoft.AspNetCore.Routing;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
@@ -35,6 +38,15 @@ namespace SFA.DAS.PSRService.Web.Services
                 _logger.LogError(ex, $"Failed to retrieve account information for user id: {userId}");
                 throw;
             }
+        }
+
+        public string GetCurrentEmployerAccountId(HttpContext context)
+        {
+
+            var routeData = context.GetRouteData();
+           
+            var id = routeData.Values["employerAccountId"].ToString();
+            return id;
         }
     }
 }

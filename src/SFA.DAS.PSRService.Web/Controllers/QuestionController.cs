@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -18,22 +20,22 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class QuestionController : Controller
     {
         private readonly IReportService _reportService;
+        private readonly IEmployerAccountService _employerAccountService;
        
         // private string employeeId;
 
-        private string EmployerId
-        {
-            get
+        private string EmployerId { get
             {
-                var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
-                return employerDetail.AccountId;
-            }
-        }
+                return _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
+            } }
 
 
-        public QuestionController(IReportService reportService)
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService)
         {
             _reportService = reportService;
+            _employerAccountService = employerAccountService;
+
+            
         }
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         public IActionResult Index(string id)

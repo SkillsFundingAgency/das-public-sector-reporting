@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
@@ -16,21 +17,22 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
+        private readonly IEmployerAccountService _employerAccountService;
         //private string employerId = "ABCDE";
 
         private string EmployerId
         {
             get
             {
-                var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
-                return employerDetail.AccountId;
+                return _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
             }
         }
 
-        public ReportController(ILogger<ReportController> logger, IReportService reportService)
+        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService)
         {
             _logger = logger;
             _reportService = reportService;
+            _employerAccountService = employerAccountService;
         }
 
     
