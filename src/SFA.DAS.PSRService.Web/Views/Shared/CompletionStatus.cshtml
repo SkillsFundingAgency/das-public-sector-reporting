@@ -1,0 +1,17 @@
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@model SFA.DAS.PSRService.Domain.Enums.CompletionStatus
+
+
+@switch (Model)
+{
+    case CompletionStatus.Completed:
+        <strong class="task-completed">Complete</strong>
+        break;
+    case CompletionStatus.InProgress:
+        <strong class="task-inprogress">In Progress</strong>
+        break;
+    case CompletionStatus.Incomplete:
+        <strong class="task-incomplete">Incomplete</strong>
+        break;
+}
+

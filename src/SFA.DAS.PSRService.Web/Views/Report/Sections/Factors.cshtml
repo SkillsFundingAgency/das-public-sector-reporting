@@ -1,4 +1,5 @@
-﻿@model SFA.DAS.PSRService.Domain.Entities.Section
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
     ViewData["Title"] = "Public sector reporting";
@@ -10,13 +11,22 @@
 
                 @if (Model.SubSections != null)
                 {
-                foreach (var subSection in Model.SubSections)
-                {
-                    <li>
-                        <a href="/Question/@subSection.Id">@subSection.SummaryText</a>
+                    foreach (var subSection in Model.SubSections)
+                    {
+
+                        if (subSection.CompletionStatus == CompletionStatus.Completed)
+                        {
+                            @Html.Partial("Question/" + @subSection.Id, Model)
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/Question/@subSection.Id">@subSection.SummaryText</a>
 
 
-                    </li>
+                            </li>
+                        }
+                    
                 }
                 }
 
