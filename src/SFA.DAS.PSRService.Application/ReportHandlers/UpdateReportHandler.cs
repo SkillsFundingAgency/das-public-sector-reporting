@@ -1,14 +1,34 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
+using SFA.DAS.PSRService.Application.Domain;
+using SFA.DAS.PSRService.Application.Interfaces;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
     public class UpdateReportHandler : IRequestHandler<UpdateReportRequest>
     {
-        public Task Handle(UpdateReportRequest message, CancellationToken cancellationToken)
+        private IMapper _mapper;
+        private IReportRepository _reportRepository;
+
+        public UpdateReportHandler(IMapper mapper, IReportRepository reportRepository)
         {
-            throw new System.NotImplementedException();
+            _mapper = mapper;
+            _reportRepository = reportRepository;
+        }
+        public Task Handle(UpdateReportRequest request, CancellationToken cancellationToken)
+        {
+            if (request.Report == null)
+            {
+                throw new Exception("No Report Supplied");
+            }
+            var reportDto = _mapper.Map<ReportDto>(request.Report);
+
+            reportDto = _reportRepository.Update(reportDto);
+
+          return  Task.FromResult(0);
         }
     }
 }

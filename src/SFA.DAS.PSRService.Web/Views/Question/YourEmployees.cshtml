@@ -24,7 +24,7 @@
         </div>
     </details>
     <div style="margin-top:35px"></div>
-    <form id="myFormId">
+ 
         <fieldset>
            
             <div class="form-group" style="">
@@ -32,8 +32,8 @@
                     Number of employees who were working in England on 31 March 2017
 
                 </label>
-                
-                <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width:6em">
+                @Html.TextBoxFor(model => model.Questions.Single(w => w.Id == "atStart").Answer)
+           @Html.ValidationMessageFor(model => model.Questions.Single(w => w.Id == "atStart").Answer)
             </div>
 
         </fieldset>
@@ -43,7 +43,8 @@
                     Number of employees who were working in England on 31 March 2018
 
                 </label>
-                <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width:6em">
+                @Html.TextBoxFor(model => model.Questions.Single(w => w.Id == "atEnd").Answer)
+             
             </div>
            
         </fieldset>
@@ -59,6 +60,5 @@
             </div>
         </fieldset>
 
-    </form>
     
 </div>

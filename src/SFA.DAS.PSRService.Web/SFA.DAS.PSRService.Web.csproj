@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\QuestionViewModel - Copy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="IdentityModel" Version="3.3.1" />
     <PackageReference Include="MediatR" Version="4.0.1" />

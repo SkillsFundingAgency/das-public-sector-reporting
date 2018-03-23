@@ -78,7 +78,27 @@ namespace SFA.DAS.PSRService.Data
             return report;
         }
 
+        public ReportDto Update(ReportDto reportDto)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var reportInsertStatus = connection.Execute("UPDATE [dbo].[Report] SET [ReportingData] = @ReportingData,[Submitted] = @Submitted where Id = @Id",new {ReportingData = reportDto.ReportingData, Submitted = reportDto.Submitted, Id = reportDto.Id });
+
+                    if (reportInsertStatus != 1)
+                        throw new Exception("Unable to update report");
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
 
 
+            }
+
+            return reportDto;
+        }
     }
 }

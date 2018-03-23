@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Application.Interfaces
 
         IEnumerable<ReportDto> GetSubmitted(long employerId);
         ReportDto Create(ReportDto reportDto);
-
+        ReportDto Update(ReportDto reportDto);
 
     }
 }

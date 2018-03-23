@@ -90,6 +90,17 @@ namespace SFA.DAS.PSRService.Web.Services
 
         }
 
+        public void SaveQuestionSection(Section Section, Report report)
+        {
+            var section = GetQuestionSection(Section.Id, report);
+
+            section = Section;
+
+            var request = new UpdateReportRequest(){Report =  report};
+            var update = _mediator.Send(request);
+
+        }
+
 
         public string GetCurrentReportPeriod(DateTime utcToday)
         {
