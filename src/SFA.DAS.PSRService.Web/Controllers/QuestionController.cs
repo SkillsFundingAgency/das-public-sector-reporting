@@ -15,7 +15,6 @@ using SFA.DAS.PSRService.Web.ViewModels;
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
-    [Route("Question")]
     public class QuestionController : Controller
     {
         private readonly IReportService _reportService;
@@ -42,7 +41,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var sectionViewModel = new SectionViewModel();
 
-            questionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerId);
+            sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerId);
 
             if (sectionViewModel.Report == null || _reportService.IsSubmitValid(sectionViewModel.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -67,12 +66,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Index", sectionViewModel);
         }
 
-        [Route("/[controller]/{id}")]
+        [Route("accounts/{employerAccountId}/[controller]/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Submit(SectionViewModel Section)
         {
-            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, Section.Report.EmployerId);
+            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerId);
             Section.CurrentSection = _reportService.GetQuestionSection(Section.CurrentSection.Id, Section.Report);
 
             if (Section.Report == null || _reportService.IsSubmitValid(Section.Report) == false)

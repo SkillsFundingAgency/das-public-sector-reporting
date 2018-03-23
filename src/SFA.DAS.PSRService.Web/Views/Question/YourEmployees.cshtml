@@ -1,15 +1,16 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
-@model SFA.DAS.PSRService.Domain.Entities.Section
+@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
 
 @{
     ViewData["Title"] = "Public sector reporting";
+    var questionsList = Model.Questions.ToArray();
 }
 
 <div class="column-full">
     <h1 class="heading-xlarge">
 
 
-     @Model.Title
+
     </h1>
     <details>
 
@@ -32,8 +33,8 @@
                     Number of employees who were working in England on 31 March 2017
 
                 </label>
-                @Html.TextBoxFor(model => model.Questions.Single(w => w.Id == "atStart").Answer)
-           @Html.ValidationMessageFor(model => model.Questions.Single(w => w.Id == "atStart").Answer)
+                <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
+                <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer"/>
             </div>
 
         </fieldset>
@@ -43,7 +44,8 @@
                     Number of employees who were working in England on 31 March 2018
 
                 </label>
-                @Html.TextBoxFor(model => model.Questions.Single(w => w.Id == "atEnd").Answer)
+                <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
+                <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[0].Answer" value="@questionsList[1].Answer"/>
              
             </div>
            
@@ -56,7 +58,8 @@
                     Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
 
                 </label>
-                <input class="form-control" id="apprenticeGivenName" type="text" value="" style="max-width:6em">
+                <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
+                <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[0].Answer" value="@questionsList[2].Answer"/>
             </div>
         </fieldset>
 
