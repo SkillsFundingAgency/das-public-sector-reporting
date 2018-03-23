@@ -42,28 +42,28 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = false
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1617",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1516",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 56789,
+                    EmployerId = "VWXYZ",
                     Submitted = false
                 }
             }).AsEnumerable();
@@ -73,28 +73,28 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = false
                 },
                 new ReportDto()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1617",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new ReportDto()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1516",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new ReportDto()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 56789,
+                    EmployerId = "VWXYZ",
                     Submitted = false
                 }
             }).AsEnumerable();
@@ -115,7 +115,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
 
             var reportDto = new ReportDto()
             {
-               EmployerId = 1234,
+               EmployerId = "ABCDE",
                 ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"Questions\":\"\",\"Submitted\":null}",
                 ReportingPeriod = "1617",
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
@@ -139,7 +139,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
 
             var report = new Report()
             {
-                EmployerId = 1234,
+                EmployerId = "ABCDE",
                 OrganisationName = "Organisation 1",
                ReportingPeriod = "1617",
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),

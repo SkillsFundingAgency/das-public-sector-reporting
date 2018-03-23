@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 
 namespace SFA.DAS.PSRService.Web.ViewModels
 {
-    public class SectionViewModel: Section
+    public class SectionViewModel
     {
-       
+        public Report Report { get; set; }
+
+        public Section CurrentSection { get; set; }
+
+        public IList<QuestionViewModel> Questions { get; set; }
+        
     }
 }

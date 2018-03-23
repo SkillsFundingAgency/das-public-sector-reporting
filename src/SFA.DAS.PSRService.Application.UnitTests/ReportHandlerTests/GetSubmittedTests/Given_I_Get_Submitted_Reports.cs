@@ -39,28 +39,28 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = false
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1617",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1516",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 56789,
+                    EmployerId = "VWXYZ",
                     Submitted = false
                 }
             }).AsEnumerable();
@@ -70,28 +70,28 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = false
                 },
                 new ReportDto()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1617",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new ReportDto()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1516",
-                    EmployerId = 12345,
+                    EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new ReportDto()
                 {
                     Id = Guid.NewGuid(),
                     ReportingPeriod = "1718",
-                    EmployerId = 56789,
+                    EmployerId = "ABCDE",
                     Submitted = false
                 }
             }).AsEnumerable();
@@ -105,9 +105,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
         {
 
             //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<long>())).Returns((IEnumerable<ReportDto>)null);
+            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns((IEnumerable<ReportDto>)null);
 
-            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = 0 };
+            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = string.Empty };
 
             //Act
 
@@ -126,8 +126,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
         public void When_An_Employer_Id_Has_Submitted_Reports_Then_Return_List()
         {
             //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<long>())).Returns(_reportDtoList.Where(w => w.Submitted == true && w.EmployerId == 12345));
-            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = 12345 };
+            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns(_reportDtoList.Where(w => w.Submitted == true && w.EmployerId == "ABCDE"));
+            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = "ABCDE" };
 
 
             //Act
@@ -148,9 +148,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
         public void When_An_Employer_Id_Has_No_Submitted_Reports_Then_Return_Empty_Collection()
         {
             //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<long>())).Returns((IEnumerable<ReportDto>)null);
+            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns((IEnumerable<ReportDto>)null);
 
-            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = 6768976789 };
+            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = "knfjkdngkfngk" };
 
             //Act
 

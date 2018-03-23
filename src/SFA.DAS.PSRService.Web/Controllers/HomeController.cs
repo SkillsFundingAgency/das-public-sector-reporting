@@ -1,6 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
 using SFA.DAS.PSRService.Web.Services;
@@ -11,22 +15,34 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IReportService _reportService;
-        private const long EmployerId = 12345; // TODO: get this from context
+        private readonly IEmployerAccountService _employerAccountService;
+        //private const string EmployerId = "ABCDE"; // TODO: get this from context
 
-        public HomeController(IReportService reportService)
+        private string EmployerId
+        {
+            get
+            {
+                
+                    return _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
+               
+            }
+        }
+
+        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService)
         {
             _reportService = reportService;
+            _employerAccountService = employerAccountService;
         }
 
         public IActionResult Index()
         {
             var model = new IndexViewModel();
             var period = _reportService.GetCurrentReportPeriod();
+       
             var report = _reportService.GetReport(period, EmployerId);
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
-
             return View(model);
         }
 
@@ -48,10 +64,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [Authorize]
-        public IActionResult Protected()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
+
+            return Redirect("https://www.google.co.uk");
+        }
+
+        [Authorize]
+        public IActionResult Protected(string empolyerId)
+        {
+            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
+            return View(employerDetail);
         }
     }
 }

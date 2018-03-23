@@ -1,8 +1,10 @@
-﻿@model object
+﻿@model EmployerIdentifier
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
+
+@Model.AccountId  @Model.EmployerName
 
 <h2>This is a protected page</h2>

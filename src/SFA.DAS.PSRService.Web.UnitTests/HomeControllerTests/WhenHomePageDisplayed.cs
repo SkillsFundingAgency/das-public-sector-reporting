@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -17,14 +18,20 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
     {
         private HomeController _controller;
         private Mock<IReportService> _mockReportService;
+        private Mock<IEmployerAccountService> _employeeAccountServiceMock;
 
         [SetUp]
         public void SetUp()
         {
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
-            _controller = new HomeController(_mockReportService.Object);
+            _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object);
 
             _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
+            _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
+                .Returns("ABCDE");
+            _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
+                .Returns("ABCDE");
         }
 
         [Test]
@@ -36,7 +43,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
             _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
-            _mockReportService.Setup(r => r.GetReport(period, 12345)).Returns((Report)null).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
 
             // act
             var result = _controller.Index();
@@ -64,7 +71,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
             _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
-            _mockReportService.Setup(r => r.GetReport(period, 12345)).Returns(report).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
 
             // act
             var result = _controller.Index();
@@ -92,7 +99,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
             _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
-            _mockReportService.Setup(r => r.GetReport(period, 12345)).Returns(report).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
 
             // act
             var result = _controller.Index();
