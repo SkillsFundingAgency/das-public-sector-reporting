@@ -216,46 +216,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             Assert.AreEqual("Report", actualContext.Controller);
         }
 
-        [Test]
-        public void The_SectionViewModel_Is_Not_Valid_Then_Save_Question_Section()
-        {
-
-
-            var url = "home/index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns(new Report() { Submitted = false });
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
-
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns(_sectionOne.SubSections.FirstOrDefault());
-            _reportService.Setup(s => s.SaveQuestionSection(It.IsAny<Section>(), It.IsAny<Report>()));
-            // act
-           
-            _sections.Questions = _sections.CurrentSection.Questions.Select(s => new QuestionViewModel() { Answer = "sting", Id = s.Id, Optional = s.Optional, Type = s.Type }).ToList();
-
-            var result = _controller.Submit(_sections);
-
-            // assert
-
-
-            // assert
-            Assert.AreEqual(typeof(ViewResult), result.GetType());
-            var listViewResult = result as ViewResult;
-            Assert.IsNotNull(listViewResult);
-            Assert.AreEqual("Index", listViewResult.ViewName, "View name does not match, should be: Index");
-
-
-            var sectionViewModel = listViewResult.Model as SectionViewModel;
-            Assert.IsNotNull(sectionViewModel);
-
-            var report = sectionViewModel.Report;
-            Assert.IsNotNull(report);
-
-            var questionSection = sectionViewModel.CurrentSection;
-            Assert.IsNotNull(questionSection);
-            Assert.AreEqual(questionSection.Id, _sectionOne.SubSections.FirstOrDefault().Id);
-            CollectionAssert.AreEqual(questionSection.Questions, _sectionOne.SubSections.FirstOrDefault().Questions);
-        }
+     
     }
 }
