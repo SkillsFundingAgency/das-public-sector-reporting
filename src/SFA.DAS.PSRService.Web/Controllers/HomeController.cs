@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
 using SFA.DAS.PSRService.Web.Services;
@@ -26,7 +29,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
-
             return View(model);
         }
 
@@ -48,10 +50,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [Authorize]
-        public IActionResult Protected()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
+
+            return Redirect("https://www.google.co.uk");
+        }
+
+        [Authorize]
+        public IActionResult Protected(string empolyerId)
+        {
+            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
+            return View(employerDetail);
         }
     }
 }
