@@ -5,59 +5,44 @@
     ViewData["Title"] = "Public sector reporting";
 }
 
-<div class="column-full">
+<form id="myFormId">
     <h1 class="heading-xlarge">
-
-
         @Model.Title
     </h1>
-    <details>
-
-        <summary><span class="summary">Who counts as an employee</span></summary>
-        <div class="panel panel-border-narrow">
-            <ul class="list-bullet">
-                <li>people who have a contract of employment with your organisation</li>
-                <li>workers and agency workers (those with a contract to do work or provide services)</li>
-                <li>some self-employed people (where they must personally perform the work)</li>
-            </ul>
+    <div class="form-group">
+        <details>
+            <summary><span class="summary">Who counts as an apprentice</span></summary>
+            <div class="panel panel-border-narrow">
+                <ul class="list-bullet">
+                    <li>????</li>
+                    <li>????</li>
+                    <li>????</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+    <fieldset>
+        <div class="form-group">
+            <label class="form-label-bold" for="apprentices-england-last-march">
+                Number of apprentices who were working in England on 31 March 2017
+            </label>
+            <input class="form-control form-control-1-3" id="apprentices-england-last-march" type="text" value="">
         </div>
-    </details>
-    
-    <form id="myFormId">
-        <fieldset>
-           
-            <div class="form-group">
-                <label class="form-label-bold" for="">
-                    Number of employees who were working in England on 31 March 2017
-
-                </label>
-                
-                <input class="form-control form-control-1-3" id="apprenticeGivenName" type="text" value="">
-            </div>
-
-        </fieldset>
-        <fieldset>
-            <div class="form-group">
-                <label class="form-label-bold" for="">
-                    Number of employees who were working in England on 31 March 2018
-
-                </label>
-                <input class="form-control form-control-1-3" id="apprenticeGivenName" type="text" value="">
-            </div>
-           
-        </fieldset>
-        <fieldset>
-            <!--hr/-->
-           
-            <div class="form-group">
-                <label class="form-label-bold" for="">
-                    Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
-
-                </label>
-                <input class="form-control form-control-1-3" id="apprenticeGivenName" type="text" value="">
-            </div>
-        </fieldset>
-
-    </form>
-    
-</div>
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            <label class="form-label-bold" for="apprentices-england-last-march">
+                Number of apprentices who were working in England on 31 March 2017
+            </label>
+            <input class="form-control form-control-1-3" id="apprentices-england-last-march" type="text" value="">
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            <label class="form-label-bold" for="new-apprentices-within-year">
+                Number of apprentices who were working in England on 31 March 2017
+            </label>
+            <input class="form-control form-control-1-3" id="new-apprentices-within-year" type="text" value="">
+        </div>
+    </fieldset>
+</form>

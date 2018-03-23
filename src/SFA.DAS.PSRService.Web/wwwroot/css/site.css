@@ -4,6 +4,10 @@
   padding-right: 0;
 }
 
+.form-control-full {
+  width: 100%;
+}
+
 .grid-row:after,
 #content:after,
 .notice:after,
