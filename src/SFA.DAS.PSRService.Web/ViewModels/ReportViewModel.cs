@@ -9,5 +9,8 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     public class ReportViewModel
     {
         public Report Report { get; set; }
+
+        public string CurrentPeriod { get; set; }
+        public bool SubmitValid { get; set; }
     }
 }

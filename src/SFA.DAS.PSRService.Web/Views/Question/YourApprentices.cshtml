@@ -4,11 +4,10 @@
 @addTagHelper *, AuthoringTagHelpers
 
 @{
-    ViewData["Title"] = "Public sector reporting";
-    var questionsList = Model.Questions.ToArray();
+      var questionsList = Model.Questions.ToArray();
 }
 
-<form id="myFormId">
+
     <h1 class="heading-xlarge">
         @Model.CurrentSection.Title
     </h1>
@@ -53,4 +52,4 @@
             <input type="text"  class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer"  name="Section.Questions[2].Answer" value="@questionsList[2].Answer"/>
         </div>
     </fieldset>
-</form>
+

@@ -1,14 +1,18 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
+
 
 <div class="column-full">
     <h1 class="heading-large">
-       @Model.CurrentSection.Title
+        @Model.CurrentSection.Title
     </h1>
-    <form id="myFormId">
-        <fieldset>
-            <div class="form-group">
-                <textarea class="form-control form-control-3-4" name="textarea" id="textarea" rows="8"></textarea>
-            </div>
-        </fieldset>
-    </form>
+    <fieldset>
+        <div class="form-group">
+            @* <textarea class="form-control form-control-3-4" asp-for="@Model.Questions[0].Answer" name="textarea" rows="8"></textarea>*@
+            <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
+            <input type="hidden" name="Section.Questions[0].Type" value="@Model.Questions.ToArray()[0].Type" />
+            <textarea class="form-control form-control-3-4" rows="8" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@Model.Questions.ToArray()[0].Answer"></textarea>
+        </div>
+    </fieldset>
+
 </div>

@@ -88,10 +88,8 @@
             }
           ],
           "Id": "OutlineActions",
-          "Title":
-            "Outline any actions you have taken to help you progress towards meeting the public sector target",
-          "SummaryText":
-            "Outline any actions you have taken to help you progress towards meeting the public sector target"
+          "Title": "Outline any actions you have taken to help you progress towards meeting the public sector target",
+          "SummaryText": "Outline any actions you have taken to help you progress towards meeting the public sector target"
         },
         {
           "SubSections": null,
@@ -106,6 +104,20 @@
           "Id": "Challenges",
           "Title": "Tell us about any challenges you have faced in meeting the target",
           "SummaryText": "Tell us about any challenges you have faced in meeting the target"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "TargetPlans",
+              "Answer": "",
+              "Optional": false,
+              "Type": 2
+            }
+          ],
+          "Id": "TargetPlans",
+          "Title": "What are you plans for meeting the target in future, and what impact do you expect these to have?",
+          "SummaryText": "What are you plans for meeting the target in future, and what impact do you expect these to have?"
         },
         {
           "SubSections": null,
