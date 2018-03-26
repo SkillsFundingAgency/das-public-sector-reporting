@@ -21,14 +21,14 @@
                 {
                     // @Html.Partial("Question/" + @subSection.Id, Model)
                     <li class="task-list-item">
-                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
+                        <a class="task-name" href="../Question/@subSection.Id">@subSection.SummaryText</a>
                         <strong class="task-completed" id="organisation-name-completed">Completed</strong>
                     </li>
                 }
                 else
                 {
                     <li class="task-list-item">
-                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
+                        <a class="task-name" href="../Question/@subSection.Id">@subSection.SummaryText</a>
                     </li>
                 }         
             }

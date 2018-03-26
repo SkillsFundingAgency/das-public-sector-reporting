@@ -20,6 +20,46 @@
   display: block;
 }
 
+/* Review details page */
+
+.review-details tr:first-child {
+  border-top: 1px solid #bfc1c3;
+}
+
+.review-details table td {
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.review-details .heading-small {
+  display: table-caption;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.sfa-form-control-after {
+  font-size: 16px;
+  line-height: 1.25;
+  display: block;
+  color: #6f777b;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+@media (min-width: 641px) {
+  .sfa-form-control-after {
+    font-size: 19px;
+    line-height: 1.31579;
+  }
+}
+
+.heading-xlarge,
+.heading-large,
+.heading-medium,
+.heading-small {
+  display: block;
+}
+
 .grid-row:after,
 #content:after,
 .notice:after,

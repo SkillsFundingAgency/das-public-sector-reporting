@@ -5,23 +5,15 @@
     var questionList = Model.Questions.ToDictionary(k => k.Id);
 }
 
-<h2 class="heading-small">Full Time Equivalent</h2>
-
-
-<table class="">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Full-time equivalents (optional)</td>
-            <td class="numeric">@questionList["atStart"].Answer</td>
-            <td> <a href="../Question/@Model.Id">Change</a></td>
-        </tr>
-
-    </tbody>
-</table>
+<div class="form-group">
+    <table>
+        <caption class="heading-small">Full Time Equivalent</caption>
+        <tbody>
+            <tr>
+                <td>Full-time equivalents (optional)</td>
+                <td class="numeric">@questionList["atStart"].Answer</td>
+                <td class="link-right"> <a href="../Question/@Model.Id">Change</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

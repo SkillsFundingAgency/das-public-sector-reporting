@@ -1,6 +1,4 @@
-﻿
-@model SFA.DAS.PSRService.Domain.Entities.Section
-
+﻿@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @Html.Partial("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="YourEmployees"))
 @Html.Partial("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="YourApprentices"))

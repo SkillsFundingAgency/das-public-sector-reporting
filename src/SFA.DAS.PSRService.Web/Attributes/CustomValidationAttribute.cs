@@ -100,13 +100,10 @@ namespace SFA.DAS.PSRService.Web.Attributes
       switch (questionType)
       {
         case QuestionType.Number:
-
           return "Must be a number between 0 and 9";
-
           break;
-
         case QuestionType.LongText:
-          return "Text Cannot be longer than 250 characters";
+          return "Text cannot be longer than 250 characters";
           break;
         default:
           throw new ArgumentOutOfRangeException();
