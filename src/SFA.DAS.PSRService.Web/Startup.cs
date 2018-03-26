@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.Web
 
         public Startup(IConfiguration config, IHostingEnvironment env)
         {
-            Configuration = ConfigurationService.GetConfig(config["Environment"], config["ConnectionStrings:Storage"], Version, ServiceName).Result;
+            Configuration = ConfigurationService.GetConfig(config["EnvironmentName"], config["ConfigurationStorageConnectionString"], Version, ServiceName).Result;
 
             _hostingEnvironment = env;
         }
@@ -53,9 +53,9 @@ namespace SFA.DAS.PSRService.Web
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
 
-            
 
-            return ConfigureIOC(services); 
+
+            return ConfigureIOC(services);
         }
 
         private IServiceProvider ConfigureIOC(IServiceCollection services)
