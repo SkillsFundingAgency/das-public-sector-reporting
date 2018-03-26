@@ -33,7 +33,7 @@
         </label>
         <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message"></span>
         <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer"/>
+        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" value="@questionsList[0].Answer"/>
     </div>
 </fieldset>
 <fieldset>
@@ -42,7 +42,7 @@
             Number of employees who were working in England on 31 March 2018
         </label>
         <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer"/>
+        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="@Model.Questions.ToArray()[1].Id" value="@questionsList[1].Answer"/>
 </fieldset>
 <fieldset>
     <div class="form-group">
@@ -50,6 +50,6 @@
             Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
         </label>
         <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[2].Answer" value="@questionsList[2].Answer"/>
+        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="@Model.Questions.ToArray()[2].Answer" value="@questionsList[2].Answer"/>
     </div>
 </fieldset>
