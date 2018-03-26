@@ -1,113 +1,108 @@
 ﻿@model object
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Report 2017 to 2018 public sector apprenticeship target data";
     Layout = "_Layout";
 }
-<main id="content" role="main">
-    <div class="column-two-thirds">
-        <h1 class="heading-large">Report 2017 to 2018 Public Sector Apprenticeship Target data</h1>
-        <p class="">This report covers the period between 1 April 2017 and 31 March 2018.</p>
+
+<div class="column-two-thirds">
+    <h1 class="heading-large">Report 2017 to 2018 public sector apprenticeship target data</h1>
+    <p class="">This report covers the period between 1 April 2017 and 31 March 2018.</p>
+    <p>
+        It must be completed by:
+    </p>
+    <ul class="list list-bullet">
+        <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March 2017</li>
+    </ul>
+
+    <details>
+        <summary><span class="summary">The following public bodies are exempt</span></summary>
+        <div class="panel panel-border-narrow">
+            <ul>
+                <li>charities</li>
+                <li>further education colleges</li>
+                <li>universities</li>
+                <li>housing associations and trusts</li>
+                <li>independent schools</li>
+                <li>partly state-owned financial bodies</li>
+                <li>BBC</li>
+                <li>Channel Four</li>
+                <li>The Houses of Commons and Lords</li>
+                <li>Post Office Ltd (and associated subsidiaries)</li>
+            </ul>
+        </div>
+    </details>
+
+    <details>
+        <summary><span class="summary">How we will use the information you give us</span></summary>
+        <div class="panel panel-border-narrow">
+            <ul class="list-bullet">
+
+                <li> We (the Department for Education) will use the information submitted to assess your organisation’s progress towards meeting the public sector apprenticeships target</li>
+                <li>We will publish statistics featuring the figures and organisation name you provide</li>
+                <li>We may disclose information about how you have attempted to meet the target to other central government bodies in line with data protection legislation</li>
+                <li>All information submitted will be subject to the Freedom of Information Act</li>
+            </ul><p></p>
+        </div>
+    </details>
+
+
+    <div class="panel panel-border-wide">
         <p>
-            It must be completed by:
-        </p><ul class="list-bullet">
-            <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March 2017</li>
-        </ul><p></p>
+            Submissions deadline - 30 September 2018
+        </p>
+    </div>
+    
+    <p>You can update you report at any time before submitting it.</p>
 
+    <h2 class="heading-medium">Before you start</h2>
 
+    <p>
+        You will need details about the number of employees you have:
+    </p><ul class="list-bullet">
+        <li>working in England</li>
+        <li>taken on during the reporting period</li>
+        <li>doing apprenticeships in England</li>
+        <li>who have started doing apprenticeships in England during the reporting period</li>
+    </ul><p></p>
 
-        <details>
-            <summary><span class="summary">The following public bodies are exempt</span></summary>
-            <div class="panel panel-border-narrow">
-                <ul>
-                    <li>charities</li>
-                    <li>further education colleges</li>
-                    <li>universities</li>
-                    <li>housing associations and trusts</li>
-                    <li>independent schools</li>
-                    <li>partly state-owned financial bodies</li>
-                    <li>BBC</li>
-                    <li>Channel Four</li>
-                    <li>The Houses of Commons and Lords</li>
-                    <li>Post Office Ltd (and associated subsidiaries)</li>
-                </ul>
-            </div>
-        </details>
-
-
-        <details>
-            <summary><span class="summary">How we will use the information you give us</span></summary>
-            <div class="panel panel-border-narrow">
-                <ul class="list-bullet">
-
-                    <li> We (the Department for Education) will use the information submitted to assess your organisation’s progress towards meeting the public sector apprenticeships target</li>
-                    <li>We will publish statistics featuring the figures and organisation name you provide</li>
-                    <li>We may disclose information about how you have attempted to meet the target to other central government bodies in line with data protection legislation</li>
-                    <li>All information submitted will be subject to the Freedom of Information Act</li>
-                </ul><p></p>
-            </div>
-        </details>
-
-
-        <div class="panel panel-border-wide" style="margin-top:10px">
-            <p>
-                Submissions deadline - 30 September 2018
-            </p>
-        </div>
-        <p>You can update you report at any time before submitting it.</p>
-
-        <h2 class="heading-medium">Before you start</h2>
-
+    <p>
+        You will also need information about:
+    </p><ul class="list-bullet">
+        <li>actions you have taken to meet the target</li>
+        <li>factors that have impacted your ability to meet the target</li>
+        <li>plans to meet the target in future</li>
+    </ul><p></p>
+    <!-- <div class="panel panel-border-wide">
         <p>
-            You will need details about the number of employees you have:
-        </p><ul class="list-bullet">
-            <li>working in England</li>
-            <li>taken on during the reporting period</li>
-            <li>doing apprenticeships in England</li>
-            <li>who have started doing apprenticeships in England during the reporting period</li>
-        </ul><p></p>
-
-        <p>
-            You will also need information about:
-        </p><ul class="list-bullet">
-            <li>actions you have taken to meet the target</li>
-            <li>factors that have impacted your ability to meet the target</li>
-            <li>plans to meet the target in future</li>
-        </ul><p></p>
-        <!-- <div class="panel panel-border-wide">
-           <p>
-             After you have registered, you will be able to grant access to the apprenticeship account to other people in your company.
-           </p>
-         </div> -->
-        <div style="margin-top:50px"></div>
-        <div class="padder-top-x">
-            <form method="post">
-                <button class="button button-start" type="submit">START</button>
-            </form>
-           
-        </div>
-        <div style="margin-top:50px"></div>
-        <!-- template to pull in the start tabs so this doesn't get too messy - it is pulling in the tabs -->
-        <!-- <div class="js-tabs nav-tabs">
-          <ul class="tabs-nav" id="tabs-nav" role="tablist">
-            <li class="active">
-              <a href="#before-you-start" role="tab" id="tab-before-you-start">Before you start</a>
-            </li>
-            <li class="">
-              <a href="#apprenticeships" role="tab" id="tab-apprenticeships">Another tab</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="js-tab-content tab-content">
-                <div class="js-tab-pane tab-pane" id="before-you-start">
-                    tings and stuff
-
-                </div>
-        </div>
-
-
-         -->
+            After you have registered, you will be able to grant access to the apprenticeship account to other people in your company.
+        </p>
+        </div> -->
+    
+    <div class="padder-top-x">
+        <form method="post">
+            <button class="button button-start" type="submit">START</button>
+        </form>
+    </div>
+    <!-- template to pull in the start tabs so this doesn't get too messy - it is pulling in the tabs -->
+    <!-- <div class="js-tabs nav-tabs">
+        <ul class="tabs-nav" id="tabs-nav" role="tablist">
+        <li class="active">
+            <a href="#before-you-start" role="tab" id="tab-before-you-start">Before you start</a>
+        </li>
+        <li class="">
+            <a href="#apprenticeships" role="tab" id="tab-apprenticeships">Another tab</a>
+        </li>
+        </ul>
     </div>
 
-    </main>
+    <div class="js-tab-content tab-content">
+            <div class="js-tab-pane tab-pane" id="before-you-start">
+                tings and stuff
+
+            </div>
+    </div>
+
+
+        -->
+</div>

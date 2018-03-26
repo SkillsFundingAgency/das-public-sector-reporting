@@ -9,27 +9,29 @@
 }
 
 <li>
-    <h2 class="heading-large">@Model.Title</h2>
-    <ul class="task-list-section">
-
+    <h2 class="task-list-section">
+        <span class="task-list-section-number">2. </span> @Model.Title
+    </h2>
+    <ul class="task-list-items">
         @if (Model.SubSections != null)
         {
             foreach (var subSection in Model.SubSections)
             {
                 if (subSection.CompletionStatus == CompletionStatus.Completed)
                 {
-                    @Html.Partial("Question/" + @subSection.Id, subSection)
+                    // @Html.Partial("Question/" + @subSection.Id, Model)
+                    <li class="task-list-item">
+                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
+                        <strong class="task-completed" id="organisation-name-completed">Completed</strong>
+                    </li>
                 }
                 else
                 {
-                    <li>
-                        <a href="/accounts/@employerId/Question/@subSection.Id">@subSection.SummaryText</a>
-
-
+                    <li class="task-list-item">
+                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
                     </li>
                 }
             }
         }
-
     </ul>
 </li>

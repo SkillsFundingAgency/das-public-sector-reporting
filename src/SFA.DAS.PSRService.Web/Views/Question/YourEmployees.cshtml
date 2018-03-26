@@ -1,67 +1,55 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
 @model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
 
 @{
     ViewData["Title"] = "Public sector reporting";
     var questionsList = Model.Questions.ToArray();
 }
 
-<div class="column-full">
+<form id="myFormId">
     <h1 class="heading-xlarge">
-
-
-
+        @Model.CurrentSection.Title
     </h1>
-    <details>
-
-        <summary><span class="summary">Who counts as an employee</span></summary>
-        <div class="panel panel-border-narrow">
-            <ul class="list-bullet">
-
-                <li>things</li>
-                <li>stuff</li>
-                <li>Page 9 of the guidance has this list</li>
-            </ul><p></p>
+    <div class="form-group">
+        <details>
+            <summary>
+                <span class="summary">Who counts as an employee</span>
+            </summary>
+            <div class="panel panel-border-narrow">
+                <ul class="list-bullet">
+                    <li>people who have a contract of employment with your organisation</li>
+                    <li>workers and agency workers (those with a contract to do work or provide services)</li>
+                    <li>some self-employed people (where they must personally perform the work)</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+    <fieldset>
+        <div class="form-group">
+            <label class="form-label-bold" for="employees-england-last-march">
+                Number of employees who were working in England on 31 March 2017
+            </label>
+            <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
+            <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer"/>
         </div>
-    </details>
-    <div style="margin-top:35px"></div>
- 
-        <fieldset>
-           
-            <div class="form-group" style="">
-                <label class="form-label-bold" for="">
-                    Number of employees who were working in England on 31 March 2017
-
-                </label>
-                <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
-                <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer"/>
-            </div>
-
-        </fieldset>
-        <fieldset>
-            <div class="form-group" style="">
-                <label class="form-label-bold" for="">
-                    Number of employees who were working in England on 31 March 2018
-
-                </label>
-                <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-                <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[0].Answer" value="@questionsList[1].Answer"/>
-             
-            </div>
-           
-        </fieldset>
-        <fieldset>
-            <!--hr style=""/-->
-           
-            <div class="form-group" style="">
-                <label class="form-label-bold" for="">
-                    Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
-
-                </label>
-                <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
-                <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[0].Answer" value="@questionsList[2].Answer"/>
-            </div>
-        </fieldset>
-
-    
-</div>
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            <label class="form-label-bold" for="employees-england-this-march">
+                Number of employees who were working in England on 31 March 2018
+            </label>
+            <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
+            <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer"/>
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            <label class="form-label-bold" for="new-employees-within-year">
+                Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
+            </label>
+            <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
+            <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[0].Answer" value="@questionsList[2].Answer"/>
+        </div>
+    </fieldset>
+</form>
