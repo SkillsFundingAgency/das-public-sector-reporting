@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
@@ -24,7 +22,7 @@ namespace SFA.DAS.PSRService.Web.Services
             _config = config;
         }
 
-        public Report CreateReport(long employerId)
+        public Report CreateReport(string employerId)
         {
             if (IsSubmissionsOpen() == false)
             {
@@ -44,14 +42,14 @@ namespace SFA.DAS.PSRService.Web.Services
             return report;
         }
 
-        public Report GetReport(string period, long employerId)
+        public Report GetReport(string period, string employerId)
         {
             var request = new GetReportRequest() {Period = period, EmployerId = employerId};
             var report = _mediator.Send(request).Result;
             return report;
         }
 
-        public SubmittedStatus SubmitReport(string period, long employerId, Submitted submittedDetails)
+        public SubmittedStatus SubmitReport(string period, string employerId, Submitted submittedDetails)
         {
 
             var report = GetReport(period, employerId);
@@ -64,7 +62,7 @@ namespace SFA.DAS.PSRService.Web.Services
         }
 
        
-        public IEnumerable<Report> GetSubmittedReports(long employerId)
+        public IEnumerable<Report> GetSubmittedReports(string employerId)
         {
             var request = new GetSubmittedRequest(){EmployerId = employerId};
 
@@ -87,6 +85,17 @@ namespace SFA.DAS.PSRService.Web.Services
             var sectionsList = GetSections(report);
 
             return sectionsList.Single(w => w.Id == SectionId);
+
+        }
+
+        public void SaveQuestionSection(Section Section, Report report)
+        {
+            var section = GetQuestionSection(Section.Id, report);
+
+            section = Section;
+
+            var request = new UpdateReportRequest(){Report =  report};
+            var update = _mediator.Send(request);
 
         }
 

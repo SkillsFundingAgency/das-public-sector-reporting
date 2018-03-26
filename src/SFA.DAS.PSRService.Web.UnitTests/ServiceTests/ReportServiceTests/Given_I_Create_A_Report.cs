@@ -41,7 +41,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
 
             //Act
 
-            _reportService.CreateReport(12345);
+            _reportService.CreateReport("ABCDE");
 
             _mediatorMock.Verify(m => m.Send(It.IsAny<CreateReportRequest>(), new CancellationToken()));
 
@@ -58,7 +58,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
 
             //Act
 
-           Assert.Throws<Exception>(() => _reportService.CreateReport(12345));
+           Assert.Throws<Exception>(() => _reportService.CreateReport("ABCDE"));
 
         }
 

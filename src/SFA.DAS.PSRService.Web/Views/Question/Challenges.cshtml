@@ -1,22 +1,14 @@
-﻿@model SFA.DAS.PSRService.Domain.Entities.Section
+﻿@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
 
-<div class="column-full">
-    <h1 class="heading-large">
-
-
-       @Model.SummaryText
-    </h1>
-    <form id="myFormId">
-
-        <fieldset>
-          
-            <div class="form-group">
-              
-                <textarea class="form-control form-control-3-4" style="width:100%" name="textarea" id="textarea" rows="8"></textarea>
-            </div>
-          
-        </fieldset>
-
-    </form>
-
-</div>
+<fieldset>
+     <div class="form-group">
+        <h1 class="heading-large">
+            <label for="challenges">
+                <span>@Model.CurrentSection.Title</span>
+            </label>
+        </h1>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control form-control-3-4" name="challenges" id="challenges" rows="8"></textarea>
+    </div>
+</fieldset>

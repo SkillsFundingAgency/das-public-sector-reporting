@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         {
             IEnumerable<Report> reportList = new List<Report>();
 
-            if (request.EmployerId == 0)
+            if (string.IsNullOrEmpty(request.EmployerId))
                 return Task.FromResult(reportList);
 
             var reportDtoList = _reportRepository.GetSubmitted(request.EmployerId);

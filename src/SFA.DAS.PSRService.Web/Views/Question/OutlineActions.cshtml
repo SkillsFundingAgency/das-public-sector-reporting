@@ -1,22 +1,12 @@
-﻿
-
-<div class="column-full">
-    <h1 class="heading-large">
-
-
-        Outline any actions you have taken to help you progress towards meeting the public sector target
-    </h1>
-    <form id="myFormId">
-
-        <fieldset>
-          
-            <div class="form-group">
-              
-                <textarea class="form-control form-control-3-4" style="width:100%" name="textarea" id="textarea" rows="8"></textarea>
-            </div>
-          
-        </fieldset>
-
-    </form>
-
-</div>
+﻿<fieldset>
+    <div class="form-group">
+        <h1 class="heading-large">
+            <label for="actions-taken">
+                <span>@Model.CurrentSection.Title</span>
+            </label>
+        </h1>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control form-control-full" name="actions-taken" id="actions-taken" rows="8"></textarea>
+    </div>
+</fieldset>

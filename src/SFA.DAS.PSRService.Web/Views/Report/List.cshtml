@@ -5,36 +5,42 @@
     Layout = "_Layout";
 }
 
-<main id="content" role="main">
-    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+        <h1 class="heading-xlarge">Submitted Reports</h1>
+    </div>
 
-   
-            <h1>Submitted Reports</h1>
-            <p>Select the standard that you would like to record an assessment for.</p>
 
+    @if (Model.SubmittedReports.Count() > 0)
+    {
+    <div class="column-full">
+        <table>
+            <thead>
+                <tr>
+                <th scope="col">Employer ID</th>
+                <th scope="col">Organisation name</th>
+                <th class="numeric" scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
             @foreach (var result in Model.SubmittedReports)
             {
-                <div class="grid-row">
-                    <div class="column-two-thirds">
-                        @result.EmployerId
-                        @result.OrganisationName
-                    </div>
-                    <div class="column-one-third"><a href="#">View</a></div>
-                </div>
-                <hr/>
-
+                <tr>
+                    <th scope="row">@result.EmployerId</th>
+                    <td>@result.OrganisationName</td>
+                    <td class="link-right"><a href="#">View</a></td>
+                </tr>
             }
-    
-    @if (Model.SubmittedReports.Count() == 0)
-    {
-        <hr/>
-        <div class="grid-row">
-            <div class="column-two-thirds">
-              There are currently no submitted reports to show
-            </div>
-         
-        </div>
-        <hr/>
+            </tbody>
+        </table>
+    </div>
     }
 
-</main>
+    @if (Model.SubmittedReports.Count() == 0)
+    {
+    <div class="column-two-thirds">
+        <p>There are currently no submitted reports to show</p>
+    </div>
+    }
+</div>

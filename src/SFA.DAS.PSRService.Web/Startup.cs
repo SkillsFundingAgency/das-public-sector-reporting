@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.Web
 
         public Startup(IConfiguration config, IHostingEnvironment env)
         {
-            Configuration = ConfigurationService.GetConfig(config["Environment"], config["ConnectionStrings:Storage"], Version, ServiceName).Result;
+            Configuration = ConfigurationService.GetConfig(config["EnvironmentName"], config["ConfigurationStorageConnectionString"], Version, ServiceName).Result;
 
             _hostingEnvironment = env;
         }
@@ -53,9 +53,9 @@ namespace SFA.DAS.PSRService.Web
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
 
-            
 
-            return ConfigureIOC(services); 
+
+            return ConfigureIOC(services);
         }
 
         private IServiceProvider ConfigureIOC(IServiceCollection services)
@@ -77,7 +77,7 @@ namespace SFA.DAS.PSRService.Web
                 //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
-
+                config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
 
@@ -119,7 +119,7 @@ namespace SFA.DAS.PSRService.Web
                 {
                     routes.MapRoute(
                         name: "default",
-                        template: "{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
+                        template: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
                 });
         }
 

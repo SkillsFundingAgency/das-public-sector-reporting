@@ -9,7 +9,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
     public class GetReportRequest : IRequest<Report>
     {
-        public long EmployerId { get; set; }
+        public string EmployerId { get; set; }
         public string Period { get; set; }
     }
     }

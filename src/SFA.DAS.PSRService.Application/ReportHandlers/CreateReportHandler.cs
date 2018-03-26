@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             if (String.IsNullOrWhiteSpace(request.Period))
                 throw new Exception("Period must be supplied");
 
-            if(request.EmployerId == 0)
+            if(string.IsNullOrWhiteSpace(request.EmployerId))
                 throw new Exception("Employee Id must be supplied");
 
 
