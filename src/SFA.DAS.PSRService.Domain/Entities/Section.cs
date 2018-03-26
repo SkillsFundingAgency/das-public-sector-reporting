@@ -21,10 +21,11 @@ namespace SFA.DAS.PSRService.Domain.Entities
             {
                 if (Questions != null && Questions.Any())
                 {
-                    if (Questions.Any(w => String.IsNullOrWhiteSpace(w.Answer)))
+                    if (Questions.All(w => String.IsNullOrWhiteSpace(w.Answer)))
                         return CompletionStatus.Incomplete;
 
-                    if (Questions.Any(w => w.Optional == false && String.IsNullOrWhiteSpace(w.Answer) == false))
+
+                    if (Questions.All(w => w.Optional == false && String.IsNullOrWhiteSpace(w.Answer) == false) || Questions.All(x => x.Optional && String.IsNullOrWhiteSpace(x.Answer) == false))
                         return CompletionStatus.Completed;
 
                     return CompletionStatus.InProgress;
