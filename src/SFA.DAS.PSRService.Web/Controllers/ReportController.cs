@@ -89,9 +89,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                var report = _reportService.GetReport(period, EmployerId);
+                var currentPeriod = _reportService.GetCurrentReportPeriod();
+                if (period == null)
+                {
+                    period = currentPeriod;
+                }
 
-                if (report == null)
+                var report = new ReportViewModel();
+                 report.Report = _reportService.GetReport(period, EmployerId);
+
+                report.CurrentPeriod = currentPeriod;
+                report.SubmitValid = _reportService.IsSubmitValid(report.Report);
+
+                if (report.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
 
                 return View("Summary", report);

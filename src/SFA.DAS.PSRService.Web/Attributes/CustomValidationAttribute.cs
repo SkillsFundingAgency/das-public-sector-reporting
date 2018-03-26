@@ -63,7 +63,7 @@ namespace SFA.DAS.PSRService.Web.Attributes
                     .FirstOrDefault(w => w.PropertyName == "Type");
 
 
-                var index = int.Parse(context.Attributes["name"].Substring(1, 1));
+                var index = int.Parse(context.Attributes["name"].Substring(context.Attributes["name"].IndexOf('[') + 1, 1));
 
 
 
