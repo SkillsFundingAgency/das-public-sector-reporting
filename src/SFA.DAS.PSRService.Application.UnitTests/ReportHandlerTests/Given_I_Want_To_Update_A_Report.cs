@@ -36,7 +36,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             var reportingDataTest = "";
             reportDto = new ReportDto()
             {
-                EmployerId = 1234,
+                EmployerId = "1234",
                 ReportingPeriod = "1718",
                 Id = Guid.NewGuid(),
                 Submitted = false,
@@ -47,7 +47,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             _report = new Report()
             {
-                EmployerId = 1234,
+                EmployerId = "1234",
                 ReportingPeriod = "1718",
                 Id = Guid.NewGuid(),
                 Submitted = false

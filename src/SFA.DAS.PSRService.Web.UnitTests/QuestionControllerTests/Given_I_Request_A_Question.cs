@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -27,8 +28,13 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
          _EmployerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
-            _controller = new QuestionController(_reportService.Object) { Url = _mockUrlHelper.Object };
+            _controller = new QuestionController(_reportService.Object,_EmployerAccountServiceMock.Object) { Url = _mockUrlHelper.Object };
             _reportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
+
+            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
+                .Returns("ABCDE");
+            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
+                .Returns("ABCDE");
         }
 
         [Test]
@@ -39,7 +45,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns((Report)null);
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
 
             // act
             var result = _controller.Index("YourEmployees");
@@ -62,7 +68,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns(new Report(){Submitted = false});
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report(){Submitted = false});
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
             // act
             var result = _controller.Index("YourEmployees");
@@ -86,7 +92,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns(new Report() { Submitted = true });
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = true });
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
             _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns((Section)null);
 
@@ -107,7 +113,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns(new Report() { Submitted = true });
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = true });
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
             _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>()))
                 .Throws(new Exception());
@@ -171,7 +177,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns(new Report() { Submitted = false });
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = false });
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
 
             _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns(SectionOne);

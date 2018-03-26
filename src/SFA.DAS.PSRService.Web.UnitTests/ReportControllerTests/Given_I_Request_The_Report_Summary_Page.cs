@@ -17,7 +17,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
             // arrange
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns(new Report());
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report());
             // act
             var result = _controller.Summary("1718");
 
@@ -44,7 +44,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns((Report) null);
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null);
             // act
             var result = _controller.Summary("NoReport");
 
@@ -67,7 +67,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Returns((Report)null);
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
             // act
             var result = _controller.Summary(null);
 
@@ -90,7 +90,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<long>())).Throws(new Exception("get report Error"));
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception("get report Error"));
             // act
             var result = _controller.Summary("ReportError");
 

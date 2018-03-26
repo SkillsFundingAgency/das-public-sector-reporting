@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mediatorMock.Setup(s => s.Send(It.IsAny<GetSubmittedRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<Report>().AsEnumerable());
             // act
-            var result = _reportService.GetSubmittedReports(12345);
+            var result = _reportService.GetSubmittedReports("ABCDE");
 
             _mediatorMock.Verify(m => m.Send(It.IsAny<GetSubmittedRequest>(), new CancellationToken()));
 

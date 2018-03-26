@@ -36,7 +36,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             var reportingDataTest = "";
             reportDto = new ReportDto()
             {
-                EmployerId = 1234,
+                EmployerId = "ABCDE",
                 ReportingPeriod = "1718",
                 Id = Guid.NewGuid(),
                 Submitted = false,
@@ -47,7 +47,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             _report = new Report()
             {
-                EmployerId = 1234,
+                EmployerId = "ABCDE",
                 ReportingPeriod = "1718",
                 Id = Guid.NewGuid(),
                 Submitted = false
@@ -67,7 +67,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             //arrange
 
-            var createReportRequest = new CreateReportRequest() { EmployerId = 12345, Period = "1718" };
+            var createReportRequest = new CreateReportRequest() { EmployerId = "ABCDE", Period = "1718" };
 
             //Act
             var result = _createReportHandler.Handle(createReportRequest, new CancellationToken()).Result;
@@ -83,7 +83,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             
             //arrange
             
-            var createReportRequest = new CreateReportRequest() { EmployerId = 0, Period = "1718"};
+            var createReportRequest = new CreateReportRequest() { EmployerId = string.Empty, Period = "1718"};
 
             //Act
 
@@ -99,7 +99,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             //arrange
 
-            var createReportRequest = new CreateReportRequest() { EmployerId = 12345, Period = null };
+            var createReportRequest = new CreateReportRequest() { EmployerId = "ABCDE", Period = null };
 
             //Act
 
@@ -117,7 +117,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             //arrange
 
-            var createReportRequest = new CreateReportRequest() { EmployerId = 123450, Period = "" };
+            var createReportRequest = new CreateReportRequest() { EmployerId = "ABCDEF", Period = "" };
 
             //Act
 

@@ -7,9 +7,9 @@ namespace SFA.DAS.PSRService.Application.Interfaces
 {
     public interface IReportRepository
     {       
-        ReportDto Get(string period,long employerId);
+        ReportDto Get(string period,string employerId);
 
-        IEnumerable<ReportDto> GetSubmitted(long employerId);
+        IEnumerable<ReportDto> GetSubmitted(string employerId);
         ReportDto Create(ReportDto reportDto);
         ReportDto Update(ReportDto reportDto);
 

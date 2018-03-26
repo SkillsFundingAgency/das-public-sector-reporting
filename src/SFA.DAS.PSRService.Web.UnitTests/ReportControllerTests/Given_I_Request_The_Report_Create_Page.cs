@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.CreateReport(It.IsAny<long>())).Returns(new Report());
+            _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>())).Returns(new Report());
 
             // act
             var result = _controller.PostCreate();
@@ -44,7 +44,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void And_The_Report_Creation_Fails_Then_Throw_Error()
         {
          
-            _mockReportService.Setup(s => s.CreateReport(It.IsAny<long>()))
+            _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>()))
                 .Throws(new Exception("Unable to create Report"));
         
             // act
