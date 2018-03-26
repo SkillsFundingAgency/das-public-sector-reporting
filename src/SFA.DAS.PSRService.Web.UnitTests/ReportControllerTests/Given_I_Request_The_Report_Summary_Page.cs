@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 {
@@ -16,7 +17,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void And_The_Report_Exists_Then_Show_Summary_Page()
         {
             // arrange
-
+            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
+            _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report());
             // act
             var result = _controller.Summary("1718");
@@ -29,10 +31,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             Assert.AreEqual("Summary", editViewResult.ViewName, "View name does not match, should be: Summary");
 
 
-            Assert.AreEqual(editViewResult.Model.GetType(), typeof(Report));
-            var reportViewModel = editViewResult.Model as Report;
+            Assert.AreEqual(editViewResult.Model.GetType(), typeof(ReportViewModel));
+            var reportViewModel = editViewResult.Model as ReportViewModel;
             Assert.IsNotNull(reportViewModel);
-            Assert.IsNotNull(reportViewModel.Id);
+            var report = reportViewModel.Report;
+            Assert.IsNotNull(report);
+            Assert.IsNotNull(report.Id);
         }
 
         [Test]
@@ -42,6 +46,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             var url = "Home/Index";
             UrlActionContext actualContext = null;
 
+            _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
+            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null);
@@ -59,6 +65,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         }
 
         [Test]
+        [Ignore("Obsolete")]
         public void And_The_Period_Is_Null_Then_Redirect_To_Home()
         {
             // arrange

@@ -1,10 +1,27 @@
-﻿@model object
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>Review details</h2>
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <h1 class="heading-xlarge">Review details</h1>
+        <p class="">Check or amend your information before you continue </p>
 
-<button type="submit">SUBMIT ></button>
+        @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
+        @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+        @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
+
+
+        @if (Model.SubmitValid)
+        {
+            <form action="Submit">
+                <button class="button btn" id="paymentPlan" type="submit">Submit</button>
+            </form>
+        }
+
+
+    </div>
+</div>

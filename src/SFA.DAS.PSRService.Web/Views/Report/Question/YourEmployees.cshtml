@@ -1,38 +1,37 @@
-﻿@using SFA.DAS.PSRService.Domain.Enums
-@model SFA.DAS.PSRService.Domain.Entities.Section
+﻿@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
-    ViewData["Title"] = "Public sector reporting";
+
+    var questionList = Model.Questions.ToDictionary(k => k.Id);
 }
 
 <h2 class="heading-small">Number of employees who work in England</h2>
-@Html.Partial("CompletionStatus",Model.CompletionStatus)
 
 <table class="">
     <thead>
-    <tr>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
     </thead>
     <tbody>
 
-                      
-    <tr>
-        <td>Number of employees who were working in England<br>on 31 March 2017</td>
-        <td class="numeric">50,001</td>
-        <td class="looks-like-a-link-underline">Change</td>
-    </tr>
-    <tr>
-        <td>Number of employees who were working in England<br>on 31 March 2018</td>
-        <td class="numeric">50,002</td>
-        <td class="looks-like-a-link-underline">Change</td>
-    </tr>
-    <tr>
-        <td>Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018</td>
-        <td class="numeric">1</td>
-        <td class="looks-like-a-link-underline">Change</td>
-    </tr>
+
+        <tr>
+            <td>Number of employees who were working in England<br>on 31 March 2017</td>
+            <td class="numeric">@questionList["atStart"].Answer</td>
+            <td> <a href="../Question/@Model.Id">Change</a></td>
+        </tr>
+        <tr>
+            <td>Number of employees who were working in England<br>on 31 March 2018</td>
+            <td class="numeric">@questionList["atEnd"].Answer</td>
+            <td> <a href="../Question/@Model.Id">Change</a></td>
+        </tr>
+        <tr>
+            <td>Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018</td>
+            <td class="numeric">@questionList["newThisPeriod"].Answer</td>
+            <td> <a href="../Question/@Model.Id">Change</a></td>
+        </tr>
     </tbody>
 </table>

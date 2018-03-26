@@ -1,61 +1,39 @@
-﻿@using SFA.DAS.PSRService.Domain.Enums
-@model SFA.DAS.PSRService.Domain.Entities.Section
+﻿@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
-    ViewData["Title"] = "Public sector reporting";
+
+    var questionList = Model.Questions.ToDictionary(k => k.Id);
 }
 
-<div class="column-full">
-    <h1 class="heading-xlarge">
-        @Model.Title
-    </h1>
-    <details>
 
-        <summary><span class="summary">Who counts as an employee</span></summary>
-        <div class="panel panel-border-narrow">
-            <ul class="list-bullet">
-                <li>people who have a contract of employment with your organisation</li>
-                <li>workers and agency workers (those with a contract to do work or provide services)</li>
-                <li>some self-employed people (where they must personally perform the work)</li>
-            </ul>
-        </div>
-    </details>
-    
-    <form id="myFormId">
-        <fieldset>
-           
-            <div class="form-group">
-                <label class="form-label-bold" for="">
-                    Number of employees who were working in England on 31 March 2017
+<h2 class="heading-small">Number of apprentices who work in England</h2>
 
-                </label>
-                
-                <input class="form-control form-control-1-3" id="apprenticeGivenName" type="text" value="">
-            </div>
 
-        </fieldset>
-        <fieldset>
-            <div class="form-group">
-                <label class="form-label-bold" for="">
-                    Number of employees who were working in England on 31 March 2018
+<table class="">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
 
-                </label>
-                <input class="form-control form-control-1-3" id="apprenticeGivenName" type="text" value="">
-            </div>
-           
-        </fieldset>
-        <fieldset>
-            <!--hr/-->
-           
-            <div class="form-group">
-                <label class="form-label-bold" for="">
-                    Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
 
-                </label>
-                <input class="form-control form-control-1-3" id="apprenticeGivenName" type="text" value="">
-            </div>
-        </fieldset>
-
-    </form>
-    
-</div>
+        <tr>
+            <td>Number of apprentices who were working in England<br>on 31 March 2017</td>
+            <td class="numeric">@questionList["atStart"].Answer</td>
+            <td> <a href="../Question/@Model.Id">Change</a></td>
+        </tr>
+        <tr>
+            <td>Number of apprentice who were working in England<br>on 31 March 2018</td>
+            <td class="numeric">@questionList["atEnd"].Answer</td>
+            <td> <a href="../Question/@Model.Id">Change</a></td>
+        </tr>
+        <tr>
+            <td>Number of new apprentices who started working for you in England between 1 April 2017 and 31 March 2018</td>
+            <td class="numeric">@questionList["newThisPeriod"].Answer</td>
+            <td> <a href="../Question/@Model.Id">Change</a></td>
+        </tr>
+    </tbody>
+</table>
