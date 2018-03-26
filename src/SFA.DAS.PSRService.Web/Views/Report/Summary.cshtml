@@ -1,27 +1,31 @@
 ﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Review details";
     Layout = "_Layout";
 }
 
 <div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-xlarge">Review details</h1>
-        <p class="">Check or amend your information before you continue </p>
+    <div class="column-full review-details">
+        <form action="Submit">
+            <legend>
+                <h1 class="heading-xlarge">Review details</h1>
+                <p>Check or amend your information before you continue</p>
+            </legend>
+            
+            @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
+            @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
 
-        @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
-        @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
-        @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
+            @*
+            @if (Model.SubmitValid)
+            {
+                <button class="button btn" id="" type="submit">Submit</button>
+            }
+            *@
+            <button class="button" type="submit">Submit</button>
 
-
-        @if (Model.SubmitValid)
-        {
-            <form action="Submit">
-                <button class="button btn" id="paymentPlan" type="submit">Submit</button>
-            </form>
-        }
-
+        </form>
 
     </div>
 </div>

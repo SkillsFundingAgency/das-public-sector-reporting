@@ -3,36 +3,31 @@
 @{
     var questionList = Model.SubSections.SelectMany(w => w.Questions).ToDictionary(k => k.Id);
 }
-<h2 class="heading-small">Factors that impacted your ability to meet the target</h2>
-<table class="">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
 
-        <tr>
-            <td>Outline any actions you have taken to help you progress towards meeting the public sector target</td>
-            <td class="" style="font-weight:700; font-size:16px; ">@questionList["OutlineActions"].Answer</td>
-            <td> <a href="../Question/@questionList["OutlineActions"].Id">Change</a></td>
-        </tr>
-        <tr>
-            <td style="width:135px">Tell us about any challenges you have faced in meeting the target</td>
-            <td class="" style="font-weight:700; font-size:16px; ">@questionList["Challenges"].Answer</td>
-            <td> <a href="../Question/@questionList["Challenges"].Id">Change</a></td>
-        </tr>
-        <tr>
-            <td style="width:135px">What are you plans for meeting the target in future, and what impact do you expect these to have?</td>
-            <td class="" style="font-weight:700; font-size:16px; ">@questionList["TargetPlans"].Answer</td>
-            <td> <a href="../Question/@questionList["TargetPlans"].Id">Change</a></td>
-        </tr>
-        <tr>
-            <td style="width:135px">Do you have anything else you want to tell us? <br><br>For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</td>
-            <td class="" style="font-weight:700; font-size:16px; ">@questionList["AnythingElse"].Answer</td>
-            <td> <a href="../Question/@questionList["AnythingElse"].Id">Change</a></td>
-        </tr>
-    </tbody>
+<div class="form-group">
+    <table>
+        <tbody>
+            <caption class="heading-small">Factors that impacted your ability to meet the target</caption>
+            <tr>
+                <td>Outline any actions you have taken to help you progress towards meeting the public sector target</td>
+                <td>@questionList["OutlineActions"].Answer</td>
+                <td class="link-right"><a href="../Question/@questionList["OutlineActions"].Id">Change</a></td>
+            </tr>
+            <tr>
+                <td>Tell us about any challenges you have faced in meeting the target</td>
+                <td>@questionList["Challenges"].Answer</td>
+                <td class="link-right"><a href="../Question/@questionList["Challenges"].Id">Change</a></td>
+            </tr>
+            <tr>
+                <td>What are you plans for meeting the target in future, and what impact do you expect these to have?</td>
+                <td>@questionList["TargetPlans"].Answer</td>
+                <td class="link-right"><a href="../Question/@questionList["TargetPlans"].Id">Change</a></td>
+            </tr>
+            <tr>
+                <td>Do you have anything else you want to tell us? <br><br>For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</td>
+                <td>@questionList["AnythingElse"].Answer</td>
+                <td class="link-right"><a href="../Question/@questionList["AnythingElse"].Id">Change</a></td>
+            </tr>
+        </tbody>
 </table>
+</div>

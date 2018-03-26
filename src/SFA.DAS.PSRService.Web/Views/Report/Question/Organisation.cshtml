@@ -4,26 +4,15 @@
     ViewData["Title"] = "Public sector reporting";
 }
 
-
-<h2 class="heading-small">Organisation</h2>
-
-
-<table class="">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-
-
-        <tr>
-            <td style="">Organisation Name</td>
-            <td class="numeric" style="font-weight:700; font-size:16px;">@Model</td>
-            <td class="looks-like-a-link-underline">Change</td>
-        </tr>
-        
-    </tbody>
-</table>
+<div class="form-group">
+    <table>
+        <caption class="heading-small">Organisation</caption>
+        <tbody>
+            <tr>
+                <td>Organisation Name</td>
+                <td>@Model &nbsp;</td>
+                <td class="link-right"><a href="#">Change</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
