@@ -4,18 +4,16 @@
     ViewData["Title"] = "Public sector reporting";
 }
 
-<form id="myFormId">
-    <h1 class="heading-xlarge">
-        @Model.CurrentSection.Title
-        @* Full-time equivalents *@
-    </h1>
-    <p>Definition of full-time equivalents</p>
-    <fieldset>
-        <div class="form-group">
-            <label class="form-label-bold" for="full-time-equivalents">
-                Full-time equivalents (optional)
-            </label>
-            <input class="form-control form-control-1-3" id="full-time-equivalents" type="text" value="">
-        </div>
-    </fieldset>
-</form>
+<h1 class="heading-xlarge">
+    @* @Model.CurrentSection.Title *@
+    Full-time equivalents
+</h1>
+<p>Definition of full-time equivalents</p>
+<fieldset>
+    <div class="form-group">
+        <label class="form-label-bold" for="full-time-equivalents">
+            Full-time equivalents (optional)
+        </label>
+        <input class="form-control form-control-1-3" id="full-time-equivalents" name="full-time-equivalents" type="text" value="">
+    </div>
+</fieldset>
