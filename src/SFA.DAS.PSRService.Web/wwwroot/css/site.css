@@ -4,8 +4,20 @@
   padding-right: 0;
 }
 
+/* Forms */
+
 .form-control-full {
   width: 100%;
+}
+
+/* Validation */
+
+.validation-summary-valid {
+  display: none;
+}
+
+.validation-summary-errors {
+  display: block;
 }
 
 .grid-row:after,

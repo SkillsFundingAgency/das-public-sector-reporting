@@ -1,17 +1,28 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
 @model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+@{
+    ViewData["Title"] = "Public sector reporting - Anything else";
+    var questionsList = Model.Questions.ToArray();
+}
+
+>>>>>>> Stashed changes
 <fieldset>
      <div class="form-group">
-        <h1 class="heading-large">
+        <h1>
             <label for="anything-else">
-                <span>@Model.CurrentSection.Title</span>
+                <span class="heading-large">@Model.CurrentSection.Title</span>
+                <div class="form-group-error" asp-validation-for="@Model.Questions.ToArray()[0].Answer">
+                    <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
+                </div>
             </label>
         </h1>
     </div>
     <div class="form-group">
-        <textarea class="form-control form-control-3-4" name="anything-else" id="anything-else" rows="8"></textarea>
+        <textarea class="form-control form-control-3-4" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" rows="8"></textarea>
     </div>
 </fieldset>
 =======

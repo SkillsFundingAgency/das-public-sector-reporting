@@ -13,6 +13,13 @@
             <input type="hidden" name="Section.Report.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
             <input type="hidden" name="Section.CurrentSection.Id" value="@Model.CurrentSection.Id" />
 
+            <!-- Validation summary-->
+            <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+                    Please fix these errors
+                </h2>
+            </div>
+
             @*@foreach (var question in Model.CurrentSection.Questions)
             {*@
             @Html.Partial(Model.CurrentSection.Id, Model)
@@ -22,3 +29,7 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

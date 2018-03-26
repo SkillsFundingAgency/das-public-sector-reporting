@@ -30,6 +30,7 @@
     <div class="form-group">
         <label class="form-label-bold" for="employees-england-last-march">
             Number of employees who were working in England on 31 March 2017
+            <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
         </label>
         <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" asp-valmsg-for="Section.Questions[0].Answer"></span>
         <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
@@ -40,14 +41,16 @@
     <div class="form-group">
         <label class="form-label-bold" for="employees-england-this-march">
             Number of employees who were working in England on 31 March 2018
+            <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer"/>
+        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer" />
 </fieldset>
 <fieldset>
     <div class="form-group">
         <label class="form-label-bold" for="new-employees-within-year">
             Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018
+            <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
         <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[2].Answer" value="@questionsList[2].Answer"/>
