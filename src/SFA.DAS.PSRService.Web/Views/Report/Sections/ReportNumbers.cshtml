@@ -18,8 +18,6 @@
         {
             foreach (var subSection in Model.SubSections)
             {
-              
-
                     // @Html.Partial("Question/" + @subSection.Id, Model)
                     <li class="task-list-item">
                         <a href="../Question/@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
