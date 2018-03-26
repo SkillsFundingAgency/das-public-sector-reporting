@@ -1,13 +1,12 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
-@model SFA.DAS.PSRService.Domain.Entities.Section
-
+@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
 @{
     ViewData["Title"] = "Public sector reporting";
 }
 
 <form id="myFormId">
     <h1 class="heading-xlarge">
-        @Model.Title
+        @Model.CurrentSection.Title
         @* Full-time equivalents *@
     </h1>
     <p>Definition of full-time equivalents</p>

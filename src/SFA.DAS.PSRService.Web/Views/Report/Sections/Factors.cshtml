@@ -19,40 +19,19 @@
             {
                 if (subSection.CompletionStatus == CompletionStatus.Completed)
                 {
-<<<<<<< HEAD
                     // @Html.Partial("Question/" + @subSection.Id, Model)
                     <li class="task-list-item">
-                        <a href="/Question/@subSection.Id">@subSection.SummaryText</a>
+                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
                         <strong class="task-completed" id="organisation-name-completed">Completed</strong>
                     </li>
-=======
-                    foreach (var subSection in Model.SubSections)
-                    {
-
-                        if (subSection.CompletionStatus == CompletionStatus.Completed)
-                        {
-                            @Html.Partial("Question/" + @subSection.Id, Model)
-                        }
-                        else
-                        {
-                            <li>
-                                <a href="/accounts/@employerId/Question/@subSection.Id">@subSection.SummaryText</a>
-
-
-                            </li>
-                        }
-                    
->>>>>>> MPD-1277-ChangeTypeOfEmployerId
                 }
                 else
                 {
                     <li class="task-list-item">
-                        <a href="/Question/@subSection.Id">@subSection.SummaryText</a>
+                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
                     </li>
-                }
-            
+                }         
             }
         }
-
     </ul>
 </li>

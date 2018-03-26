@@ -6,25 +6,18 @@
 
 <div class="grid-row">
     <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         <form method="post" asp-action="@Model.CurrentSection.Id">
             <input type="hidden" name="Section.Report.Id" value="@Model.Report.Id" />
             <input type="hidden" name="Section.Report.EmployerId" value="@Model.Report.EmployerId" />
             <input type="hidden" name="Section.Report.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
             <input type="hidden" name="Section.CurrentSection.Id" value="@Model.CurrentSection.Id" />
-            <div class="grid-row">
-                <div class="column-two-thirds">
-                    <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
 
+            @*@foreach (var question in Model.CurrentSection.Questions)
+            {*@
+            @Html.Partial(Model.CurrentSection.Id, Model)
+            @*}*@
 
-
-                    @*@foreach (var question in Model.CurrentSection.Questions)
-                    {*@
-                    @Html.Partial(Model.CurrentSection.Id, Model)
-                    @*}*@
-
-
-                </div>
-            </div>
             <button type="submit" class="button">Continue</button>
         </form>
     </div>

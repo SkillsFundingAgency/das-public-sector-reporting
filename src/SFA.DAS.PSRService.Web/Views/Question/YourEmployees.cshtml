@@ -1,5 +1,7 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
 @model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
 
 @{
     ViewData["Title"] = "Public sector reporting";
@@ -8,8 +10,7 @@
 
 <form id="myFormId">
     <h1 class="heading-xlarge">
-        @Model.Title
-        @* Your employees *@
+        @Model.CurrentSection.Title
     </h1>
     <div class="form-group">
         <details>
