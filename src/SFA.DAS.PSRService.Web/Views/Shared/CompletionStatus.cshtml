@@ -1,17 +1,17 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
-@model SFA.DAS.PSRService.Domain.Enums.CompletionStatus
+@model SFA.DAS.PSRService.Web.ViewModels.CompletionStatusViewModel
 
 
-@switch (Model)
+@switch (Model.CompletionStatus)
 {
     case CompletionStatus.Completed:
-        <strong class="task-completed">Complete</strong>
+        <strong class="task-completed" id="@($"{Model.Id}")">Completed</strong>
         break;
     case CompletionStatus.InProgress:
-        <strong class="task-inprogress">In Progress</strong>
+        <strong class="task-inprogress"  id="@($"{Model.Id}")">In Progress</strong>
         break;
     case CompletionStatus.Incomplete:
-        <strong class="task-incomplete">Incomplete</strong>
+        @*<strong class="task-incomplete"  id="@($"{Model.Id}")">Incomplete</strong>*@
         break;
 }
 
