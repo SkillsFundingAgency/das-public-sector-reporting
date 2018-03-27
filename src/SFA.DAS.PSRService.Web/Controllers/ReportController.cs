@@ -114,7 +114,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         public IActionResult Submit(string period)
         {
+
+            var user = new UserModel(this.User);
+
             var submitted = new Submitted();
+
+            submitted.SubmittedAt = DateTime.UtcNow;
+            submitted.SubmittedEmail = user.Email;
+            submitted.SubmittedName = user.DisplayName;
+            submitted.SubmttedBy = user.Id.ToString();
+            submitted.UniqueReference = "NotAUniqueReference";
+
+            if (period == null)
+                period = _reportService.GetCurrentReportPeriod();
 
             var submittedStatus = _reportService.SubmitReport(period, EmployerId, submitted);
 
