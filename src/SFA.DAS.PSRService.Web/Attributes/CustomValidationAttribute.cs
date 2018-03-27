@@ -10,129 +10,128 @@ using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Attributes
 {
-  public class CustomAnswerValidationAttribute : ValidationAttribute, IClientModelValidator
-  {
-    private string _propertyName;
-
-    public CustomAnswerValidationAttribute(string propertyName)
+    public class CustomAnswerValidationAttribute : ValidationAttribute, IClientModelValidator
     {
-      _propertyName = propertyName;
-    }
+        private string _propertyName;
 
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-    {
-      var questionType = ((SFA.DAS.PSRService.Web.ViewModels.QuestionViewModel)validationContext.ObjectInstance).Type;
-
-      if (value != null)
-      {
-        switch (questionType)
+        public CustomAnswerValidationAttribute(string propertyName)
         {
-          case QuestionType.Number:
-            int result = 0;
-            if (Int32.TryParse(value.ToString(), out result) == false)
-            { return new ValidationResult(GetErrorMessage(questionType)); }
-            break;
-          case QuestionType.ShortText:
-            if (value.ToString().Length > 100)
-            { return new ValidationResult(GetErrorMessage(questionType)); }
-            break;
-          case QuestionType.LongText:
-            if (value.ToString().Length > 250)
-            { return new ValidationResult(GetErrorMessage(questionType)); }
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
+            _propertyName = propertyName;
         }
-      }
 
-
-
-      return ValidationResult.Success;
-    }
-
-    public void AddValidation(ClientModelValidationContext context)
-    {
-
-      if (context.ModelMetadata.ContainerType == typeof(QuestionViewModel))
-      {
-
-
-        var propertyValue = "Value";
-
-        var property = context.MetadataProvider.GetMetadataForProperties(typeof(QuestionViewModel))
-            .FirstOrDefault(w => w.PropertyName == "Type");
-
-
-        var index = int.Parse(context.Attributes["name"].Substring(1, 1));
-
-
-
-        var model = ((Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<
-                SFA.DAS.PSRService.Web.ViewModels.SectionViewModel>)
-            ((Microsoft.AspNetCore.Mvc.Rendering.ViewContext)context.ActionContext).ViewData).Model;
-
-
-
-        var questionType = model.Questions[index].Type;
-
-        MergeAttribute(context.Attributes, "data-val", "true");
-
-        switch (questionType)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-          case QuestionType.Number:
+            var questionType = ((SFA.DAS.PSRService.Web.ViewModels.QuestionViewModel)validationContext.ObjectInstance).Type;
 
-            MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(questionType));
+            if (value != null)
+            {
+                switch (questionType)
+                {
+                    case QuestionType.Number:
+                        int result = 0;
+                        if (Int32.TryParse(value.ToString(), out result) == false)
+                        { return new ValidationResult(GetErrorMessage(questionType)); }
+                        break;
+                    case QuestionType.ShortText:
+                        if (value.ToString().Length > 100)
+                        { return new ValidationResult(GetErrorMessage(questionType)); }
+                        break;
+                    case QuestionType.LongText:
+                        if (value.ToString().Length > 250)
+                        { return new ValidationResult(GetErrorMessage(questionType)); }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
 
-            break;
-          case QuestionType.ShortText:
-            MergeAttribute(context.Attributes, "data-word-limit", "250");
-            MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
-            MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){100,}\\s*$/gm");
-            break;
-          case QuestionType.LongText:
-            MergeAttribute(context.Attributes, "data-word-limit", "250");
-            MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
-            MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){250,}\\s*$/gm");
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
+
+
+            return ValidationResult.Success;
         }
-      }
-    }
 
-    private string GetErrorMessage(QuestionType questionType)
-    {
-      switch (questionType)
-      {
-        case QuestionType.Number:
-          return "Must be a number between 0 and 9";
-          break;
-        case QuestionType.ShortText:
-          return "Text cannot be longer than 100 words";
-          break;
-        case QuestionType.LongText:
-          return "Text cannot be longer than 250 words";
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
-    }
-  }
-}
-private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-{
-  if (attributes.ContainsKey(key))
-  {
-    return false;
-  }
+        public void AddValidation(ClientModelValidationContext context)
+        {
 
-  attributes.Add(key, value);
-  return true;
-}
+            if (context.ModelMetadata.ContainerType == typeof(QuestionViewModel))
+            {
 
-public static object GetPropValue(object src, string propName)
-{
-  return src.GetType().GetProperty(propName).GetValue(src, null);
-}
+
+                var propertyValue = "Value";
+
+                var property = context.MetadataProvider.GetMetadataForProperties(typeof(QuestionViewModel))
+                    .FirstOrDefault(w => w.PropertyName == "Type");
+
+
+                var index = int.Parse(context.Attributes["name"].Substring(1, 1));
+
+
+
+                var model = ((Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<
+                        SFA.DAS.PSRService.Web.ViewModels.SectionViewModel>)
+                    ((Microsoft.AspNetCore.Mvc.Rendering.ViewContext)context.ActionContext).ViewData).Model;
+
+
+
+                var questionType = model.Questions[index].Type;
+
+                MergeAttribute(context.Attributes, "data-val", "true");
+
+                switch (questionType)
+                {
+                    case QuestionType.Number:
+
+                        MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(questionType));
+
+                        break;
+                    case QuestionType.ShortText:
+                        MergeAttribute(context.Attributes, "data-word-limit", "250");
+                        MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
+                        MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){100,}\\s*$/gm");
+                        break;
+                    case QuestionType.LongText:
+                        MergeAttribute(context.Attributes, "data-word-limit", "250");
+                        MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
+                        MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){250,}\\s*$/gm");
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        private string GetErrorMessage(QuestionType questionType)
+        {
+            switch (questionType)
+            {
+                case QuestionType.Number:
+                    return "Must be a number between 0 and 9";
+                    break;
+                case QuestionType.ShortText:
+                    return "Text cannot be longer than 100 words";
+                    break;
+                case QuestionType.LongText:
+                    return "Text cannot be longer than 250 words";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (attributes.ContainsKey(key))
+            {
+                return false;
+            }
+
+            attributes.Add(key, value);
+            return true;
+        }
+
+        public static object GetPropValue(object src, string propName)
+        {
+            return src.GetType().GetProperty(propName).GetValue(src, null);
+        }
     }
 }
