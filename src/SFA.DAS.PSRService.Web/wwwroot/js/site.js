@@ -62,15 +62,6 @@ $(function() {
   });
 });
 
-/*
-*
-*
-<textarea class="form-control js-word-limit" data-word-limit="250" rows="8"></textarea>
-<span class="sfa-form-control-after">
-    <span class="words-left">5</span>
-</span>
-*/
-
 (function() {
   'use strict';
   var root = this;
@@ -78,34 +69,74 @@ $(function() {
     root.GOVUK = {};
   }
 
-  GOVUK.wordCount = function() {
-    var wordLengthTextarea = $('.js-word-limit');
-    if (!wordLengthTextarea.length) return false;
-
-    var wordLimit = wordLengthTextarea.data('word-limit');
-    var currentWordCount = [];
-
-    function countWords(event) {
-      currentWordCount = wordLengthTextarea.val().split(/[\s]+/);
-      if (currentWordCount[0] === '') currentWordCount.splice(0, 2);
-      if (currentWordCount[currentWordCount.length - 1] === '') currentWordCount.splice(1, 1);
-      // console.log(currentWordCount.length + ' words are typed out of an available ' + wordLimit);
-      var wordsLeft = wordLimit - currentWordCount.length;
-      if (currentWordCount === '') wordsLeft = wordLimit;
-      var word_s = wordsLeft === 1 || wordsLeft === -1 ? 'word' : 'words';
-      if (currentWordCount.length <= wordLimit) {
-        $('.words-left').html(wordsLeft + ' ' + word_s + ' left');
-      } else {
-        $('.words-left').html((wordsLeft *= -1) + ' ' + word_s + ' too many');
-      }
+  GOVUK.wordCount = {
+    elems: {
+      $wordLengthTextarea: $('.js-word-limit')
+    },
+    init: function() {
+      if (!this.elems.$wordLengthTextarea.length) return false;
+      this.elems.$wordLengthTextarea.on('keyup input', this.countWords(this));
+      this.countWords(this).call();
+    },
+    countWords: function(self) {
+      return function() {
+        var wordLimit = self.elems.$wordLengthTextarea.data('word-limit');
+        var currentWordCount = self.elems.$wordLengthTextarea.val().split(/[\s]+/);
+        if (currentWordCount[0] === '') currentWordCount.splice(0, 2);
+        if (currentWordCount[currentWordCount.length - 1] === '') currentWordCount.splice(1, 1);
+        // console.log(currentWordCount.length + ' words are typed out of an available ' + wordLimit);
+        var wordsLeft = wordLimit - currentWordCount.length;
+        if (currentWordCount === '') wordsLeft = wordLimit;
+        var word_s = wordsLeft === 1 || wordsLeft === -1 ? 'word' : 'words';
+        if (currentWordCount.length <= wordLimit) {
+          $('.words-left').html(wordsLeft + ' ' + word_s + ' left');
+        } else {
+          $('.words-left').html((wordsLeft *= -1) + ' ' + word_s + ' too many');
+        }
+      };
     }
-
-    wordLengthTextarea.on('keyup input', countWords);
-    countWords();
   };
 
   if (window.GOVUK && GOVUK.wordCount) {
-    GOVUK.wordCount();
+    GOVUK.wordCount.init();
+  }
+
+  GOVUK.stickyNav = {
+    elems: {
+      $nav: $('.floating-menu'),
+      $navHolder: $('#floating-menu-holder'),
+      $window: $(window),
+      $body: $(document.body)
+    },
+    init: function() {
+      if (!this.elems.$nav.length) return false;
+      this.elems.topOfNav = this.elems.$navHolder.offset().top;
+      this.elems.$window.on('scroll', this.fixedNav(this));
+      this.elems.$window.on('resize', this.pageResized(this));
+    },
+    pageResized: function(self) {
+      return function() {
+        self.elems.topOfNav = self.elems.$navHolder.offset().top;
+      };
+    },
+    fixedNav: function(self) {
+      return function() {
+        var isSticky = self.elems.$body.hasClass('sticky-nav');
+        if (self.elems.$window.scrollTop() >= self.elems.topOfNav) {
+          if (!isSticky) {
+            self.elems.$body
+              .addClass('sticky-nav')
+              .css('padding-top', self.elems.$nav.height() + 'px');
+          }
+        } else if (isSticky) {
+          self.elems.$body.removeClass('sticky-nav').css('padding-top', 0);
+        }
+      };
+    }
+  };
+
+  if (window.GOVUK && GOVUK.stickyNav) {
+    GOVUK.stickyNav.init();
   }
 }.call(this));
 
