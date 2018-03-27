@@ -88,6 +88,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Route("Summary/{period}")]
+        [Route("Summary")]
         public IActionResult Summary(string period)
         {
             try
