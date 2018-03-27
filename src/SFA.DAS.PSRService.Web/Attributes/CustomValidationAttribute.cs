@@ -84,10 +84,15 @@ namespace SFA.DAS.PSRService.Web.Attributes
             MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(questionType));
 
             break;
-
+          case QuestionType.ShortText:
+            MergeAttribute(context.Attributes, "data-word-limit", "250");
+            MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
+            MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){100,}\\s*$/gm");
+            break;
           case QuestionType.LongText:
-            MergeAttribute(context.Attributes, "data-val-length", GetErrorMessage(questionType));
-            MergeAttribute(context.Attributes, "data-val-length-max", "250");
+            MergeAttribute(context.Attributes, "data-word-limit", "250");
+            MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
+            MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){250,}\\s*$/gm");
             break;
           default:
             throw new ArgumentOutOfRangeException();
@@ -102,6 +107,9 @@ namespace SFA.DAS.PSRService.Web.Attributes
         case QuestionType.Number:
           return "Must be a number between 0 and 9";
           break;
+        case QuestionType.ShortText:
+          return "Text cannot be longer than 100 words";
+          break;
         case QuestionType.LongText:
           return "Text cannot be longer than 250 words";
           break;
@@ -109,21 +117,38 @@ namespace SFA.DAS.PSRService.Web.Attributes
           throw new ArgumentOutOfRangeException();
       }
     }
-
-    private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-    {
-      if (attributes.ContainsKey(key))
-      {
-        return false;
-      }
-
-      attributes.Add(key, value);
-      return true;
-    }
-
-    public static object GetPropValue(object src, string propName)
-    {
-      return src.GetType().GetProperty(propName).GetValue(src, null);
-    }
   }
+}
+
+private string GetErrorMessage(QuestionType questionType)
+{
+  switch (questionType)
+  {
+    case QuestionType.Number:
+      return "Must be a number between 0 and 9";
+      break;
+    case QuestionType.LongText:
+      return "Text cannot be longer than 250 words";
+      break;
+    default:
+      throw new ArgumentOutOfRangeException();
+  }
+}
+
+private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+{
+  if (attributes.ContainsKey(key))
+  {
+    return false;
+  }
+
+  attributes.Add(key, value);
+  return true;
+}
+
+public static object GetPropValue(object src, string propName)
+{
+  return src.GetType().GetProperty(propName).GetValue(src, null);
+}
+    }
 }

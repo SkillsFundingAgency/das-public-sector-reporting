@@ -54,11 +54,18 @@ namespace SFA.DAS.PSRService.Web.Services
 
             var report = GetReport(period, employerId);
 
-            if (IsSubmitValid(report) == false)
+           
+            if (IsSubmitValid(report) == false || (report.Sections.All(w => w.CompletionStatus != CompletionStatus.Completed)))
                 return SubmittedStatus.Invalid;
 
 
-            throw new NotImplementedException();
+            report.SubmittedDetails = submittedDetails;
+            var request = new SubmitReportRequest(){Report = report};
+
+            var submitReport = _mediator.Send(request);
+            
+
+            return SubmittedStatus.Submitted;
         }
 
        

@@ -3,6 +3,7 @@
 @{
 
     var questionList = Model.Questions.ToDictionary(k => k.Id);
+    var submitValid = ViewBag.SubmitValid;
 }
 
 <div class="form-group">
@@ -12,7 +13,12 @@
             <tr>
                 <td>Full-time equivalents (optional)</td>
                 <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
-                <td class="link-right"> <a href="../Question/@Model.Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
             </tr>
         </tbody>
     </table>

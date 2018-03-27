@@ -2,6 +2,8 @@
 
 @{
     var questionList = Model.SubSections.SelectMany(w => w.Questions).ToDictionary(k => k.Id);
+
+    var submitValid = ViewBag.SubmitValid;
 }
 
 <div class="form-group">
@@ -11,23 +13,43 @@
             <tr>
                 <td>Outline any actions you have taken to help you progress towards meeting the public sector target</td>
                 <td class="bold-xsmall">@questionList["OutlineActions"].Answer</td>
-                <td class="link-right"><a href="../Question/@questionList["OutlineActions"].Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@questionList["OutlineActions"].Id">Change</a>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>Tell us about any challenges you have faced in meeting the target</td>
                 <td class="bold-xsmall">@questionList["Challenges"].Answer</td>
-                <td class="link-right"><a href="../Question/@questionList["Challenges"].Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@questionList["Challenges"].Id">Change</a>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>What are you plans for meeting the target in future, and what impact do you expect these to have?</td>
                 <td class="bold-xsmall">@questionList["TargetPlans"].Answer</td>
-                <td class="link-right"><a href="../Question/@questionList["TargetPlans"].Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@questionList["TargetPlans"].Id">Change</a>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>Do you have anything else you want to tell us? For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</td>
                 <td class="bold-xsmall">@questionList["AnythingElse"].Answer</td>
-                <td class="link-right"><a href="../Question/@questionList["AnythingElse"].Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@questionList["AnythingElse"].Id">Change</a>
+                    }
+                </td>
             </tr>
         </tbody>
-</table>
+    </table>
 </div>

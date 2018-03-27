@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Review details";
     Layout = "_Layout";
+
+    ViewBag.SubmitValid = Model.SubmitValid;
 }
 
 <div class="grid-row">
@@ -13,6 +15,21 @@
                 <p>Check or amend your information before you continue</p>
             </legend>
 
+            @if (Model.SubmitValid)
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Review details</h1>
+                    <p>Check or amend your information before you continue</p>
+                </legend>
+            }
+            else
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Submitted details</h1>
+                </legend>
+
+            }
+            
             <div class="form-group">
                 <table>
                     <caption class="heading-small">Reporting period</caption>
@@ -25,18 +42,31 @@
                     </tbody>
                 </table>
             </div>
-            
+
+            <div class="form-group">
+                <table>
+                    <caption class="heading-small">Reporting period</caption>
+                    <tbody>
+                    <tr>
+                        <td>Reporting period</td>
+                        <td class="bold-xsmall">1 April 2017 to 31 March 2018</td>
+                        <td class="link-right"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
             @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
             @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
 
-            @*
+
             @if (Model.SubmitValid)
             {
-                <button class="button btn" id="" type="submit">Submit</button>
+                <button class="button" type="submit">Submit</button>
             }
-            *@
-            <button class="button" type="submit">Submit</button>
+
+
 
         </form>
 

@@ -3,6 +3,7 @@
 @{
 
     var questionList = Model.Questions.ToDictionary(k => k.Id);
+    var submitValid = ViewBag.SubmitValid;
 }
 
 <div class="form-group">
@@ -12,17 +13,32 @@
             <tr>
                 <td>Number of employees who were working in England on 31 March 2017</td>
                 <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
-                <td class="link-right"><a href="../Question/@Model.Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>Number of employees who were working in England on 31 March 2018</td>
                 <td class="numeric bold-xsmall">@questionList["atEnd"].Answer</td>
-                <td class="link-right"><a href="../Question/@Model.Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018</td>
                 <td class="numeric bold-xsmall">@questionList["newThisPeriod"].Answer</td>
-                <td class="link-right"><a href="../Question/@Model.Id">Change</a></td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
             </tr>
         </tbody>
     </table>
