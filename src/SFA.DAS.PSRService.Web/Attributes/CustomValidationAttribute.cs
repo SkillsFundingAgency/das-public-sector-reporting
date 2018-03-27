@@ -119,22 +119,6 @@ namespace SFA.DAS.PSRService.Web.Attributes
     }
   }
 }
-
-private string GetErrorMessage(QuestionType questionType)
-{
-  switch (questionType)
-  {
-    case QuestionType.Number:
-      return "Must be a number between 0 and 9";
-      break;
-    case QuestionType.LongText:
-      return "Text cannot be longer than 250 words";
-      break;
-    default:
-      throw new ArgumentOutOfRangeException();
-  }
-}
-
 private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
 {
   if (attributes.ContainsKey(key))
