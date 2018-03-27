@@ -8,7 +8,7 @@ $(function() {
   $form.submit(function() {
     if (!formValidator) {
       formValidator = $form.validate({}); // Get existing jquery validate object
-      console.log(formValidator);
+      // console.log(formValidator);
     }
 
     /* CODE BELOW TO ADD CUSTOM ERRORS 
@@ -62,32 +62,52 @@ $(function() {
   });
 });
 
-/* 
-
-<textarea class="form-control js-word-limit" type="text" data-word-limit="5"></textarea>
-<span class="sfa-form-control-after" id="#charlimit">
+/*
+*
+*
+<textarea class="form-control js-word-limit" data-word-limit="250" rows="8"></textarea>
+<span class="sfa-form-control-after">
     <span class="words-left">5</span>
 </span>
 */
-$(function() {
-  var wordLengthTextarea = $('.js-word-limit');
-  var wordLimit = wordLengthTextarea.data('word-limit');
-  var currentWordCount;
 
-  countWords();
-  wordLengthTextarea.on('keydown', countWords);
-
-  function countWords(event) {
-    currentWordCount = wordLengthTextarea.val().split(/[\s]+/);
-    // console.log(currentWordCount.length + ' words are typed out of an available ' + wordLimit);
-    wordsLeft = wordLimit - currentWordCount.length;
-    var puralised = wordsLeft === 1 || wordsLeft === -1 ? 'word' : 'words';
-    if (currentWordCount.length <= wordLimit) {
-      $('.words-left').html(wordsLeft + ' ' + puralised + ' left');
-    } else {
-      $('.words-left').html((wordsLeft *= -1) + ' ' + puralised + ' too many');
-    }
+(function() {
+  'use strict';
+  var root = this;
+  if (typeof root.GOVUK === 'undefined') {
+    root.GOVUK = {};
   }
+
+  GOVUK.wordCount = function() {
+    var wordLengthTextarea = $('.js-word-limit');
+    if (!wordLengthTextarea.length) return false;
+
+    var wordLimit = wordLengthTextarea.data('word-limit');
+    var currentWordCount = [];
+
+    function countWords(event) {
+      currentWordCount = wordLengthTextarea.val().split(/[\s]+/);
+      if (currentWordCount[0] === '') currentWordCount.splice(0, 2);
+      if (currentWordCount[currentWordCount.length - 1] === '') currentWordCount.splice(1, 1);
+      // console.log(currentWordCount.length + ' words are typed out of an available ' + wordLimit);
+      var wordsLeft = wordLimit - currentWordCount.length;
+      if (currentWordCount === '') wordsLeft = wordLimit;
+      var word_s = wordsLeft === 1 || wordsLeft === -1 ? 'word' : 'words';
+      if (currentWordCount.length <= wordLimit) {
+        $('.words-left').html(wordsLeft + ' ' + word_s + ' left');
+      } else {
+        $('.words-left').html((wordsLeft *= -1) + ' ' + word_s + ' too many');
+      }
+    }
+
+    wordLengthTextarea.on('keyup input', countWords);
+    countWords();
+  };
+
+  if (window.GOVUK && GOVUK.wordCount) {
+    GOVUK.wordCount();
+  }
+}.call(this));
 
 //   $(document)
 //     .one('focus.js-auto-expand', 'textarea.js-auto-expand', function() {
@@ -106,4 +126,3 @@ $(function() {
 //       this.rows = minRows + rows;
 
 //     });
-});

@@ -12,6 +12,19 @@
                 <h1 class="heading-xlarge">Review details</h1>
                 <p>Check or amend your information before you continue</p>
             </legend>
+
+            <div class="form-group">
+                <table>
+                    <caption class="heading-small">Reporting period</caption>
+                    <tbody>
+                        <tr>
+                            <td>Reporting period</td>
+                            <td class="bold-xsmall">1 April 2017 to 31 March 2018</td>
+                            <td class="link-right"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             
             @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
             @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
