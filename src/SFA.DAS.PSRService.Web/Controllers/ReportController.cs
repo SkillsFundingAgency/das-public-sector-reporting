@@ -19,6 +19,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
         private readonly IEmployerAccountService _employerAccountService;
+
+        private readonly IUserService _userService;
         //private string employerId = "ABCDE";
 
         private string EmployerId
@@ -29,11 +31,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
         }
 
-        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService)
+        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService)
         {
             _logger = logger;
             _reportService = reportService;
             _employerAccountService = employerAccountService;
+            _userService = userService;
         }
 
     
@@ -119,7 +122,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("Submit")]
         public IActionResult Submit(string period)
         {
+
+            var user = _userService.GetUserModel(this.User);
+
             var submitted = new Submitted();
+
+            submitted.SubmittedAt = DateTime.UtcNow;
+            submitted.SubmittedEmail = user.Email;
+            submitted.SubmittedName = user.DisplayName;
+            submitted.SubmttedBy = user.Id.ToString();
+            submitted.UniqueReference = "NotAUniqueReference";
+
+            if (period == null)
+                period = _reportService.GetCurrentReportPeriod();
 
             var submittedStatus = _reportService.SubmitReport(period, EmployerId, submitted);
 

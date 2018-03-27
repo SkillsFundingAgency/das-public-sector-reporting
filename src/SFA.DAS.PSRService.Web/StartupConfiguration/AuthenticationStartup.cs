@@ -68,6 +68,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
+             
                 })
                 .AddCookie();
         }

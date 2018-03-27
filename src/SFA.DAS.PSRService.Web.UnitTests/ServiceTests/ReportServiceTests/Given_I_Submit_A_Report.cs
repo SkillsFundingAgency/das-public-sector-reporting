@@ -1,9 +1,9 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -19,48 +19,39 @@ using Assert = NUnit.Framework.Assert;
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
 {
     [TestFixture]
-    public class Given_I_Save_A_Question_Section
+    public class Given_I_Submit_A_Report
     {
         private ReportService _reportService;
         private Mock<IMediator> _mediatorMock;
         private Mock<IWebConfiguration> _webConfigurationMock;
-
+        private Report report;
         [SetUp]
         public void SetUp()
         {
             _mediatorMock = new Mock<IMediator>();
             _webConfigurationMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
             _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object);
-            
-        }
-
-        [Test]
-        public void And_sectoin_And_Report_Supplied_Then_Create_Report()
-        {
-            //Arrange
-            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
-            _mediatorMock.Setup(s => s.Send(It.IsAny<UpdateReportRequest>(), It.IsAny<CancellationToken>()));
 
             var Questions = new List<Question>()
             {
                 new Question()
                 {
                     Id = "atStart",
-                    Answer = "0",
+                    Answer = "123",
                     Type = QuestionType.Number,
                     Optional = false
                 }
                 ,new Question()
                 {
                     Id = "atEnd",
-                    Answer = "0",
+                    Answer = "123",
                     Type = QuestionType.Number,
                     Optional = false
                 },
                 new Question()
                 {
                     Id = "newThisPeriod",
-                    Answer = "0",
+                    Answer = "123",
                     Type = QuestionType.Number,
                     Optional = false
                 }
@@ -114,17 +105,51 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             sections.Add(SectionOne);
             sections.Add(SectionTwo);
             sections.Add(SectionThree);
-            var report = new Report()
+             report = new Report()
             {
+                ReportingPeriod = "1617",
                 Sections = sections
             };
+
+            report.SubmittedDetails = new Submitted();
+
+            _mediatorMock.Setup(s => s.Send(It.IsAny<GetReportRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(report);
+        }
+
+        [Test]
+        public void And_report_Is_Valid_Then_Submit_Report()
+        {
+            //Arrange
+            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
+            
+ 
             //Act
+            var result =
+                _reportService.SubmitReport(report.ReportingPeriod, report.EmployerId, report.SubmittedDetails);
 
-            _reportService.SaveQuestionSection(SectionTwo.SubSections.FirstOrDefault(), report);
-
-            _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()));
+            _mediatorMock.Verify(m => m.Send(It.IsAny<SubmitReportRequest>(), new CancellationToken()));
 
             //Assert
+            Assert.AreEqual(SubmittedStatus.Submitted, result);
+        }
+
+        [Test]
+        public void And_report_Is_Invalid_Then_return_Invalid()
+        {
+            //Arrange
+            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
+            report.Submitted = true;
+
+            //Act
+            var result =
+                _reportService.SubmitReport(report.ReportingPeriod, report.EmployerId, report.SubmittedDetails);
+
+           
+
+            //Assert
+
+            Assert.AreEqual(SubmittedStatus.Invalid, result);
         }
 
 
