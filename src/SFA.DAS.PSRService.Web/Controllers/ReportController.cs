@@ -53,6 +53,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
 
         [HttpGet]
+        [Route("Create")]
         public IActionResult Create()
         {
             return View("Create");
@@ -74,7 +75,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
           
         }
-
+        [Route("List")]
         public IActionResult List()
         {
             //need to get employee id, this needs to be moves somewhere
@@ -114,7 +115,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 return new BadRequestResult();
             }
         }
-
+        [Route("Submit")]
         public IActionResult Submit(string period)
         {
             var submitted = new Submitted();
