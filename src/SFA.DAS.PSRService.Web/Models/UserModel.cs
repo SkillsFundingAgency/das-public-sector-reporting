@@ -15,6 +15,7 @@ namespace SFA.DAS.PSRService.Web.Models
         public string DisplayName { get; set; }
         public Guid Id { get; set; }
 
+        public UserModel() { }
         public UserModel(ClaimsPrincipal identity)
         {
           
