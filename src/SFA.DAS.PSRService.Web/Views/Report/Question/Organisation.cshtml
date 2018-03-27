@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Public sector reporting";
+    var submitValid = ViewBag.SubmitValid;
 }
 
 <div class="form-group">
@@ -10,8 +11,13 @@
         <tbody>
             <tr>
                 <td>Organisation Name</td>
-                <td>@Model &nbsp;</td>
-                <td class="link-right"><a href="#">Change</a></td>
+                <td class="bold-xsmall">@Model &nbsp;</td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Report/OrganisationName">Change</a>
+                    }
+                </td>
             </tr>
         </tbody>
     </table>

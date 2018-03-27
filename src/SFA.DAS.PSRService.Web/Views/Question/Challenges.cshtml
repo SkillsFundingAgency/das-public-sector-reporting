@@ -15,7 +15,10 @@
         </h1>
         <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
         <input type="hidden" name="Section.Questions[0].Type" value="@Model.Questions.ToArray()[0].Type" />
-        <textarea class="form-control form-control-3-4" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@Model.Questions.ToArray()[0].Answer" rows="8"></textarea>
+        <textarea class="js-word-limit form-control form-control-3-4" data-word-limit="250" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@Model.Questions.ToArray()[0].Answer" rows="8"></textarea>
+        <span class="sfa-form-control-after">
+            <span class="words-left"></span>
+        </span>
     </div>
 </fieldset>
 

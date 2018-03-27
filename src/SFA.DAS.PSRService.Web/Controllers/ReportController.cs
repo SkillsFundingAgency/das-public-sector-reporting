@@ -13,6 +13,7 @@ using SFA.DAS.PSRService.Web.ViewModels;
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
+    [Route("accounts/{employerAccountId}/Report")]
     public class ReportController : Controller
     {
         private readonly ILogger<ReportController> _logger;
@@ -52,13 +53,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
 
         [HttpGet]
+        [Route("Create")]
         public IActionResult Create()
         {
             return View("Create");
         }
 
         [HttpPost]
-        [Route("accounts/{employerAccountId}/[controller]/Create")]
+        [Route("Create")]
         public IActionResult PostCreate()
         {
             try
@@ -73,7 +75,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
           
         }
-
+        [Route("List")]
         public IActionResult List()
         {
             //need to get employee id, this needs to be moves somewhere
@@ -85,6 +87,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("List", reportListViewmodel);
         }
 
+        [Route("Summary/{period}")]
+        [Route("Summary")]
         public IActionResult Summary(string period)
         {
             try
@@ -100,6 +104,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 report.CurrentPeriod = currentPeriod;
                 report.SubmitValid = _reportService.IsSubmitValid(report.Report);
+                
 
                 if (report.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
@@ -111,7 +116,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 return new BadRequestResult();
             }
         }
-
+        [Route("Submit")]
         public IActionResult Submit(string period)
         {
 
