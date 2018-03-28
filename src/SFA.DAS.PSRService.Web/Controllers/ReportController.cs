@@ -130,7 +130,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (period == null)
                 period = _reportService.GetCurrentReportPeriod();
 
-            var submittedStatus = _reportService.SubmitReport(period, EmployerId, submitted);
+            var submittedStatus = _reportService.SubmitReport(period, EmployerAccount.AccountId, submitted);
 
             if (submittedStatus == SubmittedStatus.Invalid)
             {
@@ -141,7 +141,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
 
-        [Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
+        //[Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
+        [Route("OrganisationName")]
         public IActionResult OrganisationName(string post)
         {
             var organisationVM = new OrganisationViewModel
@@ -153,7 +154,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("OrganisationName", organisationVM);
         }
 
-        [Route("accounts/{employerAccountId}/[controller]/Change")]
+        //[Route("accounts/{employerAccountId}/[controller]/Change")]
+        [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Change(OrganisationViewModel organisationVm)
