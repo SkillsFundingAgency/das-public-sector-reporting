@@ -102,8 +102,8 @@
             }
           ],
           "Id": "Challenges",
-          "Title": "Tell us about any challenges you have faced in meeting the target",
-          "SummaryText": "Tell us about any challenges you have faced in meeting the target"
+          "Title": "Tell us about any challenges you have faced in your efforts to meet the target",
+          "SummaryText": "Tell us about any challenges you have faced in your efforts to meet the target"
         },
         {
           "SubSections": null,
@@ -116,8 +116,8 @@
             }
           ],
           "Id": "TargetPlans",
-          "Title": "What are you plans for meeting the target in future, and what impact do you expect these to have?",
-          "SummaryText": "What are you plans for meeting the target in future, and what impact do you expect these to have?"
+          "Title": "How are you planning to ensure you meet the target in future?",
+          "SummaryText": "How are you planning to ensure you meet the target in future?"
         },
         {
           "SubSections": null,

@@ -18,8 +18,8 @@
         <table>
             <thead>
                 <tr>
-                <th scope="col">Employer ID</th>
                 <th scope="col">Organisation name</th>
+                <th scope="col">Reporting period</th>
                 <th class="numeric" scope="col"></th>
                 </tr>
             </thead>
@@ -27,8 +27,8 @@
             @foreach (var result in Model.SubmittedReports)
             {
                 <tr>
-                    <th scope="row">@result.EmployerId</th>
-                    <td>@result.OrganisationName</td>
+                    <th scope="row">@result.OrganisationName</th>
+                    <td>&nbsp;</td>
                     <td class="link-right"><a href="../Report/Summary/@result.ReportingPeriod">View</a></td>
                 </tr>
             }
