@@ -1,65 +1,76 @@
-﻿// Write your JavaScript code.
+﻿$(function() {
+  if ($.validator && $.validator.unobtrusive) {
+    $.validator.unobtrusive.adapters.addSingleVal('maxwords', 'wordcount');
+    $.validator.addMethod('maxwords', function(value, element, maxwords) {
+      console.log(value, element, maxwords);
+      if (value) {
+        if (value.split(' ').length > maxwords) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
 
-$(function() {
-  var formValidator,
-    $form = $('.questionForm');
+  // var formValidator,
+  //   $form = $('.questionForm');
 
-  // add handler to the forms submit action
-  $form.submit(function() {
-    if (!formValidator) {
-      formValidator = $form.validate({}); // Get existing jquery validate object
-      // console.log(formValidator);
-    }
+  // // add handler to the forms submit action
+  // $form.submit(function() {
+  //   if (!formValidator) {
+  //     formValidator = $form.validate({}); // Get existing jquery validate object
+  //     // console.log(formValidator);
+  //   }
 
-    /* CODE BELOW TO ADD CUSTOM ERRORS 
-    /*
-    /* https://stackoverflow.com/questions/28840307/add-error-to-jquery-unobtrusive-validation-summary-without-a-key
-    /*
-    /* Modify to update current erros with corect oned for GDS
-    */
+  /* CODE BELOW TO ADD CUSTOM ERRORS 
+      /*
+      /* https://stackoverflow.com/questions/28840307/add-error-to-jquery-unobtrusive-validation-summary-without-a-key
+      /*
+      /* Modify to update current erros with corect oned for GDS
+      */
 
-    // var errorList = [];
+  // var errorList = [];
 
-    // // get existing summary errors from jQuery validate
-    // $.each(formValidator.errorList, function(index, errorListItem) {
-    //   errorList.push(errorListItem.message);
-    // });
+  // // get existing summary errors from jQuery validate
+  // $.each(formValidator.errorList, function(index, errorListItem) {
+  //   errorList.push(errorListItem.message);
+  // });
 
-    // // add our own errors
-    // if (testForErrorCondidtionA()) {
-    //   errorList.push('Please fix error condition A!');
-    // }
+  // // add our own errors
+  // if (testForErrorCondidtionA()) {
+  //   errorList.push('Please fix error condition A!');
+  // }
 
-    // if (testForErrorCondidtionB()) {
-    //   errorList.push('Please fix error condition B!');
-    // }
+  // if (testForErrorCondidtionB()) {
+  //   errorList.push('Please fix error condition B!');
+  // }
 
-    // // No errors, do nothing
-    // if (0 === errorList.length) {
-    //   return true; // allow submit
-    // }
+  // // No errors, do nothing
+  // if (0 === errorList.length) {
+  //   return true; // allow submit
+  // }
 
-    // // find summary div
-    // var $summary = $form.find('[data-valmsg-summary=true]');
+  // // find summary div
+  // var $summary = $form.find('[data-valmsg-summary=true]');
 
-    // // find the unordered list
-    // var $ul = $summary.find('ul');
+  // // find the unordered list
+  // var $ul = $summary.find('ul');
 
-    // // Clear existing errors from DOM by removing all element from the list
-    // $ul.empty();
+  // // Clear existing errors from DOM by removing all element from the list
+  // $ul.empty();
 
-    // // Add all errors to the list
-    // $.each(errorList, function(index, message) {
-    //   $('<li />')
-    //     .html(message)
-    //     .appendTo($ul);
-    // });
+  // // Add all errors to the list
+  // $.each(errorList, function(index, message) {
+  //   $('<li />')
+  //     .html(message)
+  //     .appendTo($ul);
+  // });
 
-    // // Add the appropriate class to the summary div
-    // $summary.removeClass('validation-summary-valid').addClass('validation-summary-errors');
+  // // Add the appropriate class to the summary div
+  // $summary.removeClass('validation-summary-valid').addClass('validation-summary-errors');
 
-    // return false; // Block the submit
-  });
+  // return false; // Block the submit
+  // });
 });
 
 (function() {

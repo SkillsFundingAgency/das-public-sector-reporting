@@ -8,13 +8,23 @@
 
 <h1 class="heading-xlarge">
     @* @Model.CurrentSection.Title *@
-    Full-time equivalents
+    Your full-time equivalents (optional)
 </h1>
-<p>Definition of full-time equivalents</p>
+<div class="form-group">
+    <details>
+        <summary>
+            <span class="summary">How to calculate your full-time equivalent numbers</span>
+        </summary>
+        <div class="panel panel-border-narrow">
+            <p>Firstly, work out the number of weekly hours each part-time employee is contracted to work divided by your organisation’s standard full-time working week. For example, 10 hours divided by 37 hours equates to 0.27 full-time equivalents.</p>
+            <p>Then add your full-time employee numbers to come up with a total number of full-time equivalents. Round your total to the nearest whole number.</p>
+        </div>
+    </details>
+</div>
 <fieldset>
     <div class="form-group">
         <label class="form-label-bold" for="full-time-equivalents">
-            Full-time equivalents (optional)
+            Number of full-time equivalents (optional)
             <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
