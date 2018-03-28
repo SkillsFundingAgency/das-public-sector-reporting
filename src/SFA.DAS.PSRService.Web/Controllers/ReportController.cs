@@ -151,6 +151,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
             };
 
+            if (string.IsNullOrEmpty(organisationVM.Report.OrganisationName))
+                organisationVM.Report.OrganisationName = organisationVM.EmployerAccount.EmployerName;
+
             return View("OrganisationName", organisationVM);
         }
 

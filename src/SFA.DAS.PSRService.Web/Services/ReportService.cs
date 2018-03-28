@@ -193,9 +193,11 @@ namespace SFA.DAS.PSRService.Web.Services
             var employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
                 var apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
 
+            var employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
+
             percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod)*100;
             percentages.TotalHeadCount = (apprenticeEnd / employmentEnd) * 100;
-            percentages.NewThisPeriod = (apprenticePeriod / employmentEnd) * 100;
+            percentages.NewThisPeriod = (apprenticePeriod / employmentStart) * 100;
 
 
             return percentages;
