@@ -1,7 +1,10 @@
 ﻿@using SFA.DAS.PSRService.Domain.Enums
 @model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
 
-
+@{
+    ViewData["Title"] = "Public sector reporting - Full time equivalent";
+    var questionsList = Model.Questions.ToArray();
+}
 
 <h1 class="heading-xlarge">
     @* @Model.CurrentSection.Title *@
@@ -12,6 +15,7 @@
     <div class="form-group">
         <label class="form-label-bold" for="full-time-equivalents">
             Full-time equivalents (optional)
+            <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
         <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@Model.Questions.ToArray()[0].Answer"/>

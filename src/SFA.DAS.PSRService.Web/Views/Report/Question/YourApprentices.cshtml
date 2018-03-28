@@ -1,39 +1,44 @@
 ﻿@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
-
     var questionList = Model.Questions.ToDictionary(k => k.Id);
+    var submitValid = ViewBag.SubmitValid;
 }
 
-
-<h2 class="heading-small">Number of apprentices who work in England</h2>
-
-
-<table class="">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-
-
-        <tr>
-            <td>Number of apprentices who were working in England<br>on 31 March 2017</td>
-            <td class="numeric">@questionList["atStart"].Answer</td>
-            <td> <a href="../Question/@Model.Id">Change</a></td>
-        </tr>
-        <tr>
-            <td>Number of apprentice who were working in England<br>on 31 March 2018</td>
-            <td class="numeric">@questionList["atEnd"].Answer</td>
-            <td> <a href="../Question/@Model.Id">Change</a></td>
-        </tr>
-        <tr>
-            <td>Number of new apprentices who started working for you in England between 1 April 2017 and 31 March 2018</td>
-            <td class="numeric">@questionList["newThisPeriod"].Answer</td>
-            <td> <a href="../Question/@Model.Id">Change</a></td>
-        </tr>
-    </tbody>
-</table>
+<div class="form-group">
+    <table>
+        <caption class="heading-small">Number of apprentices who work in England</caption>
+        <tbody>
+            <tr>
+                <td>Number of apprentices who were working in England on 31 March 2017</td>
+                <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Number of apprentice who were working in England on 31 March 2018</td>
+                <td class="numeric bold-xsmall">@questionList["atEnd"].Answer</td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Number of new apprentices who started working for you in England between 1 April 2017 and 31 March 2018</td>
+                <td class="numeric bold-xsmall">@questionList["newThisPeriod"].Answer</td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Question/@Model.Id">Change</a>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

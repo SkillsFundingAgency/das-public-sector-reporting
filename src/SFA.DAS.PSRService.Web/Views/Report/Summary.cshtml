@@ -1,27 +1,74 @@
 ﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Review details";
     Layout = "_Layout";
+
+    ViewBag.SubmitValid = Model.SubmitValid;
 }
 
 <div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-xlarge">Review details</h1>
-        <p class="">Check or amend your information before you continue </p>
+    <div class="column-full review-details">
+        <form action="Submit">
+            <legend>
+                <h1 class="heading-xlarge">Review details</h1>
+                <p>Check or amend your information before you continue</p>
+            </legend>
 
-        @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
-        @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
-        @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
+            @if (Model.SubmitValid)
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Review details</h1>
+                    <p>Check or amend your information before you continue</p>
+                </legend>
+            }
+            else
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Submitted details</h1>
+                </legend>
+
+            }
+            
+            <div class="form-group">
+                <table>
+                    <caption class="heading-small">Reporting period</caption>
+                    <tbody>
+                        <tr>
+                            <td>Reporting period</td>
+                            <td class="bold-xsmall">1 April 2017 to 31 March 2018</td>
+                            <td class="link-right"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <table>
+                    <caption class="heading-small">Reporting period</caption>
+                    <tbody>
+                    <tr>
+                        <td>Reporting period</td>
+                        <td class="bold-xsmall">1 April 2017 to 31 March 2018</td>
+                        <td class="link-right"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
+            @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
-        @if (Model.SubmitValid)
-        {
-            <form action="Submit">
-                <button class="button btn" id="paymentPlan" type="submit">Submit</button>
-            </form>
-        }
+            @if (Model.SubmitValid)
+            {
+                <button class="button" type="submit">Submit</button>
+            }
 
+
+
+        </form>
 
     </div>
 </div>

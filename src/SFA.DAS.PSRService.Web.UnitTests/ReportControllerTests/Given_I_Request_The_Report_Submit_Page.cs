@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 {
@@ -43,6 +44,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url)
                 .Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
+           
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report());
             _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
             _mockReportService.Setup(s => s.SubmitReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Submitted>())).Returns(SubmittedStatus.Invalid);

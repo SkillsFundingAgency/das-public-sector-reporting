@@ -7,11 +7,18 @@
 <div class="grid-row">
     <div class="column-two-thirds">
         <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
-        <form method="post" asp-action="@Model.CurrentSection.Id">
+        <form class="questionForm" method="post" asp-action="@Model.CurrentSection.Id">
             <input type="hidden" name="Section.Report.Id" value="@Model.Report.Id" />
             <input type="hidden" name="Section.Report.EmployerId" value="@Model.Report.EmployerId" />
             <input type="hidden" name="Section.Report.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
             <input type="hidden" name="Section.CurrentSection.Id" value="@Model.CurrentSection.Id" />
+
+            <!-- Validation summary-->
+            <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+                    Please fix these errors
+                </h2>
+            </div>
 
             @*@foreach (var question in Model.CurrentSection.Questions)
             {*@
@@ -22,3 +29,7 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -87,12 +87,61 @@
             <div class="header-proposition">
                 <div class="content">
                     <nav id="proposition-menu">
-                        <a id="proposition-name" href="/">Public sector reporting</a>
+                        <a id="proposition-name" href="https://at-empc.apprenticeships.sfa.bis.gov.uk/commitments/accounts/VNK49Y/apprentices/home">Manage apprenticeships</a>
                     </nav>
                 </div>
             </div>
         </div>
     </header>
+
+    <div id="floating-menu-holder">
+            <div class="account-information floating-menu" role="navigation">
+                <div class="js-float">
+                    <p class="floating-head-text">Public sector reporting</p>
+                    <nav id="user-nav">
+                        <ul role="menubar">
+                            <li><a href="https://at-empc.apprenticeships.sfa.bis.gov.uk/service/help">Help</a></li>
+                            @*
+                            @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                            {
+                            *@
+                            @*
+                                <li class="has-sub-menu">
+                                    <a href="/" role="menuitem">Settings</a>
+                                    <ul role="menu" class="js-hidden" id="settings-menu">
+                                        <li><a href="@Url.Action("ViewAccounts", "Home")" role="menuitem" class="sub-menu-item">Your accounts</a></li>
+                                        @if (!DynamicExtensions.ParseHideNavFromViewBag(ViewBag))
+                                        {
+                                        <li><a href="@Url.Action("RenameAccount", "EmployerAccount")" role="menuitem" class="sub-menu-item">Rename account</a></li>
+                                        }
+                                        <li><a href="@UserLinksViewModel.ChangePasswordLink" class="sub-menu-item">Change your password</a></li>
+                                        <li><a href="@UserLinksViewModel.ChangeEmailLink" class="sub-menu-item">Change your email address</a></li>
+                                        @if (!DynamicExtensions.ParseHideNavFromViewBag(ViewBag))
+                                        {
+                                        <li><a href="@Url.Action("NotificationSettings", "Settings")" class="sub-menu-item">Notification settings</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            *@
+                                <li><a href="https://at-empc.apprenticeships.sfa.bis.gov.uk/service/signout" role="menuitem">Sign out</a></li>
+                            @*
+                            }
+                            *@
+                            @*
+                            else if (HttpContext.Current.User.Identity.IsAuthenticated || Model?.GetType().GetProperty("HideHeaderSignInLink") == null)
+                            {
+                                {
+
+                                    <li><a href="@Url.Action("SignIn", "Home")" role="menuitem">Sign in / Register</a></li>
+                                }
+                            }
+                            *@
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div> <!--/floating-menu-holder-->
+
     
     <main id="content" role="main">
         @RenderBody()
@@ -125,18 +174,18 @@
     <div id="global-app-error" class="app-error hidden"></div>
 
     <environment include="Development">
-        <!-- <script src="~/lib/jquery/dist/jquery.js"></script> -->
+        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="/assets/javascripts/govuk-template.js?0.23.0"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
 
     <environment exclude="Development">
-        <!-- <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 crossorigin="anonymous"
                 integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script> -->
+        </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 

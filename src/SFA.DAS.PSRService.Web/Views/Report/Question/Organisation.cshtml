@@ -1,0 +1,24 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+    var submitValid = ViewBag.SubmitValid;
+}
+
+<div class="form-group">
+    <table>
+        <caption class="heading-small">Organisation</caption>
+        <tbody>
+            <tr>
+                <td>Organisation Name</td>
+                <td class="bold-xsmall">@Model &nbsp;</td>
+                <td class="link-right">
+                    @if (submitValid)
+                    {
+                        <a href="../Report/OrganisationName">Change</a>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,10 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Routing
 @using SFA.DAS.PSRService.Domain.Enums
+@using SFA.DAS.PSRService.Web.ViewModels
 @model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
     ViewData["Title"] = "Public sector reporting";
-
     var employerId = Context.GetRouteData().Values["employerAccountId"];
 }
 
@@ -17,20 +17,10 @@
         {
             foreach (var subSection in Model.SubSections)
             {
-                if (subSection.CompletionStatus == CompletionStatus.Completed)
-                {
-                    // @Html.Partial("Question/" + @subSection.Id, Model)
-                    <li class="task-list-item">
-                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
-                        <strong class="task-completed" id="organisation-name-completed">Completed</strong>
-                    </li>
-                }
-                else
-                {
-                    <li class="task-list-item">
-                        <a href="../Question/@subSection.Id">@subSection.SummaryText</a>
-                    </li>
-                }         
+                <li class="task-list-item">
+                    <a class="task-name" href="./Question/@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
+                    @Html.Partial("CompletionStatus",new CompletionStatusViewModel(){CompletionStatus = subSection.CompletionStatus, Id = $"{subSection.Id}-complete"})
+                </li>   
             }
         }
     </ul>
