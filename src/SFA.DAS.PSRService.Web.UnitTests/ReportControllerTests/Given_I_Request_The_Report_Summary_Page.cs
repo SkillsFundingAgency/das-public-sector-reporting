@@ -20,6 +20,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
             _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report());
+            _mockReportService.Setup(s => s.CalculatePercentages(It.IsAny<Report>()))
+                .Returns(new ReportingPercentages());
             // act
             var result = _controller.Summary("1718");
 
@@ -48,6 +50,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
             _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
+            _mockReportService.Setup(s => s.CalculatePercentages(It.IsAny<Report>()))
+                .Returns(new ReportingPercentages());
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null);

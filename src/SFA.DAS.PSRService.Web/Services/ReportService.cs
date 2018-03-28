@@ -7,6 +7,7 @@ using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
@@ -177,6 +178,29 @@ namespace SFA.DAS.PSRService.Web.Services
           
 
             return sectionList;
+        }
+
+        public ReportingPercentages CalculatePercentages(Report report)
+        {
+            var percentages = new ReportingPercentages();
+
+            var employeeQuestions = GetQuestionSection("YourEmployees", report);
+            var apprenticeQuestions = GetQuestionSection("YourApprentices", report);
+
+            var employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+            var apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+
+            var employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+                var apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+
+            var employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
+
+            percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod)*100;
+            percentages.TotalHeadCount = (apprenticeEnd / employmentEnd) * 100;
+            percentages.NewThisPeriod = (apprenticePeriod / employmentStart) * 100;
+
+
+            return percentages;
         }
     }
 }

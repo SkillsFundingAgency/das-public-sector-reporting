@@ -45,6 +45,7 @@
 
             @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
             @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @Html.Partial("Question/ReportingPercentages", @Model.Percentages)
             @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
