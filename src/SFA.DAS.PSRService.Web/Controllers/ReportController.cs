@@ -107,7 +107,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 report.CurrentPeriod = currentPeriod;
                 report.SubmitValid = _reportService.IsSubmitValid(report.Report);
-                
+                report.Percentages = _reportService.CalculatePercentages(report.Report);
 
                 if (report.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
