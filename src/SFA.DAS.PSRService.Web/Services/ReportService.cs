@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public class ReportService : IReportService
     {
-        
+
         private IMediator _mediator;
         private IWebConfiguration _config;
 
@@ -29,8 +29,8 @@ namespace SFA.DAS.PSRService.Web.Services
             {
                 throw new Exception("Unable to create report after submissions is closed");
             }
-            
-            var request = new CreateReportRequest(){Period = GetCurrentReportPeriod(), EmployerId = employerId};
+
+            var request = new CreateReportRequest() { Period = GetCurrentReportPeriod(), EmployerId = employerId };
 
             var report = _mediator.Send(request).Result;
 
@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public Report GetReport(string period, string employerId)
         {
-            var request = new GetReportRequest() {Period = period, EmployerId = employerId};
+            var request = new GetReportRequest() { Period = period, EmployerId = employerId };
             var report = _mediator.Send(request).Result;
             return report;
         }
@@ -55,24 +55,24 @@ namespace SFA.DAS.PSRService.Web.Services
 
             var report = GetReport(period, employerId);
 
-           
+
             if (IsSubmitValid(report) == false || (report.Sections.All(w => w.CompletionStatus != CompletionStatus.Completed)))
                 return SubmittedStatus.Invalid;
 
 
             report.SubmittedDetails = submittedDetails;
-            var request = new SubmitReportRequest(){Report = report};
+            var request = new SubmitReportRequest() { Report = report };
 
             var submitReport = _mediator.Send(request);
-            
+
 
             return SubmittedStatus.Submitted;
         }
 
-       
+
         public IEnumerable<Report> GetSubmittedReports(string employerId)
         {
-            var request = new GetSubmittedRequest(){EmployerId = employerId};
+            var request = new GetSubmittedRequest() { EmployerId = employerId };
 
             var submittedReports = _mediator.Send(request).Result;
             return submittedReports;
@@ -88,7 +88,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public Section GetQuestionSection(string SectionId, Report report)
         {
-          
+
 
             var sectionsList = GetSections(report);
 
@@ -110,14 +110,14 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             var year = utcToday.Year;
             if (utcToday.Month < 4) year--;
-            return string.Concat((year -1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
+            return string.Concat((year - 1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
         }
 
         public string GetCurrentReportPeriod()
         {
             return GetCurrentReportPeriod(DateTime.UtcNow.Date);
         }
- 
+
 
         public string GetCurrentReportPeriodName(string period)
         {
@@ -175,7 +175,7 @@ namespace SFA.DAS.PSRService.Web.Services
                     sectionList.AddRange(GetSections(reportSection));
                 }
             }
-          
+
 
             return sectionList;
         }
@@ -184,20 +184,45 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             var percentages = new ReportingPercentages();
 
-            var employeeQuestions = GetQuestionSection("YourEmployees", report);
-            var apprenticeQuestions = GetQuestionSection("YourApprentices", report);
+            if (report?.Sections == null)
+            {
+                throw new Exception("Report cannot be null and must have sections");
+            }
+
+            Section employeeQuestions;
+            Section apprenticeQuestions;
+            try
+            {
+                 employeeQuestions = GetQuestionSection("YourEmployees", report);
+                 apprenticeQuestions = GetQuestionSection("YourApprentices", report);
+            }
+            catch (Exception e)
+            {
+               throw new Exception("Employee and/or Apprentice sections not found",e);
+            }
+           
+
+
+            if (employeeQuestions == null || apprenticeQuestions == null)
+                throw new Exception("Employee and/or Apprentice sections not found");
 
             var employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
             var apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
 
             var employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-                var apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+            var apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
 
             var employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
 
-            percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod)*100;
-            percentages.TotalHeadCount = (apprenticeEnd / employmentEnd) * 100;
-            percentages.NewThisPeriod = (apprenticePeriod / employmentStart) * 100;
+
+            if (apprenticePeriod != 0 & employmentPeriod != 0)
+                percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod) * 100;
+
+            if (apprenticeEnd != 0 & employmentEnd != 0)
+                percentages.TotalHeadCount = (apprenticeEnd / employmentEnd) * 100;
+
+            if (apprenticePeriod != 0 & employmentStart != 0)
+                percentages.NewThisPeriod = (apprenticePeriod / employmentStart) * 100;
 
 
             return percentages;
