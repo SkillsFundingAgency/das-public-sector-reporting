@@ -1,4 +1,8 @@
-﻿<li>
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@using SFA.DAS.PSRService.Web.ViewModels
+@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
+
+<li>
     <h2 class="task-list-section">
         <span class="task-list-section-number">1. </span> Organisation name
     </h2>
@@ -8,8 +12,8 @@
             @*<a class="task-name" href="#" aria-describedby="organisation-name-completed">
                 Your organisation’s name
             </a>*@
-            <a href="./Report/OrganisationName">Your organisation’s name</a>
-            @* <strong class="task-completed" id="organisation-name-completed">Completed</strong> *@
+            <a class="task-name" href="./Report/OrganisationName" aria-describedby="organisation-name-completed">Your organisation’s name</a>
+            @Html.Partial("CompletionStatus", new CompletionStatusViewModel(){Id = "organisation-name-completed", CompletionStatus = (String.IsNullOrWhiteSpace(@Model.Report.OrganisationName) == false ? CompletionStatus.Completed : CompletionStatus.Incomplete)})
         </li>
     </ul>
 </li>

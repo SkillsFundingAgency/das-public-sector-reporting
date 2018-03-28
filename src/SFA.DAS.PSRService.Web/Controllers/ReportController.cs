@@ -101,7 +101,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 report.CurrentPeriod = currentPeriod;
                 report.SubmitValid = _reportService.IsSubmitValid(report.Report);
-                
+                report.Percentages = _reportService.CalculatePercentages(report.Report);
 
                 if (report.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
@@ -140,6 +140,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Submitted");
         }
 
+
+        //[Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
         [Route("OrganisationName")]
         public IActionResult OrganisationName(string post)
         {
@@ -149,12 +151,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
             };
 
-            if (organisationVM.Report == null)
-                return new RedirectResult(Url.Action("Index", "Home"));
+            if (string.IsNullOrEmpty(organisationVM.Report.OrganisationName))
+                organisationVM.Report.OrganisationName = organisationVM.EmployerAccount.EmployerName;
 
             return View("OrganisationName", organisationVM);
         }
 
+        //[Route("accounts/{employerAccountId}/[controller]/Change")]
         [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -164,9 +167,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
                 Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
             };
-
-            if (reportViewModel.Report == null)
-                return new RedirectResult(Url.Action("Index", "Home"));
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
