@@ -24,6 +24,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         public Mock<IUserService> _userServiceMock;
         protected IList<Report> _reportList;
+        private EmployerIdentifier _employerIdentifier;
 
         [SetUp]
         public void SetUp()
@@ -34,11 +35,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
             _controller = new ReportController(_mockLogging.Object, _mockReportService.Object,_employeeAccountServiceMock.Object, _userServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
-                .Returns("ABCDE");
+                .Returns(_employerIdentifier);
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
-                .Returns("ABCDE");
+                .Returns(_employerIdentifier);
 
             _userServiceMock.Setup(s => s.GetUserModel(null)).Returns(new UserModel());
 
