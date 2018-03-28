@@ -23,13 +23,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IUserService _userService;
         //private string employerId = "ABCDE";
 
-        private string EmployerId
-        {
-            get
-            {
-                return _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
-            }
-        }
+        private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
 
         public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService)
         {
@@ -46,7 +40,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var reportViewModel = new ReportViewModel();
             
-            reportViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerId);
+            reportViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);
 
             if (_reportService.IsSubmitValid(reportViewModel.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -68,7 +62,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                var report = _reportService.CreateReport(EmployerId);
+                var report = _reportService.CreateReport(EmployerAccount.AccountId);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception ex)
@@ -85,7 +79,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var reportListViewmodel = new ReportListViewModel();
 
-            reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(EmployerId);
+            reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId);
 
             return View("List", reportListViewmodel);
         }
@@ -103,7 +97,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 }
 
                 var report = new ReportViewModel();
-                 report.Report = _reportService.GetReport(period, EmployerId);
+                 report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
 
                 report.CurrentPeriod = currentPeriod;
                 report.SubmitValid = _reportService.IsSubmitValid(report.Report);
@@ -136,7 +130,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (period == null)
                 period = _reportService.GetCurrentReportPeriod();
 
-            var submittedStatus = _reportService.SubmitReport(period, EmployerId, submitted);
+            var submittedStatus = _reportService.SubmitReport(period, EmployerAccount.AccountId, submitted);
 
             if (submittedStatus == SubmittedStatus.Invalid)
             {
@@ -145,5 +139,38 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             return View("Submitted");
         }
+
+
+        //[Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
+        [Route("OrganisationName")]
+        public IActionResult OrganisationName(string post)
+        {
+            var organisationVM = new OrganisationViewModel
+            {
+                EmployerAccount = EmployerAccount,
+                Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
+            };
+
+            return View("OrganisationName", organisationVM);
+        }
+
+        //[Route("accounts/{employerAccountId}/[controller]/Change")]
+        [Route("Change")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Change(OrganisationViewModel organisationVm)
+        {
+            var reportViewModel = new ReportViewModel
+            {
+                Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
+            };
+
+            reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
+
+            _reportService.SaveReport(reportViewModel.Report);
+
+            return new RedirectResult(Url.Action("Edit", "Report"));
+        }
+
     }
 }

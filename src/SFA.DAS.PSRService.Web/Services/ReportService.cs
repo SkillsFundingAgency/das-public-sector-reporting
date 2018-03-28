@@ -101,9 +101,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
             section = Section;
 
-            var request = new UpdateReportRequest(){Report =  report};
-            var update = _mediator.Send(request);
-
+            SaveReport(report);
         }
 
 
@@ -139,6 +137,12 @@ namespace SFA.DAS.PSRService.Web.Services
         public bool IsSubmissionsOpen()
         {
             return DateTime.UtcNow < _config.SubmissionClose;
+        }
+
+        public void SaveReport(Report report)
+        {
+            var request = new UpdateReportRequest { Report = report };
+            _mediator.Send(request);
         }
 
         private IList<Section> GetSections(Report report)

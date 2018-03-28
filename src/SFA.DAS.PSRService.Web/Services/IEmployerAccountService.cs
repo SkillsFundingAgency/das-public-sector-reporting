@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.Services
     {
         Task<IDictionary<string, EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId);
 
-        string GetCurrentEmployerAccountId(HttpContext routeData);
+        EmployerIdentifier GetCurrentEmployerAccountId(HttpContext routeData);
 
     }
 }
