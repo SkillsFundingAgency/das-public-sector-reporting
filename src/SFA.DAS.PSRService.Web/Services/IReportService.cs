@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
+using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
@@ -16,5 +18,6 @@ namespace SFA.DAS.PSRService.Web.Services
         string GetCurrentReportPeriod();
         string GetCurrentReportPeriodName(string period);
         bool IsSubmissionsOpen();
+        CurrentPeriod GetPeriod(DateTime utcToday);
     }
 }
