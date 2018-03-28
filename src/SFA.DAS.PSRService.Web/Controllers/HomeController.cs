@@ -18,15 +18,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IEmployerAccountService _employerAccountService;
         //private const string EmployerId = "ABCDE"; // TODO: get this from context
 
-        private string EmployerId
-        {
-            get
-            {
-                
-                    return _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
-               
-            }
-        }
+        private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
 
         public HomeController(IReportService reportService, IEmployerAccountService employerAccountService)
         {
@@ -39,7 +31,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var model = new IndexViewModel();
             var period = _reportService.GetCurrentReportPeriod();
        
-            var report = _reportService.GetReport(period, EmployerId);
+            var report = _reportService.GetReport(period, EmployerAccount.AccountId);
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;

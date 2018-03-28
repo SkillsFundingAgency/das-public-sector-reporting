@@ -9,6 +9,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
@@ -22,6 +23,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         protected Mock<IUrlHelper> _mockUrlHelper;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         protected IList<Report> _reportList;
+        private EmployerIdentifier _employerIdentifier;
 
         [SetUp]
         public void SetUp()
@@ -31,11 +33,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockLogging = new Mock<ILogger<ReportController>>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _controller = new ReportController(_mockLogging.Object, _mockReportService.Object,_employeeAccountServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
-                .Returns("ABCDE");
+                .Returns(_employerIdentifier);
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
-                .Returns("ABCDE");
+                .Returns(_employerIdentifier);
 
             _reportList = new List<Report>()
             {

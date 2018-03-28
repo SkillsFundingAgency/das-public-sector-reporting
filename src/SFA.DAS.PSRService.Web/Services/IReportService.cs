@@ -16,5 +16,6 @@ namespace SFA.DAS.PSRService.Web.Services
         string GetCurrentReportPeriod();
         string GetCurrentReportPeriodName(string period);
         bool IsSubmissionsOpen();
+        void SaveReport(Report report);
     }
 }

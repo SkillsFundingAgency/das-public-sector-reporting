@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Models;
 using Microsoft.AspNetCore.Routing;
+using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
@@ -40,13 +41,9 @@ namespace SFA.DAS.PSRService.Web.Services
             }
         }
 
-        public string GetCurrentEmployerAccountId(HttpContext context)
+        public EmployerIdentifier GetCurrentEmployerAccountId(HttpContext context)
         {
-
-            var routeData = context.GetRouteData();
-           
-            var id = routeData.Values["employerAccountId"].ToString();
-            return id;
+            return (EmployerIdentifier) context.Items[ContextItemKeys.EmployerIdentifier];
         }
     }
 }
