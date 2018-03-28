@@ -33,11 +33,11 @@ namespace SFA.DAS.PSRService.Web.Attributes
             { return new ValidationResult(GetErrorMessage(questionType)); }
             break;
           case QuestionType.ShortText:
-            if (value.ToString().Length > 100)
+            if (CountWords(value.ToString()) > 100)
             { return new ValidationResult(GetErrorMessage(questionType)); }
             break;
           case QuestionType.LongText:
-            if (value.ToString().Length > 250)
+            if (CountWords(value.ToString()) > 250)
             { return new ValidationResult(GetErrorMessage(questionType)); }
             break;
           default:
@@ -86,18 +86,39 @@ namespace SFA.DAS.PSRService.Web.Attributes
             break;
           case QuestionType.ShortText:
             MergeAttribute(context.Attributes, "data-word-limit", "100");
-            MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
-            MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){100,}\\s*$/gm");
+            MergeAttribute(context.Attributes, "data-val-maxwords", GetErrorMessage(questionType));
+            MergeAttribute(context.Attributes, "data-val-maxwords-wordcount", "100");
             break;
           case QuestionType.LongText:
             MergeAttribute(context.Attributes, "data-word-limit", "250");
-            MergeAttribute(context.Attributes, "data-val-regex", GetErrorMessage(questionType));
-            MergeAttribute(context.Attributes, "data-val-regex-pattern", "/^\\s*\\S+(?:\\s+\\S+){250,}\\s*$/gm");
+            MergeAttribute(context.Attributes, "data-val-maxwords", GetErrorMessage(questionType));
+            MergeAttribute(context.Attributes, "data-val-maxwords-wordcount", "250");
             break;
           default:
             throw new ArgumentOutOfRangeException();
         }
       }
+    }
+
+    public static int CountWords(string s)
+    {
+      int c = 0;
+      for (int i = 1; i < s.Length; i++)
+      {
+        if (char.IsWhiteSpace(s[i - 1]) == true)
+        {
+          if (char.IsLetterOrDigit(s[i]) == true ||
+              char.IsPunctuation(s[i]))
+          {
+            c++;
+          }
+        }
+      }
+      if (s.Length > 2)
+      {
+        c++;
+      }
+      return c;
     }
 
     private string GetErrorMessage(QuestionType questionType)

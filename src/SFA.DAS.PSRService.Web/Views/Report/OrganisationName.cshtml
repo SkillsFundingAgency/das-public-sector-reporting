@@ -3,43 +3,29 @@
 @{
     ViewData["Title"] = "Public sector reporting";
 }
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        <h1 class="heading-large">
+            @* @Model.CurrentSection.Title *@
+            Your organisation
+        </h1>
 
+        <h2 class="heading-large">
+            @Model.EmployerAccount.EmployerName
+            <span class="heading-secondary">Org number: @Model.EmployerAccount.AccountId</span>
+        </h2>
 
-@*<h2 class="heading-small">Organisation</h2>*@
-
-
-<table class="">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <h1 class="heading-xlarge">Your Organisation</h1>
-            <h2 class="heading-large">@Model.EmployerAccount.EmployerName</h2>
-            <h2 class="heading-medium">Org number: @Model.EmployerAccount.AccountId</h2>
-
-            @*<td class="numeric" style="font-weight:700; font-size:16px;">@Model</td>*@
-            <h2 class="heading-medium">What is the name of the organisation you would like to report on?</h2>
-
-            @*<td class="looks-like-a-link-underline">Change</td>*@
-        </tr>
-
-    </tbody>
-
-</table>
-<form id="myFormId" asp-action="Change">
-    @*<fieldset>*@
-    <div class="form-group">
-        @*<textarea class="form-control form-control-3-4" name="textarea" id="textarea" rows="1" asp-for="Report.OrganisationName">@Model.Report.OrganisationName</textarea>*@
-        <input type="text" class="form-control" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
-        <input class="button" type="submit" value="Change">
+        <form id="myFormId" asp-action="Change">
+            <fieldset>
+                <div class="form-group">
+                    <label class="form-label-bold" asp-for="Report.OrganisationName">
+                        What is the name of the organisation you would like to report on?
+                    </label>
+                    <input type="text" class="form-control" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
+                </div>
+                    <input class="button" type="submit" value="Continue">
+            </fieldset>
+        </form>
     </div>
-        @*<div class="form-group">
-            
-        </div>*@
-    @*</fieldset>*@
-</form>
+</div>
