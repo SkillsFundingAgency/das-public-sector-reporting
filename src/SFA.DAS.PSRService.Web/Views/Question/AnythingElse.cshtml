@@ -14,6 +14,7 @@
                 <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
             </label>
         </h1>
+        <span class="form-hint">For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</span>
         <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
         <input type="hidden" name="Section.Questions[0].Type" value="@Model.Questions.ToArray()[0].Type" />
         <textarea class="js-word-limit form-control form-control-3-4" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" rows="8"></textarea>

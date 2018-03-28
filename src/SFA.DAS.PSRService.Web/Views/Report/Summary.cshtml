@@ -9,6 +9,10 @@
 
 <div class="grid-row">
     <div class="column-full review-details">
+        @if (Model.SubmitValid)
+        {
+            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        }
         <form action="Submit">
 
             @if (Model.SubmitValid)
@@ -47,6 +51,10 @@
             @if (Model.SubmitValid)
             {
                 <button class="button" type="submit">Submit</button>
+            }
+            else
+            {
+                <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
             }
 
         </form>
