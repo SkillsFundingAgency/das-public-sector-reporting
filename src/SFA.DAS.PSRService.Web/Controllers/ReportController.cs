@@ -140,7 +140,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Submitted");
         }
 
-
         //[Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
         [Route("OrganisationName")]
         public IActionResult OrganisationName(string post)
@@ -150,6 +149,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 EmployerAccount = EmployerAccount,
                 Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
             };
+
+            if (organisationVM.Report == null)
+                return new RedirectResult(Url.Action("Index", "Home"));
 
             return View("OrganisationName", organisationVM);
         }
@@ -164,6 +166,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
                 Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
             };
+
+            if (reportViewModel.Report == null)
+                return new RedirectResult(Url.Action("Index", "Home"));
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
