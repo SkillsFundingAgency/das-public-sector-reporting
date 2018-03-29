@@ -21,6 +21,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
            
             _mockReportService.Setup(s => s.SubmitReport(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<Submitted>())).Returns(SubmittedStatus.Submitted);
+            _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             // act
             var result = _controller.Submit("1718");
 
