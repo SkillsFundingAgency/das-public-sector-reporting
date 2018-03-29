@@ -31,7 +31,7 @@
             {
                 <tr>
                     <th scope="row">@result.OrganisationName</th>
-                    <td>@result.ReportingPeriod</td>
+                    <td>@Model.Periods[result.ReportingPeriod].FullString</td>
                     <td class="link-right"><a href="../Report/Summary/@result.ReportingPeriod">View</a></td>
                 </tr>
             }

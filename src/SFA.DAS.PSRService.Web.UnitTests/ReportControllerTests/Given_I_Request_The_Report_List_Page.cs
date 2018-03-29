@@ -10,6 +10,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -25,7 +26,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
             // arrange
            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(_reportList);
-
+            _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             // act
             var result = _controller.List();
 
