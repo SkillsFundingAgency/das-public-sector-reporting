@@ -110,6 +110,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 if (report.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
 
+                TryValidateModel(report);
+
                 return View("Summary", report);
             }
             catch (Exception ex)
@@ -120,6 +122,18 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("Submit")]
         public IActionResult Submit(string period)
         {
+            if (period == null)
+                period = _reportService.GetCurrentReportPeriod();
+
+            var report = new ReportViewModel();
+            report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
+
+            TryValidateModel(report);
+            if (ModelState.IsValid == false)
+            {
+                return new RedirectResult(Url.Action("Summary", "Report"));
+            }
+
 
             var user = _userService.GetUserModel(this.User);
 
@@ -131,8 +145,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             submitted.SubmttedBy = user.Id.ToString();
             submitted.UniqueReference = "NotAUniqueReference";
 
-            if (period == null)
-                period = _reportService.GetCurrentReportPeriod();
+ 
 
             var submittedStatus = _reportService.SubmitReport(period, EmployerAccount.AccountId, submitted);
 
