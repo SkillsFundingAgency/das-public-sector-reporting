@@ -9,11 +9,11 @@
 
 <div class="grid-row">
     <div class="column-full review-details">
+        @if (Model.SubmitValid)
+        {
+            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        }
         <form action="Submit">
-            <legend>
-                <h1 class="heading-xlarge">Review details</h1>
-                <p>Check or amend your information before you continue</p>
-            </legend>
 
             @if (Model.SubmitValid)
             {
@@ -36,28 +36,16 @@
                     <tbody>
                         <tr>
                             <td>Reporting period</td>
-                            <td class="bold-xsmall">1 April 2017 to 31 March 2018</td>
+                            <td class="numeric bold-xsmall">1 April 2017 to 31 March 2018</td>
                             <td class="link-right"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="form-group">
-                <table>
-                    <caption class="heading-small">Reporting period</caption>
-                    <tbody>
-                    <tr>
-                        <td>Reporting period</td>
-                        <td class="bold-xsmall">1 April 2017 to 31 March 2018</td>
-                        <td class="link-right"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
             @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
             @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @Html.Partial("Question/ReportingPercentages", @Model.Percentages)
             @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
@@ -65,8 +53,10 @@
             {
                 <button class="button" type="submit">Submit</button>
             }
-
-
+            else
+            {
+                <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+            }
 
         </form>
 

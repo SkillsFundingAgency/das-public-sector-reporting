@@ -11,7 +11,7 @@
         <p>Use this step by step list to help you report your progress towards meeting the public sector apprenticeship target:</p>
 
         <ol class="task-list">
-            @Html.Partial("Sections/OrganisationName")
+            @Html.Partial("Sections/OrganisationName", Model)
 
             @if (Model.Report.Sections != null)
             {

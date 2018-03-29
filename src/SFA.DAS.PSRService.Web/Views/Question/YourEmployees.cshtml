@@ -18,10 +18,22 @@
             <span class="summary">Who counts as an employee</span>
         </summary>
         <div class="panel panel-border-narrow">
+            <p class="heading-small">You should include the following staff when calculating your employee numbers:</p>
             <ul class="list-bullet">
-                <li>people who have a contract of employment with your organisation</li>
-                <li>workers and agency workers (those with a contract to do work or provide services)</li>
-                <li>some self-employed people (where they must personally perform the work)</li>
+                <li>anyone on your payroll on whose behalf you make National Insurance contributions</li>
+                <li>staff on fixed-term contracts</li>
+                <li>staff on maternity, paternity or adoption leave</li>
+                <li>staff on sick leave or extended paid leave</li>
+                <li>apprentices employed by the public body through an Apprenticeship Training Agency</li>
+                <li>employees on secondment or loan if you are paying more than 50% of their wages</li>
+            </ul>
+            <p class="heading-small">Do not include:</p>
+            <ul class="list-bullet">
+                <li>anyone employed through employment agencies</li>
+                <li>those working on a zero-hour contract</li>
+                <li>bank staff</li>
+                <li>employees in sub-contracted organisations who are not paid directly from your payroll</li>
+                <li>those on career breaks</li>
             </ul>
         </div>
     </details>
@@ -34,7 +46,7 @@
         </label>
         <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" asp-valmsg-for="Section.Questions[0].Answer"></span>
         <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer"  name="Section.Questions[0].Answer" value="@questionsList[0].Answer"/>
+        <input type="text" class="form-control form-control-1-3" asp-for="@Model.Questions.ToArray()[0].Answer"  name="Section.Questions[0].Answer" value="@questionsList[0].Answer"/>
     </div>
 </fieldset>
 <fieldset>
@@ -44,7 +56,7 @@
             <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer" />
+        <input type="text" class="form-control form-control-1-3" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer" />
 </fieldset>
 <fieldset>
     <div class="form-group">
@@ -53,6 +65,6 @@
             <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[2].Answer" value="@questionsList[2].Answer"/>
+        <input type="text" class="form-control form-control-1-3" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[2].Answer" value="@questionsList[2].Answer"/>
     </div>
 </fieldset>

@@ -60,6 +60,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     options.Authority = _configuration.Identity.Authority;
                     options.ResponseType = _configuration.Identity.ResponseType;
                     options.SaveTokens = _configuration.Identity.SaveTokens;
+                    
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
                     {
@@ -68,6 +69,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
+                  
              
                 })
                 .AddCookie();

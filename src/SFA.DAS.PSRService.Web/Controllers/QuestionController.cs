@@ -24,10 +24,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
        
         // private string employeeId;
 
-        private string EmployerId { get
-            {
-                return _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
-            } }
+        private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
 
 
         public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService)
@@ -41,9 +38,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Index(string id)
         {
 
+            
+
             var sectionViewModel = new SectionViewModel();
 
-            sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerId);
+            sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);
 
             if (sectionViewModel.Report == null || _reportService.IsSubmitValid(sectionViewModel.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -68,12 +67,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Index", sectionViewModel);
         }
 
+
+
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Submit(SectionViewModel Section)
         {
-            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerId);
+            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerAccount.AccountId);
             Section.CurrentSection = _reportService.GetQuestionSection(Section.CurrentSection.Id, Section.Report);
 
             if (Section.Report == null || _reportService.IsSubmitValid(Section.Report) == false)

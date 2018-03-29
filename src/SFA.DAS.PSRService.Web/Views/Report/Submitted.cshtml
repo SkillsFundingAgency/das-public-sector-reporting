@@ -1,8 +1,22 @@
 ﻿@model object
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Report submitted";
     Layout = "_Layout";
 }
 
-<h2>Report submitted</h2>
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <div class="govuk-box-highlight">
+            <h1 class="heading-xlarge">Report submitted</h1>
+            <p class="font-medium">
+                for the period <br>
+                <strong class="bold">1 April 2017 to 31 March 2018</strong>
+            </p>
+        </div>
+        <p>The report has been submitted to the Department for Education.</p>
+        @*<p><a href="./Summary">View the submitted report</a></p>*@
+
+        <a href="https://at-empc.apprenticeships.sfa.bis.gov.uk/commitments/accounts/MLL47K/apprentices/home" class="button">Close</a>
+    </div>
+</div>

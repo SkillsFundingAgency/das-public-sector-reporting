@@ -1,0 +1,31 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.OrganisationViewModel
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+}
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        <h1 class="heading-xlarge">
+            @* @Model.CurrentSection.Title *@
+            Your organisation
+        </h1>
+
+        <h2 class="heading-medium">
+            @Model.EmployerAccount.EmployerName
+            @*<span class="heading-secondary">Account ID: @Model.EmployerAccount.AccountId</span>*@
+        </h2>
+
+        <form id="myFormId" asp-action="Change">
+            <fieldset>
+                <div class="form-group">
+                    <label class="form-label-bold" asp-for="Report.OrganisationName">
+                        What is the name of the organisation you would like to report on?
+                    </label>
+                    <input type="text" class="form-control" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
+                </div>
+                    <input class="button" type="submit" value="Continue">
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Models;
+using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
@@ -18,6 +19,8 @@ namespace SFA.DAS.PSRService.Web.Services
         string GetCurrentReportPeriod();
         string GetCurrentReportPeriodName(string period);
         bool IsSubmissionsOpen();
+        void SaveReport(Report report);
+        ReportingPercentages CalculatePercentages(Report report);
         CurrentPeriod GetPeriod(DateTime utcToday);
     }
 }

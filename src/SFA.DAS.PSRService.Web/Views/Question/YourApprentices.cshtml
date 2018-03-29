@@ -17,10 +17,9 @@
             <span class="summary">Who counts as an apprentice</span>
         </summary>
         <div class="panel panel-border-narrow">
+            <p class="heading-small">You should include the following staff when calculating your apprentice numbers:</p>
             <ul class="list-bullet">
-                <li>????</li>
-                <li>????</li>
-                <li>Page 9 of the guidance has this list</li>
+                <li>anyone doing an approved English apprenticeship framework or standard with an apprenticeship agreement in place</li>
             </ul>
         </div>
     </details>
@@ -32,26 +31,27 @@
             <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
-        <input type="text" class="form-control" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" />
+        <input type="text" class="form-control form-control-1-3" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" />
     </div>
 </fieldset>
 <fieldset>
     <div class="form-group">
         <label class="form-label-bold" for="apprentices-england-last-march">
-            Number of apprentices who were working in England on 31 March 2017
+            Number of apprentices who were working in England on 31 March 2018
             <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-        <input type="text"  class="form-control"  asp-for="@Model.Questions.ToArray()[1].Answer"  name="Section.Questions[1].Answer" value="@questionsList[1].Answer" />
+        <input type="text"  class="form-control form-control-1-3"  asp-for="@Model.Questions.ToArray()[1].Answer"  name="Section.Questions[1].Answer" value="@questionsList[1].Answer" />
     </div>
 </fieldset>
 <fieldset>
     <div class="form-group">
         <label class="form-label-bold" for="new-apprentices-within-year">
-            Number of apprentices who were working in England on 31 March 2017
+            Number of new apprentices in England whose apprenticeship agreements started between 1 April 2017 and 31 March 2018
+            <span class="form-hint">This includes both new hires and existing employees who started an apprenticeship</span>
             <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
         </label>
         <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
-        <input type="text"  class="form-control" asp-for="@Model.Questions.ToArray()[2].Answer"  name="Section.Questions[2].Answer" value="@questionsList[2].Answer" />
+        <input type="text"  class="form-control form-control-1-3" asp-for="@Model.Questions.ToArray()[2].Answer"  name="Section.Questions[2].Answer" value="@questionsList[2].Answer" />
     </div>
 </fieldset>
