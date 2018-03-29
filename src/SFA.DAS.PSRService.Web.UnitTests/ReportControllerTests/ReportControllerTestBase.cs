@@ -34,7 +34,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockLogging = new Mock<ILogger<ReportController>>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-            _controller = new ReportController(_mockLogging.Object, _mockReportService.Object,_employeeAccountServiceMock.Object, _userServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new ReportController(_mockLogging.Object, _mockReportService.Object,_employeeAccountServiceMock.Object, _userServiceMock.Object, null) { Url = _mockUrlHelper.Object };
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))

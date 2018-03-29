@@ -29,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
          _EmployerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
-            _controller = new QuestionController(_reportService.Object,_EmployerAccountServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new QuestionController(_reportService.Object,_EmployerAccountServiceMock.Object, null) { Url = _mockUrlHelper.Object };
             _reportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 

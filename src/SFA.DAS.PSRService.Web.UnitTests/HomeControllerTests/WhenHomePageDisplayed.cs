@@ -67,7 +67,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             Assert.IsTrue(model.CanCreateReport);
             Assert.IsFalse(model.CanEditReport);
             Assert.AreEqual(periodName, model.PeriodName);
-            Assert.AreEqual("beetroot", model.DomainRootUrl);
         }
 
         [Test]

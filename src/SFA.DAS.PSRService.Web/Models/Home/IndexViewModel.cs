@@ -10,6 +10,5 @@ namespace SFA.DAS.PSRService.Web.Models.Home
         public bool CanCreateReport { get;set; }
         public bool CanEditReport { get; set; }
         public string PeriodName { get; set; }
-        public string DomainRootUrl { get; set; }
     }
 }
