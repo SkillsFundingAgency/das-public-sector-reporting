@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -11,13 +10,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.Middleware;
-using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
 {
@@ -49,8 +45,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 {
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    // sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
+                    sharedOptions.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
                 .AddOpenIdConnect(options =>
                 {
@@ -60,17 +55,18 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     options.Authority = _configuration.Identity.Authority;
                     options.ResponseType = _configuration.Identity.ResponseType;
                     options.SaveTokens = _configuration.Identity.SaveTokens;
+
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
                     {
                         options.Scope.Add(scope);
                     }
+
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
-             
                 })
-                .AddCookie();
+                .AddCookie(options => options.ExpireTimeSpan = TimeSpan.FromHours(1));
         }
 
         private static IEnumerable<string> GetScopes()
