@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.ViewModels
 {
@@ -10,6 +11,8 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public Section CurrentSection { get; set; }
 
         public IList<QuestionViewModel> Questions { get; set; }
+
+        public CurrentPeriod CurrentPeriod { get; set; }
         
     }
 }
