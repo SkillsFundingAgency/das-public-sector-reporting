@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         {
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object);
+            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, null);
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
