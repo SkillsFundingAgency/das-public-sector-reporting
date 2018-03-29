@@ -19,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _controller = new HomeController(null,_employeeAccountServiceMock.Object) {Url = _mockUrlHelper.Object};
+            _controller = new HomeController(null,_employeeAccountServiceMock.Object, null) {Url = _mockUrlHelper.Object};
         }
 
         [Test]
