@@ -33,6 +33,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
+            model.DomainRootUrl = _webConfiguration.RootDomainUrl;
             return View(model);
         }
 
