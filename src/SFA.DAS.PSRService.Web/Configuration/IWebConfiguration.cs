@@ -9,5 +9,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         AccountApiConfiguration AccountsApi { get; set; }
         string SqlConnectionString { get; set; }
         DateTime SubmissionClose { get; set; }
+        string RootDomainUrl { get; set; }
     }
 }
