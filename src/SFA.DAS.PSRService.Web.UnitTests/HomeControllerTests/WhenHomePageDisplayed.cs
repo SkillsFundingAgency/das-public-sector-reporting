@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
@@ -21,13 +22,17 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         private Mock<IReportService> _mockReportService;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         private EmployerIdentifier _employerIdentifier;
+        private IWebConfiguration _webConfiguration;
 
         [SetUp]
         public void SetUp()
         {
+            _webConfiguration = new WebConfiguration();
+            _webConfiguration.RootDomainUrl = "beetroot";
+
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object);
+            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration);
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
@@ -62,6 +67,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             Assert.IsTrue(model.CanCreateReport);
             Assert.IsFalse(model.CanEditReport);
             Assert.AreEqual(periodName, model.PeriodName);
+            Assert.AreEqual("beetroot", model.DomainRootUrl);
         }
 
         [Test]

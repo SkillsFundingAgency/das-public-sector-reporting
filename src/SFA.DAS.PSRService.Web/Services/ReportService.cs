@@ -8,6 +8,7 @@ using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.ViewModels;
+using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
@@ -106,27 +107,65 @@ namespace SFA.DAS.PSRService.Web.Services
         }
 
 
-        public string GetCurrentReportPeriod(DateTime utcToday)
+        public string GetReportPeriod(DateTime utcToday)
+        {
+            var year = GetReportPeriodYear(utcToday);
+            return string.Concat((year -1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
+        }
+
+        private static int GetReportPeriodYear(DateTime utcToday)
         {
             var year = utcToday.Year;
             if (utcToday.Month < 4) year--;
-            return string.Concat((year - 1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
+            return year;
         }
+
+        public CurrentPeriod GetPeriod(DateTime utcToday)
+        {
+            var currentPeriod = new CurrentPeriod();
+
+            var endYear = GetReportPeriodYear(utcToday);
+
+            currentPeriod.EndYear = endYear.ToString();
+            currentPeriod.StartYear = (endYear - 1).ToString();
+            currentPeriod.FullString = GetCurrentReportPeriodName(currentPeriod.StartYear + currentPeriod.EndYear);
+
+            return currentPeriod;
+        }
+        public CurrentPeriod GetPeriod(string period)
+        {
+            var currentPeriod = new CurrentPeriod();
+
+            var startYear = ConvertPeriodStringToYear(period);
+
+            currentPeriod.EndYear = (startYear+1).ToString();
+            currentPeriod.StartYear = (startYear).ToString();
+            currentPeriod.FullString = GetCurrentReportPeriodName(period);
+
+            return currentPeriod;
+        }
+
 
         public string GetCurrentReportPeriod()
         {
-            return GetCurrentReportPeriod(DateTime.UtcNow.Date);
+            return GetReportPeriod(DateTime.UtcNow.Date);
         }
 
 
         public string GetCurrentReportPeriodName(string period)
         {
+            var year = ConvertPeriodStringToYear(period);
+
+            return $"1 April {year} to 31 March {year + 1}";
+        }
+
+        private static int ConvertPeriodStringToYear(string period)
+        {
             if (period == null || period.Length != 4)
                 throw new ArgumentException("Period string has to be 4 chars", nameof(period));
 
             var year = int.Parse(period.Substring(0, 2)) + 2000;
-
-            return $"1 April {year} to 31 March {year + 1}";
+            return year;
         }
 
         private bool IsCurrentPeriod(string reportingPeriod)

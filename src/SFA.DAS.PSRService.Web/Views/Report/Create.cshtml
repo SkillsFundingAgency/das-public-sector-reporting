@@ -1,25 +1,25 @@
 ﻿@model object
 
 @{
-    ViewBag.Title = "Report 2017 to 2018 public sector apprenticeship target data";
+    ViewBag.Title = $"Report {ViewBag.CurrentPeriod.StartYear} to {ViewBag.CurrentPeriod.EndYear} public sector apprenticeship target data";
     Layout = "_Layout";
 }
 
 <div class="column-two-thirds">
-    <h1 class="heading-large">Report 2017 to 2018 public sector apprenticeship target data</h1>
-    <p>This report covers the period between 1 April 2017 and 31 March 2018.</p>
+    <h1 class="heading-large">Report @ViewBag.CurrentPeriod.StartYear to @ViewBag.CurrentPeriod.EndYear public sector apprenticeship target data</h1>
+    <p>This report covers the period between @ViewBag.CurrentPeriod.FullString</p>
     <p>
         It must be completed by:
     </p>
     <ul class="list list-bullet">
-        <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March 2017</li>
+        <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March @ViewBag.CurrentPeriod.StartYear</li>
     </ul>
 
     <details>
         <summary>
             <span class="summary">The following public bodies are exempt</span>
         </summary>
-        <div class="panel panel-border-narrow">
+        <div class="panel panel-border-wide">
             <ul class="list list-bullet">
                 <li>charities</li>
                 <li>further education colleges</li>
@@ -39,7 +39,7 @@
         <summary>
             <span class="summary">How we will use the information you give us</span>
         </summary>
-        <div class="panel panel-border-narrow">
+        <div class="panel panel-border-wide">
             <ul class="list list-bullet">
                 <li>We (the Department for Education) will use the information submitted to assess your organisation’s progress towards meeting the public sector apprenticeships target</li>
                 <li>We will publish statistics featuring the figures and organisation name you provide</li>
@@ -51,7 +51,7 @@
 
     <div class="panel panel-border-wide">
         <p>
-            Submissions deadline - 30 September 2018
+            Submissions deadline - 30 September @ViewBag.CurrentPeriod.EndYear
         </p>
     </div>
     
@@ -80,7 +80,12 @@
 
     
     <form method="post">
-        <button class="button button-start" type="submit">START</button>
+        <div class="form-group">
+            <button class="button button-start" type="submit">START</button>
+        </div>
     </form>
 
+    <p>
+        <a target="_blank" rel="external" href="https://www.gov.uk/government/publications/public-sector-apprenticeship-target">Detailed information about the public sector apprenticeship target</a>
+    </p>
 </div>

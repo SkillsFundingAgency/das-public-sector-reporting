@@ -1,7 +1,7 @@
 ﻿@model SFA.DAS.PSRService.Web.ViewModels.OrganisationViewModel
 
 @{
-    ViewData["Title"] = "Public sector reporting";
+    ViewData["Title"] = "Your organisation";
 }
 <div class="grid-row">
     <div class="column-two-thirds">
@@ -22,7 +22,7 @@
                     <label class="form-label-bold" asp-for="Report.OrganisationName">
                         What is the name of the organisation you would like to report on?
                     </label>
-                    <input type="text" class="form-control" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
+                    <input type="text" class="form-control form-control-3-4" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
                 </div>
                     <input class="button" type="submit" value="Continue">
             </fieldset>

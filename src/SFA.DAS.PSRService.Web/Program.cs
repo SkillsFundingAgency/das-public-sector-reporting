@@ -30,6 +30,7 @@ namespace SFA.DAS.PSRService.Web
             IHostingEnvironment hostingEnvironment = null;
 
             return WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                 .ConfigureServices(
                     services =>
                     {

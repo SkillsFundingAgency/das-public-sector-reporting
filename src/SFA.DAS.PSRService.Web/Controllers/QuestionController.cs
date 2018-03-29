@@ -43,6 +43,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var sectionViewModel = new SectionViewModel();
 
             sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);
+            sectionViewModel.CurrentPeriod = _reportService.GetPeriod(sectionViewModel.Report.ReportingPeriod);
 
             if (sectionViewModel.Report == null || _reportService.IsSubmitValid(sectionViewModel.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));

@@ -1,9 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.WebSockets.Internal;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
@@ -16,14 +20,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly IReportService _reportService;
         private readonly IEmployerAccountService _employerAccountService;
+        private readonly IWebConfiguration _webConfiguration;
         //private const string EmployerId = "ABCDE"; // TODO: get this from context
 
         private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
 
-        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService)
+        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration)
         {
             _reportService = reportService;
             _employerAccountService = employerAccountService;
+            _webConfiguration = webConfiguration;
         }
 
         public IActionResult Index()
@@ -35,6 +41,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
+            model.DomainRootUrl = _webConfiguration.RootDomainUrl;
             return View(model);
         }
 
@@ -58,10 +65,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync("Cookies");
-            await HttpContext.SignOutAsync("oidc");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
 
-            return Redirect("https://www.google.co.uk");
+            var disco = await DiscoveryClient.GetAsync(_webConfiguration.Identity.Authority);
+            return Redirect(disco.EndSessionEndpoint);
         }
 
         [Authorize]
