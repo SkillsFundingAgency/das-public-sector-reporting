@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.WebSockets.Internal;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
@@ -16,20 +14,14 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IReportService _reportService;
-        private readonly IEmployerAccountService _employerAccountService;
-        private readonly IWebConfiguration _webConfiguration;
-        //private const string EmployerId = "ABCDE"; // TODO: get this from context
 
-        private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
-
-        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration)
+        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration) 
+            : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
-            _employerAccountService = employerAccountService;
-            _webConfiguration = webConfiguration;
         }
 
         public IActionResult Index()
@@ -41,7 +33,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
-            model.DomainRootUrl = _webConfiguration.RootDomainUrl;
             return View(model);
         }
 
@@ -49,6 +40,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             if (action == "create")
                 return new RedirectResult(Url.Action("Create", "Report"));
+
             if (action == "edit")
                 return new RedirectResult(Url.Action("Edit", "Report"));
 

@@ -87,7 +87,7 @@
             <div class="header-proposition">
                 <div class="content">
                     <nav id="proposition-menu">
-                        <a id="proposition-name" href="https://at-empc.apprenticeships.sfa.bis.gov.uk/commitments/accounts/MLL47K/apprentices/home">Manage apprenticeships</a>
+                        <a id="proposition-name" href="@ViewData["HomeUrl"]">Manage apprenticeships</a>
                     </nav>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                     <p class="floating-head-text">Public sector reporting</p>
                     <nav id="user-nav">
                         <ul role="menubar">
-                            <li><a href="https://at-empc.apprenticeships.sfa.bis.gov.uk/service/help">Help</a></li>
+                            <li><a href="@ViewData["RootUrl"]/service/help">Help</a></li>
                             @*
                             @if (HttpContext.Current.User.Identity.IsAuthenticated)
                             {

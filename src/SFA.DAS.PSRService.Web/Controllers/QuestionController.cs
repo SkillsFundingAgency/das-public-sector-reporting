@@ -1,45 +1,27 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
-    public class QuestionController : Controller
+    public class QuestionController : BaseController
     {
         private readonly IReportService _reportService;
-        private readonly IEmployerAccountService _employerAccountService;
-       
-        // private string employeeId;
 
-        private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
-
-
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService)
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration) 
+            : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
-            _employerAccountService = employerAccountService;
-
-            
         }
+
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         public IActionResult Index(string id)
         {
-
-            
-
             var sectionViewModel = new SectionViewModel();
 
             sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);

@@ -1,12 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -14,26 +12,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
     [Route("accounts/{employerAccountId}/Report")]
-    public class ReportController : Controller
+    public class ReportController : BaseController
     {
         private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
-        private readonly IEmployerAccountService _employerAccountService;
-
         private readonly IUserService _userService;
-        //private string employerId = "ABCDE";
 
-        private EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
-
-        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService)
+        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration) 
+            : base(webConfiguration, employerAccountService)
         {
             _logger = logger;
             _reportService = reportService;
-            _employerAccountService = employerAccountService;
             _userService = userService;
         }
-
-    
     
         public IActionResult Edit(string period)
         {

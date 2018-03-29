@@ -16,5 +16,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public DateTime SubmissionClose { get; set; }
         [JsonRequired]
         public string RootDomainUrl { get; set; }
+        [JsonRequired]
+        public string HomeUrl { get; set; }
     }
 }

@@ -10,5 +10,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         string SqlConnectionString { get; set; }
         DateTime SubmissionClose { get; set; }
         string RootDomainUrl { get; set; }
+        string HomeUrl { get; set; }
     }
 }
