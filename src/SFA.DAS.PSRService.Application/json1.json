@@ -25,5 +25,6 @@
     "Tenant": " "
   },
   "SqlConnectionstring": "Data Source=.;Initial Catalog=SFA.DAS.PSRService;Integrated Security=True; MultipleActiveResultSets=True;",
-  "SubmissionClose": "2018-10-1T00:00:00.000Z"
+  "SubmissionClose": "2018-10-1T00:00:00.000Z",
+  "RootDomainUrl":  "http://www.kremlin.ru/" 
 }
