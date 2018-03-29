@@ -11,7 +11,7 @@
         <caption class="heading-small">Number of employees who work in England</caption>
         <tbody>
             <tr>
-                <td>Number of employees who were working in England on 31 March 2017</td>
+                <td>Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear</td>
                 <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
                 <td class="link-right">
                     @if (submitValid)
@@ -21,7 +21,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Number of employees who were working in England on 31 March 2018</td>
+                <td>Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear</td>
                 <td class="numeric bold-xsmall">@questionList["atEnd"].Answer</td>
                 <td class="link-right">
                     @if (submitValid)
@@ -31,7 +31,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Number of new employees who started working for you in England between 1 April 2017 and 31 March 2018</td>
+                <td>Number of new employees who started working for you in England between @ViewBag.CurrentPeriod.FullString</td>
                 <td class="numeric bold-xsmall">@questionList["newThisPeriod"].Answer</td>
                 <td class="link-right">
                     @if (submitValid)

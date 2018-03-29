@@ -27,10 +27,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         [Test]
         public void TestCurrentPeriod()
         {
-            var period1 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 9, 30));
-            var period2 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 10, 1));
-            var period3 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 4, 1));
-            var period4 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 3, 31));
+            var period1 = _reportService.GetReportPeriod(new DateTime(2017, 9, 30));
+            var period2 = _reportService.GetReportPeriod(new DateTime(2017, 10, 1));
+            var period3 = _reportService.GetReportPeriod(new DateTime(2017, 4, 1));
+            var period4 = _reportService.GetReportPeriod(new DateTime(2017, 3, 31));
 
             Assert.AreEqual("1617", period1);
             Assert.AreEqual("1617", period2);
@@ -42,10 +42,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         [Test]
         public void TestCurrentPeriodName()
         {
-            var period1 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 9, 30));
-            var period2 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 10, 1));
-            var period3 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 4, 1));
-            var period4 = _reportService.GetCurrentReportPeriod(new DateTime(2017, 3, 31));
+            var period1 = _reportService.GetReportPeriod(new DateTime(2017, 9, 30));
+            var period2 = _reportService.GetReportPeriod(new DateTime(2017, 10, 1));
+            var period3 = _reportService.GetReportPeriod(new DateTime(2017, 4, 1));
+            var period4 = _reportService.GetReportPeriod(new DateTime(2017, 3, 31));
 
             var periodName1 = _reportService.GetCurrentReportPeriodName(period1);
             var periodName2 = _reportService.GetCurrentReportPeriodName(period2);
