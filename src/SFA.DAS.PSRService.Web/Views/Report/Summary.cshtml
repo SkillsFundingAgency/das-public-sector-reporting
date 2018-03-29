@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Review details";
+    ViewBag.Title = Model.SubmitValid ? "Review details" : "Submitted details";
     Layout = "_Layout";
 
     ViewBag.SubmitValid = Model.SubmitValid;
