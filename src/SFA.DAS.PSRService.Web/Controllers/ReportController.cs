@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -81,6 +82,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var reportListViewmodel = new ReportListViewModel();
 
             reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId);
+
+           reportListViewmodel.Periods = new Dictionary<string, CurrentPeriod>();
+
+            foreach (var submittedReport in reportListViewmodel.SubmittedReports)
+            {
+                if (reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod) == false)
+                     reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod,_reportService.GetPeriod(submittedReport.ReportingPeriod));
+            }
+
+
 
             return View("List", reportListViewmodel);
         }

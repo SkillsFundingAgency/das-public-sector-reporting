@@ -29,9 +29,14 @@ namespace SFA.DAS.PSRService.Web.ViewModels
             }
             else
             {
-                foreach (var section in Report.Sections.SelectMany(s => s.SubSections).Where(w => w.CompletionStatus != CompletionStatus.Optional && w.CompletionStatus != CompletionStatus.Completed))
+                if (Report?.Sections != null)
                 {
-                    validationResults.Add(new ValidationResult($"{section.SummaryText} questions are mandatory"));
+                    foreach (var section in Report.Sections.SelectMany(s => s.SubSections).Where(w =>
+                        w.CompletionStatus != CompletionStatus.Optional &&
+                        w.CompletionStatus != CompletionStatus.Completed))
+                    {
+                        validationResults.Add(new ValidationResult($"{section.SummaryText} questions are mandatory"));
+                    }
                 }
 
                 return validationResults;
