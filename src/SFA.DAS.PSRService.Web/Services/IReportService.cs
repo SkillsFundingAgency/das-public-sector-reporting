@@ -22,5 +22,6 @@ namespace SFA.DAS.PSRService.Web.Services
         void SaveReport(Report report);
         ReportingPercentages CalculatePercentages(Report report);
         CurrentPeriod GetPeriod(DateTime utcToday);
+        CurrentPeriod GetPeriod(string period);
     }
 }

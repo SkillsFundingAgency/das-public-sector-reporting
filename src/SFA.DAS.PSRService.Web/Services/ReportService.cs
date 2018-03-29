@@ -136,11 +136,11 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             var currentPeriod = new CurrentPeriod();
 
-            var endYear = ConvertPeriodStringToYear(period);
+            var startYear = ConvertPeriodStringToYear(period);
 
-            currentPeriod.EndYear = endYear.ToString();
-            currentPeriod.StartYear = (endYear - 1).ToString();
-            currentPeriod.FullString = GetCurrentReportPeriodName(currentPeriod.StartYear + currentPeriod.EndYear);
+            currentPeriod.EndYear = (startYear+1).ToString();
+            currentPeriod.StartYear = (startYear).ToString();
+            currentPeriod.FullString = GetCurrentReportPeriodName(period);
 
             return currentPeriod;
         }
