@@ -107,7 +107,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             sections.Add(SectionThree);
              report = new Report()
             {
-                ReportingPeriod = "1617",
+                ReportingPeriod = "1718",
                 Sections = sections
             };
 
