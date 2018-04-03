@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
@@ -18,13 +20,20 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         //report doesnt exist
             
         [Test]
-        [Ignore("Currently broke")]
+     
         public void The_Report_Is_Valid_To_Submit_Then_Submit()
         {
            
             _mockReportService.Setup(s => s.SubmitReport(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<Submitted>())).Returns(SubmittedStatus.Submitted);
             _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report());
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                It.IsAny<ValidationStateDictionary>(),
+                It.IsAny<string>(),
+                It.IsAny<Object>()));
+            _controller.ObjectValidator = objectValidator.Object;
             // act
             var result = _controller.Submit("1718");
 
@@ -38,7 +47,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         }
 
         [Test]
-        [Ignore("Currently broke")]
+      
         public void The_Report_Is_Not_Valid_To_Submit_Then_Redirect_Home()
         {
             var ApprenticeQuestions = new List<Question>()
@@ -134,6 +143,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 SubmittedDetails = new Submitted(),
                 Submitted = true
             };
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                It.IsAny<ValidationStateDictionary>(),
+                It.IsAny<string>(),
+                It.IsAny<Object>()));
+            _controller.ObjectValidator = objectValidator.Object;
+
             // arrange
             var url = "home/Index";
             UrlActionContext actualContext = null;
