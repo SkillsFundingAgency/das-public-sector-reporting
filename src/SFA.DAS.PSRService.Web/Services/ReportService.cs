@@ -120,18 +120,6 @@ namespace SFA.DAS.PSRService.Web.Services
             return year;
         }
 
-        public CurrentPeriod GetPeriod(DateTime utcToday)
-        {
-            var currentPeriod = new CurrentPeriod();
-
-            var endYear = GetReportPeriodYear(utcToday);
-
-            currentPeriod.EndYear = endYear.ToString();
-            currentPeriod.StartYear = (endYear - 1).ToString();
-            currentPeriod.FullString = GetCurrentReportPeriodName(currentPeriod.StartYear + currentPeriod.EndYear);
-
-            return currentPeriod;
-        }
         public CurrentPeriod GetPeriod(string period)
         {
             var currentPeriod = new CurrentPeriod();
@@ -240,10 +228,7 @@ namespace SFA.DAS.PSRService.Web.Services
                throw new Exception("Employee and/or Apprentice sections not found",e);
             }
            
-
-
-            if (employeeQuestions == null || apprenticeQuestions == null)
-                throw new Exception("Employee and/or Apprentice sections not found");
+            
 
             decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
 
