@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
@@ -17,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
     {
         
         [Test]
-        [Ignore("Test Currently broke")]
+     
         public void And_The_Report_Exists_And_Is_Valid_Then_Show_Summary_Page()
         {
             var ApprenticeQuestions = new List<Question>()
@@ -70,9 +71,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 }
 
             };
-
-
-
             var YourEmployees = new Section()
             {
                 Id = "YourEmployeesSection",
@@ -113,6 +111,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 SubmittedDetails = new Submitted(),
                 Submitted = true
             };
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                It.IsAny<ValidationStateDictionary>(),
+                It.IsAny<string>(),
+                It.IsAny<Object>()));
+            _controller.ObjectValidator = objectValidator.Object;
+
             // arrange
             _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
             _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
