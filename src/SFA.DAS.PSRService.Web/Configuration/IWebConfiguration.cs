@@ -11,5 +11,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         DateTime SubmissionClose { get; set; }
         string RootDomainUrl { get; set; }
         string HomeUrl { get; set; }
+        SessionStoreConfiguration SessionStore { get; set; }
     }
 }

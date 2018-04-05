@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.Middleware;
+using SFA.DAS.PSRService.Web.Utils;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
 {
@@ -46,12 +47,14 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     sharedOptions.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
+
                 })
                 .AddOpenIdConnect(options =>
                 {
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
-                    options.AuthenticationMethod = (OpenIdConnectRedirectBehavior) _configuration.Identity.AuthenticationMethod;
+                    options.AuthenticationMethod =
+                        (OpenIdConnectRedirectBehavior) _configuration.Identity.AuthenticationMethod;
                     options.Authority = _configuration.Identity.Authority;
                     options.ResponseType = _configuration.Identity.ResponseType;
                     options.SaveTokens = _configuration.Identity.SaveTokens;
@@ -65,8 +68,22 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
+
                 })
-                .AddCookie(options => options.ExpireTimeSpan = TimeSpan.FromHours(1));
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                    switch (configuration.SessionStore.Type)
+                    {
+                        case "Redis":
+                            options.SessionStore = new RedisCacheTicketStore(configuration.SessionStore.Connectionstring);
+                            break;
+                        case "Default":
+                            break;
+                    }
+                 
+
+                });
         }
 
         private static IEnumerable<string> GetScopes()

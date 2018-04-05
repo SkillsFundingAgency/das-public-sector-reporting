@@ -18,5 +18,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public string RootDomainUrl { get; set; }
         [JsonRequired]
         public string HomeUrl { get; set; }
+        [JsonRequired]
+        public SessionStoreConfiguration SessionStore { get; set; }
     }
 }
