@@ -10,6 +10,7 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
 using SFA.DAS.PSRService.Web.Services;
+using StackExchange.Redis;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
@@ -67,6 +68,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize]
         public IActionResult Protected(string empolyerId)
         {
+
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+
+
+
             var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
             return View(employerDetail);
         }

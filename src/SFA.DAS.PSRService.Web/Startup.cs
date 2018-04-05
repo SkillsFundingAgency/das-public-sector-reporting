@@ -47,6 +47,9 @@ namespace SFA.DAS.PSRService.Web
             services.AddAuthorizationService();
             services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
             //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
+
+           
+
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
 
             //This makes sure all automapper profiles are automatically configured for use
