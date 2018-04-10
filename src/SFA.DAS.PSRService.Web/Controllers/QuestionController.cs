@@ -78,7 +78,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                     if (sectionQuestion.Type == QuestionType.Number)
                     {
-                        sectionQuestion.Answer = sectionQuestion.Answer.Replace(",", "");
+                        sectionQuestion.Answer = sectionQuestion.Answer?.Replace(",", "");
                     }
                 }
           
