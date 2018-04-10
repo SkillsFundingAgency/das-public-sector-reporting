@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking;
+using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -71,7 +73,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 foreach (var sectionQuestion in Section.CurrentSection.Questions)
                 {
+                  
                     sectionQuestion.Answer = Section.Questions.Single(w => w.Id == sectionQuestion.Id).Answer;
+
+                    if (sectionQuestion.Type == QuestionType.Number)
+                    {
+                        sectionQuestion.Answer = sectionQuestion.Answer.Replace(",", "");
+                    }
                 }
           
 
@@ -80,6 +88,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
             else
             {
+                Section.CurrentPeriod = _reportService.GetPeriod(Section.Report.ReportingPeriod);
+
+
                 return View("Index", Section);
             }
             

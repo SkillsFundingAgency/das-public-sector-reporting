@@ -53,14 +53,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
                 ,new Question()
                 {
                     Id = "atEnd",
-                    Answer = "0",
+                    Answer = "1000",
                     Type = QuestionType.Number,
                     Optional = false
                 },
                 new Question()
                 {
                     Id = "newThisPeriod",
-                    Answer = "0",
+                    Answer = "1,000",
                     Type = QuestionType.Number,
                     Optional = false
                 }
