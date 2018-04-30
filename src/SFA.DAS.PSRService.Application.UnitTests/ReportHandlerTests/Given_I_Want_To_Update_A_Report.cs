@@ -56,7 +56,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             };
             var fileInfo = new StringFileInfo(reportingDataTest, "QuestionConfig.json");
 
-            _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Returns(reportDto);
+            _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>()));
             _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
             _mapperMock.Setup(s => s.Map<Report>(It.IsAny<ReportDto>())).Returns(_report);
             _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(reportDto);

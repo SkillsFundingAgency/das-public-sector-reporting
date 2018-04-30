@@ -9,8 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\**" />
     <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Entities\**" />
     <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Entities\**" />
     <None Remove="Exceptions\**" />
   </ItemGroup>
 
@@ -28,10 +31,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entities\" />
   </ItemGroup>
 
   <ItemGroup>

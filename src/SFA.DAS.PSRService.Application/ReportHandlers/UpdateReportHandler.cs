@@ -26,7 +26,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             }
             var reportDto = _mapper.Map<ReportDto>(request.Report);
 
-            reportDto = _reportRepository.Update(reportDto);
+            _reportRepository.Update(reportDto);
 
           return  Task.FromResult(0);
         }

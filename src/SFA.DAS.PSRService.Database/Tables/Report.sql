@@ -7,7 +7,7 @@
     [Submitted] BIT NOT NULL DEFAULT 0
 )
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_Report1] ON [dbo].[Report]
+CREATE UNIQUE NONCLUSTERED INDEX [IXU_Report_EmployerIdReportingPeriod] ON [dbo].[Report]
 (
     [EmployerId] ASC,
     [ReportingPeriod] ASC
