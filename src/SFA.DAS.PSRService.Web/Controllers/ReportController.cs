@@ -100,28 +100,31 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     period = currentPeriod;
                 }
 
-                var report = new ReportViewModel();
-                 report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
+                var reportViewModel = new ReportViewModel
+                {
+                    Report = _reportService.GetReport(period, EmployerAccount.AccountId),
+                    CurrentPeriod = currentPeriod
+                };
 
-                report.CurrentPeriod = currentPeriod;
-                report.SubmitValid = _reportService.IsSubmitValid(report.Report);
-                report.Percentages = new PercentagesViewModel(report.Report.ReportingPercentages);
-                report.Period = _reportService.GetPeriod(period);
+                reportViewModel.SubmitValid = _reportService.IsSubmitValid(reportViewModel.Report);
+                reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
+                reportViewModel.Period = _reportService.GetPeriod(period);
 
-                ViewBag.CurrentPeriod = report.Period;
+                ViewBag.CurrentPeriod = reportViewModel.Period;
 
-                if (report.Report == null)
+                if (reportViewModel.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
 
-                TryValidateModel(report);
+                TryValidateModel(reportViewModel);
 
-                return View("Summary", report);
+                return View("Summary", reportViewModel);
             }
             catch (Exception ex)
             {
                 return new BadRequestResult();
             }
         }
+
         [Route("Submit")]
         public IActionResult Submit(string period)
         {

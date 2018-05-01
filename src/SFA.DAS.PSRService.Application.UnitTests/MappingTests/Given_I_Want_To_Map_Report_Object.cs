@@ -187,7 +187,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
 
             var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
 
-            Assert.AreEqual(mappedReportDto.ReportingData, "{\"OrganisationName\":\"Organisation 1\",\"Questions\":null,\"Submitted\":null}");
+            Assert.AreEqual(mappedReportDto.ReportingData, "{\"OrganisationName\":\"Organisation 1\",\"Questions\":null,\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":11.0,\"TotalHeadCount\":22.0,\"NewThisPeriod\":33.0}}");
             Assert.AreEqual(mappedReportDto.Submitted, report.Submitted);
             Assert.AreEqual(mappedReportDto.EmployerId, report.EmployerId);
             Assert.AreEqual(mappedReportDto.Id, report.Id);
