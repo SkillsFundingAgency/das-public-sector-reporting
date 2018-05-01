@@ -31,7 +31,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
                 throw new Exception("Period must be supplied");
 
             if(string.IsNullOrWhiteSpace(request.EmployerId))
-                throw new Exception("Employee Id must be supplied");
+                throw new Exception("Employer Id must be supplied");
 
 
             var reportDto = new ReportDto()
@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             
 
-            reportDto = _reportRepository.Create(reportDto);
+            _reportRepository.Create(reportDto);
 
             var report = _mapper.Map<Report>(reportDto);
 
