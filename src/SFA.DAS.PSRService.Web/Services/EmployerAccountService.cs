@@ -25,20 +25,14 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public async Task<IDictionary<string, EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId)
         {
-            try
-            {
+        
                 var accounts = await _accountApiClient.GetUserAccounts(userId);
 
                 return accounts
                     .Select(acc =>
                         new EmployerIdentifier {AccountId = acc.HashedAccountId, EmployerName = acc.DasAccountName})
                     .ToDictionary(item => item.AccountId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Failed to retrieve account information for user id: {userId}");
-                throw;
-            }
+           
         }
 
         public EmployerIdentifier GetCurrentEmployerAccountId(HttpContext context)
