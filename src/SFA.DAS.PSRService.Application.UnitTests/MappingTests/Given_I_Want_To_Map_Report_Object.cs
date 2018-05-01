@@ -1,111 +1,140 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using AutoMapper;
-using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
-using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
-using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmittedTests
+namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
 {
     [TestFixture]
     public class Given_I_Want_To_Map_Report_Object
     {
         private IMapper _mapper;
 
-        private IEnumerable<ReportDto> _reportDtoList;
-        private IEnumerable<Report> _reportList;
-
-        private GetSubmittedHandler _getSubmittedHandler;
-
         [SetUp]
         public void Setup()
         {
-            
-
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<ReportMappingProfile>();
-               
-            });
-            
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
             _mapper = config.CreateMapper();
-
-            _reportList = (new List<Report>()
-            {
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "ABCDE",
-                    Submitted = false
-                },
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1617",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1516",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "VWXYZ",
-                    Submitted = false
-                }
-            }).AsEnumerable();
-            _reportDtoList = (new List<ReportDto>()
-            {
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "ABCDE",
-                    Submitted = false
-                },
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1617",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1516",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "VWXYZ",
-                    Submitted = false
-                }
-            }).AsEnumerable();
-
         }
 
         [Test]
         public void When_The_Mapping_Is_Registered_Then_Is_Valid()
         {
-            _mapper.ConfigurationProvider.AssertConfigurationIsValid();
-            
+            _mapper.ConfigurationProvider.AssertConfigurationIsValid();            
+        }
+
+        [Test]
+        public void ReportCanSerialiseToAndFro()
+        {
+            var report = new Report
+            {
+                EmployerId = "11",
+                OrganisationName = "12",
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "PP",
+                Submitted = true,
+                SubmittedDetails = new Submitted
+                {
+                    SubmittedAt = DateTime.UtcNow,
+                    SubmittedEmail = "email",
+                    SubmittedName = "SN",
+                    SubmttedBy = "Dr Who",
+                    UniqueReference = "BBQ"
+                },                
+                ReportingPercentages = new ReportingPercentages
+                {
+                    EmploymentStarts = 11,
+                    TotalHeadCount = 22,
+                    NewThisPeriod = 33
+                },
+                Sections = new[]
+                {
+                    new Section
+                    {
+                        Id = "s1",
+                        Title = "t1",
+                        SummaryText = "s1s",
+                        Questions = new[]
+                        {
+                            new Question
+                            {
+                                Id = "s1q1",
+                                Answer = "s1q1a",
+                                Optional = true,
+                                Type = QuestionType.LongText
+                            },
+                            new Question
+                            {
+                                Id = "s1q2",
+                                Answer = "s1q2a",
+                                Optional = false,
+                                Type = QuestionType.ShortText
+                            }
+                        },
+                        SubSections = null
+                    },
+                    new Section
+                    {
+                        Id = "s2",
+                        Title = "t2",
+                        SummaryText = "s2s",
+                        Questions = null,
+                        SubSections = new[]
+                        {
+                            new Section
+                            {
+                                Id = "s2s1",
+                                Title = "s2t1",
+                                SummaryText = "s2s1s",
+                                Questions = new[]
+                                {
+                                    new Question
+                                    {
+                                        Id = "s2s1q1",
+                                        Answer = "1",
+                                        Optional = true,
+                                        Type = QuestionType.Number
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Act
+            var dto = _mapper.Map<ReportDto>(report);
+            var newReport = _mapper.Map<Report>(dto);
+
+            // Assert
+            Assert.AreEqual(report.EmployerId, newReport.EmployerId);
+            Assert.AreEqual(report.OrganisationName, newReport.OrganisationName);
+            Assert.AreEqual(report.Id, newReport.Id);
+            Assert.AreEqual(report.ReportingPeriod, newReport.ReportingPeriod);
+            Assert.AreEqual(report.Submitted, newReport.Submitted);
+
+            Assert.AreEqual(report.SubmittedDetails.SubmittedAt, newReport.SubmittedDetails.SubmittedAt);
+            Assert.AreEqual(report.SubmittedDetails.SubmittedEmail, newReport.SubmittedDetails.SubmittedEmail);
+            Assert.AreEqual(report.SubmittedDetails.SubmittedName, newReport.SubmittedDetails.SubmittedName);
+            Assert.AreEqual(report.SubmittedDetails.SubmttedBy, newReport.SubmittedDetails.SubmttedBy);
+            Assert.AreEqual(report.SubmittedDetails.UniqueReference, newReport.SubmittedDetails.UniqueReference);
+
+            Assert.AreEqual(report.ReportingPercentages.EmploymentStarts, newReport.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual(report.ReportingPercentages.TotalHeadCount, newReport.ReportingPercentages.TotalHeadCount);
+            Assert.AreEqual(report.ReportingPercentages.NewThisPeriod, newReport.ReportingPercentages.NewThisPeriod);
+
+            Assert.AreEqual(report.Sections.Count(), newReport.Sections.Count());
+            var expectedSection = report.Sections.First();
+            var actualSection = newReport.Sections.First();
+            Assert.AreEqual(expectedSection.Id, actualSection.Id);
+            Assert.AreEqual(expectedSection.CompletionStatus, actualSection.CompletionStatus);
+            Assert.AreEqual(expectedSection.SummaryText, actualSection.SummaryText);
+            Assert.AreEqual(expectedSection.Title, actualSection.Title);
+            Assert.AreEqual(expectedSection.Questions.Count(), actualSection.Questions.Count());
         }
 
         [Test]
@@ -115,8 +144,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
 
             var reportDto = new ReportDto()
             {
-               EmployerId = "ABCDE",
-                ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"Questions\":\"\",\"Submitted\":null}",
+                EmployerId = "ABCDE",
+                ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"Questions\":\"\",\"Submitted\":null,ReportingPercentages:{EmploymentStarts: 11, NewThisPeriod: 22, TotalHeadCount: 33}}",
                 ReportingPeriod = "1617",
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Submitted = true
@@ -125,10 +154,14 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
             var mappedReport = _mapper.Map<ReportDto, Report>(reportDto);
 
             Assert.AreEqual(mappedReport.OrganisationName, "Organisation 1");
-         Assert.AreEqual(mappedReport.Submitted,reportDto.Submitted);
-            Assert.AreEqual(mappedReport.EmployerId,reportDto.EmployerId);
-            Assert.AreEqual(mappedReport.Id,reportDto.Id);
-            Assert.AreEqual(mappedReport.ReportingPeriod,reportDto.ReportingPeriod);
+            Assert.AreEqual(mappedReport.Submitted, reportDto.Submitted);
+            Assert.AreEqual(mappedReport.EmployerId, reportDto.EmployerId);
+            Assert.AreEqual(mappedReport.Id, reportDto.Id);
+            Assert.AreEqual(mappedReport.ReportingPeriod, reportDto.ReportingPeriod);
+            Assert.IsNotNull(mappedReport.ReportingPercentages);
+            Assert.AreEqual(11, mappedReport.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual(22, mappedReport.ReportingPercentages.NewThisPeriod);
+            Assert.AreEqual(33, mappedReport.ReportingPercentages.TotalHeadCount);
         }
 
 
@@ -141,9 +174,15 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
             {
                 EmployerId = "ABCDE",
                 OrganisationName = "Organisation 1",
-               ReportingPeriod = "1617",
+                ReportingPeriod = "1617",
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Submitted = true
+                Submitted = true,
+                ReportingPercentages = new ReportingPercentages
+                {
+                    EmploymentStarts = 11,
+                    TotalHeadCount = 22,
+                    NewThisPeriod = 33
+                }
             };
 
             var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
@@ -154,6 +193,5 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
             Assert.AreEqual(mappedReportDto.Id, report.Id);
             Assert.AreEqual(mappedReportDto.ReportingPeriod, report.ReportingPeriod);
         }
-
     }
 }

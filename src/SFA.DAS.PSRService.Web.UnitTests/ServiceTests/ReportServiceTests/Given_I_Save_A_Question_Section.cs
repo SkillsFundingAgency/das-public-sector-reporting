@@ -118,15 +118,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             {
                 Sections = sections
             };
+
             //Act
-
-            _reportService.SaveQuestionSection(SectionTwo.SubSections.FirstOrDefault(), report);
-
-            _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()));
+            _reportService.SaveReport(report);
 
             //Assert
+            _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()), Times.Once);
         }
-
-
     }
 }

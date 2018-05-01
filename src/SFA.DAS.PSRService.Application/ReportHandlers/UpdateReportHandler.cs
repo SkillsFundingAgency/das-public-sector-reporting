@@ -24,6 +24,9 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             {
                 throw new Exception("No Report Supplied");
             }
+
+            request.Report.UpdatePercentages();
+
             var reportDto = _mapper.Map<ReportDto>(request.Report);
 
             reportDto = _reportRepository.Update(reportDto);

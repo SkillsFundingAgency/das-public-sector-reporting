@@ -1,4 +1,4 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportingPercentages
+﻿@model SFA.DAS.PSRService.Web.ViewModels.PercentagesViewModel
 
 
 
@@ -9,21 +9,21 @@
         <tbody>
         <tr>
             <td>Percentage of employment starts that were apprenticeships between @ViewBag.CurrentPeriod.FullString</td>
-            <td class="numeric bold-xsmall">@Model.EmploymentStarts.ToString("0.00")%</td>
+            <td class="numeric bold-xsmall">@Model.EmploymentStarts</td>
             <td class="link-right">
               
             </td>
         </tr>
         <tr>
             <td>Percentage of total headcount that were apprenticeships on 31 March @ViewBag.CurrentPeriod.EndYear</td>
-            <td class="numeric bold-xsmall">@Model.TotalHeadCount.ToString("0.00")%</td>
+            <td class="numeric bold-xsmall">@Model.TotalHeadCount</td>
             <td class="link-right">
                
             </td>
         </tr>
         <tr>
             <td>Percentage of total headcount who were apprenticeship starts between @ViewBag.CurrentPeriod.FullString (The target)</td>
-            <td class="numeric bold-xsmall">@Model.NewThisPeriod.ToString("0.00")%</td>
+            <td class="numeric bold-xsmall">@Model.NewThisPeriod</td>
             <td class="link-right">
                
             </td>

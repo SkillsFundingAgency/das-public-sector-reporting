@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
 
         public string CurrentPeriod { get; set; }
         public bool SubmitValid { get; set; }
-        public ReportingPercentages Percentages { get; set; }
+        public PercentagesViewModel Percentages { get; set; }
         public CurrentPeriod Period { get; set; }
 
 

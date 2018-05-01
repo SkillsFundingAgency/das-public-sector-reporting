@@ -1,47 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using NUnit.Framework;
-using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
-using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Controllers;
-using SFA.DAS.PSRService.Web.Services;
-using Assert = NUnit.Framework.Assert;
-using CollectionAssert = NUnit.Framework.CollectionAssert;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
+namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 {
     [TestFixture]
-    public class Given_I_Retrieve_A_Question_Section
+    public class WhenASectionIsRequested
     {
-        public Mock<IMediator> _mediatorMock;
-        public Mock<IWebConfiguration> _webConfiguration;
-        public ReportService _reportService;
-
-        [SetUp]
-        public void Setup()
-        {
-            _mediatorMock = new Mock<IMediator>();
-            _webConfiguration = new Mock<IWebConfiguration>(MockBehavior.Strict);
-
-            _reportService = new ReportService(_webConfiguration.Object,_mediatorMock.Object);
-
-        }
-        
         [Test]
         public void And_The_Question_Section_Exists_Then_Return_Section()
         {
             // arrange
-            var Questions = new List<Question>()
+            var questions = new List<Question>()
             {
                 new Question()
                 {
@@ -67,12 +39,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             };
 
-            var SectionOne = new Section()
+            var sectionOne = new Section()
             {
                 Id = "SectionOne",
                 SubSections = new List<Section>() { new Section{
                     Id = "SubSectionOne",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionOne",
                     SummaryText = ""
 
@@ -81,12 +53,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 Title = "SectionOne"
             };
 
-            var SectionTwo = new Section()
+            var sectionTwo = new Section()
             {
                 Id = "SectionTwo",
                 SubSections = new List<Section>() { new Section{
                     Id = "SubSectionTwo",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionTwo",
                     SummaryText = ""
 
@@ -95,12 +67,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 Title = "SectionTwo"
             };
 
-            var SectionThree = new Section()
+            var sectionThree = new Section()
             {
                 Id = "SectionThree",
                 SubSections = new List<Section>() { new Section{
                     Id = "SubSectionThree",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionThree",
                     SummaryText = ""
 
@@ -111,15 +83,16 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             IList<Section> sections = new List<Section>();
 
-            sections.Add(SectionOne);
-            sections.Add(SectionTwo);
-            sections.Add(SectionThree);
+            sections.Add(sectionOne);
+            sections.Add(sectionTwo);
+            sections.Add(sectionThree);
             var report = new Report()
             {
                 Sections = sections
             };
+
             // act
-            var result = _reportService.GetQuestionSection("SubSectionTwo", report);
+            var result = report.GetQuestionSection("SubSectionTwo");
 
         
             Assert.NotNull(result);
@@ -132,19 +105,19 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
         }
 
+
         [Test]
-     
         public void And_The_Report_Contains_No_Sections_Then_Throw_Error()
         {
-            Assert.Throws<Exception>(() => _reportService.GetQuestionSection("SubSectionTwo", new Report()));
-            
+            Assert.IsNull(new Report().GetQuestionSection("SubSectionTwo"));
+
         }
 
         [Test]
         public void And_The_Question_Section_Exists_More_Than_Once_Then_Throw_Error()
         {
             // arrange
-            var Questions = new List<Question>()
+            var questions = new List<Question>()
             {
                 new Question()
                 {
@@ -170,12 +143,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             };
 
-            var SectionOne = new Section()
+            var sectionOne = new Section()
             {
                 Id = "SectionOne",
                 SubSections = new List<Section>() { new Section{
                     Id = "SubSectionOne",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionOne",
                     SummaryText = ""
 
@@ -184,12 +157,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 Title = "SectionOne"
             };
 
-            var SectionTwo = new Section()
+            var sectionTwo = new Section()
             {
                 Id = "SectionTwo",
                 SubSections = new List<Section>() { new Section{
                     Id = "SubSectionOne",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionTwo",
                     SummaryText = ""
 
@@ -198,12 +171,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 Title = "SectionTwo"
             };
 
-            var SectionThree = new Section()
+            var sectionThree = new Section()
             {
-                Id = "SectionThree",
+                Id = "SectionOne",
                 SubSections = new List<Section>() { new Section{
                     Id = "SubSectionThree",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionThree",
                     SummaryText = ""
 
@@ -214,16 +187,16 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             IList<Section> sections = new List<Section>();
 
-            sections.Add(SectionOne);
-            sections.Add(SectionTwo);
-            sections.Add(SectionThree);
+            sections.Add(sectionOne);
+            sections.Add(sectionTwo);
+            sections.Add(sectionThree);
             var report = new Report()
             {
                 Sections = sections
             };
             // act
 
-            Assert.Throws<InvalidOperationException>(() => _reportService.GetQuestionSection("SectionOne", report));
+            Assert.Throws<InvalidOperationException>(() => report.GetQuestionSection("SectionOne"));
 
 
         }

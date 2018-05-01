@@ -11,5 +11,6 @@ namespace SFA.DAS.PSRService.Application.Domain
         public IEnumerable<Section> Questions { get; set; }
         public string OrganisationName { get; set; }
         public Submitted Submitted { get; set; }
+        public ReportingPercentages ReportingPercentages {get; set; }
     }
 }

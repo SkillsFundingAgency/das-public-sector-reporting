@@ -109,8 +109,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>()))
-                .Returns(_sectionOne);
+
             // act
             var result = _controller.Submit(_sections);
 
@@ -134,10 +133,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report(){Submitted = false});
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns((Section)null);
-            // act
-           
 
+            // act
             var result = _controller.Submit(_sections);
 
             // assert
@@ -161,7 +158,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = true });
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns((Section)null);
 
             // act
             var result = _controller.Submit(_sections);
@@ -181,18 +177,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = true });
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>()))
-                .Throws(new Exception());
+            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Throws(new Exception());
 
             // act
-
             Assert.Throws<Exception>(() =>  _controller.Submit(_sections));
-            
-
-
-//            Assert.AreEqual(result.GetType(), typeof(BadRequestResult));
-
         }
 
         [Test]
@@ -204,19 +192,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = false });
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() {Submitted = false, Sections = new[] {_sectionOne}});
             _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>()));
 
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns(_sectionOne.SubSections.FirstOrDefault);
-            _reportService.Setup(s => s.SaveQuestionSection(It.IsAny<Section>(), It.IsAny<Report>()));
             // act
             _sections.Questions = _sections.CurrentSection.Questions.Select(s => new QuestionViewModel() { Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type }).ToList();
-
             var result = _controller.Submit(_sections);
 
             // assert
-            
-
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual(url, redirectResult.Url);

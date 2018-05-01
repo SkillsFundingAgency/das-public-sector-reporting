@@ -34,20 +34,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             try
             {
-                sectionViewModel.CurrentSection =
-                    _reportService.GetQuestionSection(id, sectionViewModel.Report);
+                sectionViewModel.CurrentSection = sectionViewModel.Report.GetQuestionSection(id);
             }
             catch (Exception ex)
             {
                 throw new Exception("Unable to get the Current Section, see inner Exception for more details", ex);
             }
-            if(sectionViewModel.CurrentSection?.Questions != null && sectionViewModel.CurrentSection.Questions.Any())
-            sectionViewModel.Questions = sectionViewModel.CurrentSection.Questions.Select(s => new QuestionViewModel(){Answer = s.Answer, Id = s.Id, Optional = s.Optional,Type = s.Type}).ToList();
+
+            if (sectionViewModel.CurrentSection?.Questions != null && sectionViewModel.CurrentSection.Questions.Any())
+                sectionViewModel.Questions = sectionViewModel.CurrentSection.Questions.Select(s => new QuestionViewModel() {Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type}).ToList();
 
 
             if (sectionViewModel.CurrentSection == null)
                 return new BadRequestResult();
-
 
             return View("Index", sectionViewModel);
         }
@@ -60,10 +59,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Submit(SectionViewModel Section)
         {
             Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerAccount.AccountId);
-            Section.CurrentSection = _reportService.GetQuestionSection(Section.CurrentSection.Id, Section.Report);
 
             if (Section.Report == null || _reportService.IsSubmitValid(Section.Report) == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
+
+            Section.CurrentSection = Section.Report.GetQuestionSection(Section.CurrentSection.Id);
 
             if (Section.CurrentSection == null)
                 return new BadRequestResult();
@@ -82,8 +82,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     }
                 }
           
-
-                _reportService.SaveQuestionSection(Section.CurrentSection, Section.Report);
+                _reportService.SaveReport(Section.Report);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             else

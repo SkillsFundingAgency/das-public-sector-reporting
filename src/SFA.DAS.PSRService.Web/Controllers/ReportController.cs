@@ -105,7 +105,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 report.CurrentPeriod = currentPeriod;
                 report.SubmitValid = _reportService.IsSubmitValid(report.Report);
-                report.Percentages = _reportService.CalculatePercentages(report.Report);
+                report.Percentages = new PercentagesViewModel(report.Report.ReportingPercentages);
                 report.Period = _reportService.GetPeriod(period);
 
                 ViewBag.CurrentPeriod = report.Period;

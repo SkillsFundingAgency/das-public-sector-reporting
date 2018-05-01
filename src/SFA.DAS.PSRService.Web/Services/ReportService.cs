@@ -87,26 +87,6 @@ namespace SFA.DAS.PSRService.Web.Services
             return false;
         }
 
-        public Section GetQuestionSection(string SectionId, Report report)
-        {
-
-
-            var sectionsList = GetSections(report);
-
-            return sectionsList.Single(w => w.Id == SectionId);
-
-        }
-
-        public void SaveQuestionSection(Section Section, Report report)
-        {
-            var section = GetQuestionSection(Section.Id, report);
-
-            section = Section;
-
-            SaveReport(report);
-        }
-
-
         public string GetReportPeriod(DateTime utcToday)
         {
             var year = GetReportPeriodYear(utcToday);
@@ -171,92 +151,6 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             var request = new UpdateReportRequest { Report = report };
             _mediator.Send(request);
-        }
-
-        private IList<Section> GetSections(Report report)
-        {
-            List<Section> sectionList = new List<Section>();
-
-            if (report.Sections == null)
-                throw new Exception("No sections found for report, there must at least one section");
-
-            foreach (var reportSection in report.Sections)
-            {
-                sectionList.Add(reportSection);
-                sectionList.AddRange(GetSections(reportSection));
-            }
-
-            return sectionList;
-        }
-
-        private IEnumerable<Section> GetSections(Section section)
-        {
-            List<Section> sectionList = new List<Section>();
-            sectionList.Add(section);
-
-            if (section.SubSections != null)
-            {
-                foreach (var reportSection in section.SubSections)
-                {
-
-                    sectionList.AddRange(GetSections(reportSection));
-                }
-            }
-
-
-            return sectionList;
-        }
-
-        public ReportingPercentages CalculatePercentages(Report report)
-        {
-            var percentages = new ReportingPercentages();
-
-            if (report?.Sections == null)
-            {
-                throw new Exception("Report cannot be null and must have sections");
-            }
-
-            Section employeeQuestions;
-            Section apprenticeQuestions;
-            try
-            {
-                 employeeQuestions = GetQuestionSection("YourEmployees", report);
-                 apprenticeQuestions = GetQuestionSection("YourApprentices", report);
-            }
-            catch (Exception e)
-            {
-               throw new Exception("Employee and/or Apprentice sections not found",e);
-            }
-           
-            
-
-            decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
-
-            if(String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
-             employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
-                apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
-                employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
-                apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer) == false)
-                employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
-
-
-            if (apprenticePeriod != 0 & employmentPeriod != 0)
-                percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod) * 100;
-
-            if (apprenticeEnd != 0 & employmentEnd != 0)
-                percentages.TotalHeadCount = (apprenticeEnd / employmentEnd) * 100;
-
-            if (apprenticePeriod != 0 & employmentStart != 0)
-                percentages.NewThisPeriod = (apprenticePeriod / employmentStart) * 100;
-
-
-            return percentages;
         }
     }
 }
