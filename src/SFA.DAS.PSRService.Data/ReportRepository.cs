@@ -20,20 +20,18 @@ namespace SFA.DAS.PSRService.Data
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var report = connection
-                    .Query<ReportDto>("select top 1 Id,EmployerId, ReportingPeriod, ReportingData, Submitted from Report where EmployerID = @EmployerId and ReportingPeriod = @ReportingPeriod",
-                        new { EmployerId = employerId, ReportingPeriod = period }).FirstOrDefault();
-
+                var report = connection.QuerySingle<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
+                    new {employerId, period});
                 return report;
             }
         }
 
-        public IEnumerable<ReportDto> GetSubmitted(string employerId)
+        public IList<ReportDto> GetSubmitted(string employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var reportData = connection.Query<ReportDto>("select * from Report where EmployerID = @EmployerId and Submitted = 1", new { EmployerId = employerId });
-
+                var reportData = connection.Query<ReportDto>("select * from Report where EmployerID = @employerId and Submitted = 1",
+                    new {employerId});
                 return reportData.ToList();
             }
         }
@@ -42,9 +40,10 @@ namespace SFA.DAS.PSRService.Data
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Execute(
-                        "INSERT INTO [dbo].[Report]([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted])VALUES(@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted)",
-                        new { report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted });
+                connection.Execute(@"
+                    INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted])
+                                        VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted)",
+                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted});
             }
         }
 

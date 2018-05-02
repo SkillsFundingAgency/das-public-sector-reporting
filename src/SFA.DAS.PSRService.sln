@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployments", "deployments"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.PSRService.Database", "SFA.DAS.PSRService.Database\SFA.DAS.PSRService.Database.sqlproj", "{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PSRService.IntegrationTests", "SFA.DAS.PSRService.IntegrationTests\SFA.DAS.PSRService.IntegrationTests.csproj", "{A723DBC9-07CA-4FAC-BE74-13A159BF46E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A723DBC9-07CA-4FAC-BE74-13A159BF46E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A723DBC9-07CA-4FAC-BE74-13A159BF46E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A723DBC9-07CA-4FAC-BE74-13A159BF46E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A723DBC9-07CA-4FAC-BE74-13A159BF46E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{F8E42D52-9A76-4475-92FA-CF8FF286EF4C} = {EB54D000-867F-48CA-AE28-BDBE0CCE1322}
 		{4C41B95D-C9E5-461A-B198-F1F36A61176A} = {EB54D000-867F-48CA-AE28-BDBE0CCE1322}
 		{3B16AB0E-5C83-4E5D-82B0-7021AB4C5B9F} = {F85262CD-4210-4352-B691-30F40D99B4D2}
+		{A723DBC9-07CA-4FAC-BE74-13A159BF46E8} = {EB54D000-867F-48CA-AE28-BDBE0CCE1322}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5B677B2-0D72-4629-A5FD-F94B00EC858B}
