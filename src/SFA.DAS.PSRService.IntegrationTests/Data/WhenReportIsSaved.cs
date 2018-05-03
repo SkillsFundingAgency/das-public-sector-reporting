@@ -14,8 +14,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.Data
         [SetUp]
         public void SetUp()
         {
-            TestDataHelper.ClearData();
-            _reportRepository = new ReportRepository(TestDataHelper.ConnectionString);
+            TestHelper.ClearData();
+            _reportRepository = new ReportRepository(TestHelper.ConnectionString);
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Data
             _reportRepository.Create(expectedReport);
 
             // assert
-            var actualReports = TestDataHelper.GetAllReports();
+            var actualReports = TestHelper.GetAllReports();
             Assert.AreEqual(1, actualReports.Count);
 
             var actualReport = actualReports[0];

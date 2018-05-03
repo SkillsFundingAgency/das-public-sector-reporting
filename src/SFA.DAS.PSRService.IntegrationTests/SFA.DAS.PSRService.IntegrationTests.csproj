@@ -9,12 +9,14 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
+    <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Web\SFA.DAS.PSRService.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

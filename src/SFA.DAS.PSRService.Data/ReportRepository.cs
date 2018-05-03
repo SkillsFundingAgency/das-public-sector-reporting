@@ -20,7 +20,7 @@ namespace SFA.DAS.PSRService.Data
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var report = connection.QuerySingle<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
+                var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
                     new {employerId, period});
                 return report;
             }
