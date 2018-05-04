@@ -16,14 +16,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
     [Route("accounts/{employerAccountId}/Report")]
     public class ReportController : BaseController
     {
-        private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
         private readonly IUserService _userService;
 
-        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration) 
+        public ReportController(IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration) 
             : base(webConfiguration, employerAccountService)
         {
-            _logger = logger;
             _reportService = reportService;
             _userService = userService;
         }
