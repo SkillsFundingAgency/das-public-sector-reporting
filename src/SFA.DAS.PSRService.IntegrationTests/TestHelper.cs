@@ -10,8 +10,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using Moq;
-using NLog;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
@@ -22,6 +22,7 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using StructureMap;
+using ILogger = NLog.ILogger;
 
 namespace SFA.DAS.PSRService.IntegrationTests
 {
@@ -82,7 +83,11 @@ namespace SFA.DAS.PSRService.IntegrationTests
                     _.WithDefaultConventions();
                 });
 
-                config.For<IWebConfiguration>().Use(new WebConfiguration {SqlConnectionString = TestHelper.ConnectionString});
+                config.For<IWebConfiguration>().Use(new WebConfiguration
+                {
+                    SqlConnectionString = TestHelper.ConnectionString,
+                    SubmissionClose = DateTime.Today.AddDays(1)
+                });
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
@@ -99,7 +104,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
                 config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
                 config.For<IMediator>().Use<Mediator>();
-                config.For<ILogger>().Use(() => new Mock<ILogger>().Object);
+                config.For(typeof(ILogger<UserService>)).Use(c => new Mock<ILogger<UserService>>().Object);
 
                 var mockEmployerAccountService = new Mock<IEmployerAccountService>();
                 var employerIdentifier = new EmployerIdentifier {AccountId = "111", EmployerName = "222"};
