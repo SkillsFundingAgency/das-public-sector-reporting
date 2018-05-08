@@ -7,11 +7,11 @@ using SFA.DAS.PSRService.Application.Interfaces;
 
 namespace SFA.DAS.PSRService.Data
 {
-    public class ReportRepository : IReportRepository
+    public class SQLReportRepository : IReportRepository
     {
         private readonly string _connectionString;
 
-        public ReportRepository(string connectionString)
+        public SQLReportRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -20,7 +20,7 @@ namespace SFA.DAS.PSRService.Data
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var report = connection.QuerySingle<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
+                var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
                     new {employerId, period});
                 return report;
             }

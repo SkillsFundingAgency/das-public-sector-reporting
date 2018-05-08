@@ -3,15 +3,16 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 
-namespace SFA.DAS.PSRService.IntegrationTests
+namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
 {
-    internal static class TestDataHelper
+    internal static class RepositoryTestHelper
     {
         public static string ConnectionString { get; }
 
-        static TestDataHelper()
+        static RepositoryTestHelper()
         {
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             ConnectionString = config["ConnectionString"];
@@ -32,6 +33,15 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 connection.Execute("if exists(select 1 from Report) delete from Report");
             }
 
+        }
+
+        public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
+        {
+            Assert.AreEqual(expectedReport.Id, actualReport.Id);
+            Assert.AreEqual(expectedReport.EmployerId, actualReport.EmployerId);
+            Assert.AreEqual(expectedReport.ReportingData, actualReport.ReportingData);
+            Assert.AreEqual(expectedReport.ReportingPeriod, actualReport.ReportingPeriod);
+            Assert.AreEqual(expectedReport.Submitted, actualReport.Submitted);
         }
     }
 }
