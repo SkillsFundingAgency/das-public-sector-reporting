@@ -23,6 +23,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         public Mock<IUserService> _userServiceMock;
         private Mock<IPeriodService> _periodServiceMock;
+        private Mock<ILogger<ReportController>> _mockLogging;
         protected IList<Report> _reportList = ReportTestModelBuilder.ReportsWithValidSections();
         private EmployerIdentifier _employerIdentifier;
 
@@ -31,7 +32,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
-            new Mock<ILogger<ReportController>>(MockBehavior.Strict);
+            _mockLogging = new Mock<ILogger<ReportController>>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
