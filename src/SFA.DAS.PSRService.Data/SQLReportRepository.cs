@@ -7,11 +7,11 @@ using SFA.DAS.PSRService.Application.Interfaces;
 
 namespace SFA.DAS.PSRService.Data
 {
-    public class ReportRepository : IReportRepository
+    public class SQLReportRepository : IReportRepository
     {
         private readonly string _connectionString;
 
-        public ReportRepository(string connectionString)
+        public SQLReportRepository(string connectionString)
         {
             _connectionString = connectionString;
         }

@@ -148,7 +148,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
         public void When_An_Employer_Id_Has_No_Submitted_Reports_Then_Return_Empty_Collection()
         {
             //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns((IList<ReportDto>)null);
+            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns(new List<ReportDto>(0));
 
             var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = "knfjkdngkfngk" };
 

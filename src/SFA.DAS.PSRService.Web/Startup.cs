@@ -79,7 +79,7 @@ namespace SFA.DAS.PSRService.Web
                 config.For<IWebConfiguration>().Use(Configuration);
                 //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
                 config.For<IReportService>().Use<ReportService>();
-                config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);

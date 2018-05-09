@@ -1,13 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class GetReportHandler : IRequestHandler<GetReportRequest, Report>
+    public class GetReportHandler : RequestHandler<GetReportRequest, Report>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
@@ -18,13 +16,11 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             _mapper = mapper;
         }
 
-        public Task<Report> Handle(GetReportRequest request, CancellationToken cancellationToken)
+        protected override Report HandleCore(GetReportRequest request)
         {
             var reportDto = _reportRepository.Get(request.Period,request.EmployerId);
 
-            var report = _mapper.Map<Report>(reportDto);
-
-            return Task.FromResult(report);
+            return _mapper.Map<Report>(reportDto);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
                     SubmissionClose = DateTime.Today.AddDays(1)
                 });
                 config.For<IReportService>().Use<ReportService>();
-                config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
