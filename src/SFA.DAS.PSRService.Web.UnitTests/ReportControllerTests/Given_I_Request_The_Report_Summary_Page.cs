@@ -120,10 +120,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _controller.ObjectValidator = objectValidator.Object;
 
             // arrange
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
-            _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
-            _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
 
             // act
             var result = _controller.Summary("1718");
@@ -150,11 +147,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             // arrange
             var url = "Home/Index";
             UrlActionContext actualContext = null;
-
-            _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
+            
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
+          //  _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null);
 
             // act

@@ -23,6 +23,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         private EmployerIdentifier _employerIdentifier;
         private IWebConfiguration _webConfiguration;
+        private Mock<IPeriodService> _mockPeriodService;
+
+        private string period = "1516";
 
         [SetUp]
         public void SetUp()
@@ -32,10 +35,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration);
+            _mockPeriodService = new Mock<IPeriodService>();
+            _mockPeriodService.Setup(r => r.GetCurrentPeriod()).Returns(new Period(period));
+            _controller = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration,_mockPeriodService.Object);
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
-            _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
+          //  _mockReportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
                 .Returns(_employerIdentifier);
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
@@ -46,11 +51,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         public void AndThereIsNoCurrentReportThenCreateReportEnabled()
         {
             // arrange
-            var period = "1617";
-            var periodName = "whatever the name";
-
-            _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
-            _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
+          
+           
             _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
 
             // act
@@ -66,19 +68,16 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             Assert.IsNotNull(model);
             Assert.IsTrue(model.CanCreateReport);
             Assert.IsFalse(model.CanEditReport);
-            Assert.AreEqual(periodName, model.PeriodName);
+            Assert.AreEqual(period, model.Period.PeriodString);
         }
 
         [Test]
         public void AndThereIsCurrentReportThenEditReportEnabled()
         {
             // arrange
-            var period = "1617";
-            var periodName = "whatever the name";
+           
             var report = new Report();
-
-            _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
-            _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
+            
             _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
 
             // act
@@ -94,19 +93,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             Assert.IsNotNull(model);
             Assert.IsFalse(model.CanCreateReport);
             Assert.IsTrue(model.CanEditReport);
-            Assert.AreEqual(periodName, model.PeriodName);
+            Assert.AreEqual(period, model.Period.PeriodString);
         }
 
         [Test]
         public void AndThereIsSubmittedCurrentReportThenEditReportEnabled()
         {
             // arrange
-            var period = "1617";
-            var periodName = "whatever the name";
             var report = new Report {Submitted = true};
-
-            _mockReportService.Setup(r => r.GetCurrentReportPeriod()).Returns(period).Verifiable("Current period wasn't requested");
-            _mockReportService.Setup(r => r.GetCurrentReportPeriodName(period)).Returns(periodName).Verifiable("Current period name wasn't requested");
             _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
 
             // act
@@ -122,7 +116,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             Assert.IsNotNull(model);
             Assert.IsFalse(model.CanCreateReport);
             Assert.IsFalse(model.CanEditReport);
-            Assert.AreEqual(periodName, model.PeriodName);
+            Assert.AreEqual(period, model.Period.PeriodString);
         }
     }
 }

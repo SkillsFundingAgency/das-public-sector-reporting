@@ -17,10 +17,12 @@ namespace SFA.DAS.PSRService.Web.Services
 
         private IMediator _mediator;
         private IWebConfiguration _config;
+        private IPeriodService _periodService;
 
-        public ReportService(IWebConfiguration config, IMediator mediator)
+        public ReportService(IWebConfiguration config, IMediator mediator, IPeriodService periodService)
         {
             _mediator = mediator;
+            _periodService = periodService;
             _config = config;
         }
 
@@ -31,7 +33,9 @@ namespace SFA.DAS.PSRService.Web.Services
                 throw new Exception("Unable to create report after submissions is closed");
             }
 
-            var request = new CreateReportRequest() { Period = GetCurrentReportPeriod(), EmployerId = employerId };
+            var currentPeriod = _periodService.GetCurrentPeriod();
+
+            var request = new CreateReportRequest() { Period = currentPeriod.PeriodString, EmployerId = employerId };
 
             var report = _mediator.Send(request).Result;
 
@@ -57,7 +61,7 @@ namespace SFA.DAS.PSRService.Web.Services
             var report = GetReport(period, employerId);
 
 
-            if (IsSubmitValid(report) == false || (report.Sections.All(w => w.CompletionStatus != CompletionStatus.Completed)))
+            if (report.IsSubmitAllowed == false)
                 return SubmittedStatus.Invalid;
 
 
@@ -78,69 +82,7 @@ namespace SFA.DAS.PSRService.Web.Services
             var submittedReports = _mediator.Send(request).Result;
             return submittedReports;
         }
-
-        public bool IsSubmitValid(Report report)
-        {
-            if ((report?.Submitted == false && IsCurrentPeriod(report?.ReportingPeriod)) && IsSubmissionsOpen())
-                return true;
-
-            return false;
-        }
-
-        public string GetReportPeriod(DateTime utcToday)
-        {
-            var year = GetReportPeriodYear(utcToday);
-            return string.Concat((year -1).ToString(CultureInfo.InvariantCulture).Substring(2), (year).ToString(CultureInfo.InvariantCulture).Substring(2));
-        }
-
-        private static int GetReportPeriodYear(DateTime utcToday)
-        {
-            var year = utcToday.Year;
-            if (utcToday.Month < 4) year--;
-            return year;
-        }
-
-        public CurrentPeriod GetPeriod(string period)
-        {
-            var currentPeriod = new CurrentPeriod();
-
-            var startYear = ConvertPeriodStringToYear(period);
-
-            currentPeriod.EndYear = (startYear+1).ToString();
-            currentPeriod.StartYear = (startYear).ToString();
-            currentPeriod.FullString = GetCurrentReportPeriodName(period);
-
-            return currentPeriod;
-        }
-
-
-        public string GetCurrentReportPeriod()
-        {
-            return GetReportPeriod(DateTime.UtcNow.Date);
-        }
-
-
-        public string GetCurrentReportPeriodName(string period)
-        {
-            var year = ConvertPeriodStringToYear(period);
-
-            return $"1 April {year} to 31 March {year + 1}";
-        }
-
-        private static int ConvertPeriodStringToYear(string period)
-        {
-            if (period == null || period.Length != 4)
-                throw new ArgumentException("Period string has to be 4 chars", nameof(period));
-
-            var year = int.Parse(period.Substring(0, 2)) + 2000;
-            return year;
-        }
-
-        private bool IsCurrentPeriod(string reportingPeriod)
-
-        {
-            return (GetCurrentReportPeriod() == reportingPeriod);
-        }
+        
 
         public bool IsSubmissionsOpen()
         {

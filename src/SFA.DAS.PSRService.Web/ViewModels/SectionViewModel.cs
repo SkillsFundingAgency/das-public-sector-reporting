@@ -12,7 +12,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
 
         public IList<QuestionViewModel> Questions { get; set; }
 
-        public CurrentPeriod CurrentPeriod { get; set; }
+        public Period CurrentPeriod { get; set; }
         
     }
 }

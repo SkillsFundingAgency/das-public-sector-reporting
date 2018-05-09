@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public string CurrentPeriod { get; set; }
         public bool SubmitValid { get; set; }
         public PercentagesViewModel Percentages { get; set; }
-        public CurrentPeriod Period { get; set; }
+        public Period Period { get; set; }
 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

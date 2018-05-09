@@ -10,6 +10,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     public class ReportListViewModel
     {
         public IEnumerable<Report>SubmittedReports { get; set; }
-        public Dictionary<string,CurrentPeriod> Periods { get; set; }
+        public Dictionary<string,Period> Periods { get; set; }
     }
 }

@@ -19,26 +19,34 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
         private readonly IUserService _userService;
+        private readonly IPeriodService _periodService;
+        private readonly Period _currentPeriod;
 
-        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration) 
+        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration, IPeriodService periodService)
             : base(webConfiguration, employerAccountService)
         {
             _logger = logger;
             _reportService = reportService;
             _userService = userService;
+            _periodService = periodService;
+            _currentPeriod = _periodService.GetCurrentPeriod();
         }
-    
+
         public IActionResult Edit(string period)
         {
 
             var reportViewModel = new ReportViewModel();
-            
-            reportViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);
 
-            if (_reportService.IsSubmitValid(reportViewModel.Report) == false)
-                return new RedirectResult(Url.Action("Index", "Home"));
+            reportViewModel.Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            return View("Edit", reportViewModel);
+            if (reportViewModel.Report != null && reportViewModel.Report.IsSubmitAllowed)
+            {
+                return View("Edit", reportViewModel);
+            }
+
+            return new RedirectResult(Url.Action("Index", "Home"));
+
+
         }
 
 
@@ -46,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("Create")]
         public IActionResult Create()
         {
-            ViewBag.CurrentPeriod = _reportService.GetPeriod(_reportService.GetCurrentReportPeriod());
+            ViewBag.CurrentPeriod = _currentPeriod;
             return View("Create");
         }
 
@@ -61,10 +69,10 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
             catch (Exception ex)
             {
-            
+
                 return new BadRequestResult();
             }
-          
+
         }
         [Route("List")]
         public IActionResult List()
@@ -75,12 +83,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId);
 
-           reportListViewmodel.Periods = new Dictionary<string, CurrentPeriod>();
+            reportListViewmodel.Periods = new Dictionary<string, Period>();
 
             foreach (var submittedReport in reportListViewmodel.SubmittedReports)
             {
                 if (reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod) == false)
-                     reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod,_reportService.GetPeriod(submittedReport.ReportingPeriod));
+                    reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, new Period(submittedReport.ReportingPeriod));
             }
 
 
@@ -94,26 +102,26 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                var currentPeriod = _reportService.GetCurrentReportPeriod();
+
                 if (period == null)
                 {
-                    period = currentPeriod;
+                    period = _currentPeriod.PeriodString;
                 }
 
                 var reportViewModel = new ReportViewModel
                 {
                     Report = _reportService.GetReport(period, EmployerAccount.AccountId),
-                    CurrentPeriod = currentPeriod
+                    Period = _currentPeriod
                 };
-
-                reportViewModel.SubmitValid = _reportService.IsSubmitValid(reportViewModel.Report);
-                reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
-                reportViewModel.Period = _reportService.GetPeriod(period);
-
-                ViewBag.CurrentPeriod = reportViewModel.Period;
 
                 if (reportViewModel.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
+
+                reportViewModel.SubmitValid = reportViewModel.Report.IsSubmitAllowed;
+                reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
+                reportViewModel.Period = reportViewModel.Report?.Period;
+
+                ViewBag.CurrentPeriod = reportViewModel.Period;
 
                 TryValidateModel(reportViewModel);
 
@@ -129,7 +137,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Submit(string period)
         {
             if (period == null)
-                period = _reportService.GetCurrentReportPeriod();
+                period = _currentPeriod.PeriodString;
 
             var report = new ReportViewModel();
             report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
@@ -151,16 +159,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             submitted.SubmttedBy = user.Id.ToString();
             submitted.UniqueReference = "NotAUniqueReference";
 
- 
+
 
             var submittedStatus = _reportService.SubmitReport(period, EmployerAccount.AccountId, submitted);
 
             if (submittedStatus == SubmittedStatus.Invalid)
             {
-                return new RedirectResult(Url.Action("Index","Home"));
+                return new RedirectResult(Url.Action("Index", "Home"));
             }
 
-            ViewBag.CurrentPeriod = _reportService.GetPeriod(period);
+            ViewBag.CurrentPeriod = _currentPeriod;
 
             return View("Submitted");
         }
@@ -173,7 +181,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var organisationVM = new OrganisationViewModel
             {
                 EmployerAccount = EmployerAccount,
-                Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
+                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
             };
 
             if (string.IsNullOrEmpty(organisationVM.Report.OrganisationName))
@@ -190,7 +198,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var reportViewModel = new ReportViewModel
             {
-                Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
+                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
             };
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;

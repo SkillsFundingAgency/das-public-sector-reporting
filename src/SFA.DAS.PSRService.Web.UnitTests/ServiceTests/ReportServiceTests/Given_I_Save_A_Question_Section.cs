@@ -24,13 +24,16 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         private ReportService _reportService;
         private Mock<IMediator> _mediatorMock;
         private Mock<IWebConfiguration> _webConfigurationMock;
+        private Mock<IPeriodService> _periodServiceMock;
 
         [SetUp]
         public void SetUp()
         {
             _mediatorMock = new Mock<IMediator>();
             _webConfigurationMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
-            _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object);
+            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
+
+            _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
             
         }
 

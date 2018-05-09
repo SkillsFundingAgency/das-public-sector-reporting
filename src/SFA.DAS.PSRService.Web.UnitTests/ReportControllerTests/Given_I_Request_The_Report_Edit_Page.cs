@@ -19,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void The_Report_Exists_And_Current_Period_And_It_Hasnt_Been_Submitted_Then_Show_Edit_Report()
         {
             // arrange
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
+            
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(_reportList.FirstOrDefault());
             // act
             var result = _controller.Edit("1718");
@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url)
                 .Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
+            
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(_reportList.FirstOrDefault(w => w.ReportingPeriod == previousPeriod));
             // act
             var result = _controller.Edit(previousPeriod);
@@ -79,7 +79,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url)
                 .Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
+            
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()
             {
                 Submitted = true
@@ -107,8 +107,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url)
                 .Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
+            
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
            
             // act

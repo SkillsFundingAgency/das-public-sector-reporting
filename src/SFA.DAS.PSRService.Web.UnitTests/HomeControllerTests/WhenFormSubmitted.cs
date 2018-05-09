@@ -14,12 +14,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         private Mock<IUrlHelper> _mockUrlHelper;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
 
+        private Mock<IPeriodService> _mockPeriodService;
+
         [SetUp]
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _controller = new HomeController(null,_employeeAccountServiceMock.Object, null) {Url = _mockUrlHelper.Object};
+            _mockPeriodService = new Mock<IPeriodService>();
+            _controller = new HomeController(null,_employeeAccountServiceMock.Object, null,_mockPeriodService.Object) {Url = _mockUrlHelper.Object};
         }
 
         [Test]

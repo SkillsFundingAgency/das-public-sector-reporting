@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
@@ -78,11 +79,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
                 }
             };
 
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNull(_report.ReportingPercentages);
+            // Act/Assert
+           Assert.Throws<InvalidOperationException>(() => _report.UpdatePercentages());
+            
         }
 
         [Test]
@@ -141,11 +140,10 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
                 }
             };
 
-            // Act
-            _report.UpdatePercentages();
+         
 
-            // Assert
-            Assert.IsNull(_report.ReportingPercentages);
+            // Act/Assert
+            Assert.Throws<InvalidOperationException>(() => _report.UpdatePercentages());
         }
 
         [Test]

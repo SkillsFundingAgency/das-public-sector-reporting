@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Models.Home;
@@ -18,20 +20,25 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class HomeController : BaseController
     {
         private readonly IReportService _reportService;
+        private readonly IPeriodService _periodService;
 
-        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration) 
+        private readonly Period _currentPeriod;
+
+        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService) 
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
+            _periodService = periodService;
+
+            _currentPeriod = _periodService.GetCurrentPeriod();
         }
 
         public IActionResult Index()
         {
             var model = new IndexViewModel();
-            var period = _reportService.GetCurrentReportPeriod();
        
-            var report = _reportService.GetReport(period, EmployerAccount.AccountId);
-            model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+            model.Period = _currentPeriod;
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
             return View(model);

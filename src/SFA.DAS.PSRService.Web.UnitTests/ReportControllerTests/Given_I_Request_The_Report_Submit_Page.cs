@@ -25,7 +25,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
            
             _mockReportService.Setup(s => s.SubmitReport(It.IsAny<string>(),It.IsAny<string>(), It.IsAny<Submitted>())).Returns(SubmittedStatus.Submitted);
-            _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
+          //  _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report());
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -160,7 +160,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
            
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
-            _mockReportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
             _mockReportService.Setup(s => s.SubmitReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Submitted>())).Returns(SubmittedStatus.Invalid);
             
             // act

@@ -109,7 +109,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
         [Test]
         public void And_The_Report_Contains_No_Sections_Then_Throw_Error()
         {
-            Assert.IsNull(new Report().GetQuestionSection("SubSectionTwo"));
+            Assert.Throws<InvalidOperationException>(() => new Report().GetQuestionSection("SubSectionTwo"));
 
         }
 

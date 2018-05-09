@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
@@ -14,11 +15,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class QuestionController : BaseController
     {
         private readonly IReportService _reportService;
+        private readonly IPeriodService _periodService;
 
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration) 
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService) 
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
+            _periodService = periodService;
         }
 
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
@@ -26,10 +29,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var sectionViewModel = new SectionViewModel();
 
-            sectionViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);
-            sectionViewModel.CurrentPeriod = _reportService.GetPeriod(sectionViewModel.Report.ReportingPeriod);
+            sectionViewModel.CurrentPeriod = _periodService.GetCurrentPeriod();
+            sectionViewModel.Report = _reportService.GetReport(sectionViewModel.CurrentPeriod.PeriodString, EmployerAccount.AccountId);
+            
 
-            if (sectionViewModel.Report == null || _reportService.IsSubmitValid(sectionViewModel.Report) == false)
+            if (sectionViewModel.Report == null || (sectionViewModel.Report.IsSubmitAllowed == false && _periodService.IsSubmissionsOpen()))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
             try
@@ -60,7 +64,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerAccount.AccountId);
 
-            if (Section.Report == null || _reportService.IsSubmitValid(Section.Report) == false)
+            if (Section.Report == null || Section.Report.IsSubmitAllowed == false)
                 return new RedirectResult(Url.Action("Index", "Home"));
 
             Section.CurrentSection = Section.Report.GetQuestionSection(Section.CurrentSection.Id);
@@ -87,7 +91,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
             else
             {
-                Section.CurrentPeriod = _reportService.GetPeriod(Section.Report.ReportingPeriod);
+                Section.CurrentPeriod = Section.Report.Period;
 
 
                 return View("Index", Section);

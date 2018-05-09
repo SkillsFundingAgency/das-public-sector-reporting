@@ -19,26 +19,19 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
         private ReportService _reportService;
         private Mock<IMediator> _mediatorMock;
         private Mock<IWebConfiguration> _webConfigurationMock;
+        private Mock<IPeriodService> _periodServiceMock;
 
         [SetUp]
         public void Setup()
         {
             _mediatorMock = new Mock<IMediator>();
             _webConfigurationMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
-            _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object);
+            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
+
+            _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
         }
 
-        [Test]
-        public void And_A_Valid_Date_Is_Used_Then_Return_Period()
-        {
-
-
-           var period = _reportService.GetPeriod("1718");
-
-           Assert.AreEqual("2017", period.StartYear);
-            Assert.AreEqual("2018", period.EndYear);
-            Assert.AreEqual("1 April 2017 to 31 March 2018",period.FullString);
-        }
+       
 
     }
 }

@@ -13,11 +13,7 @@ namespace SFA.DAS.PSRService.Web.Services
         Report GetReport(string period,string employerId);
         SubmittedStatus SubmitReport(string period, string employerId, Submitted submittedDetails);
         IEnumerable<Report> GetSubmittedReports(string employerId);
-        bool IsSubmitValid(Report report);
-        string GetCurrentReportPeriod();
-        string GetCurrentReportPeriodName(string period);
-        bool IsSubmissionsOpen();
         void SaveReport(Report report);
-        CurrentPeriod GetPeriod(string period);
+
     }
 }

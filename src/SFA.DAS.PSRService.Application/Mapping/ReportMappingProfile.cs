@@ -14,6 +14,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                 .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
                 .ForMember(dest => dest.Sections, opts => opts.Ignore())
                 .ForMember(dest => dest.ReportingPercentages, opts => opts.Ignore())
+                .ForMember(dest => dest.Period, opts => opts.MapFrom(s => new Period(s.ReportingPeriod)))
                 .AfterMap((src, dest) =>
                 {
 
@@ -26,6 +27,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                 });
 
             CreateMap<Report, ReportDto>()
+                .ForMember(dest => dest.ReportingPeriod, opts => opts.MapFrom(src => new Period(src.ReportingPeriod).PeriodString))
                 .ForMember(dest => dest.ReportingData, opts => opts.MapFrom(src => SerializeData(src)));
 
         }
