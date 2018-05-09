@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IPeriodService _periodService;
         private readonly Period _currentPeriod;
 
-        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration, IPeriodService periodService)
+        public ReportController(IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration, IPeriodService periodService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
