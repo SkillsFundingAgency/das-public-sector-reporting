@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -9,7 +7,7 @@ using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class GetSubmittedHandler : IRequestHandler<GetSubmittedRequest, IEnumerable<Report>>
+    public class GetSubmittedHandler : RequestHandler<GetSubmittedRequest, IEnumerable<Report>>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
@@ -20,23 +18,15 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             _mapper = mapper;
         }
 
-        public Task<IEnumerable<Report>> Handle(GetSubmittedRequest request, CancellationToken cancellationToken)
+        protected override IEnumerable<Report> HandleCore(GetSubmittedRequest request)
         {
-            IEnumerable<Report> reportList = new List<Report>();
-
             if (string.IsNullOrEmpty(request.EmployerId))
-                return Task.FromResult(reportList);
+                return Enumerable.Empty<Report>();
 
-            var reportDtoList = _reportRepository.GetSubmitted(request.EmployerId);
-
-          
-            if (reportDtoList != null)
-                reportList = reportDtoList.Select(data => _mapper.Map<Report>(data));
-
-
-
-
-            return Task.FromResult(reportList);
+            return
+                _reportRepository
+                    .GetSubmitted(request.EmployerId)
+                    .Select(data => _mapper.Map<Report>(data));
         }
     }
 }
