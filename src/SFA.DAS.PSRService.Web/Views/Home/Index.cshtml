@@ -11,11 +11,11 @@
             <p>
                 @if (Model.CanCreateReport || Model.CanEditReport)
                 {
-                    @:You can submit a new report for the year @Model.PeriodName or
+                    @:You can submit a new report for the year @Model.Period.FullString or
                 }
                 else
                 {
-                    @:The report for the year @Model.PeriodName is already submitted, you can
+                    @:The report for the year @Model.Period.FullString is already submitted, you can
                 }
                 review previously submitted reports.
             </p>
