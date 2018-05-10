@@ -23,7 +23,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         public Mock<IUserService> _userServiceMock;
         private Mock<IPeriodService> _periodServiceMock;
-        private Mock<ILogger<ReportController>> _mockLogging;
         protected IList<Report> _reportList = ReportTestModelBuilder.ReportsWithValidSections();
         private EmployerIdentifier _employerIdentifier;
 
@@ -32,7 +31,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
-            _mockLogging = new Mock<ILogger<ReportController>>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
@@ -40,7 +38,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
 
-            _controller = new ReportController(_mockLogging.Object, _mockReportService.Object, _employeeAccountServiceMock.Object, _userServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new ReportController(_mockReportService.Object, _employeeAccountServiceMock.Object, _userServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
