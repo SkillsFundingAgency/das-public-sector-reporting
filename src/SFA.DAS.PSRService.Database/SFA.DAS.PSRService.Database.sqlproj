@@ -59,6 +59,7 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="ReleaseScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Report.sql" />
@@ -66,5 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SFA.DAS.PSRService.Database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="ReleaseScripts\2018-05.sql" />
   </ItemGroup>
 </Project>
