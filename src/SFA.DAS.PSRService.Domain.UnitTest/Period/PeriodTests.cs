@@ -70,17 +70,17 @@ namespace SFA.DAS.PSRService.Domain.UnitTest
         [Test]
         public void TestCurrentPeriodNameFailsWhenInvalidStringPassed()
         {
-            try
-            {
-                var periodName1 = new Period("null!").FullString;
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("period", ex.ParamName);
-                return;
-            }
+            var expectedException
+                =
+                Assert
+                    .Catch<ArgumentException>(
+                        () => new Period("null!"));
 
-            Assert.Fail("Correct exception wasn't thrown");
+            Assert
+                .AreEqual(
+                    "period"
+                    , expectedException
+                        .ParamName);
         }
     }
 }
