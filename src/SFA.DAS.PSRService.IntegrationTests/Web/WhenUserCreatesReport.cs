@@ -47,22 +47,6 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
         }
 
         [Test]
-        public void ThenItShouldNotAppearInSubmittedReportList()
-        {
-            // arrange
-
-            // act
-            _reportController.PostCreate();
-            var result = _reportController.List() as ViewResult;
-            
-            // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ReportListViewModel>(result.Model);
-            var model = (ReportListViewModel) result.Model;
-            Assert.AreEqual(0, model.SubmittedReports.Count());
-        }
-
-        [Test]
         public void AndReportIsSubmittedThenItShouldAppearInSubmittedReportList()
         {
             // arrange
