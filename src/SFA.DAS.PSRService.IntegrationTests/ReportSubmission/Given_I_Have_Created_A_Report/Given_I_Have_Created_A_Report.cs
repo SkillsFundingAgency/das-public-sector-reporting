@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Controllers;
 using StructureMap;
 
-namespace SFA.DAS.PSRService.IntegrationTests.Web.Given_I_Have_Created_A_Report
+namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report
 {
     [ExcludeFromCodeCoverage]
     public abstract class Given_I_Have_Created_A_Report

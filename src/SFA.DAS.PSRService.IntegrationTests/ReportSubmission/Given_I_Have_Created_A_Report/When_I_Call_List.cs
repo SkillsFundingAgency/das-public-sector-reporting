@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.IntegrationTests.Web.Given_I_Have_Created_A_Report
+namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report
 {
     public sealed class When_I_Call_List
     : Given_I_Have_Created_A_Report
