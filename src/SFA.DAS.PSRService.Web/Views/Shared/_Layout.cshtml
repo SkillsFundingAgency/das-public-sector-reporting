@@ -94,53 +94,7 @@
         </div>
     </header>
 
-    <div id="floating-menu-holder">
-            <div class="account-information floating-menu" role="navigation">
-                <div class="js-float">
-                    <p class="floating-head-text">Public sector reporting</p>
-                    <nav id="user-nav">
-                        <ul role="menubar">
-                            <li><a href="@ViewData["RootUrl"]/service/help">Help</a></li>
-                            @*
-                            @if (HttpContext.Current.User.Identity.IsAuthenticated)
-                            {
-                            *@
-                            @*
-                                <li class="has-sub-menu">
-                                    <a href="/" role="menuitem">Settings</a>
-                                    <ul role="menu" class="js-hidden" id="settings-menu">
-                                        <li><a href="@Url.Action("ViewAccounts", "Home")" role="menuitem" class="sub-menu-item">Your accounts</a></li>
-                                        @if (!DynamicExtensions.ParseHideNavFromViewBag(ViewBag))
-                                        {
-                                        <li><a href="@Url.Action("RenameAccount", "EmployerAccount")" role="menuitem" class="sub-menu-item">Rename account</a></li>
-                                        }
-                                        <li><a href="@UserLinksViewModel.ChangePasswordLink" class="sub-menu-item">Change your password</a></li>
-                                        <li><a href="@UserLinksViewModel.ChangeEmailLink" class="sub-menu-item">Change your email address</a></li>
-                                        @if (!DynamicExtensions.ParseHideNavFromViewBag(ViewBag))
-                                        {
-                                        <li><a href="@Url.Action("NotificationSettings", "Settings")" class="sub-menu-item">Notification settings</a></li>
-                                        }
-                                    </ul>
-                                </li>
-                            *@
-                            <li><a asp-controller="Home" asp-action="Logout" role="menuitem">Sign out</a></li>
-                            @*
-                            }
-                            *@
-                            @*
-                            else if (HttpContext.Current.User.Identity.IsAuthenticated || Model?.GetType().GetProperty("HideHeaderSignInLink") == null)
-                            {
-                                {
-
-                                    <li><a href="@Url.Action("SignIn", "Home")" role="menuitem">Sign in / Register</a></li>
-                                }
-                            }
-                            *@
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div> <!--/floating-menu-holder-->
+    @Html.Partial("Menu/_Menu")
 
     
     <main id="content" role="main">
