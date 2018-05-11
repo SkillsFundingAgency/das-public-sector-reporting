@@ -6,7 +6,7 @@
         <p>We have computed the percentages that will be reported from the figures you have given</p>
         <tbody>
         <tr>
-            <td>Percentage of apprenticeship starts as a proportion of employment starts between @ViewBag.CurrentPeriod.FullString</td>
+            <td>Percentage of apprenticeship starts (both new hires and existing employees who started an apprenticeship) as a proportion of employment starts between @ViewBag.CurrentPeriod.FullString</td>
             <td class="numeric bold-xsmall">@Model.EmploymentStarts.ToString("0.00")%</td>
             <td class="link-right"></td>
         </tr>
@@ -17,7 +17,7 @@
         </tr>
         <tr>
             @* 31 March 2017 has been hardcoded until refactor *@
-            <td>Percentage of apprenticeship starts between @ViewBag.CurrentPeriod.FullString as a proportion of total headcount on 31 March 2017</td>
+            <td>Percentage of apprenticeship starts (both new hires and existing employees who started an apprenticeship) between @ViewBag.CurrentPeriod.FullString as a proportion of total headcount on 31 March 2017</td>
             <td class="numeric bold-xsmall">@Model.NewThisPeriod.ToString("0.00")%</td>
             <td class="link-right"></td>
         </tr>
