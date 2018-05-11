@@ -62,7 +62,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Submit(SectionViewModel Section)
         {
-            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerAccount.AccountId);
+            Section.Report = _reportService.GetReport(Section.Report.Period, EmployerAccount.AccountId);
 
             if (Section.Report == null || Section.Report.IsSubmitAllowed == false)
                 return new RedirectResult(Url.Action("Index", "Home"));

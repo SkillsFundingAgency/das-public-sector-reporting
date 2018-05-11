@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
@@ -61,7 +59,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns((Report)null);
 
             // act
             var result = _controller.Submit(_sections);
@@ -84,7 +82,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE"));
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE"));
 
 
             // act
@@ -115,7 +113,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
 
 
             // act
@@ -132,7 +130,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), "ABCDE"))
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), "ABCDE"))
                 .Returns(ReportTestModelBuilder.CurrentReportWithDuplicateSections("ABCDE"));
 
             var duplicateSections = new SectionViewModel()
@@ -153,7 +151,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
 
             _reportService.Setup(s => s.SaveReport(It.IsAny<Report>()));
 
