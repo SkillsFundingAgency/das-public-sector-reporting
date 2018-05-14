@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking;
-using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -27,30 +26,26 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         public IActionResult Index(string id)
         {
-            var sectionViewModel = new SectionViewModel();
+            var currentPeriod = _periodService.GetCurrentPeriod();
+            var report = _reportService.GetReport(currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            sectionViewModel.CurrentPeriod = _periodService.GetCurrentPeriod();
-            sectionViewModel.Report = _reportService.GetReport(sectionViewModel.CurrentPeriod.PeriodString, EmployerAccount.AccountId);
-            
-
-            if (sectionViewModel.Report == null || (sectionViewModel.Report.IsSubmitAllowed == false && _periodService.IsSubmissionsOpen()))
+            if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            try
+            var currentSection = report.GetQuestionSection(id);
+
+            if (currentSection == null)
+                return new NotFoundResult();
+
+            var sectionViewModel = new SectionViewModel
             {
-                sectionViewModel.CurrentSection = sectionViewModel.Report.GetQuestionSection(id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Unable to get the Current Section, see inner Exception for more details", ex);
-            }
+                CurrentPeriod = currentPeriod,
+                Report = report,
+                CurrentSection = currentSection
+            };
 
-            if (sectionViewModel.CurrentSection?.Questions != null && sectionViewModel.CurrentSection.Questions.Any())
-                sectionViewModel.Questions = sectionViewModel.CurrentSection.Questions.Select(s => new QuestionViewModel() {Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type}).ToList();
-
-
-            if (sectionViewModel.CurrentSection == null)
-                return new BadRequestResult();
+            if (sectionViewModel.CurrentSection.Questions != null)
+                sectionViewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel {Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type}).ToList();
 
             return View("Index", sectionViewModel);
         }
@@ -60,45 +55,49 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Submit(SectionViewModel Section)
-        {
-            Section.Report = _reportService.GetReport(Section.Report.ReportingPeriod, EmployerAccount.AccountId);
+        public IActionResult Submit(SectionModel section)
+         {
+            var report = _reportService.GetReport(section.ReportingPeriod, EmployerAccount.AccountId);
 
-            if (Section.Report == null || Section.Report.IsSubmitAllowed == false)
+            if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            Section.CurrentSection = Section.Report.GetQuestionSection(Section.CurrentSection.Id);
+            var currentSection = report.GetQuestionSection(section.Id);
 
-            if (Section.CurrentSection == null)
+            if (currentSection == null)
                 return new BadRequestResult();
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && section.Questions != null)
             {
-
-                foreach (var sectionQuestion in Section.CurrentSection.Questions)
+                foreach (var question in currentSection.Questions)
                 {
-                  
-                    sectionQuestion.Answer = Section.Questions.Single(w => w.Id == sectionQuestion.Id).Answer;
+                    var answeredQuestion = section.Questions.SingleOrDefault(w => w.Id == question.Id);
+                    if (answeredQuestion == null)
+                        continue;
 
-                    if (sectionQuestion.Type == QuestionType.Number)
+
+                    if (question.Type == QuestionType.Number && !string.IsNullOrEmpty(answeredQuestion.Answer))
                     {
-                        sectionQuestion.Answer = sectionQuestion.Answer?.Replace(",", "");
+                        question.Answer = decimal.Parse(answeredQuestion.Answer, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowTrailingWhite).ToString();
+                    }
+                    else
+                    {
+                        question.Answer = answeredQuestion.Answer;
                     }
                 }
-          
-                _reportService.SaveReport(Section.Report);
+
+                _reportService.SaveReport(report);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
-            else
+
+            var viewModel = new SectionViewModel
             {
-                Section.CurrentPeriod = Section.Report.Period;
+                CurrentPeriod = report.Period,
+                CurrentSection = currentSection,
+                Report = report
+            };
 
-
-                return View("Index", Section);
-            }
-            
-          
+            return View("Index", viewModel);
         }
-
     }
 }

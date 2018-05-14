@@ -1,6 +1,4 @@
-using System;
-
-namespace SFA.DAS.PSRService.Web.Models
+namespace SFA.DAS.PSRService.Web.ViewModels
 {
     public class ErrorViewModel
     {

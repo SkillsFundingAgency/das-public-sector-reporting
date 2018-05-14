@@ -9,11 +9,11 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public interface IReportService
     {
-        Report CreateReport(string employerId);
+        void CreateReport(string employerId);
         Report GetReport(string period,string employerId);
-        SubmittedStatus SubmitReport(string period, string employerId, Submitted submittedDetails);
+        SubmittedStatus SubmitReport(Report report);
         IEnumerable<Report> GetSubmittedReports(string employerId);
         void SaveReport(Report report);
-
+        bool CanBeEdited(Report report);
     }
 }

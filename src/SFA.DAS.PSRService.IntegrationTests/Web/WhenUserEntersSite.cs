@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Web.Controllers;
-using SFA.DAS.PSRService.Web.Models.Home;
+using SFA.DAS.PSRService.Web.ViewModels.Home;
 using StructureMap;
 
 namespace SFA.DAS.PSRService.IntegrationTests.Web

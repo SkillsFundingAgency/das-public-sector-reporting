@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
@@ -20,9 +19,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
     {
         private QuestionController _controller;
         private Mock<IReportService> _reportService;
-        private Mock<IEmployerAccountService> _EmployerAccountServiceMock;
+        private Mock<IEmployerAccountService> _employerAccountServiceMock;
         private Mock<IUrlHelper> _mockUrlHelper;
-        private SectionViewModel _sections;
+        //private SectionModel _sectionModel;
 
         private EmployerIdentifier _employerIdentifier;
         private Mock<IPeriodService> _periodServiceMock;
@@ -31,25 +30,25 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-            _EmployerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+            _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
             
             
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
+            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
                 .Returns(_employerIdentifier);
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
+            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
                 .Returns(_employerIdentifier);
 
-            _controller = new QuestionController(_reportService.Object, _EmployerAccountServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
 
-            _sections = new SectionViewModel()
-            {
-                Report = ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"),
-                CurrentSection = ReportTestModelBuilder.SectionOne.SubSections.FirstOrDefault()
-            };
+            //_sectionModel = new SectionModel
+            //{
+            //    Report = ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"),
+            //    CurrentSection = ReportTestModelBuilder.SectionOne.SubSections.FirstOrDefault()
+            //};
 
         }
 
@@ -61,13 +60,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+            _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns((Report)null).Verifiable();
+            _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
             // act
-            var result = _controller.Submit(_sections);
+            var result = _controller.Submit(new SectionModel{ReportingPeriod = "111"});
 
             // assert
             _mockUrlHelper.VerifyAll();
+            _reportService.VerifyAll();
 
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
@@ -77,21 +78,23 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         }
 
         [Test]
-        public void And_A_Valid_Report_Doesnt_Exist_Then_Redirect_Home()
+        public void And_Report_Is_Not_Editable_Then_Redirect_Home()
         {
             // arrange
             var url = "home/index";
             UrlActionContext actualContext = null;
+            var report = new Report();
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE"));
-
+            _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns(report).Verifiable();
+            _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
             // act
-            var result = _controller.Submit(_sections);
+            var result = _controller.Submit(new SectionModel{ReportingPeriod = "111"});
 
             // assert
             _mockUrlHelper.VerifyAll();
+            _reportService.VerifyAll();
 
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
@@ -103,72 +106,113 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         [Test]
         public void And_The_Question_ID_Doesnt_Exist_Then_Return_Error()
         {
-            var invalidSection = new SectionViewModel()
-            {
-                Report = ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"),
-                CurrentSection = ReportTestModelBuilder.SectionTwo.SubSections.FirstOrDefault()
-            };
-
             // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
-
+            _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE")).Verifiable();
+            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
-            Assert.Throws<InvalidOperationException>(() => _controller.Submit(invalidSection));
+            var result = _controller.Submit(new SectionModel{ReportingPeriod = "111", Id = "No such section"});
 
-        }
-
-        [Test]
-        [Ignore("Re-enable after test refactor")]
-        public void And_The_Question_ID_Exists_More_Than_Once_Then_Return_Error()
-        {
-            // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), "ABCDE"))
-                .Returns(ReportTestModelBuilder.CurrentReportWithDuplicateSections("ABCDE"));
-
-            var duplicateSections = new SectionViewModel()
-            {
-                Report = ReportTestModelBuilder.CurrentReportWithDuplicateSections("ABCDE"),
-                CurrentSection = ReportTestModelBuilder.SectionOne.SubSections.FirstOrDefault()
-            };
-            // act
-            Assert.Throws<Exception>(() => _controller.Submit(duplicateSections));
+            // assert
+            _reportService.VerifyAll();
+            Assert.IsAssignableFrom<BadRequestResult>(result);
         }
 
         [Test]
         public void The_SectionViewModel_Is_Valid_Then_Save_Question_Section()
         {
-
-
+            Report actualReport = null;
             var url = "home/index";
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
+            _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE")).Verifiable();
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>())).Callback<Report>(r => actualReport = r).Verifiable("Report was not saved");
+            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
 
-            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>()));
+            var sectionModel = new SectionModel
+            {
+                Id = "SubSectionOne",
+                ReportingPeriod = "222",
+                Questions = new QuestionViewModel[]
+                {
+                    new QuestionViewModel
+                    {
+                        Id = "atEnd",
+                        Answer = "123,000.98"
+                    },
+                    new QuestionViewModel
+                    {
+                        Id = "atStart",
+                        Answer = "123"
+                    }
+                }
+            };
 
             // act
-            _sections.Questions = _sections.CurrentSection.Questions.Select(s => new QuestionViewModel() { Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type }).ToList();
-            var result = _controller.Submit(_sections);
+            var result = _controller.Submit(sectionModel);
 
             // assert
+            _reportService.VerifyAll();
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual(url, redirectResult.Url);
             Assert.AreEqual("Edit", actualContext.Action);
             Assert.AreEqual("Report", actualContext.Controller);
+
+            Assert.IsNotNull(actualReport);
+            var section = actualReport.GetQuestionSection("SubSectionOne");
+            Assert.IsNotNull(section);
+            Assert.AreEqual(3, section.Questions.Count());
+            Assert.AreEqual("123", section.Questions.Single(q => q.Id == "atStart").Answer);
+            Assert.AreEqual("123000.98", section.Questions.Single(q => q.Id == "atEnd").Answer);
+            Assert.AreEqual("1,000", section.Questions.Single(q => q.Id == "newThisPeriod").Answer);
         }
 
+        [Test]
+        public void The_SectionViewModel_Is_Valid_But_Report_Is_Not_Full_Then_Save_Question_Section()
+        {
+            // arrange
+            Report actualReport = null;
+            var report = ReportTestModelBuilder.CurrentReportWithValidSections("123");
+            var url = "home/index";
+            UrlActionContext actualContext = null;
+            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+            _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(report).Verifiable();
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>())).Callback<Report>(r => actualReport = r).Verifiable("Report was not saved");
+            _reportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
 
+            var sectionModel = new SectionModel
+            {
+                Id = "SubSectionOne",
+                ReportingPeriod = "222",
+                Questions = new []
+                {
+                    new QuestionViewModel
+                    {
+                        Id = "atEnd",
+                        Answer = "123,000.98"
+                    },
+                    new QuestionViewModel
+                    {
+                        Id = "atStart",
+                        Answer = ""
+                    }
+                }
+            };            // act
+            var result = _controller.Submit(sectionModel);
+
+            // assert
+            _mockUrlHelper.VerifyAll();
+            _reportService.VerifyAll();
+            var redirectResult = result as RedirectResult;
+            Assert.IsNotNull(redirectResult);
+            Assert.AreEqual(url, redirectResult.Url);
+            Assert.AreEqual("Edit", actualContext.Action);
+            Assert.AreEqual("Report", actualContext.Controller);
+
+            Assert.IsNotNull(actualReport);
+            Assert.IsFalse(actualReport.IsValidForSubmission);
+        }
     }
 }
