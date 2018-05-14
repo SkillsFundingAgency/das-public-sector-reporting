@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -46,6 +47,16 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
                                 ctx
                                     =>
                                         ctx.Controller.Equals("Home", StringComparison.OrdinalIgnoreCase))));
+        }
+
+        [Test]
+        public void Then_Report_Is_Not_Persisted_As_Submitted()
+        {
+            TestHelper
+                .GetAllReports()
+                .Should()
+                .NotContain(
+                    report => report.Submitted == true);
         }
     }
 }
