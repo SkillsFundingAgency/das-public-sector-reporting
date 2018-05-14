@@ -6,7 +6,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
 {
     public class FactorsAnswersBuilder
     {
-        private List<QuestionViewModel> validAnswers;
+        private List<QuestionViewModel> validAnswers = new List<QuestionViewModel>(1);
         private string currentSectionId;
 
         public FactorsAnswersBuilder BuildValidOutlineActionsAnswer()
