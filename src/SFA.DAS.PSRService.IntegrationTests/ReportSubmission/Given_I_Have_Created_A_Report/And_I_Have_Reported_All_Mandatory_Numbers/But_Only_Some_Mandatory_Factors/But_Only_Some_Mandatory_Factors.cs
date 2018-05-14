@@ -7,12 +7,19 @@
         {
             base.Given();
 
-            BuildAndSubmitOnlySomeMandatoryFactors();
+            BuildAndSubmitOnlyOutlineActionsMandatoryFactor();
         }
 
-        private void BuildAndSubmitOnlySomeMandatoryFactors()
+        private void BuildAndSubmitOnlyOutlineActionsMandatoryFactor()
         {
-            throw new System.NotImplementedException();
+            QuestionController
+                .Submit(
+                    new FactorsAnswersBuilder()
+                        .BuildValidOutlineActionsAnswer()
+                        .ForReportingPeriod(
+                            TestHelper
+                                .CurrentPeriod));
+
         }
     }
 }

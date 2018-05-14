@@ -7,12 +7,26 @@
         {
             base.Given();
 
-            BuildAndSubmitSomeMandatoryFactors();
+            BuildAndSubmitTargetPlansAndChallengesMandatoryFactors();
         }
 
-        private void BuildAndSubmitSomeMandatoryFactors()
+        private void BuildAndSubmitTargetPlansAndChallengesMandatoryFactors()
         {
-            throw new System.NotImplementedException();
+            QuestionController
+                .Submit(
+                    new FactorsAnswersBuilder()
+                        .BuildValidTargetPlansAnswer()
+                        .ForReportingPeriod(
+                            TestHelper
+                                .CurrentPeriod));
+
+            QuestionController
+                .Submit(
+                    new FactorsAnswersBuilder()
+                        .BuildValidChallengesAnswer()
+                        .ForReportingPeriod(
+                            TestHelper
+                                .CurrentPeriod));
         }
     }
 }
