@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -101,14 +100,6 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
             Assert.IsInstanceOf<ReportListViewModel>(result.Model);
             var model = (ReportListViewModel) result.Model;
             Assert.AreEqual(1, model.SubmittedReports.Count());
-        }
-    }
-
-    public class TestPrincipal : ClaimsPrincipal
-    {
-        public override Claim FindFirst(string type)
-        {
-            return new Claim(type, Guid.Empty.ToString());
         }
     }
 }
