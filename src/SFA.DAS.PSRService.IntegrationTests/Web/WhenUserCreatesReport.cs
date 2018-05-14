@@ -65,7 +65,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
             _reportController.PostCreate();
             _questionController.Submit(new SectionViewModel
             {
-                Report = new Report {EmployerId = "111", ReportingPeriod = TestHelper.CurrentPeriod},
+                Report = new Report {EmployerId = "111", ReportingPeriod = TestHelper.CurrentPeriod.PeriodString},
                 CurrentSection = new Section
                 {
                     Id = "YourEmployees"
@@ -80,7 +80,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
             
             _questionController.Submit(new SectionViewModel
             {
-                Report = new Report {EmployerId = "111", ReportingPeriod = TestHelper.CurrentPeriod},
+                Report = new Report {EmployerId = "111", ReportingPeriod = TestHelper.CurrentPeriod.PeriodString},
                 CurrentSection = new Section
                 {
                     Id = "YourApprentices"
@@ -93,7 +93,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
                 }
             });
 
-            _reportController.Submit(TestHelper.CurrentPeriod);
+            _reportController.Submit(TestHelper.CurrentPeriod.PeriodString);
             var result = _reportController.List() as ViewResult;
 
             // assert

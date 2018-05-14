@@ -7,12 +7,17 @@
         {
             base.Given();
 
-            BuildAndSubmitSomeMandatoryNumbers();
+            BuildAndSubmitOnlyYourEmployeesNumbers();
         }
 
-        private void BuildAndSubmitSomeMandatoryNumbers()
+        private void BuildAndSubmitOnlyYourEmployeesNumbers()
         {
-            throw new System.NotImplementedException();
+            QuestionController
+                .Submit(
+                    new ReportNumbersAnswersBuilder()
+                        .BuildValidYourEmployeesAnswers()
+                        .ForReportingPeriod(
+                            TestHelper.CurrentPeriod));
         }
     }
 }

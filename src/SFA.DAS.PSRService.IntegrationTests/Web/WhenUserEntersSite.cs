@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
                 Id = Guid.NewGuid(),
                 EmployerId = "111",
                 Submitted = true,
-                ReportingPeriod = TestHelper.CurrentPeriod,
+                ReportingPeriod = TestHelper.CurrentPeriod.PeriodString,
                 ReportingData = "{OrganisationName: '1'}"
             });
 
@@ -78,7 +78,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
                 Id = Guid.NewGuid(),
                 EmployerId = "111",
                 Submitted = false,
-                ReportingPeriod = TestHelper.CurrentPeriod,
+                ReportingPeriod = TestHelper.CurrentPeriod.PeriodString,
                 ReportingData = "{OrganisationName: '1'}"
             });
 

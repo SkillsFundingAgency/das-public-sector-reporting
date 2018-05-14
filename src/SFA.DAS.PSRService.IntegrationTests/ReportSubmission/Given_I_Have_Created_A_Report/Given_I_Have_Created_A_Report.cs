@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
     :GivenWhenThen<ReportController>
     {
         private static Container _container;
-        private QuestionController _questionController;
+        protected QuestionController QuestionController;
         private Mock<IUrlHelper> _mockUrlHelper;
         protected override void Given()
         {
@@ -22,9 +22,9 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
             _mockUrlHelper = new Mock<IUrlHelper>();
             _mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
 
-            _questionController = _container.GetInstance<QuestionController>();
+            QuestionController = _container.GetInstance<QuestionController>();
 
-            _questionController.Url = _mockUrlHelper.Object;
+            QuestionController.Url = _mockUrlHelper.Object;
 
             SUT = _container.GetInstance<ReportController>();
             SUT.Url = _mockUrlHelper.Object;

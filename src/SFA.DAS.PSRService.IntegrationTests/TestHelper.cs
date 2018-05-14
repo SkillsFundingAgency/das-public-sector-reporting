@@ -17,6 +17,7 @@ using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
@@ -36,15 +37,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
             ConnectionString = config["ConnectionString"];
         }
 
-        public static string CurrentPeriod
-        {
-            get
-            {
-                var year = DateTime.Today.Year;
-                if (DateTime.Today.Month < 4) year--;
-                return string.Concat((year - 1).ToString().Substring(2), (year).ToString().Substring(2));
-            }
-        }
+        public static Period CurrentPeriod => new Period(DateTime.UtcNow.Date);
 
         public static void CreateReport(ReportDto report)
         {
