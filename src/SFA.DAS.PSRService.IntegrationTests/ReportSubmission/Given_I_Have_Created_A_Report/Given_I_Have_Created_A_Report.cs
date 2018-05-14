@@ -17,20 +17,20 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
     {
         private static Container _container;
         protected QuestionController QuestionController;
-        private Mock<IUrlHelper> _mockUrlHelper;
+        protected Mock<IUrlHelper> MockUrlHelper;
         protected override void Given()
         {
             _container = new Container();
             _container.Configure(TestHelper.ConfigureIoc());
-            _mockUrlHelper = new Mock<IUrlHelper>();
-            _mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
+            MockUrlHelper = new Mock<IUrlHelper>();
+            MockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
 
             QuestionController = _container.GetInstance<QuestionController>();
 
-            QuestionController.Url = _mockUrlHelper.Object;
+            QuestionController.Url = MockUrlHelper.Object;
 
             SUT = _container.GetInstance<ReportController>();
-            SUT.Url = _mockUrlHelper.Object;
+            SUT.Url = MockUrlHelper.Object;
             SUT.ObjectValidator = Mock.Of<IObjectModelValidator>();
 
             var mockContext = new Mock<HttpContext>();
