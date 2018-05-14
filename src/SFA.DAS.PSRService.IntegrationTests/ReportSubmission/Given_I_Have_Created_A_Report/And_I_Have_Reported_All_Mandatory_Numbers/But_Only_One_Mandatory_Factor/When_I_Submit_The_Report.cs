@@ -17,10 +17,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
             submitResult
                 =
                 SUT
-                    .Submit(
-                        TestHelper
-                            .CurrentPeriod
-                            .PeriodString);
+                    .Submit();
         }
 
         [Test]

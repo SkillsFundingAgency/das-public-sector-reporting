@@ -10,8 +10,8 @@ using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
-using SFA.DAS.PSRService.Web.Models.Home;
 using SFA.DAS.PSRService.Web.Services;
+using SFA.DAS.PSRService.Web.ViewModels.Home;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 {

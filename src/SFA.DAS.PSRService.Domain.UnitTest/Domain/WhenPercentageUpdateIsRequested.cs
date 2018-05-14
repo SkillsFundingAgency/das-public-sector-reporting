@@ -79,9 +79,11 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
                 }
             };
 
-            // Act/Assert
-           Assert.Throws<InvalidOperationException>(() => _report.UpdatePercentages());
-            
+            // Act
+            _report.UpdatePercentages();
+
+            // Assert
+            Assert.IsNull(_report.ReportingPercentages);            
         }
 
         [Test]
@@ -142,8 +144,11 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
          
 
-            // Act/Assert
-            Assert.Throws<InvalidOperationException>(() => _report.UpdatePercentages());
+            // Act
+            _report.UpdatePercentages();
+
+            // Assert
+            Assert.IsNull(_report.ReportingPercentages);
         }
 
         [Test]

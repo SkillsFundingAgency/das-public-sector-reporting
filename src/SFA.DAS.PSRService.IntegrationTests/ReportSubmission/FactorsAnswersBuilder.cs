@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
@@ -39,15 +40,12 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
             return this;
         }
 
-        public SectionViewModel ForReportingPeriod(Period reportingPeriod)
+        public SectionModel ForReportingPeriod(Period reportingPeriod)
         {
-            return new SectionViewModel
+            return new SectionModel
             {
-                Report = new Report {Period = reportingPeriod},
-                CurrentSection = new Section
-                {
-                    Id = currentSectionId
-                },
+                Id = currentSectionId,
+                ReportingPeriod = reportingPeriod.PeriodString,
                 Questions = validAnswers
             };
         }
