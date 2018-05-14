@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Net;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.EAS.Web.ViewModels;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
@@ -28,6 +31,13 @@ namespace SFA.DAS.PSRService.Web
         public Startup(IConfiguration config, IHostingEnvironment env)
         {
             Configuration = ConfigurationService.GetConfig(config["EnvironmentName"], config["ConfigurationStorageConnectionString"], Version, ServiceName).Result;
+
+   
+            var constants = new Constants(Configuration.Identity);
+            UserLinksViewModel.ChangePasswordLink = $"{constants.ChangePasswordLink()}{WebUtility.UrlEncode("https://" + Configuration.RootDomainUrl + "/service/password/change")}";
+            UserLinksViewModel.ChangeEmailLink = $"{constants.ChangeEmailLink()}{WebUtility.UrlEncode("https://" + Configuration.RootDomainUrl + "/service/email/change")}";
+
+
 
             _hostingEnvironment = env;
         }
@@ -126,5 +136,18 @@ namespace SFA.DAS.PSRService.Web
                 });
         }
 
+        public class Constants
+        {
+            private readonly IdentityServerConfiguration _configuration;
+
+            public Constants(IdentityServerConfiguration configuration)
+            {
+                _configuration = configuration;
+            }
+            
+            public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
+            public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
+            
+        }
     }
 }
