@@ -133,7 +133,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             var expectedSection = report.Sections.First();
             var actualSection = newReport.Sections.First();
             Assert.AreEqual(expectedSection.Id, actualSection.Id);
-            Assert.AreEqual(expectedSection.CompletionStatus, actualSection.CompletionStatus);
             Assert.AreEqual(expectedSection.SummaryText, actualSection.SummaryText);
             Assert.AreEqual(expectedSection.Title, actualSection.Title);
             Assert.AreEqual(expectedSection.Questions.Count(), actualSection.Questions.Count());

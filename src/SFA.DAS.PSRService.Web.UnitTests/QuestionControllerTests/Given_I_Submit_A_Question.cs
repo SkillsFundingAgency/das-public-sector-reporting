@@ -212,7 +212,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             Assert.AreEqual("Report", actualContext.Controller);
 
             Assert.IsNotNull(actualReport);
-            Assert.IsFalse(actualReport.IsValidForSubmission);
+            Assert.IsFalse(actualReport.IsValidForSubmission());
         }
     }
 }

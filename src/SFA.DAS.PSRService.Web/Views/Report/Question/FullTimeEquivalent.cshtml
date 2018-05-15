@@ -3,7 +3,7 @@
 @{
 
     var questionList = Model.Questions.ToDictionary(k => k.Id);
-    var submitValid = ViewBag.SubmitValid;
+    var canBeEdited = ViewBag.CanBeEdited;
 }
 
 <div class="form-group">
@@ -14,7 +14,7 @@
                 <td>Full-time equivalents (optional)</td>
                 <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@Model.Id">Change</a>
                     }

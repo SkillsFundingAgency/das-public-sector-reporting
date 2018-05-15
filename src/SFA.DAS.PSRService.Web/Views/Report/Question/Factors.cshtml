@@ -3,7 +3,7 @@
 @{
     var questionList = Model.SubSections.SelectMany(w => w.Questions).ToDictionary(k => k.Id);
 
-    var submitValid = ViewBag.SubmitValid;
+    var canBeEdited = ViewBag.CanBeEdited;
 }
 
 <div class="form-group">
@@ -14,7 +14,7 @@
                 <td>Outline any actions you have taken to help you progress towards meeting the public sector target</td>
                 <td class="numeric bold-xsmall">@questionList["OutlineActions"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@questionList["OutlineActions"].Id">Change</a>
                     }
@@ -24,7 +24,7 @@
                 <td>Tell us about any challenges you have faced in your efforts to meet the target</td>
                 <td class="numeric bold-xsmall">@questionList["Challenges"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@questionList["Challenges"].Id">Change</a>
                     }
@@ -34,7 +34,7 @@
                 <td>How are you planning to ensure you meet the target in future?</td>
                 <td class="numeric bold-xsmall">@questionList["TargetPlans"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@questionList["TargetPlans"].Id">Change</a>
                     }
@@ -44,7 +44,7 @@
                 <td>Do you have anything else you want to tell us? (optional)</td>
                 <td class="numeric bold-xsmall">@questionList["AnythingElse"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@questionList["AnythingElse"].Id">Change</a>
                     }

@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Your organisation";
-    var submitValid = ViewBag.SubmitValid;
+    var canBeEdited = ViewBag.CanBeEdited;
 }
 
 <div class="form-group">
@@ -13,7 +13,7 @@
                 <td>Organisation Name</td>
                 <td class="numeric bold-xsmall">@Model</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Report/OrganisationName">Change</a>
                     }
