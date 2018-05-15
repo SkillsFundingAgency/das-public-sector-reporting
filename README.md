@@ -26,17 +26,13 @@
 
 ##### Publish the databases
 
-Repeat these steps for:
-
-1. SFA.DAS.PSRService.Database
-
 Steps:
 
-* Right click on the db project in the solution explorer
+* Right click on the db project in the solution explorer (SFA.DAS.PSRService.Database)
 * Click on publish menu item
 * Click the edit button
 * Select Local > ProjectsV13
-* Add the project name in again as the Database name (i.e. SFA.DAS.EAS.Employer_Account.Database)
+* Add the project name in again as the Database name (i.e. SFA.DAS.PSRService.Database)
 * Click publish
 
 ##### Add configuration to Azure Storage Emulator
