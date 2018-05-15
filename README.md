@@ -53,7 +53,3 @@ There are two different storage for session information which can be configured 
 * 'Default' - This stores all session data in cookies. This can cause issues when using internet explorer due to the cookie length exceeding the maximum length
 * 'Redis' - This stores the session in the Redis cache and stores a pointer to the Redis data in the cookie, reducing the cookie size significantly.
 
-## See Also
-[Azure Storage Explorer]: http://storageexplorer.com/
-[SQL Server Management Studio]: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms
-[Visual Studio]: https://www.visualstudio.com
