@@ -111,15 +111,11 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return sectionList;
         }
 
-
         private bool AllQuestionsAnswered()
         {
-            if (Sections.All(w => w.CompletionStatus != CompletionStatus.Completed))
-            {
-                return false;
-            }
-
-            return true;
+            return
+                Sections
+                    .All(w => w.IsCompleteOrOptional);
         }
 
         private bool IsSubmitValid()

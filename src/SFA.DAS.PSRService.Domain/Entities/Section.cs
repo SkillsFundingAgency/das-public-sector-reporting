@@ -12,6 +12,21 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string Id { get; set; }
         public string Title { get; set; }
         public string SummaryText { get; set; }
+
+        public bool IsCompleteOrOptional
+        {
+            get
+            {
+                return
+                    (
+                        CompletionStatus.Completed
+                        | CompletionStatus.Optional
+                    )
+                    .HasFlag(
+                        CompletionStatus);
+            }
+        }
+
         public CompletionStatus CompletionStatus
         {
             get
