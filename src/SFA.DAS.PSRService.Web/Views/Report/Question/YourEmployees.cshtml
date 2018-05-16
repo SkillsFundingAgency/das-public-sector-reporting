@@ -3,7 +3,7 @@
 @{
 
     var questionList = Model.Questions.ToDictionary(k => k.Id);
-    var submitValid = ViewBag.SubmitValid;
+    var canBeEdited = ViewBag.CanBeEdited;
 }
 
 <div class="form-group">
@@ -14,7 +14,7 @@
                 <td>Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear</td>
                 <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@Model.Id">Change</a>
                     }
@@ -24,7 +24,7 @@
                 <td>Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear</td>
                 <td class="numeric bold-xsmall">@questionList["atEnd"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@Model.Id">Change</a>
                     }
@@ -34,7 +34,7 @@
                 <td>Number of new employees who started working for you in England between @ViewBag.CurrentPeriod.FullString</td>
                 <td class="numeric bold-xsmall">@questionList["newThisPeriod"].Answer</td>
                 <td class="link-right">
-                    @if (submitValid)
+                    @if (canBeEdited)
                     {
                         <a href="../Question/@Model.Id">Change</a>
                     }

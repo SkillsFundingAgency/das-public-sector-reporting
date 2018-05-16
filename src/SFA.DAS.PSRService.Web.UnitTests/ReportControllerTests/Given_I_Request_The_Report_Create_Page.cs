@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>())).Returns(new Report());
+            _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>()));
 
             // act
             var result = _controller.PostCreate();

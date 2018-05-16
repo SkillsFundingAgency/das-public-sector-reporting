@@ -39,10 +39,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
-                .Returns(_employerIdentifier);
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
-                .Returns(_employerIdentifier);
+            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
+            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
             
         }
 
@@ -55,6 +53,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+            _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
             // act
             var result = _controller.Index("YourEmployees");
@@ -76,8 +75,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             var url = "home/index";
             UrlActionContext actualContext = null;
 
+            var report = ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE");
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE"));
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+            _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
             // act
             var result = _controller.Index("YourEmployees");
@@ -100,34 +101,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
+            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
-            Assert.Throws<Exception>(() => _controller.Index("YourEmployees"));
+            var result = _controller.Index("YourEmployees");
             
-        }
-
-        [Test]
-        [Ignore("Re-enable after test refactor")]
-        public void And_The_Question_ID_Exists_More_Than_Once_Then_Return_Error()
-        {
-            // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithDuplicateSections("ABCDE"));
-
-            // act
-
-            Assert.Throws<Exception>(() => _controller.Index("SectionOne"));
-
-
-
-            //            Assert.AreEqual(result.GetType(), typeof(BadRequestResult));
-
+            // assert
+            Assert.IsAssignableFrom<NotFoundResult>(result);
         }
 
         [Test]
@@ -140,6 +121,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"));
+            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
             var result = _controller.Index("SectionOne");

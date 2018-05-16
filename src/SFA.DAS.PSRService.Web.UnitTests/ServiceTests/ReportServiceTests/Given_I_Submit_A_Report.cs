@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
@@ -16,7 +11,7 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using Assert = NUnit.Framework.Assert;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
 {
     [TestFixture]
     public class Given_I_Submit_A_Report
@@ -130,7 +125,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
  
             //Act
             var result =
-                _reportService.SubmitReport(report.ReportingPeriod, report.EmployerId, report.SubmittedDetails);
+                _reportService.SubmitReport(report);
 
             _mediatorMock.Verify(m => m.Send(It.IsAny<SubmitReportRequest>(), new CancellationToken()));
 
@@ -146,16 +141,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             report.Submitted = true;
 
             //Act
-            var result =
-                _reportService.SubmitReport(report.ReportingPeriod, report.EmployerId, report.SubmittedDetails);
-
-           
+            var result = _reportService.SubmitReport(report);
 
             //Assert
-
             Assert.AreEqual(SubmittedStatus.Invalid, result);
         }
-
-
     }
 }

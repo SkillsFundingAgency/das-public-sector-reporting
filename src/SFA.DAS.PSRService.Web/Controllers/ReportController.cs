@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -18,7 +16,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly IReportService _reportService;
         private readonly IUserService _userService;
-        private readonly IPeriodService _periodService;
         private readonly Period _currentPeriod;
 
         public ReportController(IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration, IPeriodService periodService)
@@ -26,27 +23,18 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             _reportService = reportService;
             _userService = userService;
-            _periodService = periodService;
-            _currentPeriod = _periodService.GetCurrentPeriod();
+            _currentPeriod = periodService.GetCurrentPeriod();
         }
 
-        public IActionResult Edit(string period)
+        public IActionResult Edit()
         {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            var reportViewModel = new ReportViewModel();
+            if (!_reportService.CanBeEdited(report))
+                return new RedirectResult(Url.Action("Index", "Home"));
 
-            reportViewModel.Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
-
-            if (reportViewModel.Report != null && reportViewModel.Report.IsSubmitAllowed)
-            {
-                return View("Edit", reportViewModel);
-            }
-
-            return new RedirectResult(Url.Action("Index", "Home"));
-
-
+            return View("Edit", new ReportViewModel {Report = report});
         }
-
 
         [HttpGet]
         [Route("Create")]
@@ -62,16 +50,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                var report = _reportService.CreateReport(EmployerAccount.AccountId);
+                _reportService.CreateReport(EmployerAccount.AccountId);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return new BadRequestResult();
             }
 
         }
+
         [Route("List")]
         public IActionResult List()
         {
@@ -89,8 +78,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, new Period(submittedReport.ReportingPeriod));
             }
 
-
-
             return View("List", reportListViewmodel);
         }
 
@@ -102,20 +89,24 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
 
                 if (period == null)
-                {
                     period = _currentPeriod.PeriodString;
-                }
+
+                var report = _reportService.GetReport(period, EmployerAccount.AccountId);
+
+                if (report == null)
+                    return new NotFoundResult();
 
                 var reportViewModel = new ReportViewModel
                 {
-                    Report = _reportService.GetReport(period, EmployerAccount.AccountId),
-                    Period = _currentPeriod
+                    Report = report,
+                    Period = _currentPeriod,
+                    CanBeEdited = _reportService.CanBeEdited(report)
                 };
 
                 if (reportViewModel.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
 
-                reportViewModel.SubmitValid = reportViewModel.Report.IsSubmitAllowed;
+                reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
                 reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
                 reportViewModel.Period = reportViewModel.Report?.Period;
 
@@ -132,34 +123,29 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Route("Submit")]
-        public IActionResult Submit(string period)
+        public IActionResult Submit()
         {
-            if (period == null)
-                period = _currentPeriod.PeriodString;
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            var report = new ReportViewModel();
-            report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
+            TryValidateModel(new ReportViewModel { Report = report });
 
-            TryValidateModel(report);
             if (ModelState.IsValid == false)
             {
                 return new RedirectResult(Url.Action("Summary", "Report"));
             }
+            
+            var user = _userService.GetUserModel(User);
 
+            report.SubmittedDetails = new Submitted
+            {
+                SubmittedAt = DateTime.UtcNow,
+                SubmittedEmail = user.Email,
+                SubmittedName = user.DisplayName,
+                SubmttedBy = user.Id.ToString(),
+                UniqueReference = "NotAUniqueReference"
+            };
 
-            var user = _userService.GetUserModel(this.User);
-
-            var submitted = new Submitted();
-
-            submitted.SubmittedAt = DateTime.UtcNow;
-            submitted.SubmittedEmail = user.Email;
-            submitted.SubmittedName = user.DisplayName;
-            submitted.SubmttedBy = user.Id.ToString();
-            submitted.UniqueReference = "NotAUniqueReference";
-
-
-
-            var submittedStatus = _reportService.SubmitReport(period, EmployerAccount.AccountId, submitted);
+            var submittedStatus = _reportService.SubmitReport(report);
 
             if (submittedStatus == SubmittedStatus.Invalid)
             {
@@ -205,6 +191,5 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
-
     }
 }

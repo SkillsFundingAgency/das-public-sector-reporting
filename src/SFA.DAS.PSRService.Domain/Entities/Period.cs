@@ -22,9 +22,9 @@ namespace SFA.DAS.PSRService.Domain.Entities
             _periodDateTime = period;
         }
 
-        public Period(string periodString)
+        public Period(string period)
         {
-            var year = ConvertPeriodStringToYear(periodString);
+            var year = ConvertPeriodStringToYear(period);
 
             _periodDateTime = new DateTime(year,4,1);
         }

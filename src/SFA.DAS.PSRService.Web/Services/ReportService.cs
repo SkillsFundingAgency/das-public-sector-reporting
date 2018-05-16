@@ -14,7 +14,6 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public class ReportService : IReportService
     {
-
         private IMediator _mediator;
         private IWebConfiguration _config;
         private IPeriodService _periodService;
@@ -26,7 +25,7 @@ namespace SFA.DAS.PSRService.Web.Services
             _config = config;
         }
 
-        public Report CreateReport(string employerId)
+        public void CreateReport(string employerId)
         {
             if (IsSubmissionsOpen() == false)
             {
@@ -44,8 +43,6 @@ namespace SFA.DAS.PSRService.Web.Services
             {
                 throw new Exception("Unable to create a new report");
             }
-
-            return report;
         }
 
         public Report GetReport(string period, string employerId)
@@ -55,21 +52,14 @@ namespace SFA.DAS.PSRService.Web.Services
             return report;
         }
 
-        public SubmittedStatus SubmitReport(string period, string employerId, Submitted submittedDetails)
+        public SubmittedStatus SubmitReport(Report report)
         {
-
-            var report = GetReport(period, employerId);
-
-
-            if (report.IsSubmitAllowed == false)
+            if (report.IsValidForSubmission() == false)
                 return SubmittedStatus.Invalid;
 
+            var request = new SubmitReportRequest { Report = report };
 
-            report.SubmittedDetails = submittedDetails;
-            var request = new SubmitReportRequest() { Report = report };
-
-            var submitReport = _mediator.Send(request);
-
+            _mediator.Send(request);
 
             return SubmittedStatus.Submitted;
         }
@@ -93,6 +83,14 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             var request = new UpdateReportRequest { Report = report };
             _mediator.Send(request);
+        }
+
+        public bool CanBeEdited(Report report)
+        {
+            return report != null 
+                   && !report.Submitted 
+                   && report.Period.IsCurrent 
+                   && _periodService.IsSubmissionsOpen();
         }
     }
 }

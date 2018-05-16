@@ -10,8 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
-using SFA.DAS.PSRService.Web.Models.Home;
 using SFA.DAS.PSRService.Web.Services;
+using SFA.DAS.PSRService.Web.ViewModels;
+using SFA.DAS.PSRService.Web.ViewModels.Home;
 using StackExchange.Redis;
 
 namespace SFA.DAS.PSRService.Web.Controllers
@@ -39,6 +40,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
        
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
             model.Period = _currentPeriod;
+            // TODO: take submission period close date into account
             model.CanCreateReport = report == null;
             model.CanEditReport = report != null && !report.Submitted;
             return View(model);

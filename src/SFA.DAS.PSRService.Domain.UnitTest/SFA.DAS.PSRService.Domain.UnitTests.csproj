@@ -57,6 +57,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Given_A_Section_Exists.cs" />
     <Compile Include="Domain\WhenASectionIsRequested.cs" />
     <Compile Include="Domain\WhenPercentageUpdateIsRequested.cs" />
     <Compile Include="Period\PeriodTests.cs" />
