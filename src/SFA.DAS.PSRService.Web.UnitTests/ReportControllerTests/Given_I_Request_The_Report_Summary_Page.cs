@@ -17,8 +17,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
     public class Given_I_Request_The_Summary_Page : ReportControllerTestBase
     {
         
-        [Test]
-     
+        [Test]     
         public void And_The_Report_Exists_And_Is_Valid_Then_Show_Summary_Page()
         {
             var ApprenticeQuestions = new List<Question>()
@@ -121,6 +120,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             // arrange
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+            _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
 
             // act
             var result = _controller.Summary("1718");
@@ -142,51 +142,19 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         }
 
         [Test]
-        public void And_Report_Doesnt_Exist_Then_Redirect_To_Home()
+        public void And_Report_Doesnt_Exist_Then_Not_Found_Is_Returned()
         {
             // arrange
-            var url = "Home/Index";
-            UrlActionContext actualContext = null;
-            
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-          //  _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null);
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null).Verifiable();
 
             // act
             var result = _controller.Summary("NoReport");
 
             // assert
             _mockUrlHelper.VerifyAll();
+            _mockReportService.VerifyAll();
 
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Index", actualContext.Action);
-            Assert.AreEqual("Home", actualContext.Controller);
-        }
-
-        [Test]
-        [Ignore("Obsolete")]
-        public void And_The_Period_Is_Null_Then_Redirect_To_Home()
-        {
-            // arrange
-            var url = "Home/Index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
-            // act
-            var result = _controller.Summary(null);
-
-            // assert
-            _mockUrlHelper.VerifyAll();
-
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Index", actualContext.Action);
-            Assert.AreEqual("Home", actualContext.Controller);
+            Assert.IsAssignableFrom<NotFoundResult>(result);
         }
 
         [Test]
