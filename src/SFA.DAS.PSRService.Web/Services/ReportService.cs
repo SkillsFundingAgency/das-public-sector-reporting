@@ -58,7 +58,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public SubmittedStatus SubmitReport(Report report)
         {
-            if (report.IsValidForSubmission == false)
+            if (report.IsValidForSubmission() == false)
                 return SubmittedStatus.Invalid;
 
             var request = new SubmitReportRequest { Report = report };

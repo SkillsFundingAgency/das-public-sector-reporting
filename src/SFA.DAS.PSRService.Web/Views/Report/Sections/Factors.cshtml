@@ -1,11 +1,7 @@
-﻿@using Microsoft.AspNetCore.Routing
-@using SFA.DAS.PSRService.Domain.Enums
-@using SFA.DAS.PSRService.Web.ViewModels
-@model SFA.DAS.PSRService.Domain.Entities.Section
+﻿@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
     ViewData["Title"] = "Public sector reporting";
-    var employerId = Context.GetRouteData().Values["employerAccountId"];
 }
 
 <li>
@@ -19,7 +15,10 @@
             {
                 <li class="task-list-item">
                     <a class="task-name" href="./Question/@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
-                    @Html.Partial("CompletionStatus",new CompletionStatusViewModel(){CompletionStatus = subSection.CompletionStatus, Id = $"{subSection.Id}-complete"})
+                    @if (subSection.IsComplete())
+                    {
+                        <span class="task-completed">COMPLETE</span>
+                    }
                 </li>   
             }
         }

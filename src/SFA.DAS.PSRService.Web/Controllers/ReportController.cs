@@ -93,16 +93,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     period = _currentPeriod.PeriodString;
                 }
 
+                var report = _reportService.GetReport(period, EmployerAccount.AccountId);
+
                 var reportViewModel = new ReportViewModel
                 {
-                    Report = _reportService.GetReport(period, EmployerAccount.AccountId),
-                    Period = _currentPeriod
+                    Report = report,
+                    Period = _currentPeriod,
+                    CanBeEdited = _reportService.CanBeEdited(report)
                 };
 
                 if (reportViewModel.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
 
-                reportViewModel.SubmitValid = reportViewModel.Report.IsValidForSubmission;
+                reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
                 reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
                 reportViewModel.Period = reportViewModel.Report?.Period;
 

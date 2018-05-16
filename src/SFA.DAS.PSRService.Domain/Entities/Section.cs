@@ -13,73 +13,16 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string Title { get; set; }
         public string SummaryText { get; set; }
 
-        public bool IsCompleteOrOptional
+        public bool IsComplete()
         {
-            get
-            {
-                return
-                    (
-                        CompletionStatus.Completed
-                        | CompletionStatus.Optional
-                    )
-                    .HasFlag(
-                        CompletionStatus);
-            }
+            return (Questions == null || Questions.All(q => !string.IsNullOrEmpty(q.Answer)))
+                   && (SubSections == null || SubSections.All(s => s.IsComplete()));
         }
 
-        public CompletionStatus CompletionStatus
+        public bool IsValidForSubmission()
         {
-            get
-            {
-                if (SectionHasQuestions())
-                {
-                    return GetCompletionStatusFromQuestions();
-                }
-                if (SectionHasSubsections())
-                {
-                    return GetCompletionStatusFromSubSections();
-                }
-                return CompletionStatus.Completed;
-            }
-        }
-
-        private CompletionStatus GetCompletionStatusFromSubSections()
-        {
-            if ((SubSections.Count(w => w.CompletionStatus == CompletionStatus.Completed) + SubSections.Count(x => x.CompletionStatus == CompletionStatus.Optional)) == SubSections.Count())
-            {
-                return CompletionStatus.Completed;
-            }
-
-            if (SubSections.Any(w => w.CompletionStatus == CompletionStatus.InProgress))
-            {
-                return CompletionStatus.InProgress;
-            }
-
-            return CompletionStatus.Incomplete;
-        }
-
-        private bool SectionHasSubsections()
-        {
-            return SubSections != null && SubSections.Any();
-        }
-
-        private CompletionStatus GetCompletionStatusFromQuestions()
-        {
-            if (Questions.Any(w => w.Optional && String.IsNullOrWhiteSpace(w.Answer)))
-                return CompletionStatus.Optional;
-
-            if (Questions.All(w => w.Optional == false && String.IsNullOrWhiteSpace(w.Answer) == false) || Questions.All(x => x.Optional && String.IsNullOrWhiteSpace(x.Answer) == false))
-                return CompletionStatus.Completed;
-
-            if (Questions.All(w => String.IsNullOrWhiteSpace(w.Answer)))
-                return CompletionStatus.Incomplete;
-
-            return CompletionStatus.InProgress;
-        }
-
-        private bool SectionHasQuestions()
-        {
-            return Questions != null && Questions.Any();
+            return (Questions == null || Questions.All(q => q.Optional || !string.IsNullOrEmpty(q.Answer)))
+                   && (SubSections == null || SubSections.All(s => s.IsValidForSubmission()));
         }
     }
 }

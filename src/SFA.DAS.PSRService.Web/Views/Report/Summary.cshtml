@@ -2,21 +2,28 @@
 
 @{
     ViewBag.Title = "Review details";
-    ViewBag.Title = Model.SubmitValid ? "Review details" : "Submitted details";
+    ViewBag.Title = Model.IsValidForSubmission ? "Review details" : "Submitted details";
     Layout = "_Layout";
 
-    ViewBag.SubmitValid = Model.SubmitValid;
+    ViewBag.CanBeEdited = Model.CanBeEdited;
 }
 
 <div class="grid-row">
     <div class="column-full review-details">
-        @if (Model.SubmitValid)
+        @if (!Model.Report.Submitted)
         {
             <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         }
+
         <form action="Submit">
 
-            @if (Model.SubmitValid)
+            @if (Model.Report.Submitted)
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Submitted details</h1>
+                </legend>
+            }
+            else
             {
                 <legend>
                     <h1 class="heading-xlarge">Review details</h1>
@@ -28,16 +35,8 @@
                         Please fix these errors
                     </h2>
                 </div>
-
             }
-            else
-            {
-                <legend>
-                    <h1 class="heading-xlarge">Submitted details</h1>
-                </legend>
 
-            }
-            
             <div class="form-group">
                 <table>
                     <caption class="heading-small">Reporting period</caption>
@@ -51,13 +50,13 @@
                 </table>
             </div>
 
-            @Html.Partial("Question/Organisation", @Model.Report.OrganisationName)
-            @Html.Partial("Question/ReportNumbers", @Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
-            @Html.Partial("Question/ReportingPercentages", @Model.Percentages)
-            @Html.Partial("Question/Factors", @Model.Report.Sections.Single(w => w.Id == "Factors"))
+            @Html.Partial("Question/Organisation", Model.Report.OrganisationName)
+            @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @Html.Partial("Question/ReportingPercentages", Model.Percentages)
+            @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
-            @if (Model.SubmitValid)
+            @if (Model.IsValidForSubmission)
             {
                 <button class="button" type="submit">Submit</button>
             }

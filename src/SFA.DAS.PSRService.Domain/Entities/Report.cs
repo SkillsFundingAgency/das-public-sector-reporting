@@ -16,7 +16,12 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public Submitted SubmittedDetails { get; set; }
         public ReportingPercentages ReportingPercentages {get; set; }
         public Period Period { get; set; }
-        public bool IsValidForSubmission => IsSubmitValid();
+        public bool IsValidForSubmission()
+        {
+            return !Submitted 
+                   && (Sections == null || Sections.All(s => s.IsValidForSubmission()));
+
+        }
 
 
         public Section GetQuestionSection(string sectionId)
@@ -110,22 +115,5 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
             return sectionList;
         }
-
-        private bool AllQuestionsAnswered()
-        {
-            return
-                Sections
-                    .All(w => w.IsCompleteOrOptional);
-        }
-
-        private bool IsSubmitValid()
-        {
-            if (Submitted == false && Period != null && Period.IsCurrent && AllQuestionsAnswered())
-                return true;
-
-            return false;
-        }
-
-       
     }
 }
