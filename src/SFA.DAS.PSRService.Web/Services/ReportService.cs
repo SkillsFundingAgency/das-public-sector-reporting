@@ -48,14 +48,6 @@ namespace SFA.DAS.PSRService.Web.Services
             return report;
         }
 
-        public Report GetReport(Period period, string employerId)
-        {
-            return
-                GetReport(
-                    period.GetReportPeriod()
-                    , employerId);
-        }
-
         public SubmittedStatus SubmitReport(Report report)
         {
             if (report.IsValidForSubmission() == false)
