@@ -59,7 +59,7 @@ namespace Microsoft.AspNetCore.Mvc
             var accountId = helper.ActionContext.RouteData.Values["employerAccountId"];
 
             return ignoreAccountId ? $"{baseUrl}{controllerName}/{actionName}"
-                : $"{baseUrl}accounts/{accountId}/{controllerName}/{actionName}";
+                : $"{baseUrl}/accounts/{accountId}/{controllerName}/{actionName}";
         }
     }
 }
