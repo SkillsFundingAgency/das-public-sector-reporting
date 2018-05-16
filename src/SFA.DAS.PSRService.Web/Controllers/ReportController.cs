@@ -89,11 +89,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
 
                 if (period == null)
-                {
                     period = _currentPeriod.PeriodString;
-                }
 
                 var report = _reportService.GetReport(period, EmployerAccount.AccountId);
+
+                if (report == null)
+                    return new NotFoundResult();
 
                 var reportViewModel = new ReportViewModel
                 {
