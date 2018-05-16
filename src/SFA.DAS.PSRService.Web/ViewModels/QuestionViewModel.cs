@@ -6,9 +6,14 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     public class QuestionViewModel
     {
         public string Id { get; set; }
-        [CustomAnswerValidation("Type")]
+
+        [CustomAnswerValidation]
         public string Answer { get; set; }
         public bool Optional { get; set; }
         public QuestionType Type { get; set; }
+
+        //public ModelStateDictionary ModelStateErrors { get; set; }
     }
+
+    
 }

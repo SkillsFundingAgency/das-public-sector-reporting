@@ -78,7 +78,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                     if (question.Type == QuestionType.Number && !string.IsNullOrEmpty(answeredQuestion.Answer))
                     {
-                        question.Answer = decimal.Parse(answeredQuestion.Answer, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowTrailingWhite).ToString();
+                        question.Answer = int.Parse(answeredQuestion.Answer.Trim(), NumberStyles.AllowThousands).ToString();
                     }
                     else
                     {
@@ -96,6 +96,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 CurrentSection = currentSection,
                 Report = report
             };
+            
+             if (currentSection.Questions != null)
+                 viewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel {Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type}).ToList();
 
             return View("Index", viewModel);
         }
