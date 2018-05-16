@@ -139,7 +139,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
                     new QuestionViewModel
                     {
                         Id = "atEnd",
-                        Answer = "123,000.98"
+                        Answer = "123,000"
                     },
                     new QuestionViewModel
                     {
@@ -165,7 +165,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             Assert.IsNotNull(section);
             Assert.AreEqual(3, section.Questions.Count());
             Assert.AreEqual("123", section.Questions.Single(q => q.Id == "atStart").Answer);
-            Assert.AreEqual("123000.98", section.Questions.Single(q => q.Id == "atEnd").Answer);
+            Assert.AreEqual("123000", section.Questions.Single(q => q.Id == "atEnd").Answer);
             Assert.AreEqual("1,000", section.Questions.Single(q => q.Id == "newThisPeriod").Answer);
         }
 
@@ -191,7 +191,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
                     new QuestionViewModel
                     {
                         Id = "atEnd",
-                        Answer = "123,000.98"
+                        Answer = "123,000"
                     },
                     new QuestionViewModel
                     {
