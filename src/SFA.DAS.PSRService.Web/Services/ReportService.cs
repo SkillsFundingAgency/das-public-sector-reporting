@@ -52,16 +52,12 @@ namespace SFA.DAS.PSRService.Web.Services
             return report;
         }
 
-        public SubmittedStatus SubmitReport(Report report)
-        {
-            if (report.IsValidForSubmission() == false)
-                return SubmittedStatus.Invalid;
+        public void SubmitReport(Report report)
+        {            
+            if (!CanBeEdited(report) || !report.IsValidForSubmission())
+                throw new Exception("Report is invalid for submission.");
 
-            var request = new SubmitReportRequest { Report = report };
-
-            _mediator.Send(request);
-
-            return SubmittedStatus.Submitted;
+            _mediator.Send(new SubmitReportRequest { Report = report });
         }
 
 

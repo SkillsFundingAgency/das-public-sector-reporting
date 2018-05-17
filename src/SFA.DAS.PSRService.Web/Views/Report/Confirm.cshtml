@@ -1,0 +1,36 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
+
+@{
+    ViewBag.Title = "Review details";
+    ViewBag.Title = Model.IsValidForSubmission ? "Review details" : "Submitted details";
+    Layout = "_Layout";
+    ViewBag.CanBeEdited = Model.CanBeEdited;
+}
+
+<div class="grid-row">
+    <div class="column-full review-details">
+        @if (!Model.Report.Submitted)
+        {
+            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        }
+
+        <div class="column-two-thirds">
+            <h1 class="heading-xlarge">Have you checked everything is correct?</h1>
+            <div>
+                <p>You will not be able to change your report once it has been submitted.</p>
+
+                <form asp-controller="Report" asp-action="Submit">
+                    <div style="display: table">
+                        <div style="margin-top: 20px; display: inline-block; display: table-cell; vertical-align: middle;">
+                            <input class="button" type="Submit" value="Submit your report">
+                        </div>
+                        <div style="display: inline-block; vertical-align: middle; margin-left: 25px">
+                            <a class="link-back" asp-controller="Report" asp-action="Edit">Return to your report</a>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

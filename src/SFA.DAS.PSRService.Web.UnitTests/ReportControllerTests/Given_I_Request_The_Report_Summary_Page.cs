@@ -130,7 +130,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             Assert.AreEqual(typeof(ViewResult), result.GetType());
             var editViewResult = result as ViewResult;
             Assert.IsNotNull(editViewResult);
-            Assert.AreEqual("Summary", editViewResult.ViewName, "View name does not match, should be: Summary");
+            Assert.IsTrue(((ViewResult) result).ViewName == "Summary" || ((ViewResult) result).ViewName == null);
 
 
             Assert.AreEqual(editViewResult.Model.GetType(), typeof(ReportViewModel));
