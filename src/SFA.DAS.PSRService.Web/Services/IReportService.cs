@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.Services
     {
         void CreateReport(string employerId);
         Report GetReport(string period,string employerId);
-        SubmittedStatus SubmitReport(Report report);
+        void SubmitReport(Report report);
         IEnumerable<Report> GetSubmittedReports(string employerId);
         void SaveReport(Report report);
         bool CanBeEdited(Report report);

@@ -20,7 +20,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
         private Mock<IMediator> _mediatorMock;
         private Mock<IWebConfiguration> _webConfigurationMock;
         private Mock<IPeriodService> _periodServiceMock;
-        private Report report;
+        private Report _report;
+
         [SetUp]
         public void SetUp()
         {
@@ -30,23 +31,23 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
 
             _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
 
-            var Questions = new List<Question>()
+            var questions = new List<Question>
             {
-                new Question()
+                new Question
                 {
                     Id = "atStart",
                     Answer = "123",
                     Type = QuestionType.Number,
                     Optional = false
                 }
-                ,new Question()
+                ,new Question
                 {
                     Id = "atEnd",
                     Answer = "123",
                     Type = QuestionType.Number,
                     Optional = false
                 },
-                new Question()
+                new Question
                 {
                     Id = "newThisPeriod",
                     Answer = "123",
@@ -56,12 +57,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
 
             };
 
-            var SectionOne = new Section()
+            var sectionOne = new Section
             {
                 Id = "SectionOne",
-                SubSections = new List<Section>() { new Section{
+                SubSections = new List<Section> { new Section{
                     Id = "SubSectionOne",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionOne",
                     SummaryText = ""
 
@@ -70,12 +71,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 Title = "SectionOne"
             };
 
-            var SectionTwo = new Section()
+            var sectionTwo = new Section
             {
                 Id = "SectionTwo",
-                SubSections = new List<Section>() { new Section{
+                SubSections = new List<Section> { new Section{
                     Id = "SubSectionTwo",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionTwo",
                     SummaryText = ""
 
@@ -84,12 +85,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 Title = "SectionTwo"
             };
 
-            var SectionThree = new Section()
+            var sectionThree = new Section
             {
                 Id = "SectionThree",
-                SubSections = new List<Section>() { new Section{
+                SubSections = new List<Section> { new Section{
                     Id = "SubSectionThree",
-                    Questions = Questions,
+                    Questions = questions,
                     Title = "SubSectionThree",
                     SummaryText = ""
 
@@ -100,20 +101,21 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
 
             IList<Section> sections = new List<Section>();
 
-            sections.Add(SectionOne);
-            sections.Add(SectionTwo);
-            sections.Add(SectionThree);
-             report = new Report()
+            sections.Add(sectionOne);
+            sections.Add(sectionTwo);
+            sections.Add(sectionThree);
+
+            _report = new Report
             {
                 ReportingPeriod = "1718",
                 Sections = sections,
-                Period = new Period("1718")
+                Period = new Period("1718"),
+                SubmittedDetails = new Submitted()
             };
 
-            report.SubmittedDetails = new Submitted();
 
             _mediatorMock.Setup(s => s.Send(It.IsAny<GetReportRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(report);
+                .ReturnsAsync(_report);
         }
 
         [Test]
@@ -121,30 +123,26 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
         {
             //Arrange
             _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
-            
+            _periodServiceMock.Setup(s => s.IsSubmissionsOpen()).Returns(true).Verifiable();
  
             //Act
-            var result =
-                _reportService.SubmitReport(report);
-
-            _mediatorMock.Verify(m => m.Send(It.IsAny<SubmitReportRequest>(), new CancellationToken()));
+            _reportService.SubmitReport(_report);
 
             //Assert
-            Assert.AreEqual(SubmittedStatus.Submitted, result);
+            _periodServiceMock.VerifyAll();
+            _mediatorMock.Verify(m => m.Send(It.IsAny<SubmitReportRequest>(), new CancellationToken()));
         }
 
         [Test]
-        public void And_report_Is_Invalid_Then_return_Invalid()
+        public void And_report_Is_Invalid_Then_Throw_Exception()
         {
             //Arrange
             _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
-            report.Submitted = true;
+            _report.Submitted = true;
 
             //Act
-            var result = _reportService.SubmitReport(report);
-
             //Assert
-            Assert.AreEqual(SubmittedStatus.Invalid, result);
+            Assert.Throws<Exception>(() => _reportService.SubmitReport(_report));
         }
     }
 }

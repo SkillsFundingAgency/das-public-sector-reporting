@@ -16,7 +16,7 @@
                 <td class="link-right">
                     @if (canBeEdited)
                     {
-                        <a href="../Question/@questionList["OutlineActions"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["OutlineActions"].Id">Change</a>
                     }
                 </td>
             </tr>
@@ -26,7 +26,7 @@
                 <td class="link-right">
                     @if (canBeEdited)
                     {
-                        <a href="../Question/@questionList["Challenges"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["Challenges"].Id">Change</a>
                     }
                 </td>
             </tr>
@@ -36,7 +36,7 @@
                 <td class="link-right">
                     @if (canBeEdited)
                     {
-                        <a href="../Question/@questionList["TargetPlans"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["TargetPlans"].Id">Change</a>
                     }
                 </td>
             </tr>
@@ -46,7 +46,7 @@
                 <td class="link-right">
                     @if (canBeEdited)
                     {
-                        <a href="../Question/@questionList["AnythingElse"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["AnythingElse"].Id">Change</a>
                     }
                 </td>
             </tr>
