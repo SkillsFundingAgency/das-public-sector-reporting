@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
@@ -70,7 +69,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 return new BadRequestResult();
             }
-
         }
 
         [Route("List")]
@@ -78,11 +76,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             //need to get employee id, this needs to be moves somewhere
 
-            var reportListViewmodel = new ReportListViewModel();
-
-            reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId);
-
-            reportListViewmodel.Periods = new Dictionary<string, Period>();
+            var reportListViewmodel = new ReportListViewModel
+            {
+                SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId),
+                Periods = new Dictionary<string, Period>()
+            };
 
             foreach (var submittedReport in reportListViewmodel.SubmittedReports)
             {
@@ -129,27 +127,46 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 TryValidateModel(reportViewModel);
 
-                return View("Summary", reportViewModel);
+                return View(reportViewModel);
             }
-            catch (Exception ex)
+            catch
             {
                 return new BadRequestResult();
             }
         }
 
+        [HttpGet]
+        [Route("Confirm")]
+        public IActionResult Confirm()
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (report == null)
+                return new NotFoundResult();
+
+            var viewModel = new ReportViewModel { Report = report };
+
+            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) || !report.IsValidForSubmission())
+                return new RedirectResult(Url.Action("Summary", "Report"));
+
+            ViewBag.CurrentPeriod = _currentPeriod;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
         [Route("Submit")]
         [Authorize(Policy = PolicyNames.CanSubmitReport)]
         public IActionResult Submit()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            TryValidateModel(new ReportViewModel { Report = report });
+            if (report == null)
+                return new NotFoundResult();
 
-            if (ModelState.IsValid == false)
-            {
+            if (!TryValidateModel(new ReportViewModel { Report = report }))
                 return new RedirectResult(Url.Action("Summary", "Report"));
-            }
-            
+
             var user = _userService.GetUserModel(User);
 
             report.SubmittedDetails = new Submitted
@@ -161,12 +178,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 UniqueReference = "NotAUniqueReference"
             };
 
-            var submittedStatus = _reportService.SubmitReport(report);
-
-            if (submittedStatus == SubmittedStatus.Invalid)
-            {
-                return new RedirectResult(Url.Action("Index", "Home"));
-            }
+            _reportService.SubmitReport(report);
 
             ViewBag.CurrentPeriod = _currentPeriod;
 
@@ -177,16 +189,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult OrganisationName(string post)
         {
-            var organisationVM = new OrganisationViewModel
+            var organisationVm = new OrganisationViewModel
             {
                 EmployerAccount = EmployerAccount,
                 Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
             };
 
-            if (string.IsNullOrEmpty(organisationVM.Report.OrganisationName))
-                organisationVM.Report.OrganisationName = organisationVM.EmployerAccount.EmployerName;
+            if (string.IsNullOrEmpty(organisationVm.Report.OrganisationName))
+                organisationVm.Report.OrganisationName = organisationVm.EmployerAccount.EmployerName;
 
-            return View("OrganisationName", organisationVM);
+            return View("OrganisationName", organisationVm);
         }
 
         [Route("Change")]
