@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Net;
 using AutoMapper;
 using MediatR;
@@ -31,11 +32,11 @@ namespace SFA.DAS.PSRService.Web
         public Startup(IConfiguration config, IHostingEnvironment env)
         {
             Configuration = ConfigurationService.GetConfig(config["EnvironmentName"], config["ConfigurationStorageConnectionString"], Version, ServiceName).Result;
-
+            
    
             var constants = new Constants(Configuration.Identity);
-            UserLinksViewModel.ChangePasswordLink = $"{constants.ChangePasswordLink()}{WebUtility.UrlEncode("https://" + Configuration.RootDomainUrl + "/service/password/change")}";
-            UserLinksViewModel.ChangeEmailLink = $"{constants.ChangeEmailLink()}{WebUtility.UrlEncode("https://" + Configuration.RootDomainUrl + "/service/email/change")}";
+            UserLinksViewModel.ChangePasswordLink = $"{constants.ChangePasswordLink()}{WebUtility.UrlEncode(Configuration.ApplicationUrl + "/service/changePassword")}";
+            UserLinksViewModel.ChangeEmailLink = $"{constants.ChangeEmailLink()}{WebUtility.UrlEncode(Configuration.ApplicationUrl + "/service/changeEmail")}";
 
 
 
@@ -55,8 +56,8 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
-            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
-            //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
+           // services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
+            services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
 
            
 
@@ -133,6 +134,11 @@ namespace SFA.DAS.PSRService.Web
                     routes.MapRoute(
                         name: "default",
                         template: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute(
+                        name: "Service-Controller",
+                        template: "Service/{action}", 
+                    defaults: new {controller = "Service"});
+
                 });
         }
 
