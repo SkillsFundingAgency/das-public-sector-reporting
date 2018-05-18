@@ -127,7 +127,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 TryValidateModel(reportViewModel);
 
-                return View(reportViewModel);
+                return View("Summary",reportViewModel);
             }
             catch
             {

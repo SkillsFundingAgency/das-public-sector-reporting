@@ -177,6 +177,20 @@ fieldset:after,
 
 /* Floating menu */
 
+.header-organisation ul li.menu-link > a {
+    top: auto;
+}
+
+.floating-menu nav#user-nav #settings-menu a.sub-menu-item {
+    color: #fff;
+}
+
+@media (min-width: 641px) {
+    .floating-menu nav#user-nav #settings-menu a.sub-menu-item {
+        color: #4c2c92 !important;
+    }
+}
+
 @media (min-width: 641px) {
     .header-user h2 {
         float: left;
@@ -403,18 +417,16 @@ nav ul {
     }
 }
 
-.floating-menu nav#user-nav #settings-menu a.sub-menu-item {
+.js-enabled #user-nav li.has-sub-menu > a:before {
+    border-left-color: #fff;
+}
+
+.js-enabled #user-nav li.has-sub-menu.open > a {
     color: #4c2c92;
 }
 
 .floating-menu nav#user-nav #settings-menu a.sub-menu-item {
-    color: #fff;
-}
-
-@media (min-width: 641px) {
-    .floating-menu nav#user-nav #settings-menu a.sub-menu-item {
-        color: #4c2c92 !important;
-    }
+    color: #4c2c92;
 }
 
 .grid-row:after,
