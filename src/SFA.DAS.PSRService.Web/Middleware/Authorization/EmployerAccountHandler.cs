@@ -7,7 +7,7 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Middleware
+namespace SFA.DAS.PSRService.Web.Middleware.Authorization
 {
     public class EmployerAccountHandler : AuthorizationHandler<EmployerAccountRequirement>
     {

@@ -15,6 +15,7 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.Middleware;
+using SFA.DAS.PSRService.Web.Middleware.Authorization;
 using SFA.DAS.PSRService.Web.Utils;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
