@@ -10,6 +10,8 @@
         public bool SaveTokens { get; set; }
         public string Scopes { get; set; }
         public string MapUniqueJsonKey { get; set; }
+        public string ChangeEmailLink { get; set; }
+        public string ChangePasswordLink { get; set; }
         public ClaimIdentifierConfiguration ClaimIdentifierConfiguration { get; set; }
     }
 }
