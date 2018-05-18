@@ -42,6 +42,9 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
             Assert.AreEqual(expectedReport.ReportingData, actualReport.ReportingData);
             Assert.AreEqual(expectedReport.ReportingPeriod, actualReport.ReportingPeriod);
             Assert.AreEqual(expectedReport.Submitted, actualReport.Submitted);
+            Assert.AreEqual(expectedReport.AuditWindowStartUtc, actualReport.AuditWindowStartUtc);
+            Assert.AreEqual(expectedReport.UpdatedUtc, actualReport.UpdatedUtc);
+            Assert.AreEqual(expectedReport.UpdatedBy, actualReport.UpdatedBy);
         }
     }
 }

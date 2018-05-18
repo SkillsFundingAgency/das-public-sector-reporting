@@ -64,12 +64,10 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         [Test]
         public void And_An_EmployeeId_And_Period_Is_Supplied_Then_Create_Report()
         {
+            // arrange
+            var createReportRequest = new CreateReportRequest { EmployerId = "ABCDE", Period = "1718" };
 
-            //arrange
-
-            var createReportRequest = new CreateReportRequest() { EmployerId = "ABCDE", Period = "1718" };
-
-            //Act
+            // act
             var result = _createReportHandler.Handle(createReportRequest, new CancellationToken()).Result;
 
             Assert.AreEqual(_report.EmployerId, result.EmployerId);
@@ -77,6 +75,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             Assert.AreEqual(result.ReportingPeriod,_report.ReportingPeriod);
             
         }
+
         [Test]
         public void And_An_EmployeeId_Is_Not_Supplied_Then_Throw_Error()
         {

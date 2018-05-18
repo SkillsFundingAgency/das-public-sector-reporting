@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
@@ -26,6 +27,14 @@ namespace SFA.DAS.PSRService.Data
             }
         }
 
+        public ReportDto Get(Guid id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.QuerySingleOrDefault<ReportDto>("select * from Report where Id = @id", new {id});
+            }
+        }
+
         public IList<ReportDto> GetSubmitted(string employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -41,8 +50,8 @@ namespace SFA.DAS.PSRService.Data
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Execute(@"
-                    INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted])
-                                        VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted)",
+                    INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted],[AuditWindowStartUtc],[UpdatedUtc],[UpdatedBy])
+                                        VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @AuditWindowStartUtc, @UpdatedUtc, @UpdatedBy)",
                     new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted});
             }
         }
@@ -54,6 +63,11 @@ namespace SFA.DAS.PSRService.Data
                 connection.Execute("UPDATE [dbo].[Report] SET [ReportingData] = @ReportingData,[Submitted] = @Submitted where Id = @Id",
                     new {reportDto.ReportingData, reportDto.Submitted, reportDto.Id});
             }
+        }
+
+        public void SaveAuditRecord(AuditRecordDto auditRecordDto)
+        {
+            throw new NotImplementedException();
         }
     }
 }
