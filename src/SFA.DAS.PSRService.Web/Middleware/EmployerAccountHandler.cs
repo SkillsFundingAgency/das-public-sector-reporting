@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Middleware

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.Middleware;
 using SFA.DAS.PSRService.Web.Utils;
@@ -21,18 +22,28 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
     public static class AuthenticationStartup
     {
         private static IWebConfiguration _configuration;
-        private const string HasEmployerAccountPolicyName = "HasEmployerAccount";
 
         public static void AddAuthorizationService(this IServiceCollection services)
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(HasEmployerAccountPolicyName, policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier);
-                    policy.Requirements.Add(new EmployerAccountRequirement());
-                });
+                options.AddPolicy(
+                    PolicyNames
+                        .HasEmployerAccount
+                    , policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier);
+                        policy.Requirements.Add(new EmployerAccountRequirement());
+                    });
+                options.AddPolicy(
+                    PolicyNames
+                        .CanEditReport
+                    , policy => { policy.Requirements.Add(new CanEditReport()); });
+                options.AddPolicy(
+                    PolicyNames
+                        .CanSubmitReport
+                    , policy => { policy.Requirements.Add(new CanSubmitReport()); });
             });
 
             services.AddSingleton<IAuthorizationHandler, EmployerAccountHandler>();

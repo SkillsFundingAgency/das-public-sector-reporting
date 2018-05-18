@@ -11,6 +11,7 @@ using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
@@ -45,7 +46,7 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
-            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
+            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount)) ).AddControllersAsServices().AddSessionStateTempDataProvider();
             //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
 
            
