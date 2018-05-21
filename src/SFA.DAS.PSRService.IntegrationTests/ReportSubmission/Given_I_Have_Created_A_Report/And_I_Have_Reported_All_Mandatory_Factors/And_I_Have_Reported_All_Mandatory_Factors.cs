@@ -17,26 +17,20 @@
                 .Submit(
                     new FactorsAnswersBuilder()
                         .BuildValidChallengesAnswer()
-                        .ForReportingPeriod(
-                            TestHelper
-                                .CurrentPeriod));
+                        .ForReportingPeriod(TestHelper.CurrentPeriod));
 
             QuestionController
                 .Submit(
                     new FactorsAnswersBuilder()
                         .BuildValidOutlineActionsAnswer()
-                        .ForReportingPeriod(
-                            TestHelper
-                                .CurrentPeriod)
+                        .ForReportingPeriod(TestHelper.CurrentPeriod)
                 );
 
             QuestionController
                 .Submit(
                     new FactorsAnswersBuilder()
                         .BuildValidTargetPlansAnswer()
-                        .ForReportingPeriod(
-                            TestHelper
-                                .CurrentPeriod));
+                        .ForReportingPeriod(TestHelper.CurrentPeriod));
         }
     }
 }

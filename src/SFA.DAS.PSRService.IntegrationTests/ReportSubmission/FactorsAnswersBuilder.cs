@@ -57,7 +57,10 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
             validAnswers
                 .Add(
                     new QuestionViewModel
-                        {Id = answerId, Answer = $"Some valid text for {answerId}"});
+                    {
+                        Id = answerId
+                        , Answer = $"Some valid text for {answerId}"
+                    });
         }
     }
 }

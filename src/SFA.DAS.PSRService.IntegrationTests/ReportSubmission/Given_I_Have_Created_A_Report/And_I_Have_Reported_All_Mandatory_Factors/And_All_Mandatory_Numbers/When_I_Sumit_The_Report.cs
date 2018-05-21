@@ -13,10 +13,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
         protected override void When()
         {
-            submitResponse
-                =
-                SUT
-                    .Submit();
+            submitResponse = SUT.Submit();
         }
 
         [Test]
@@ -25,8 +22,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
             Assert
                 .AreEqual(
                     "Submitted"
-                    , ((ViewResult) submitResponse)
-                    .ViewName);
+                    , ((ViewResult) submitResponse).ViewName);
         }
 
         [Test]
@@ -35,8 +31,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
             TestHelper
                 .GetAllReports()
                 .Should()
-                .OnlyContain(
-                    report => report.Submitted == true);
+                .OnlyContain(report => report.Submitted == true);
         }
     }
 }

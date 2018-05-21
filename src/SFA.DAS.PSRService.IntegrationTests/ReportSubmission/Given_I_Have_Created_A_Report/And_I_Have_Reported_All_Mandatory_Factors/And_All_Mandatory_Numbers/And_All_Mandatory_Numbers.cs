@@ -16,15 +16,13 @@
                 .Submit(
                     new ReportNumbersAnswersBuilder()
                         .BuildValidYourEmployeesAnswers()
-                        .ForReportingPeriod(
-                            TestHelper.CurrentPeriod));
+                        .ForReportingPeriod(TestHelper.CurrentPeriod));
 
             QuestionController
                 .Submit(
                     new ReportNumbersAnswersBuilder()
                         .BuildValidYourApprenticesAnswers()
-                        .ForReportingPeriod(
-                            TestHelper.CurrentPeriod));
+                        .ForReportingPeriod(TestHelper.CurrentPeriod));
         }
     }
 }

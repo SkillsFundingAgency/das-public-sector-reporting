@@ -5,45 +5,34 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 
-namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.And_I_Have_Reported_Some_Mandatory_Numbers.And_Some_Mandatory_Factors
+namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.
+    And_I_Have_Reported_Some_Mandatory_Numbers.And_Some_Mandatory_Factors
 {
     public sealed class When_I_Submit_The_Report
-    : And_Some_Mandatory_Factors
+        : And_Some_Mandatory_Factors
     {
         private IActionResult submitResult;
 
         protected override void When()
         {
-            submitResult
-                =
-                SUT
-                    .Submit();
+            submitResult = SUT.Submit();
         }
 
         [Test]
         public void Then_I_Am_Redirected_To_The_Home_Index()
         {
             Assert
-                .IsInstanceOf<RedirectResult>(
-                    submitResult);
+                .IsInstanceOf<RedirectResult>(submitResult);
 
             MockUrlHelper
-                .Verify(
-                    m =>
-                        m.Action(
-                            It.Is<UrlActionContext>(
-                                ctx
-                                    =>
-                                        ctx.Action.Equals("Index", StringComparison.OrdinalIgnoreCase))));
+                .Verify(m =>
+                    m.Action(It.Is<UrlActionContext>(ctx =>
+                        ctx.Action.Equals("Index", StringComparison.OrdinalIgnoreCase))));
 
             MockUrlHelper
-                .Verify(
-                    m =>
-                        m.Action(
-                            It.Is<UrlActionContext>(
-                                ctx
-                                    =>
-                                        ctx.Controller.Equals("Home", StringComparison.OrdinalIgnoreCase))));
+                .Verify(m =>
+                    m.Action(It.Is<UrlActionContext>(ctx =>
+                        ctx.Controller.Equals("Home", StringComparison.OrdinalIgnoreCase))));
         }
 
         [Test]
@@ -52,8 +41,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
             TestHelper
                 .GetAllReports()
                 .Should()
-                .NotContain(
-                    report => report.Submitted == true);
+                .NotContain(report => report.Submitted == true);
         }
     }
 }

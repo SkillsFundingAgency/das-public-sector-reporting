@@ -35,12 +35,12 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
             var mockContext = new Mock<HttpContext>();
             mockContext.Setup(c => c.User).Returns(new TestPrincipal());
+
             SUT.ControllerContext.HttpContext = mockContext.Object;
 
             TestHelper.ClearData();
 
-            SUT
-                .PostCreate();
+            SUT.PostCreate();
         }
 
         [TearDown]
