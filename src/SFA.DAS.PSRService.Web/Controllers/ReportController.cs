@@ -49,7 +49,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                _reportService.CreateReport(EmployerAccount.AccountId);
+                var user = _userService.GetUserModel(User);
+                _reportService.CreateReport(EmployerAccount.AccountId, user);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception)
@@ -200,7 +201,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-            _reportService.SaveReport(reportViewModel.Report);
+            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User));
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }

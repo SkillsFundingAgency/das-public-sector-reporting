@@ -52,7 +52,7 @@ namespace SFA.DAS.PSRService.Data
                 connection.Execute(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted],[AuditWindowStartUtc],[UpdatedUtc],[UpdatedBy])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @AuditWindowStartUtc, @UpdatedUtc, @UpdatedBy)",
-                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted});
+                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted, report.AuditWindowStartUtc, report.UpdatedUtc, report.UpdatedBy});
             }
         }
 

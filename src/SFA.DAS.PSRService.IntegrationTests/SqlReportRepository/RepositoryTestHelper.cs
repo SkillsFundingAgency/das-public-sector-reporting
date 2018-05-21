@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
@@ -33,6 +34,9 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
                 connection.Execute("if exists(select 1 from Report) delete from Report");
             }
 
+        }
+        public static DateTime TrimDateTime(DateTime date) {
+            return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
         }
 
         public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)

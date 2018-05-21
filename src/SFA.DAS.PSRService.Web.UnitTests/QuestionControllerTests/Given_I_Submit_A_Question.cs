@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -21,6 +20,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         private Mock<IReportService> _reportService;
         private Mock<IEmployerAccountService> _employerAccountServiceMock;
         private Mock<IUrlHelper> _mockUrlHelper;
+        private Mock<IUserService> _mockUserService;
         //private SectionModel _sectionModel;
 
         private EmployerIdentifier _employerIdentifier;
@@ -33,7 +33,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-            
+            _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
+
             
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
@@ -42,7 +43,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
                 .Returns(_employerIdentifier);
 
-            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null, _periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
 
             //_sectionModel = new SectionModel
             //{
@@ -127,14 +128,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE")).Verifiable();
-            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>())).Callback<Report>(r => actualReport = r).Verifiable("Report was not saved");
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>())).Callback<Report, UserModel>((r, u) => actualReport = r).Verifiable("Report was not saved");
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
+            _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 
             var sectionModel = new SectionModel
             {
                 Id = "SubSectionOne",
                 ReportingPeriod = "222",
-                Questions = new QuestionViewModel[]
+                Questions = new []
                 {
                     new QuestionViewModel
                     {
@@ -154,6 +156,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             // assert
             _reportService.VerifyAll();
+            _mockUserService.VerifyAll();
+
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual(url, redirectResult.Url);
@@ -179,8 +183,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(report).Verifiable();
-            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>())).Callback<Report>(r => actualReport = r).Verifiable("Report was not saved");
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>())).Callback<Report, UserModel>((r, u) => actualReport = r).Verifiable("Report was not saved");
             _reportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
+            _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 
             var sectionModel = new SectionModel
             {
@@ -205,6 +210,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             // assert
             _mockUrlHelper.VerifyAll();
             _reportService.VerifyAll();
+            _mockUserService.VerifyAll();
+
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual(url, redirectResult.Url);

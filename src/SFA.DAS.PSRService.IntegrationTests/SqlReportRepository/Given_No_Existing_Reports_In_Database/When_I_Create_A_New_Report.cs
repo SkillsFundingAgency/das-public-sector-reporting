@@ -21,8 +21,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
                 ReportingData = "Some genious piece of json",
                 ReportingPeriod = "1111",
                 Submitted = false,
-                AuditWindowStartUtc = DateTime.UtcNow,
-                UpdatedUtc = DateTime.UtcNow,
+                AuditWindowStartUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow),
+                UpdatedUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow),
                 UpdatedBy = "{ FullName: 'Bob Shurunkle'}"
             };
 

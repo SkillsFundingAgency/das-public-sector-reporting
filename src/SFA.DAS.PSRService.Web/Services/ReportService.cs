@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
 using MediatR;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.ViewModels;
 using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
     public class ReportService : IReportService
     {
-        private IMediator _mediator;
-        private IWebConfiguration _config;
-        private IPeriodService _periodService;
+        private readonly IMediator _mediator;
+        private readonly IWebConfiguration _config;
+        private readonly IPeriodService _periodService;
 
         public ReportService(IWebConfiguration config, IMediator mediator, IPeriodService periodService)
         {
@@ -25,7 +21,7 @@ namespace SFA.DAS.PSRService.Web.Services
             _config = config;
         }
 
-        public void CreateReport(string employerId)
+        public void CreateReport(string employerId, UserModel user)
         {
             if (IsSubmissionsOpen() == false)
             {
@@ -33,8 +29,13 @@ namespace SFA.DAS.PSRService.Web.Services
             }
 
             var currentPeriod = _periodService.GetCurrentPeriod();
-
-            var request = new CreateReportRequest() { Period = currentPeriod.PeriodString, EmployerId = employerId };
+            var request = new CreateReportRequest
+            {
+                Period = currentPeriod.PeriodString, 
+                EmployerId = employerId,
+                UserName = user.DisplayName,
+                UserId = user.Id
+            };
 
             var report = _mediator.Send(request).Result;
 
@@ -47,7 +48,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public Report GetReport(string period, string employerId)
         {
-            var request = new GetReportRequest() { Period = period, EmployerId = employerId };
+            var request = new GetReportRequest { Period = period, EmployerId = employerId };
             var report = _mediator.Send(request).Result;
             return report;
         }
@@ -75,9 +76,14 @@ namespace SFA.DAS.PSRService.Web.Services
             return DateTime.UtcNow < _config.SubmissionClose;
         }
 
-        public void SaveReport(Report report)
+        public void SaveReport(Report report, UserModel user)
         {
-            var request = new UpdateReportRequest { Report = report };
+            var request = new UpdateReportRequest
+            {
+                Report = report,
+                UserId = user.Id,
+                UserName = user.DisplayName
+            };
             _mediator.Send(request);
         }
 

@@ -13,6 +13,7 @@ using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using Assert = NUnit.Framework.Assert;
 
@@ -123,7 +124,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             };
 
             //Act
-            _reportService.SaveReport(report);
+            _reportService.SaveReport(report, new UserModel());
 
             //Assert
             _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()), Times.Once);

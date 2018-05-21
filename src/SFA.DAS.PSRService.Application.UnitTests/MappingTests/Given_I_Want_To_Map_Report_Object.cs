@@ -53,6 +53,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
                     TotalHeadCount = 22,
                     NewThisPeriod = 33
                 },
+                AuditWindowStartUtc = DateTime.Now,
+                UpdatedUtc = DateTime.UtcNow,
+                UpdatedBy = new User{ Id = Guid.NewGuid(), Name = "uncle sam"},                
                 Sections = new[]
                 {
                     new Section
@@ -118,6 +121,11 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             Assert.AreEqual(report.Id, newReport.Id);
             Assert.AreEqual(report.ReportingPeriod, newReport.ReportingPeriod);
             Assert.AreEqual(report.Submitted, newReport.Submitted);
+
+            Assert.AreEqual(report.AuditWindowStartUtc, newReport.AuditWindowStartUtc);
+            Assert.AreEqual(report.UpdatedUtc, newReport.UpdatedUtc);
+            Assert.AreEqual(report.UpdatedBy.Id, newReport.UpdatedBy.Id);
+            Assert.AreEqual(report.UpdatedBy.Name, newReport.UpdatedBy.Name);
 
             Assert.AreEqual(report.SubmittedDetails.SubmittedAt, newReport.SubmittedDetails.SubmittedAt);
             Assert.AreEqual(report.SubmittedDetails.SubmittedEmail, newReport.SubmittedDetails.SubmittedEmail);

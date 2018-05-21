@@ -3,7 +3,7 @@ using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.Domain
 {
-    public class ReportMapping
+    public class ReportingData
     {
     
         public IEnumerable<Section> Questions { get; set; }

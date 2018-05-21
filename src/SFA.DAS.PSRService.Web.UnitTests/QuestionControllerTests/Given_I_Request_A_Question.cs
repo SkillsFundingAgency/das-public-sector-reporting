@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
@@ -19,8 +17,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
     {
         private QuestionController _controller;
         private Mock<IReportService> _reportService;
-        private Mock<IEmployerAccountService> _EmployerAccountServiceMock;
+        private Mock<IEmployerAccountService> _employerAccountServiceMock;
         private Mock<IUrlHelper> _mockUrlHelper;
+        private Mock<IUserService> _mockUserService;
         private Mock<IPeriodService> _periodServiceMock;
         private EmployerIdentifier _employerIdentifier;
 
@@ -28,19 +27,21 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-            _EmployerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+            _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
             _periodServiceMock.Setup(s => s.IsSubmissionsOpen()).Returns(true);
 
-            _controller = new QuestionController(_reportService.Object, _EmployerAccountServiceMock.Object, null,_periodServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
+
+            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null,_periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
             
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
+            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
+            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
             
         }
 
