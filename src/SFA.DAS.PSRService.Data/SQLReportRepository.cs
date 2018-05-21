@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Data
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var reportData = connection.Query<ReportDto>("select * from Report where EmployerID = @employerId and Submitted = 1",
+                var reportData = connection.Query<ReportDto>("select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
                     new {employerId});
                 return reportData.ToList();
             }
@@ -60,14 +60,43 @@ namespace SFA.DAS.PSRService.Data
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Execute("UPDATE [dbo].[Report] SET [ReportingData] = @ReportingData,[Submitted] = @Submitted where Id = @Id",
-                    new {reportDto.ReportingData, reportDto.Submitted, reportDto.Id});
+                connection.Execute(@"
+                    UPDATE [dbo].[Report]
+                       SET [ReportingData] = @ReportingData
+                          ,[Submitted] = @Submitted
+                          ,[AuditWindowStartUtc] = @AuditWindowStartUtc
+                          ,[UpdatedUtc] = @UpdatedUtc
+                          ,[UpdatedBy] = @UpdatedBy
+                     WHERE Id = @Id",
+                    new {reportDto.ReportingData, reportDto.Submitted, reportDto.AuditWindowStartUtc, reportDto.UpdatedUtc, reportDto.UpdatedBy, reportDto.Id});
             }
         }
 
         public void SaveAuditRecord(AuditRecordDto auditRecordDto)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(@"
+                INSERT INTO [dbo].[AuditHistory]
+                    ([UpdatedUtc]
+                    ,[ReportingData]
+                    ,[UpdatedBy]
+                    ,[ReportId])
+                VALUES
+                    (@UpdatedUtc
+                    ,@ReportingData
+                    ,@UpdatedBy
+                    ,@ReportId)",
+                    new {auditRecordDto.UpdatedUtc, auditRecordDto.ReportingData, auditRecordDto.UpdatedBy, auditRecordDto.ReportId});
+            }
+        }
+
+        public IReadOnlyList<AuditRecordDto> GetAuditRecords(Guid reportId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId", new {reportId}).ToList();
+            }        
         }
     }
 }

@@ -31,6 +31,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
+                connection.Execute("if exists(select 1 from AuditHistory) truncate table AuditHistory");
                 connection.Execute("if exists(select 1 from Report) delete from Report");
             }
 

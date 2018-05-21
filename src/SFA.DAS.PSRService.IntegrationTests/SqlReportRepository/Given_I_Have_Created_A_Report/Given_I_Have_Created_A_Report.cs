@@ -26,8 +26,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
                 ReportingData = "Original created data",
                 ReportingPeriod = "2222",
                 Submitted = true,
-                AuditWindowStartUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow),
-                UpdatedUtc = RepositoryTestHelper.TrimDateTime(DateTime.Now),
+                AuditWindowStartUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow.AddMinutes(-1)),
+                UpdatedUtc = RepositoryTestHelper.TrimDateTime(DateTime.Now.AddSeconds(-30)),
                 UpdatedBy = $"{{ Id: '{Guid.NewGuid()}', Name: 'Name'}}"
             };
 
