@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -128,11 +129,10 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
         private static async Task PopulateAccountsClaim(TokenValidatedContext ctx, IEmployerAccountService accountsSvc)
         {
             var userId = ctx.Principal.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value;
-            var accounts = await accountsSvc.GetEmployerIdentifiersAsync(userId);
-            var accountsAsJson = JsonConvert.SerializeObject(accounts);
-            var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
-
+            var associatedAccountsClaim = await accountsSvc.GetClaim(userId);
             ctx.Principal.Identities.First().AddClaim(associatedAccountsClaim);
         }
+
+
     }
 }

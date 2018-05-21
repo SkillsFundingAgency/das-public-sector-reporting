@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Models;
 using Microsoft.AspNetCore.Routing;
+using Newtonsoft.Json;
+using SFA.DAS.PSRService.Application.Handler.EmployerAccountHandler.GetUserAccountRole;
 using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.Services
@@ -23,21 +28,64 @@ namespace SFA.DAS.PSRService.Web.Services
             _accountApiClient = accountApiClient;
         }
 
-        public async Task<IDictionary<string, EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId)
+        public async Task<IEnumerable<EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId)
         {
-        
                 var accounts = await _accountApiClient.GetUserAccounts(userId);
 
                 return accounts
                     .Select(acc =>
-                        new EmployerIdentifier {AccountId = acc.HashedAccountId, EmployerName = acc.DasAccountName})
-                    .ToDictionary(item => item.AccountId);
-           
+                        new EmployerIdentifier {AccountId = acc.HashedAccountId, EmployerName = acc.DasAccountName});
         }
 
         public EmployerIdentifier GetCurrentEmployerAccountId(HttpContext context)
         {
             return (EmployerIdentifier) context.Items[ContextItemKeys.EmployerIdentifier];
         }
+
+        private async Task<string> getUserRole(EmployerIdentifier employerAccount, string userId)
+        {
+            var accounts = await _accountApiClient.GetAccountUsers(employerAccount.AccountId);
+
+            if (accounts == null || !accounts.Any())
+            {
+                return null;
+            }
+
+            var teamMember = accounts.FirstOrDefault(c => c.UserRef.Equals(userId, StringComparison.CurrentCultureIgnoreCase));
+
+            if (teamMember == null)
+            {
+                return null;
+            }
+
+            return teamMember.Role;
+        }
+
+        public async Task<IEnumerable<EmployerIdentifier>> GetUserRoles(IEnumerable<EmployerIdentifier> values, string userId)
+        {
+            var employerIdentifiers = values.ToList();
+            foreach (var employerIdentifier in employerIdentifiers)
+            {
+                var userRoleRequest = new GetUserAccountRoleQuery(employerIdentifier.AccountId,userId);
+                var result = await getUserRole(employerIdentifier,userId);
+
+                employerIdentifier.Role = result;
+            }
+
+            return employerIdentifiers;
+        }
+
+        public async Task<Claim> GetClaim(string userId)
+        {
+            var accounts = await GetEmployerIdentifiersAsync(userId);
+
+            accounts = await GetUserRoles(accounts, userId);
+
+            var accountsAsJson = JsonConvert.SerializeObject(accounts.ToDictionary(k => k.AccountId));
+            var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
+                JsonClaimValueTypes.Json);
+            return associatedAccountsClaim;
+        }
     }
 }
+
