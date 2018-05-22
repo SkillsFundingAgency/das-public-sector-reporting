@@ -3,5 +3,6 @@
     public static class EmployerPsrsRoleNames
     {
         public static string Owner => "Owner";
+        public static string Transactor => "Transactor";
     }
 }
