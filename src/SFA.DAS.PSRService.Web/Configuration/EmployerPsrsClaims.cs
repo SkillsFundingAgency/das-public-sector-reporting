@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace SFA.DAS.PSRService.Web.Configuration
+﻿namespace SFA.DAS.PSRService.Web.Configuration
 {
     public static class EmployerPsrsClaims
     {
