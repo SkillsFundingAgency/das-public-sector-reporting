@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.HasRole.Given_User_Has_Role_For_Account
+namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Role_For_Account
 {
     [ExcludeFromCodeCoverage]
     public sealed class When_Requirement_Is_Handled
-    :Given_User_Has_Role_For_Account
+    :Given_User_Has_Owner_Role_For_Account
     {
         protected override void When()
         {

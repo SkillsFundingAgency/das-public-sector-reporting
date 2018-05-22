@@ -8,7 +8,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.HasRole.Given_Context_Reso
 {
     [ExcludeFromCodeCoverage]
     public abstract class Given_Context_Resource_Is_Not_An_Action_Context
-        : GivenWhenThen<UserHasRoleForAccount<TestRequirement>>
+        : GivenWhenThen<AccountsClaimsAuthorizationHandler<TestRequirement>>
     {
         protected AuthorizationHandlerContext HandlerContext;
 
