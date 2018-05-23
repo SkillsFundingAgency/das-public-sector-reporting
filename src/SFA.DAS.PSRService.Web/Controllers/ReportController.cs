@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -18,7 +19,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IUserService _userService;
         private readonly Period _currentPeriod;
 
-        public ReportController(IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration, IPeriodService periodService)
+        public ReportController(
+            IReportService reportService,
+            IEmployerAccountService employerAccountService, 
+            IUserService userService,
+            IWebConfiguration webConfiguration, 
+            IPeriodService periodService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
@@ -123,6 +129,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Route("Submit")]
+        [Authorize(Policy = PolicyNames.CanSubmitReport)]
         public IActionResult Submit()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);

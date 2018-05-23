@@ -4,6 +4,6 @@
     {
         public static string HasEmployerAccount => "HasEmployerAccount";
         public static string CanEditReport => "CanEditReport";
-        public static string CanSubmitReport => "CanSubmitREport";
+        public const string CanSubmitReport = "CanSubmitREport";
     }
 }
