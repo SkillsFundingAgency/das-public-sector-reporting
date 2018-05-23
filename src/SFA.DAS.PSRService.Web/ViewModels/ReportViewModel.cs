@@ -16,6 +16,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public Period Period { get; set; }
 
         public bool CanBeEdited { get; set; }
+        public bool UserCanSubmitReports { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
