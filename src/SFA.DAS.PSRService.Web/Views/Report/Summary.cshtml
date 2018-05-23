@@ -14,7 +14,10 @@
         {
             <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         }
-
+        else
+        {
+            <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
+        }
         <form action="Submit">
 
             @if (Model.Report.Submitted)
@@ -35,6 +38,14 @@
                         Please fix these errors
                     </h2>
                 </div>
+
+            }
+            else
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Submitted details</h1>
+                </legend>
+
             }
 
             <div class="form-group">
