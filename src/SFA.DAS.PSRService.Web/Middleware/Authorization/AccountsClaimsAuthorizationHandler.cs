@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
             if (RouteDataDoesNotContainAccountId(context))
                 return Task.CompletedTask;
 
-            if (UserDoesNotAccountsClaim(context))
+            if (UserDoesNotHaveAccountsClaim(context))
                 return Task.CompletedTask;
 
             return
@@ -72,7 +72,7 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
             }
         }
 
-        private bool UserDoesNotAccountsClaim(AuthorizationHandlerContext context)
+        private bool UserDoesNotHaveAccountsClaim(AuthorizationHandlerContext context)
         {
             return
                 context
