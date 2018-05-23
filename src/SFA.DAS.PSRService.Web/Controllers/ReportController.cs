@@ -179,7 +179,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("OrganisationName", organisationVM);
         }
 
-        //[Route("accounts/{employerAccountId}/[controller]/Change")]
         [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
