@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
-using SFA.DAS.PSRService.Web.Controllers;
-using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary
 {
-    [TestFixture]
-    public class Given_I_Request_The_Summary_Page : ReportControllerTestBase
+    [ExcludeFromCodeCoverage]
+    public class Given_A_Valid_Report
+    :Given_A_ReportController
     {
-        
-        [Test]     
-        public void And_The_Report_Exists_And_Is_Valid_Then_Show_Summary_Page()
+        public Given_A_Valid_Report()
         {
             var ApprenticeQuestions = new List<Question>()
             {
@@ -98,7 +95,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 Title = "SectionTwo"
             };
 
-
             IList<Section> sections = new List<Section>();
 
             sections.Add(YourEmployees);
@@ -118,62 +114,60 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 It.IsAny<Object>()));
             _controller.ObjectValidator = objectValidator.Object;
 
-            // arrange
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
-
-            // act
-            var result = _controller.Summary("1718");
-
-
-            // assert
-            Assert.AreEqual(typeof(ViewResult), result.GetType());
-            var editViewResult = result as ViewResult;
-            Assert.IsNotNull(editViewResult);
-            Assert.AreEqual("Summary", editViewResult.ViewName, "View name does not match, should be: Summary");
-
-
-            Assert.AreEqual(editViewResult.Model.GetType(), typeof(ReportViewModel));
-            var reportViewModel = editViewResult.Model as ReportViewModel;
-            Assert.IsNotNull(reportViewModel);
-            var reportResult = reportViewModel.Report;
-            Assert.IsNotNull(reportResult);
-            Assert.IsNotNull(reportResult.Id);
         }
 
-        [Test]
-        public void And_Report_Doesnt_Exist_Then_Not_Found_Is_Returned()
+        [ExcludeFromCodeCoverage]
+        [TestFixture]
+        public class When_Summary_Is_Called
+            : Given_A_Valid_Report
         {
-            // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null).Verifiable();
+            private IActionResult result;
 
-            // act
-            var result = _controller.Summary("NoReport");
+            public When_Summary_Is_Called()
+            {
+                result = _controller.Summary("1718");
+            }
 
-            // assert
-            _mockUrlHelper.VerifyAll();
-            _mockReportService.VerifyAll();
+            [Test]
+            public void Then_Result_Is_ViewResult()
+            {
+                Assert
+                    .IsNotNull(result);
 
-            Assert.IsAssignableFrom<NotFoundResult>(result);
+                Assert
+                    .IsInstanceOf<ViewResult>(result);
+            }
+
+            [Test]
+            public void Then_ViewName_Is_Summary()
+            {
+                Assert
+                    .AreEqual("Summary", ((ViewResult)result).ViewName, "View name does not match, should be: Summary");
+            }
+
+            [Test]
+            public void Then_ViewModel_Is_ReportViewModel()
+            {
+                Assert
+                    .IsNotNull(((ViewResult)result).Model);
+
+                Assert
+                    .IsInstanceOf<ReportViewModel>(((ViewResult)result).Model);
+            }
+
+            [Test]
+            public void Then_ViewModel_Has_Report()
+            {
+                var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+
+                Assert
+                    .IsNotNull(reportViewModel.Report);
+
+                Assert
+                    .IsNotNull(reportViewModel.Report.Id);
+            }
         }
-
-        [Test]
-        public void And_The_Report_Service_Throws_An_Exception()
-        {
-            // arrange
-            var url = "Home/Index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception("get report Error"));
-            // act
-            var result = _controller.Summary("ReportError");
-
-            // assert
-            Assert.IsInstanceOf<BadRequestResult>(result);
-        }
-
-
     }
 }
