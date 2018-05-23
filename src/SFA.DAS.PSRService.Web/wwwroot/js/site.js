@@ -98,7 +98,6 @@
                 if (currentWordCount[0] === '') currentWordCount.splice(0, 2);
                 if (currentWordCount[currentWordCount.length - 1] === '')
                     currentWordCount.splice(1, 1);
-                // console.log(currentWordCount.length + ' words are typed out of an available ' + wordLimit);
                 var wordsLeft = wordLimit - currentWordCount.length;
                 if (currentWordCount === '') wordsLeft = wordLimit;
                 var word_s = wordsLeft === 1 || wordsLeft === -1 ? 'word' : 'words';
