@@ -164,8 +164,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Submitted");
         }
 
-
-        //[Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
         [Route("OrganisationName")]
         public IActionResult OrganisationName(string post)
         {
