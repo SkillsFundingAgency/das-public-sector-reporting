@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
@@ -6,6 +7,7 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
+    [Authorize("HasEmployerAccount")]
     public abstract class BaseController : Controller
     {
         private readonly IEmployerAccountService _employerAccountService;
@@ -14,7 +16,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         protected EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
 
-
+        
         protected BaseController(IWebConfiguration webConfiguration, IEmployerAccountService employerAccountService)
         {
             _webConfiguration = webConfiguration;
