@@ -80,6 +80,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("List", reportListViewmodel);
         }
 
+        [Route("AuditHistory")]
+        public IActionResult AuditHistory()
+        {
+            _reportService.
+            return View();
+        }
+
         [Route("Summary/{period}")]
         [Route("Summary")]
         public IActionResult Summary(string period)
