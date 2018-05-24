@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
 using Dapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
@@ -20,6 +24,7 @@ using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using StructureMap;
@@ -98,7 +103,8 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
                 config.For<IMediator>().Use<Mediator>();
                 config.For(typeof(ILogger<UserService>)).Use(c => new Mock<ILogger<UserService>>().Object);
-
+                config.For<IAuthorizationService>().Use(BuildMockAuthorizationService());
+                    
                 var mockEmployerAccountService = new Mock<IEmployerAccountService>();
                 var employerIdentifier = new EmployerIdentifier {AccountId = "111", EmployerName = "222"};
                 mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
@@ -110,5 +116,22 @@ namespace SFA.DAS.PSRService.IntegrationTests
             };
         }
 
+        private static IAuthorizationService BuildMockAuthorizationService()
+        {
+            var service = new Mock<IAuthorizationService>();
+
+            service
+                .Setup(
+                    m => m.AuthorizeAsync(
+                        It.IsAny<ClaimsPrincipal>(),
+                        It.IsAny<object>(),
+                        PolicyNames.CanSubmitReport))
+                .Returns(
+                    Task.FromResult(AuthorizationResult.Success()));
+
+            return
+                service
+                    .Object;
+        }
     }
 }
