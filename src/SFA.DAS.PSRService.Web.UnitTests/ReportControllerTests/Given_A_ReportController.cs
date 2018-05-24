@@ -42,7 +42,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 _employeeAccountServiceMock.Object,
                 _userServiceMock.Object, 
                 null, 
-                _periodServiceMock.Object)
+                _periodServiceMock.Object,
+                MockAuthorizationService.Object)
             {
                 Url = _mockUrlHelper.Object
             };
@@ -55,6 +56,21 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 .Returns(_employerIdentifier);
 
             _userServiceMock.Setup(s => s.GetUserModel(null)).Returns(new UserModel());
+        }
+
+        [SetUp]
+        public void GivenAndWhen()
+        {
+            Given();
+            When();
+        }
+
+        protected virtual void When()
+        {
+        }
+
+        protected virtual void Given()
+        {
         }
     }
 }
