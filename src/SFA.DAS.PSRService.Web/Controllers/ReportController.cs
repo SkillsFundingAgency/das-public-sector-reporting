@@ -17,6 +17,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly IReportService _reportService;
         private readonly IUserService _userService;
+        private readonly IAuthorizationService _authorizationService;
         private readonly Period _currentPeriod;
 
         public ReportController(
@@ -24,11 +25,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
             IEmployerAccountService employerAccountService, 
             IUserService userService,
             IWebConfiguration webConfiguration, 
-            IPeriodService periodService)
+            IPeriodService periodService,
+            IAuthorizationService authorizationService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
             _userService = userService;
+            _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
             _currentPeriod = periodService.GetCurrentPeriod();
         }
 
@@ -106,8 +109,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 {
                     Report = report,
                     Period = _currentPeriod,
-                    CanBeEdited = _reportService.CanBeEdited(report)
+                    CanBeEdited = _reportService.CanBeEdited(report),
+                    UserCanSubmitReports = UserIsAuthorizedForReportSubmission()
                 };
+
+
 
                 if (reportViewModel.Report == null)
                     return new RedirectResult(Url.Action("Index", "Home"));
@@ -194,6 +200,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _reportService.SaveReport(reportViewModel.Report);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
+        }
+        private bool UserIsAuthorizedForReportSubmission()
+        {
+            return
+                _authorizationService
+                    .AuthorizeAsync(
+                        User,
+                        this.ControllerContext,
+                        PolicyNames.CanSubmitReport)
+                    .Result
+                    .Succeeded;
         }
     }
 }

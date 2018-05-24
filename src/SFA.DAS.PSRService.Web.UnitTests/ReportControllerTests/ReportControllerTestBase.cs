@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,18 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
 
-            _controller = new ReportController(_mockReportService.Object, _employeeAccountServiceMock.Object, _userServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new ReportController(
+                _mockReportService.Object,
+                _employeeAccountServiceMock.Object,
+                _userServiceMock.Object, 
+                null, 
+                _periodServiceMock.Object,
+                Mock.Of<IAuthorizationService>()
+                )
+            {
+                Url = _mockUrlHelper.Object
+            };
+
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
