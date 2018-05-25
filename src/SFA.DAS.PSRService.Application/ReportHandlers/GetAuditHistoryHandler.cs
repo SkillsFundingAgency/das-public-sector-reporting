@@ -5,22 +5,27 @@ using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class GetReportHandler : RequestHandler<GetReportRequest, Report>
+    public class GetAuditHistoryHandler : RequestHandler<GetAuditHistoryRequest, AuditRecord>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
 
-        public GetReportHandler(IReportRepository reportRepository, IMapper mapper)
+        public GetAuditHistoryHandler(IReportRepository reportRepository, IMapper mapper)
         {
             _reportRepository = reportRepository;
             _mapper = mapper;
         }
 
-        protected override Report HandleCore(GetReportRequest request)
+        protected Report HandleCore(GetReportRequest request)
         {
             var reportDto = _reportRepository.Get(request.Period,request.EmployerId);
 
             return _mapper.Map<Report>(reportDto);
+        }
+
+        protected override AuditRecord HandleCore(GetAuditHistoryRequest request)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
