@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Middleware\RoleRequierments\Given_User_Has_Role_For_Account\**" />
+    <EmbeddedResource Remove="Middleware\RoleRequierments\Given_User_Has_Role_For_Account\**" />
+    <None Remove="Middleware\RoleRequierments\Given_User_Has_Role_For_Account\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dazinator.AspNet.Extensions.FileProviders" Version="1.4.0" />
     <PackageReference Include="FluentAssertions" Version="5.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.4" />
@@ -21,10 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.PSRService.Application\SFA.DAS.PSRService.Application.csproj" />
     <ProjectReference Include="..\SFA.DAS.PSRService.Web\SFA.DAS.PSRService.Web.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Middleware\RoleRequierments\Given_User_Has_Role_For_Account\" />
   </ItemGroup>
 
 </Project>

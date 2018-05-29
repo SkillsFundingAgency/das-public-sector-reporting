@@ -11,10 +11,10 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Middleware.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Owner_Role_For_Account
+namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Viewer_Role_For_Account
 {
     [ExcludeFromCodeCoverage]
-    public abstract class Given_User_Has_Owner_Role_For_Account
+    public abstract class Given_User_Has_Viewer_Role_For_Account
         : GivenWhenThen<CanSubmitReportHandler>
     {
         protected AuthorizationHandlerContext HandlerContext;
@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit
                 =
                 new ActionContext();
 
-                var routeData
+            var routeData
                 = 
                 new RouteData();
 
@@ -80,7 +80,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit
                         [AccountId] = new EmployerIdentifier
                         {
                             AccountId = AccountId,
-                            Role = EmployerPsrsRoleNames.Owner
+                            Role = EmployerPsrsRoleNames.Viewer
                         }
                     });
         }

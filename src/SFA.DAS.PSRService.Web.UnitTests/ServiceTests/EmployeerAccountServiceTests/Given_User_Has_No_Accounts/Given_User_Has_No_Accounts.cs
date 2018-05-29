@@ -23,13 +23,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.EmployeerAccountServiceT
         protected static readonly string _accountIdTwo = "JD83N5";
         private static readonly string[] AccountId = { _accountIdOne, _accountIdTwo };
 
-        private static readonly TeamMemberViewModel _teamMemberOwner = new TeamMemberViewModel() {Role = EmployerPsrsRoleNames.Owner, UserRef = UserId};
-        private static readonly TeamMemberViewModel _teamMemberTransactor = new TeamMemberViewModel() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId};
-        private static readonly TeamMemberViewModel _teamMemberViewer = new TeamMemberViewModel() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId};
-
-        private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel>() { _teamMemberOwner };
-        private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel>() { _teamMemberTransactor };
-        private readonly IList<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel>() { _teamMemberViewer };
 
         protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 

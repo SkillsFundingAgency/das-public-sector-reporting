@@ -11,11 +11,11 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Middleware.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Owner_Role_For_Account
+namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanEdit.Given_User_Has_Owner_Role_For_A_Different_Account
 {
     [ExcludeFromCodeCoverage]
-    public abstract class Given_User_Has_Owner_Role_For_Account
-        : GivenWhenThen<CanSubmitReportHandler>
+    public abstract class Given_User_Has_Owner_Role_For_A_Different_Account
+        : GivenWhenThen<CanEditReportHandler>
     {
         protected AuthorizationHandlerContext HandlerContext;
 
@@ -23,11 +23,11 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit
 
         protected override void Given()
         {
-            SUT = new CanSubmitReportHandler();
+            SUT = new CanEditReportHandler();
 
             HandlerContext =
                 new AuthorizationHandlerContext(
-                    requirements: new List<IAuthorizationRequirement> {new CanSubmitReport()}
+                    requirements: new List<IAuthorizationRequirement> {new CanEditReport()}
                     , user: BuildUserWithRequiredRoleForAccount()
                     , resource: BuildResourceWithAccountID()
                 );
@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit
                 =
                 new ActionContext();
 
-                var routeData
+            var routeData
                 = 
                 new RouteData();
 
@@ -77,7 +77,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit
                 (
                     new Dictionary<string, EmployerIdentifier>
                     {
-                        [AccountId] = new EmployerIdentifier
+                        ["SOMEOTHERACCOUNT"] = new EmployerIdentifier
                         {
                             AccountId = AccountId,
                             Role = EmployerPsrsRoleNames.Owner
