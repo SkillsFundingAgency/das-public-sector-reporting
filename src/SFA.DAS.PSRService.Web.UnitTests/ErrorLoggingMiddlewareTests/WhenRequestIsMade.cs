@@ -1,13 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.AssessorService.Application.Api.Middleware;
-using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Middleware;
 using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests

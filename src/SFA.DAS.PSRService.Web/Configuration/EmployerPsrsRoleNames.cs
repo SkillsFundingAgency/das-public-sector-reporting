@@ -4,5 +4,6 @@
     {
         public static string Owner => "Owner";
         public static string Transactor => "Transactor";
+        public static string Viewer => "Viewer";
     }
 }
