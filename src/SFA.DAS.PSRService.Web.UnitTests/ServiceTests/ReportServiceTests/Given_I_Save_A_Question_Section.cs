@@ -42,7 +42,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         public void And_sectoin_And_Report_Supplied_Then_Create_Report()
         {
             //Arrange
-            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
+            _webConfigurationMock.SetupGet(s => s.AuditWindowSize).Returns((TimeSpan?)null);
             _mediatorMock.Setup(s => s.Send(It.IsAny<UpdateReportRequest>(), It.IsAny<CancellationToken>()));
 
             var Questions = new List<Question>()
