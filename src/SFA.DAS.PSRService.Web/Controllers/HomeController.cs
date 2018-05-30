@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -22,14 +23,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly IReportService _reportService;
         private readonly IPeriodService _periodService;
+        private readonly IAuthorizationService _authorizationService;
 
         private readonly Period _currentPeriod;
 
-        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService) 
+        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService, IAuthorizationService authorizationService) 
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
             _periodService = periodService;
+            _authorizationService = authorizationService;
 
             _currentPeriod = _periodService.GetCurrentPeriod();
         }
@@ -41,8 +44,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
             model.Period = _currentPeriod;
             // TODO: take submission period close date into account
-            model.CanCreateReport = report == null;
-            model.CanEditReport = report != null && !report.Submitted;
+            model.CanCreateReport = report == null && UserIsAuthorizedForReportEdit();
+            model.CanEditReport = report != null && !report.Submitted && UserIsAuthorizedForReportEdit();
             return View(model);
         }
 
@@ -73,17 +76,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var disco = await DiscoveryClient.GetAsync(_webConfiguration.Identity.Authority);
             return Redirect(disco.EndSessionEndpoint);
         }
-
-        [Authorize]
-        public IActionResult Protected(string empolyerId)
+        private bool UserIsAuthorizedForReportEdit()
         {
-
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-
-
-
-            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
-            return View(employerDetail);
+            return
+                _authorizationService
+                    .AuthorizeAsync(
+                        User,
+                        this.ControllerContext,
+                        PolicyNames.CanEditReport)
+                    .Result
+                    .Succeeded;
         }
     }
 }

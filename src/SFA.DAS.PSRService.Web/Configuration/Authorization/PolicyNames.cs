@@ -1,9 +1,11 @@
-﻿namespace SFA.DAS.PSRService.Web.Configuration.Authorization
+﻿using System.Reflection.Metadata;
+
+namespace SFA.DAS.PSRService.Web.Configuration.Authorization
 {
     public static class PolicyNames
     {
         public static string HasEmployerAccount => "HasEmployerAccount";
-        public static string CanEditReport => "CanEditReport";
+        public const string CanEditReport = "CanEditReport";
         public const string CanSubmitReport = "CanSubmitREport";
     }
 }

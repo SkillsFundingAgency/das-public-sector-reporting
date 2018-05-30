@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
@@ -13,7 +14,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         private HomeController _controller;
         private Mock<IUrlHelper> _mockUrlHelper;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
-
+        private Mock<IAuthorizationService> _authorizationServiceMock;
         private Mock<IPeriodService> _mockPeriodService;
 
         [SetUp]
@@ -22,7 +23,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _mockPeriodService = new Mock<IPeriodService>();
-            _controller = new HomeController(null,_employeeAccountServiceMock.Object, null,_mockPeriodService.Object) {Url = _mockUrlHelper.Object};
+            _authorizationServiceMock = new Mock<IAuthorizationService>(MockBehavior.Strict);
+
+            _controller = new HomeController(null,_employeeAccountServiceMock.Object, null,_mockPeriodService.Object,_authorizationServiceMock.Object) {Url = _mockUrlHelper.Object};
         }
 
         [Test]

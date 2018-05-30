@@ -23,6 +23,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
                         PolicyNames.CanSubmitReport))
                 .Returns(
                     Task.FromResult(AuthorizationResult.Success()));
+
+            MockAuthorizationService
+                .Setup(
+                    m => m.AuthorizeAsync(
+                        It.IsAny<ClaimsPrincipal>(),
+                        It.IsAny<object>(),
+                        PolicyNames.CanEditReport))
+                .Returns(
+                    Task.FromResult(AuthorizationResult.Success()));
         }
     }
 }

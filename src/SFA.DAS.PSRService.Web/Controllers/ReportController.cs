@@ -35,6 +35,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _currentPeriod = periodService.GetCurrentPeriod();
         }
 
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Edit()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
@@ -47,6 +48,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         [HttpGet]
         [Route("Create")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Create()
         {
             ViewBag.CurrentPeriod = _currentPeriod;
@@ -55,6 +57,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         [HttpPost]
         [Route("Create")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostCreate()
         {
             try
@@ -109,7 +112,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 {
                     Report = report,
                     Period = _currentPeriod,
-                    CanBeEdited = _reportService.CanBeEdited(report),
+                    CanBeEdited = _reportService.CanBeEdited(report) && UserIsAuthorizedForReportEdit(),
                     UserCanSubmitReports = UserIsAuthorizedForReportSubmission()
                 };
 
@@ -171,6 +174,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Route("OrganisationName")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult OrganisationName(string post)
         {
             var organisationVM = new OrganisationViewModel
@@ -188,6 +192,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Change(OrganisationViewModel organisationVm)
         {
             var reportViewModel = new ReportViewModel
@@ -209,6 +214,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         User,
                         this.ControllerContext,
                         PolicyNames.CanSubmitReport)
+                    .Result
+                    .Succeeded;
+        }
+        private bool UserIsAuthorizedForReportEdit()
+        {
+            return
+                _authorizationService
+                    .AuthorizeAsync(
+                        User,
+                        this.ControllerContext,
+                        PolicyNames.CanEditReport)
                     .Result
                     .Succeeded;
         }

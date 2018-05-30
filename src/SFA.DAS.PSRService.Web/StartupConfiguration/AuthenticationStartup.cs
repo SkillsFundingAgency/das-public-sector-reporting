@@ -50,6 +50,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
 
             services.AddSingleton<IAuthorizationHandler, EmployerAccountHandler>();
             services.AddSingleton<IAuthorizationHandler, CanSubmitReportHandler>();
+            services.AddSingleton<IAuthorizationHandler, CanEditReportHandler>();
         }
 
         public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IEmployerAccountService accountsSvc)
