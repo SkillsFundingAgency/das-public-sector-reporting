@@ -1,0 +1,34 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportHistoryViewModel
+
+@{
+    ViewBag.Title = "Current report edit history";
+    Layout = "_Layout";
+    ViewBag.CanBeEdited = false;
+}
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+        <h1 class="heading-xlarge">Report history</h1>
+    </div>
+
+    <div class="form-group">
+        <table>
+            <caption class="heading-small">Reporting period</caption>
+            <tbody>
+                <tr>
+                    <td>Reporting period</td>
+                    <td class="numeric bold-xsmall">@Model.Period.FullString</td>
+                    <td class="link-right"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @Html.Partial("Question/Organisation", Model.OrganisationName)
+
+    @* @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers")) *@
+    @* @Html.Partial("Question/ReportingPercentages", Model.Percentages) *@
+    @* @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors")) *@
+
+</div>
