@@ -55,10 +55,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         {
             var requrestWithSubmittedReport =
                 new GetAuditHistoryRequest(
-                    new Report
-                    {
-                        Submitted = true
-                    });
+                    period: new Period(DateTime.UtcNow), 
+                    accountId:"SomeAccountId");
 
             auditItems = SUT.Handle(requrestWithSubmittedReport, new CancellationToken()).Result;
         }

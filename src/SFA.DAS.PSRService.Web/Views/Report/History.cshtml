@@ -26,9 +26,25 @@
     </div>
 
     @Html.Partial("Question/Organisation", Model.OrganisationName)
-
+    
+    @foreach (var edit in Model.History)
+    {
+        <div class="form-group">
+            <table>
+                <caption class="heading-small">Edit</caption>
+                <tbody>
+                    <tr>
+                        <td>Edit by</td>
+                        <td class="numeric bold-xsmall">@edit.UpdatedBy.Name</td>
+                        <td>on</td>
+                        <td class="numeric bold-xsmall">@edit.UpdatedUtc</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     @* @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers")) *@
     @* @Html.Partial("Question/ReportingPercentages", Model.Percentages) *@
     @* @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors")) *@
+    }
 
 </div>

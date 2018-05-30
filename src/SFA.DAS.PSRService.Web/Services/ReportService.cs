@@ -95,5 +95,15 @@ namespace SFA.DAS.PSRService.Web.Services
                    && report.Period.IsCurrent 
                    && _periodService.IsSubmissionsOpen();
         }
+
+        public IEnumerable<AuditRecord> GetReportEditHistory(
+            Period period, 
+            string employerId)
+        {
+            var request = new GetAuditHistoryRequest(period, employerId);
+
+            return
+                _mediator.Send(request).Result;
+        }
     }
 }

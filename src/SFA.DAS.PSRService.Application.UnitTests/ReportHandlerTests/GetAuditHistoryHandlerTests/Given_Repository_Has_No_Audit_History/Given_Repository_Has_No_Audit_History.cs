@@ -32,7 +32,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         {
             var anyOldRequest =
                 new GetAuditHistoryRequest(
-                    new Report());
+                    period:new Period(DateTime.UtcNow),
+                    accountId:"SomeAccountId");
 
             auditItems = SUT.Handle(anyOldRequest, new CancellationToken()).Result;
         }

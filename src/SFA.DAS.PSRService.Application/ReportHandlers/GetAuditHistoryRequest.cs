@@ -7,11 +7,18 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
     public class GetAuditHistoryRequest : IRequest<IEnumerable<AuditRecord>>
     {
-        public Report Report { get; }
+        public Period Period { get; }
+        public  string AccountId{ get; }
 
-        public GetAuditHistoryRequest(Report report)
+        public GetAuditHistoryRequest(
+            Period period, 
+            string accountId)
         {
-            this.Report = report ?? throw new ArgumentNullException(nameof(report));
+            if (string.IsNullOrWhiteSpace(accountId))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(accountId));
+
+            this.Period = period;
+            this.AccountId= accountId;
         }
     }
 }

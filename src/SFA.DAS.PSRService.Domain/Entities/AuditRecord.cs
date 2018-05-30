@@ -7,6 +7,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
     {
         public DateTime UpdatedUtc { get; set; }
         public IEnumerable<Section> Sections { get; set; }
-        public string UpdatedBy { get; set; }
+        public User UpdatedBy { get; set; }
     }
 }

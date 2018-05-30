@@ -1,4 +1,5 @@
-﻿using SFA.DAS.PSRService.Domain.Entities;
+﻿using System.Collections.Generic;
+using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.ViewModels
 {
@@ -6,5 +7,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     {
         public Period Period { get; set; }
         public string OrganisationName { get; set; }
+        public IEnumerable<AuditRecord> History { get; set; }
     }
 }

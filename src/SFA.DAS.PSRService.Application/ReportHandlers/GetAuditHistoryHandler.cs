@@ -27,14 +27,24 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         protected override IEnumerable<AuditRecord> HandleCore(GetAuditHistoryRequest request)
         {
-            if (request.Report.Submitted)
+            var report =
+                _reportRepository
+                    .Get(
+                        period: request.Period.PeriodString,
+                        employerId: request.AccountId);
+
+            if(report == null)
+                return
+                    Enumerable.Empty<AuditRecord>();
+
+            if (report.Submitted)
                 return
                     Enumerable.Empty<AuditRecord>();
 
             return
                 _reportRepository
                     .GetAuditRecords(
-                        request.Report.Id)
+                        report.Id)
                     .Select(
                         dto => _mapper.Map<AuditRecord>(dto));
         }
