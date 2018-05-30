@@ -1,11 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class GetAuditHistoryHandler : RequestHandler<GetAuditHistoryRequest, AuditRecord>
+    public class GetAuditHistoryHandler : RequestHandler<GetAuditHistoryRequest, IEnumerable<AuditRecord>>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
@@ -23,9 +25,18 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             return _mapper.Map<Report>(reportDto);
         }
 
-        protected override AuditRecord HandleCore(GetAuditHistoryRequest request)
+        protected override IEnumerable<AuditRecord> HandleCore(GetAuditHistoryRequest request)
         {
-            throw new System.NotImplementedException();
+            if (request.Report.Submitted)
+                return
+                    Enumerable.Empty<AuditRecord>();
+
+            return
+                _reportRepository
+                    .GetAuditRecords(
+                        request.Report.Id)
+                    .Select(
+                        dto => _mapper.Map<AuditRecord>(dto));
         }
     }
 }
