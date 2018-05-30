@@ -58,27 +58,16 @@
         @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
-        @if (Model.IsValidForSubmission)
+        @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
         {
             <a class="button" asp-controller="Report" asp-action="Confirm">Confirm</a>
         }
         else
         {
-            <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+            if (Model.Report.Submitted)
+            {
+                <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+            }
         }
-            @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
-            {
-                <button class="button" type="submit">Submit</button>
-            }
-            else
-            {
-                if (Model.Report.Submitted)
-                {
-                    <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
-                }
-            }
-
-        </form>
-
     </div>
 </div>
