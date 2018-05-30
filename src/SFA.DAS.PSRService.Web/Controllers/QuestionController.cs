@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IReportService _reportService;
         private readonly IPeriodService _periodService;
 
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService) 
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             };
 
             if (sectionViewModel.CurrentSection.Questions != null)
-                sectionViewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel {Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type}).ToList();
+                sectionViewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel { Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type }).ToList();
 
             return View("Index", sectionViewModel);
         }
@@ -56,7 +56,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Submit(SectionModel section)
-         {
+        {
             var report = _reportService.GetReport(section.ReportingPeriod, EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
@@ -64,10 +64,10 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var currentSection = report.GetQuestionSection(section.Id);
 
-            if (currentSection == null)
+            if (currentSection == null || section.Questions == null)
                 return new BadRequestResult();
 
-            if (ModelState.IsValid && section.Questions != null)
+            if (ModelState.IsValid)
             {
                 foreach (var question in currentSection.Questions)
                 {
@@ -90,15 +90,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
 
+
             var viewModel = new SectionViewModel
             {
                 CurrentPeriod = report.Period,
                 CurrentSection = currentSection,
-                Report = report
-            };
-            
-             if (currentSection.Questions != null)
-                 viewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel {Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type}).ToList();
+                Report = report,
+                Questions = section.Questions
+        };
+
+          
+
 
             return View("Index", viewModel);
         }
