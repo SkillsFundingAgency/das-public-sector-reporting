@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -20,9 +19,14 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         {
             var reportDto = _mapper.Map<ReportDto>(request.Report);
 
+            if (reportDto == null)
+                return;
+
             reportDto.Submitted = true;
 
             _reportRepository.Update(reportDto);
+
+            _reportRepository.DeleteHistory(reportDto.Id);
         }
     }
 }

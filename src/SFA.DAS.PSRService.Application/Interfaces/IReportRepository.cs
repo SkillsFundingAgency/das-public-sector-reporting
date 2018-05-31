@@ -13,5 +13,6 @@ namespace SFA.DAS.PSRService.Application.Interfaces
         void Update(ReportDto reportDto);
         void SaveAuditRecord(AuditRecordDto auditRecordDto);
         IReadOnlyList<AuditRecordDto> GetAuditRecordsMostRecentFirst(Guid reportId);
+        void DeleteHistory(Guid reportId);
     }
 }
