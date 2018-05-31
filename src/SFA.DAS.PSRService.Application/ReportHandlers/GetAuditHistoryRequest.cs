@@ -5,12 +5,12 @@ using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class GetAuditHistoryRequest : IRequest<IEnumerable<AuditRecord>>
+    public class GetReportEditHistoryMostRecentFirst : IRequest<IEnumerable<AuditRecord>>
     {
         public Period Period { get; }
         public  string AccountId{ get; }
 
-        public GetAuditHistoryRequest(
+        public GetReportEditHistoryMostRecentFirst(
             Period period, 
             string accountId)
         {

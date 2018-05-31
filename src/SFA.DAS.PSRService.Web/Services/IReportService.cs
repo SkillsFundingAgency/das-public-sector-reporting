@@ -13,6 +13,6 @@ namespace SFA.DAS.PSRService.Web.Services
         IEnumerable<Report> GetSubmittedReports(string employerId);
         void SaveReport(Report report, UserModel user);
         bool CanBeEdited(Report report);
-        IEnumerable<AuditRecord> GetReportEditHistory(Period period, string employerId);
+        IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
     }
 }

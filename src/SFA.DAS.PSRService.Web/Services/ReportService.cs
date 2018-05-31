@@ -96,11 +96,11 @@ namespace SFA.DAS.PSRService.Web.Services
                    && _periodService.IsSubmissionsOpen();
         }
 
-        public IEnumerable<AuditRecord> GetReportEditHistory(
+        public IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(
             Period period, 
             string employerId)
         {
-            var request = new GetAuditHistoryRequest(period, employerId);
+            var request = new GetReportEditHistoryMostRecentFirst(period, employerId);
 
             return
                 _mediator.Send(request).Result;

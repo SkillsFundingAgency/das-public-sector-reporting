@@ -15,14 +15,14 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
     [ExcludeFromCodeCoverage]
     [TestFixture]
     public class Given_Report_Is_Not_Submitted
-        : GivenWhenThen<GetAuditHistoryHandler>
+        : GivenWhenThen<GetReportEditHistoryMostRecentFirstHandler>
     {
         private Mock<IReportRepository> mockRepository;
         private readonly Guid expectedReportId = new  Guid("3F0D018B-22DC-45B7-B81B-ED7C5CA024CF");
 
         protected override void Given()
         {
-            SUT = new GetAuditHistoryHandler(
+            SUT = new GetReportEditHistoryMostRecentFirstHandler(
                 SetupMockRepositoryReturn(),
                 Mock.Of<IMapper>());
         }
@@ -56,7 +56,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
 
             mockRepository
                 .Setup(
-                    m => m.GetAuditRecords(
+                    m => m.GetAuditRecordsMostRecentFirst(
                         It.IsAny<Guid>()))
                 .Returns(
                     new List<AuditRecordDto>(0).AsReadOnly
@@ -70,7 +70,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         protected override void When()
         {
             var requrestWithNonSubmittedReport =
-                new GetAuditHistoryRequest(
+                new GetReportEditHistoryMostRecentFirst(
                     period:new Period(DateTime.UtcNow), 
                     accountId:"SomeEmployerId");
 
@@ -82,7 +82,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         {
             mockRepository
                 .Verify(
-                    m => m.GetAuditRecords( It.Is<Guid>( id => id.Equals(expectedReportId))));
+                    m => m.GetAuditRecordsMostRecentFirst( It.Is<Guid>( id => id.Equals(expectedReportId))));
         }
     }
 }

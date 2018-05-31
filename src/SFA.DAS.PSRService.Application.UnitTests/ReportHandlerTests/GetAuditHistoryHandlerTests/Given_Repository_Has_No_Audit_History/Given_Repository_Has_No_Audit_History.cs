@@ -17,13 +17,13 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
     [ExcludeFromCodeCoverage]
     [TestFixture]
     public class Given_Repository_Has_No_Audit_History
-        : GivenWhenThen<GetAuditHistoryHandler>
+        : GivenWhenThen<GetReportEditHistoryMostRecentFirstHandler>
     {
         private IEnumerable<AuditRecord> auditItems;
 
         protected override void Given()
         {
-            SUT = new GetAuditHistoryHandler(
+            SUT = new GetReportEditHistoryMostRecentFirstHandler(
                 SetupMockRepositoryReturn(),
                 Mock.Of<IMapper>());
         }
@@ -31,7 +31,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         protected override void When()
         {
             var anyOldRequest =
-                new GetAuditHistoryRequest(
+                new GetReportEditHistoryMostRecentFirst(
                     period:new Period(DateTime.UtcNow),
                     accountId:"SomeAccountId");
 
@@ -43,7 +43,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
 
             mockRepository
                 .Setup(
-                    m => m.GetAuditRecords(
+                    m => m.GetAuditRecordsMostRecentFirst(
                         It.IsAny<Guid>()))
                 .Returns(
                     new List<AuditRecordDto>(0)

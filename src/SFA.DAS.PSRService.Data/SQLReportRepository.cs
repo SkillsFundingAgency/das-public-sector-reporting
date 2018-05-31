@@ -91,11 +91,11 @@ namespace SFA.DAS.PSRService.Data
             }
         }
 
-        public IReadOnlyList<AuditRecordDto> GetAuditRecords(Guid reportId)
+        public IReadOnlyList<AuditRecordDto> GetAuditRecordsMostRecentFirst(Guid reportId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId", new {reportId}).ToList();
+                return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc", new {reportId}).ToList();
             }        
         }
     }

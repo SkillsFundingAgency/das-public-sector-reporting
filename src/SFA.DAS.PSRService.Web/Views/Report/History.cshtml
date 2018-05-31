@@ -29,7 +29,7 @@
 
     @Html.Partial("Question/Organisation", Model.OrganisationName)
     
-    @foreach (var edit in Model.History)
+    @foreach (var edit in Model.EditHistoryMostRecentFirst)
     {
         <div class="form-group">
             <table>

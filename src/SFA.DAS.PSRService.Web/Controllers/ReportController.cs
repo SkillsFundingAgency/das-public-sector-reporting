@@ -89,9 +89,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 Period = _currentPeriod,
             };
 
-            model.History =
+            model.EditHistoryMostRecentFirst =
                 _reportService
-                    .GetReportEditHistory(
+                    .GetReportEditHistoryMostRecentFirst(
                         _currentPeriod,
                         EmployerAccount.AccountId);
 

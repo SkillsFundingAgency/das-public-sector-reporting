@@ -7,12 +7,12 @@ using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class GetAuditHistoryHandler : RequestHandler<GetAuditHistoryRequest, IEnumerable<AuditRecord>>
+    public class GetReportEditHistoryMostRecentFirstHandler : RequestHandler<GetReportEditHistoryMostRecentFirst, IEnumerable<AuditRecord>>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
 
-        public GetAuditHistoryHandler(IReportRepository reportRepository, IMapper mapper)
+        public GetReportEditHistoryMostRecentFirstHandler(IReportRepository reportRepository, IMapper mapper)
         {
             _reportRepository = reportRepository;
             _mapper = mapper;
@@ -25,13 +25,13 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             return _mapper.Map<Report>(reportDto);
         }
 
-        protected override IEnumerable<AuditRecord> HandleCore(GetAuditHistoryRequest request)
+        protected override IEnumerable<AuditRecord> HandleCore(GetReportEditHistoryMostRecentFirst mostRecentFirst)
         {
             var report =
                 _reportRepository
                     .Get(
-                        period: request.Period.PeriodString,
-                        employerId: request.AccountId);
+                        period: mostRecentFirst.Period.PeriodString,
+                        employerId: mostRecentFirst.AccountId);
 
             if(report == null)
                 return
@@ -43,7 +43,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             return
                 _reportRepository
-                    .GetAuditRecords(
+                    .GetAuditRecordsMostRecentFirst(
                         report.Id)
                     .Select(
                         dto => _mapper.Map<AuditRecord>(dto));

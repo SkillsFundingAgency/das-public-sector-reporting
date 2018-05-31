@@ -16,13 +16,13 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
     [ExcludeFromCodeCoverage]
     [TestFixture]
     public class Given_Report_Is_Not_Submitted
-        : GivenWhenThen<GetAuditHistoryHandler>
+        : GivenWhenThen<GetReportEditHistoryMostRecentFirstHandler>
     {
         private IEnumerable<AuditRecord> auditItems;
 
         protected override void Given()
         {
-            SUT = new GetAuditHistoryHandler(
+            SUT = new GetReportEditHistoryMostRecentFirstHandler(
                 SetupMockRepositoryReturn(),
                 Mock.Of<IMapper>());
         }
@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         protected override void When()
         {
             var requrestWithSubmittedReport =
-                new GetAuditHistoryRequest(
+                new GetReportEditHistoryMostRecentFirst(
                     period: new Period(DateTime.UtcNow), 
                     accountId:"SomeAccountId");
 

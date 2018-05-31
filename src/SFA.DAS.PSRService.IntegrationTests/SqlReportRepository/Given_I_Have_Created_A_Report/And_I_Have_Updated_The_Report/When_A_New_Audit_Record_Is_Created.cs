@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
         [Test]
         public void Then_Audit_Record_Appears_In_Database()
         {
-            var list = SUT.GetAuditRecords(_auditRecordDto.ReportId);
+            var list = SUT.GetAuditRecordsMostRecentFirst(_auditRecordDto.ReportId);
             Assert.AreEqual(1, list.Count);
             var actualRecord = list[0];
             Assert.AreEqual(_auditRecordDto.ReportId, actualRecord.ReportId);
