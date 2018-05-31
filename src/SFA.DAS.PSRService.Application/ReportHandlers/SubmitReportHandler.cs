@@ -18,11 +18,6 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         }
         protected override void HandleCore(SubmitReportRequest request)
         {
-            if (request.Report == null)
-            {
-                throw new Exception("No Report Supplied");
-            }
-
             var reportDto = _mapper.Map<ReportDto>(request.Report);
 
             reportDto.Submitted = true;

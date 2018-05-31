@@ -58,7 +58,7 @@ namespace SFA.DAS.PSRService.Web.Services
             if (!CanBeEdited(report) || !report.IsValidForSubmission())
                 throw new Exception("Report is invalid for submission.");
 
-            _mediator.Send(new SubmitReportRequest { Report = report });
+            _mediator.Send(new SubmitReportRequest(report));
         }
 
 
