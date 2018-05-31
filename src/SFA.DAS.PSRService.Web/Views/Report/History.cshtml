@@ -4,6 +4,7 @@
     ViewBag.Title = "Current report edit history";
     Layout = "_Layout";
     ViewBag.CanBeEdited = false;
+    ViewBag.CurrentPeriod = Model.Period;
 }
 
 <div class="grid-row">
@@ -42,9 +43,9 @@
                 </tbody>
             </table>
         </div>
-    @* @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers")) *@
+    @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers")) 
     @* @Html.Partial("Question/ReportingPercentages", Model.Percentages) *@
-    @* @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors")) *@
+    @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
     }
 
 </div>
