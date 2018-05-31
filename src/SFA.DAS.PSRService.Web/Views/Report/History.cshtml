@@ -1,4 +1,5 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportHistoryViewModel
+﻿@using SFA.DAS.PSRService.Web.ViewModels
+@model SFA.DAS.PSRService.Web.ViewModels.ReportHistoryViewModel
 
 @{
     ViewBag.Title = "Current report edit history";
@@ -44,7 +45,7 @@
             </table>
         </div>
     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers")) 
-    @* @Html.Partial("Question/ReportingPercentages", Model.Percentages) *@
+    @Html.Partial("Question/ReportingPercentages",  new PercentagesViewModel(edit.ReportingPercentages))
     @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
     }
 

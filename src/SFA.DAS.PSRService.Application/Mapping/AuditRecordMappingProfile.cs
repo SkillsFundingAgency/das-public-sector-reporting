@@ -17,6 +17,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                     var dataObject = JsonConvert.DeserializeObject<ReportingData>(src.ReportingData);
 
                     dest.Sections = dataObject.Questions;
+                    dest.ReportingPercentages = dataObject.ReportingPercentages;
                 });
         }
     }
