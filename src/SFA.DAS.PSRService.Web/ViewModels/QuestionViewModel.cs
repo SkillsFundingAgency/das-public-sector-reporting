@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
+﻿using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Attributes;
 
 namespace SFA.DAS.PSRService.Web.ViewModels

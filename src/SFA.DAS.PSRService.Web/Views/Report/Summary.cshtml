@@ -13,6 +13,7 @@
         {
             <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         }
+<<<<<<< HEAD
 
         @if (Model.Report.Submitted)
         {
@@ -26,6 +27,34 @@
                 <h1 class="heading-xlarge">Review details</h1>
                 <p>Check or amend your information before you continue</p>
             </legend>
+=======
+        else
+        {
+            <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
+        }
+        <form action="Submit">
+
+            @if (Model.Report.Submitted)
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Submitted details</h1>
+                </legend>
+            }
+            else
+            {
+                <legend>
+                    <h1 class="heading-xlarge">Review details</h1>
+                    <p>Check or amend your information before you continue</p>
+                </legend>
+
+                <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                    <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+                        Please fix these errors
+                    </h2>
+                </div>
+
+            }
+>>>>>>> Hackathon
 
             <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
                 <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
