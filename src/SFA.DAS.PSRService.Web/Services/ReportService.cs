@@ -83,8 +83,11 @@ namespace SFA.DAS.PSRService.Web.Services
                 Report = report,
                 UserId = user.Id,
                 UserName = user.DisplayName,
-                AuditWindowSize = _config.AuditWindowSize.GetValueOrDefault(TimeSpan.FromMinutes(5))
             };
+
+            if (_config.AuditWindowSize.HasValue)
+                request.AuditWindowSize = _config.AuditWindowSize.Value;
+
             _mediator.Send(request);
         }
 
