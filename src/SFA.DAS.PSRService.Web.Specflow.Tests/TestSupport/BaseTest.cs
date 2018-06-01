@@ -43,7 +43,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
                 //case "htmlunit" :
                 //    WebDriver = new RemoteWebDriver(DesiredCapabilities.HtmlUnitWithJavaScript());
                 //    break;
-
+                case "browserstack":
+                    webDriver = new BrowserStackDriver(ScenarioContext.Current).Init("single", Configurator.GetConfiguratorInstance().GetBrowserStackBrowser());
+                    break;
                 case "phantomjs":
                 //http://executeautomation.com/blog/running-chrome-in-headless-mode-with-selenium-c/
                 //https://stackoverflow.com/questions/48887128/running-selenium-tests-in-chrome-headless-mode-on-a-vsts-hosted-agent

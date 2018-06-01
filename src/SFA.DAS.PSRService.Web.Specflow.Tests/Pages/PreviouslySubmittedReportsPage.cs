@@ -18,8 +18,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
-        
 
-      
+
+        public bool VerifyMessageDisplayed(string noReportsMessage)
+        {
+            return true;
+        }
     }
 }

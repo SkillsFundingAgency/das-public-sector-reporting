@@ -21,6 +21,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework
         public static void StartApplication()
         {
 
+            if(Configurator.GetConfiguratorInstance().GetBaseUrl().Contains("localhost"))
+            { 
             _webprocess = new Process
             {
                 StartInfo =
@@ -33,36 +35,38 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework
             };
             _webprocess.Start();
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri( Configurator.GetConfiguratorInstance().GetBaseUrl());
-
-                bool webAppRunning = false;
-                int sleepTimerSec = 2;
-                int totalStartupTime = 0;
-                
-
-                while (webAppRunning == false)
+                using (var client = new HttpClient())
                 {
-                    if (totalStartupTime > 90)
+                    client.BaseAddress = new Uri(Configurator.GetConfiguratorInstance().GetBaseUrl());
+
+                    bool webAppRunning = false;
+                    int sleepTimerSec = 2;
+                    int totalStartupTime = 0;
+
+
+                    while (webAppRunning == false)
                     {
-                        StopApplication();
+                        if (totalStartupTime > 90)
+                        {
+                            StopApplication();
 
-                        throw new TimeoutException("Startup of WebApp took longer than 90 seconds, Aborting test run");
-                    }
+                            throw new TimeoutException(
+                                "Startup of WebApp took longer than 90 seconds, Aborting test run");
+                        }
 
-                    Thread.Sleep(sleepTimerSec * 1000);
+                        Thread.Sleep(sleepTimerSec * 1000);
 
-                    totalStartupTime = +sleepTimerSec;
+                        totalStartupTime = +sleepTimerSec;
 
-                    try
-                    {
-                        var result = client.GetAsync("").Result;
-                        webAppRunning = result.IsSuccessStatusCode;
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
+                        try
+                        {
+                            var result = client.GetAsync("").Result;
+                            webAppRunning = result.IsSuccessStatusCode;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }
                 }
             }

@@ -36,6 +36,9 @@
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="BrowserStackLocal, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BrowserStackLocal.1.3.0.0\lib\net20\BrowserStackLocal.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
     </Reference>
@@ -106,15 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="consts\PersistenceNames.cs" />
-    <Compile Include="Features\Example1.feature.cs">
-      <DependentUpon>Example.feature</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Features\SpecFlowFeature1.feature.cs">
+    <Compile Include="Features\ListSubmittedReports.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SpecFlowFeature1.feature</DependentUpon>
+      <DependentUpon>ListSubmittedReports.feature</DependentUpon>
     </Compile>
     <Compile Include="Framework\Helpers\FormCompletionHelper.cs" />
     <Compile Include="Framework\Helpers\HttpClientRequestHelper.cs" />
@@ -123,28 +121,26 @@
     <Compile Include="Framework\Helpers\SqlDatabaseConnectionHelper.cs" />
     <Compile Include="Hooks\StartWebApplication.cs" />
     <Compile Include="Pages\EmployerIdamsLodingPage.cs" />
-    <Compile Include="StepDefinitions\Hooks1.cs" />
+    <Compile Include="StepDefinitions\Shared\GivenFullAccess.cs" />
     <Compile Include="Pages\PreviouslySubmittedReportsPage.cs" />
     <Compile Include="Pages\EmployerIdamsLoginPage.cs" />
     <Compile Include="Pages\PsrsHomepage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecflowIocRegister.cs" />
-    <Compile Include="StepDefinitions\SpecFlowFeature1Steps.cs" />
+    <Compile Include="StepDefinitions\Shared\HomepageSharedSteps.cs" />
+    <Compile Include="StepDefinitions\ListSubmittedReportsSteps.cs" />
     <Compile Include="TestSupport\BasePage.cs" />
     <Compile Include="TestSupport\BaseTest.cs" />
+    <Compile Include="TestSupport\BrowserStackDriver.cs" />
     <Compile Include="TestSupport\Configurator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Features\Example.feature">
+    <None Include="Features\ListSubmittedReports.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Example1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Features\SpecFlowFeature1.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SpecFlowFeature1.feature.cs</LastGenOutput>
+      <LastGenOutput>ListSubmittedReports.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="runtests.cmd" />

@@ -9,12 +9,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         private readonly string _browser;
         private readonly string _baseUrl;
         private readonly string _baseGovUkUrl;
+        private readonly string _browserStackBrowser;
+
 
         private Configurator()
         {
             _browser = ConfigurationManager.AppSettings["Browser"];
             _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
             _baseGovUkUrl = ConfigurationManager.AppSettings["BaseGovUkUrl"];
+            _browserStackBrowser = ConfigurationManager.AppSettings["BrowserStack.Browser"];
         }
 
         public static Configurator GetConfiguratorInstance()
@@ -35,6 +38,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         public string GetBaseUrl()
         {
             return _baseUrl;
+        }
+
+        public string GetBrowserStackBrowser()
+        {
+            return _browserStackBrowser;
         }
     }
 }
