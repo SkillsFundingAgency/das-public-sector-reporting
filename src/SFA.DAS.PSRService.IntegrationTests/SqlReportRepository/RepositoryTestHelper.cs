@@ -27,6 +27,14 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
             }
         }
 
+        public static IEnumerable<AuditRecordDto> GetAllAuditHistory()
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                return connection.Query<AuditRecordDto>("select * from AuditHistory");
+            }
+        }
+
         public static void ClearData()
         {
             using (var connection = new SqlConnection(ConnectionString))

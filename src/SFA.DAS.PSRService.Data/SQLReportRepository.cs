@@ -101,7 +101,13 @@ namespace SFA.DAS.PSRService.Data
 
         public void DeleteHistory(Guid reportId)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(@"
+                    DELETE [dbo].[AuditHistory]
+                     WHERE ReportId = @ReportId",
+                    new {reportId});
+            }
         }
     }
 }

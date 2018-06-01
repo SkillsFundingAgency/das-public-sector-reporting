@@ -47,7 +47,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
         [TearDown]
         public void CleanUpAfterOurselves()
         {
-            TestHelper.ClearData();
+            //TestHelper.ClearData();
         }
     }
 }
