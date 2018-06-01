@@ -98,5 +98,10 @@ namespace SFA.DAS.PSRService.Data
                 return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc", new {reportId}).ToList();
             }        
         }
+
+        public void DeleteHistory(Guid reportId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
