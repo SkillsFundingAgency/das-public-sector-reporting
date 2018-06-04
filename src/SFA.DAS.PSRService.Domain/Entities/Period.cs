@@ -31,8 +31,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public string GetReportPeriod()
         {
-           
-            return string.Concat((_startYear).ToString(CultureInfo.InvariantCulture).Substring(2), (_endYear).ToString(CultureInfo.InvariantCulture).Substring(2));
+            return string.Concat(_startYear.ToString(CultureInfo.InvariantCulture).Substring(2), _endYear.ToString(CultureInfo.InvariantCulture).Substring(2));
         }
 
         private int GetReportPeriodEndYear()

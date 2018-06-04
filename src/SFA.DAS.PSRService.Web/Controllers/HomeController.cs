@@ -60,6 +60,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (action == "list")
                 return new RedirectResult(Url.Action("List", "Report"));
 
+            if (action == "history")
+                return new RedirectResult(Url.Action("History", "Report"));
+
             return new BadRequestResult();
         }
 
