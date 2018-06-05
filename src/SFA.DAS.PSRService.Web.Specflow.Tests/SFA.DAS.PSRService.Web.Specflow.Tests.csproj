@@ -114,6 +114,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ListSubmittedReports.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\ReportConfirmationScreen.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportConfirmationScreen.feature</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Helpers\FormCompletionHelper.cs" />
     <Compile Include="Framework\Helpers\HttpClientRequestHelper.cs" />
     <Compile Include="Framework\Helpers\PageInteractionHelper.cs" />
@@ -141,6 +146,10 @@
     <None Include="Features\ListSubmittedReports.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ListSubmittedReports.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ReportConfirmationScreen.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReportConfirmationScreen.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="runtests.cmd" />
