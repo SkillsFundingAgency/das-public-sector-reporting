@@ -3,7 +3,6 @@ using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Unauthorized.Current_Report
 {
-    [TestFixture]
     public class And_Current_Report_Exists : And_Is_Unauthorized
     {
         protected override void Given()

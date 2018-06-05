@@ -26,9 +26,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
 
             SUT = new ReportController(null,null,null,null,_periodServiceMock.Object,_authorizationServiceMock.Object);
-            attribute = typeof(ReportController)
-                .GetMethod(nameof(ReportController.Submit))
-                .GetCustomAttribute(typeof(AuthorizeAttribute));
         }
 
       

@@ -11,7 +11,6 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Unauthorized
 {
-    [TestFixture]
     public class And_Is_Unauthorized : Given_Home_Controller
     {
       

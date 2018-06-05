@@ -7,7 +7,6 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized
 {
-    [TestFixture]
     public class And_Is_Authorized : Given_Home_Controller
     {
         protected override void Given()

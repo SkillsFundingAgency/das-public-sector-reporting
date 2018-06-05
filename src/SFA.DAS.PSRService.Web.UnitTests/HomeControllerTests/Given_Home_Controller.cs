@@ -16,7 +16,6 @@ using SFA.DAS.PSRService.Web.ViewModels.Home;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 {
-    [TestFixture]
     public class Given_Home_Controller :GivenWhenThen<HomeController>
     {
         protected Mock<IReportService> _mockReportService;
@@ -46,7 +45,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
                 .Returns(_employerIdentifier);
 
             SUT = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object);
-            
         }
     }
 }
