@@ -19,7 +19,7 @@
             {
                     // @Html.Partial("Question/" + @subSection.Id, Model)
                     <li class="task-list-item">
-                        <a class="task-name" href="./Question/@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
+                        <a class="task-name" href="./Question/@subSection.Id" id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
                         @if (subSection.IsComplete())
                         {
                             <span class="task-completed">COMPLETE</span>

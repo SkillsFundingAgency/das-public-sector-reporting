@@ -9,7 +9,7 @@ Scenario: Edit user can view create report page
 	And No current report exists
 	When Selects Homepage 'Create a report' Radio button
 	And I click on Continue button
-	Then user should be taken to the create report page
+	Then the create report page is displayed
 
 Scenario: Edit user can create a report
 	Given User navigates to the Create report page
@@ -34,14 +34,14 @@ Scenario: Edit user can submit an edited question
 	When I click on the save question
 	Then The 'Your Employees' question values are saved
 
-Scenario: Edit user can view the review details page
+Scenario: Edit user can view the review summary page
 	Given I have a valid report
 	And the report hasnt been submitted
-	When I navigate to Review details page
+	When I navigate to Review summary page
 	Then the Review report details page is displayed
 
-Scenario: Confirm button is not available on review details page
+Scenario: Confirm button is not available on review summary page
 	Given I have a valid report
 	And the report hasnt been submitted
-	When I navigate to Review details page
+	When I navigate to Review summary page
 	Then the confirm submission button should not be available

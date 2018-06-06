@@ -8,12 +8,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
     [Binding]
     public class ListSubmittedReportsSteps : HomepageSharedSteps
     {
-        [Given(@"User navigates to Homepage")]
-        public void GivenUserNavigatesToHomepage()
-        {
-           webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl();
-        }
-       
+
+
         [When(@"I click on Continue button")]
         public void WhenIClickOnContinueButton()
         {
@@ -21,18 +17,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 
             homepage.ClickContinueButton();
         }
-        
+
         [Then(@"I should be taken to the Submitted Reports page")]
         public void ThenIShouldBeOnSubmittedReportsPage()
         {
             var submittedReports = new PreviouslySubmittedReportsPage(webDriver);
         }
 
-        [Given(@"There are no submitted reports")]
-        public void GivenThereAreNoSubmittedReports()
-        {
-            ScenarioContext.Current.Pending();
-        }
+
 
         [When(@"User navigates to Submitted reports page")]
         public void WhenUserNavigatesToSubmittedReportsPage()
@@ -42,20 +34,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             var previouslySubmitted = new PreviouslySubmittedReportsPage(webDriver);
         }
 
-        [Then(@"I should see the message '(.*)'")]
+        [Then(@"I should see the message There are currently no submitted reports to show")]
         public void ThenIShouldSeeNoSubmittedReportsMessage(string noReportsMessage)
         {
             var previouslySubmitted = new PreviouslySubmittedReportsPage(webDriver);
 
             previouslySubmitted.VerifyMessageDisplayed(noReportsMessage);
 
-            
-        }
 
-        [Then(@"I should be taken to the Submitted Reports page")]
-        public void ThenIShouldBeTakenToTheSubmittedReportsPage()
-        {
-            ScenarioContext.Current.Pending();
         }
 
         [Then(@"back link is shown as '(.*)'")]
@@ -70,11 +56,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             ScenarioContext.Current.Pending();
         }
 
-        [Given(@"There is one submitted report")]
-        public void GivenThereIsOneSubmittedReport()
-        {
-            ScenarioContext.Current.Pending();
-        }
+
 
         [Then(@"I should see one submitted report displayed in list")]
         public void ThenIShouldSeeOneSubmittedReportDisplayedInList()
@@ -82,5 +64,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             ScenarioContext.Current.Pending();
         }
 
+        [When(@"user clicks the back button")]
+        public void WhenUserClicksTheBackButton()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"the user is displayed the homepage")]
+        public void ThenTheUserIsDisplayedTheHomepage()
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }

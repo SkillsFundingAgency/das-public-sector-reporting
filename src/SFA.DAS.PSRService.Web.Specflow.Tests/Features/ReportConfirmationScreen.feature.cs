@@ -86,7 +86,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.When("I load the submit confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("user navigates to confirm submission page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.Then("the submit confirmation page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -107,7 +107,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.When("I load the submit confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("user navigates to confirm submission page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.Then("the Home page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -124,11 +124,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 4
  this.FeatureBackground();
 #line 20
- testRunner.Given("I have an valid report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have an invalid report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
  testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.When("I load the submit confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("user navigates to confirm submission page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.Then("the Home page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -149,7 +149,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.And("User is on the Submit confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user navigates to confirm submission page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
  testRunner.When("I click the back button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 30
@@ -172,7 +172,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("User is on the Submit confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user navigates to confirm submission page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.When("I click the \'return to your report\' button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
@@ -195,7 +195,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 41
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
- testRunner.And("User is on the Submit confirmation page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("user navigates to confirm submission page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
  testRunner.When("I click the \'Submit your report\' button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44

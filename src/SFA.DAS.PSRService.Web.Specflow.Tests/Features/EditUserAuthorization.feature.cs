@@ -89,7 +89,7 @@ this.FeatureBackground();
 #line 11
  testRunner.And("I click on Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.Then("user should be taken to the create report page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the create report page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -177,10 +177,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Edit user can view the review details page")]
-        public virtual void EditUserCanViewTheReviewDetailsPage()
+        [NUnit.Framework.DescriptionAttribute("Edit user can view the review summary page")]
+        public virtual void EditUserCanViewTheReviewSummaryPage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit user can view the review details page", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit user can view the review summary page", ((string[])(null)));
 #line 37
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -190,7 +190,7 @@ this.FeatureBackground();
 #line 39
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.When("I navigate to Review details page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I navigate to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41
  testRunner.Then("the Review report details page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -198,10 +198,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Confirm button is not available on review details page")]
-        public virtual void ConfirmButtonIsNotAvailableOnReviewDetailsPage()
+        [NUnit.Framework.DescriptionAttribute("Confirm button is not available on review summary page")]
+        public virtual void ConfirmButtonIsNotAvailableOnReviewSummaryPage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm button is not available on review details page", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm button is not available on review summary page", ((string[])(null)));
 #line 43
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -211,7 +211,7 @@ this.FeatureBackground();
 #line 45
  testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
- testRunner.When("I navigate to Review details page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I navigate to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 47
  testRunner.Then("the confirm submission button should not be available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

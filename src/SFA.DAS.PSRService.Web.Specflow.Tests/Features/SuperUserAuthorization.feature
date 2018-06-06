@@ -9,7 +9,7 @@ Scenario: Super user can view create report page
 	And No current report exists
 	When Selects Homepage 'Create a report' Radio button
 	And I click on Continue button
-	Then user should be taken to the create report page
+	Then the create report page is displayed
 
 Scenario: Super user can create a report
 	Given User navigates to the Create report page
@@ -34,20 +34,20 @@ Scenario: Super user can submit an edited question
 	When I click on the save question
 	Then The 'Your Employees' question values are saved
 
-Scenario: Confirm button is displayed on review details page
+Scenario: Confirm button is displayed on review summary page
 	Given I have a valid report
 	And the report hasnt been submitted
-	When I navigate to Review details page
+	When I navigate to Review summary page
 	Then the Review report details page is displayed
 	And the confirm submission button should be displayed
 	And the confirm submission button should have text 'Confirm'
 
-Scenario: Confirm button is clicked on review details page
+Scenario: Confirm button is clicked on review summary page
 	Given I have a valid report
 	And the report hasnt been submitted
-	And I navigate to Review details page
+	And I navigate to Review summary page
 	When I click the confirm submission button
-	Then user is taken to confirm submission page
+	Then the confirm submission page is displayed
 
 Scenario: Super user can submit a report
 	Given I have a valid report

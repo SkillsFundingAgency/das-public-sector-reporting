@@ -108,7 +108,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="consts\PageUrls.cs" />
     <Compile Include="consts\PersistenceNames.cs" />
+    <Compile Include="Features\EditUserAuthorization.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditUserAuthorization.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\ListSubmittedReports.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -119,21 +125,44 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportConfirmationScreen.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\ReportEdit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportEdit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\SuperUserAuthorization.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SuperUserAuthorization.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\ViewUserAuthorization.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewUserAuthorization.feature</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Helpers\FormCompletionHelper.cs" />
     <Compile Include="Framework\Helpers\HttpClientRequestHelper.cs" />
     <Compile Include="Framework\Helpers\PageInteractionHelper.cs" />
     <Compile Include="Framework\Helpers\RandomDataGenerator.cs" />
     <Compile Include="Framework\Helpers\SqlDatabaseConnectionHelper.cs" />
     <Compile Include="Hooks\StartWebApplication.cs" />
+    <Compile Include="Pages\Questions\YourEmployeesEditPage.cs" />
+    <Compile Include="Pages\ReportSummaryPage.cs" />
+    <Compile Include="Pages\QuestionEditYourEmployeesPage.cs" />
     <Compile Include="Pages\EmployerIdamsLodingPage.cs" />
+    <Compile Include="Pages\ReportEditPage.cs" />
+    <Compile Include="StepDefinitions\ReportEditSteps.cs" />
     <Compile Include="StepDefinitions\Shared\GivenFullAccess.cs" />
     <Compile Include="Pages\PreviouslySubmittedReportsPage.cs" />
     <Compile Include="Pages\EmployerIdamsLoginPage.cs" />
     <Compile Include="Pages\PsrsHomepage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecflowIocRegister.cs" />
+    <Compile Include="StepDefinitions\Shared\NavigationSharedSteps.cs" />
+    <Compile Include="StepDefinitions\Shared\ReportSharedSteps.cs" />
     <Compile Include="StepDefinitions\Shared\HomepageSharedSteps.cs" />
     <Compile Include="StepDefinitions\ListSubmittedReportsSteps.cs" />
+    <Compile Include="StepDefinitions\SuperUserAccessLevelSteps.cs" />
     <Compile Include="TestSupport\BasePage.cs" />
     <Compile Include="TestSupport\BaseTest.cs" />
     <Compile Include="TestSupport\BrowserStackDriver.cs" />
@@ -143,6 +172,10 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Features\EditUserAuthorization.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EditUserAuthorization.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\ListSubmittedReports.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ListSubmittedReports.feature.cs</LastGenOutput>
@@ -150,6 +183,18 @@
     <None Include="Features\ReportConfirmationScreen.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ReportConfirmationScreen.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ReportEdit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReportEdit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\SuperUserAuthorization.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SuperUserAuthorization.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ViewUserAuthorization.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ViewUserAuthorization.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="runtests.cmd" />
