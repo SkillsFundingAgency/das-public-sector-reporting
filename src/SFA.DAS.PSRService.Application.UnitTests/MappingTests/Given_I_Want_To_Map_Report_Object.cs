@@ -180,19 +180,22 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
                 Submitted = true,
                 ReportingPercentages = new ReportingPercentages
                 {
-                    EmploymentStarts = "11",
-                    TotalHeadCount = "22",
-                    NewThisPeriod = "33"
+                    EmploymentStarts = "11.00",
+                    TotalHeadCount = "22.00",
+                    NewThisPeriod = "33.00"
                 }
             };
 
             var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
 
-            Assert.AreEqual(mappedReportDto.ReportingData, "{\"OrganisationName\":\"Organisation 1\",\"Questions\":null,\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":11.0,\"TotalHeadCount\":22.0,\"NewThisPeriod\":33.0}}");
-            Assert.AreEqual(mappedReportDto.Submitted, report.Submitted);
-            Assert.AreEqual(mappedReportDto.EmployerId, report.EmployerId);
-            Assert.AreEqual(mappedReportDto.Id, report.Id);
-            Assert.AreEqual(mappedReportDto.ReportingPeriod, report.ReportingPeriod);
+            var expectedSerializedReportingData =
+                "{\"OrganisationName\":\"Organisation 1\",\"Questions\":null,\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":\"11.00\",\"TotalHeadCount\":\"22.00\",\"NewThisPeriod\":\"33.00\"}}";
+
+            Assert.AreEqual(expectedSerializedReportingData, mappedReportDto.ReportingData);
+            Assert.AreEqual(report.Submitted, mappedReportDto.Submitted );
+            Assert.AreEqual(report.EmployerId, mappedReportDto.EmployerId);
+            Assert.AreEqual(report.Id, mappedReportDto.Id);
+            Assert.AreEqual(report.ReportingPeriod, mappedReportDto.ReportingPeriod);
         }
     }
 }
