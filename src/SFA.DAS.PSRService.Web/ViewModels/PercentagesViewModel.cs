@@ -9,9 +9,9 @@ namespace SFA.DAS.PSRService.Web.ViewModels
             if (percentages == null)
                 return;
 
-            EmploymentStarts = percentages.EmploymentStarts.ToString("0.00") + "%";
-            TotalHeadCount = percentages.TotalHeadCount.ToString("0.00") + "%";
-            NewThisPeriod = percentages.NewThisPeriod.ToString("0.00") + "%";
+            EmploymentStarts = percentages.EmploymentStarts + "%";
+            TotalHeadCount = percentages.TotalHeadCount + "%";
+            NewThisPeriod = percentages.NewThisPeriod + "%";
         }
 
         public string EmploymentStarts { get; }

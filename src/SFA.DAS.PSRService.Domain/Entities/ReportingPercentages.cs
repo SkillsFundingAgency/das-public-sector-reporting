@@ -2,8 +2,14 @@
 {
     public class ReportingPercentages 
     {
-        public decimal EmploymentStarts { get; set; }
-        public decimal TotalHeadCount { get; set; }
-        public decimal NewThisPeriod { get; set; }
+        public ReportingPercentages()
+        {
+            EmploymentStarts = "0";
+            TotalHeadCount = "0";
+            NewThisPeriod = "0";
+        }
+        public string EmploymentStarts { get; set; }
+        public string TotalHeadCount { get; set; }
+        public string NewThisPeriod { get; set; }
     }
 }

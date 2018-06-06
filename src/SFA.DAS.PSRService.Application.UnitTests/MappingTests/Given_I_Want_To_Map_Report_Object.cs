@@ -49,9 +49,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
                 },                
                 ReportingPercentages = new ReportingPercentages
                 {
-                    EmploymentStarts = 11,
-                    TotalHeadCount = 22,
-                    NewThisPeriod = 33
+                    EmploymentStarts = "11",
+                    TotalHeadCount = "22",
+                    NewThisPeriod = "33"
                 },
                 Sections = new[]
                 {
@@ -160,9 +160,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             Assert.AreEqual(mappedReport.Id, reportDto.Id);
             Assert.AreEqual(mappedReport.ReportingPeriod, reportDto.ReportingPeriod);
             Assert.IsNotNull(mappedReport.ReportingPercentages);
-            Assert.AreEqual(11, mappedReport.ReportingPercentages.EmploymentStarts);
-            Assert.AreEqual(22, mappedReport.ReportingPercentages.NewThisPeriod);
-            Assert.AreEqual(33, mappedReport.ReportingPercentages.TotalHeadCount);
+            Assert.AreEqual("11", mappedReport.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual("22", mappedReport.ReportingPercentages.NewThisPeriod);
+            Assert.AreEqual("33", mappedReport.ReportingPercentages.TotalHeadCount);
         }
 
 
@@ -180,9 +180,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
                 Submitted = true,
                 ReportingPercentages = new ReportingPercentages
                 {
-                    EmploymentStarts = 11,
-                    TotalHeadCount = 22,
-                    NewThisPeriod = 33
+                    EmploymentStarts = "11",
+                    TotalHeadCount = "22",
+                    NewThisPeriod = "33"
                 }
             };
 
