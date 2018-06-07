@@ -6,7 +6,7 @@ using TechTalk.SpecFlow;
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 {
     [Binding]
-    public class ListSubmittedReportsSteps : HomepageSharedSteps
+    public class ListSubmittedReportsSteps : BaseTest
     {
 
 
@@ -34,29 +34,20 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             var previouslySubmitted = new PreviouslySubmittedReportsPage(webDriver);
         }
 
-        [Then(@"I should see the message There are currently no submitted reports to show")]
-        public void ThenIShouldSeeNoSubmittedReportsMessage(string noReportsMessage)
+        [Then(@"I should see the message '(.*)' on the previously submitted page")]
+        public void ThenIShouldSeeTheMessageOnThePreviouslySubmittedPage(string noReportsMessage)
         {
             var previouslySubmitted = new PreviouslySubmittedReportsPage(webDriver);
 
             previouslySubmitted.VerifyMessageDisplayed(noReportsMessage);
-
-
         }
+
 
         [Then(@"back link is shown as '(.*)'")]
         public void ThenBackLinkIsShownAs(string p0)
         {
             ScenarioContext.Current.Pending();
         }
-
-        [Then(@"I should see the message '(.*)'")]
-        public void ThenIShouldSeeTheMessage(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-
 
         [Then(@"I should see one submitted report displayed in list")]
         public void ThenIShouldSeeOneSubmittedReportDisplayedInList()
