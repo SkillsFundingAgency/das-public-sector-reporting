@@ -10,7 +10,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         private readonly string _baseUrl;
         private readonly string _baseGovUkUrl;
         private readonly string _browserStackBrowser;
-        private readonly string _accountId;
+        private readonly string _employerId;
+
+        private readonly string _superUser;
+        private readonly string _superUserPassword;
+        private readonly string _editUser;
+        private readonly string _editUserPassword;
+        private readonly string _viewUser;
+        private readonly string _viewUserPassword;
 
 
         private Configurator()
@@ -19,7 +26,17 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
             _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
             _baseGovUkUrl = ConfigurationManager.AppSettings["BaseGovUkUrl"];
             _browserStackBrowser = ConfigurationManager.AppSettings["BrowserStack.Browser"];
-            _accountId = ConfigurationManager.AppSettings["AccountId"];
+            _employerId = ConfigurationManager.AppSettings["EmployerId"];
+
+            _superUser = "matt.derry@digital.education.gov.uk";
+            _superUserPassword = "Service123";
+            _editUser = "matt.derry@digital.education.gov.uk";
+            _editUserPassword = "Service123";
+            _viewUser = "matt.derry@digital.education.gov.uk";
+            _viewUserPassword = "Service123";
+
+
+
         }
 
         public static Configurator GetConfiguratorInstance()
@@ -47,9 +64,34 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
             return _browserStackBrowser;
         }
 
-        public string GetAccountId()
+        public string GetEmployerId()
         {
-            return _accountId;
+            return _employerId;
+        }
+        public string GetSuperUser()
+        {
+            return _superUser;
+        }
+        public string GetSuperUserPassword()
+        {
+            return _superUserPassword;
+        }
+        public string GetEditUser()
+        {
+            return _editUser;
+        }
+        public string GetEditUserPassword()
+        {
+            return _editUserPassword;
+        }
+        public string GetViewUser()
+        {
+            return _viewUser;
+        }
+
+        public string GetViewUserPassword()
+        {
+            return _viewUserPassword;
         }
     }
 }

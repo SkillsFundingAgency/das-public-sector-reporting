@@ -2,6 +2,7 @@
 {
     public static class PageUrls
     {
+        public const string Home = "/Home";
         public const string ReportCreate = "/Report/Create";
         public const string ReportEdit = "/Report";
         public const string ReportSummary = "/Report/Summary";
