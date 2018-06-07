@@ -124,13 +124,12 @@ this.FeatureBackground();
 #line 21
  testRunner.Given("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.And("the question values <firstvalue>, <secondvalue> and <thirdValue> have been edited" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the question values <atStart>, <atEnd> and <newThisPeriod> have been edited", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.When("I click on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
- testRunner.Then("The Your Employees question values <firstvalue>, <secondvalue> and <thirdValue> h" +
-                    "ave been saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have be" +
+                    "en saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

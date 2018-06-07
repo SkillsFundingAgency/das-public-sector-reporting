@@ -147,10 +147,14 @@
     <Compile Include="Framework\Helpers\SqlDatabaseConnectionHelper.cs" />
     <Compile Include="Hooks\StartWebApplication.cs" />
     <Compile Include="Pages\Questions\YourEmployeesEditPage.cs" />
+    <Compile Include="Pages\ReportConfirmationPage.cs" />
     <Compile Include="Pages\ReportSummaryPage.cs" />
     <Compile Include="Pages\QuestionEditYourEmployeesPage.cs" />
     <Compile Include="Pages\EmployerIdamsLodingPage.cs" />
     <Compile Include="Pages\ReportEditPage.cs" />
+    <Compile Include="Repository\Period.cs" />
+    <Compile Include="Repository\ReportDto.cs" />
+    <Compile Include="Repository\SQLReportRepository.cs" />
     <Compile Include="StepDefinitions\ReportEditSteps.cs" />
     <Compile Include="StepDefinitions\Shared\GivenFullAccess.cs" />
     <Compile Include="Pages\PreviouslySubmittedReportsPage.cs" />

@@ -13,11 +13,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests
         [BeforeTestRun]
         public static void RegisterTypes(IObjectContainer objectContainer)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings[PersistenceNames.AccessorDBConnectionString]
-                .ConnectionString;
+            //var connectionString = ConfigurationManager.ConnectionStrings[PersistenceNames.PsrsDBConnectionString]
+            //    .ConnectionString;
 
-            var sqlConnection = new SqlConnection(connectionString);
-            objectContainer.RegisterInstanceAs<IDbConnection>(sqlConnection);
+            //var sqlConnection = new SqlConnection(connectionString);
+            //objectContainer.RegisterInstanceAs<IDbConnection>(sqlConnection);
         }
     }
 }

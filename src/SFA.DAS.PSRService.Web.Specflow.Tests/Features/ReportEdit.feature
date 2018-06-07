@@ -19,6 +19,6 @@ Scenario: user can edit a report question
 
 Scenario: user can submit an edited question
 	Given User navigates to the Your employees question page
-	And the question values <firstvalue>, <secondvalue> and <thirdValue> have been edited
+	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
 	When I click on the save question
-	Then The Your Employees question values <firstvalue>, <secondvalue> and <thirdValue> have been saved
+	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
