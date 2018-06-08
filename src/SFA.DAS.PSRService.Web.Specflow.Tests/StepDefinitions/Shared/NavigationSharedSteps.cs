@@ -12,62 +12,41 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Given(@"User navigates to Homepage")]
         public void GivenUserNavigatesToHomepage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            PageUrls.Home;
+            pageFactory.Homepage.Navigate();
         }
         [Given(@"User navigates to the Create report page")]
         public void GivenUserNavigatesToTheCreateReportPage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            PageUrls.ReportCreate;
+            pageFactory.ReportCreate.Navigate();
         }
+
 
         [Given(@"User navigates to the Edit report page")]
         public void GivenUserNavigatesToTheEditReportPage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            PageUrls.ReportEdit;
-        }
-
-        [Given(@"User navigates to the '(.*)' question page")]
-        public void GivenUserNavigatesToTheQuestionPage(string p0)
-        {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            String.Format(PageUrls.QuestionEdit, p0);
+            pageFactory.ReportEdit.Navigate();
         }
 
         [Given(@"I navigate to Review summary page")]
         public void GivenINavigateToReviewSummaryPage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            PageUrls.ReportSummary;
+            pageFactory.ReportSummary.Navigate();
         }
         [Given(@"user navigates to confirm submission page")]
         public void GivenUserNavigatesToConfirmSubmissionPage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            PageUrls.ReportConfirmSubmision;
+            pageFactory.ReportConfirmation.Navigate();
         }
 
         [Given(@"user navigates to previously submitted reports page")]
         public void GivenUserNavigatesToPreviouslySubmittedReportsPage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() +
-                            PageUrls.ReportPreviouslySubmittedList;
+            pageFactory.PreviouslySubmittedReports.Navigate();
         }
         [Given(@"User navigates to the Your employees question page")]
         public void GivenUserNavigatesToTheYourEmployeesQuestionPage()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl() +
-                            Configurator.GetConfiguratorInstance().GetEmployerId() + 
-                            QuestionPAgeUrls.YourEmployees;
+            pageFactory.QuestionYourEmployees.Navigate();
         }
 
     }

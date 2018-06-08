@@ -1,6 +1,6 @@
 ﻿using System;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
+using SeleniumExtras.PageObjects;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
 {
@@ -12,14 +12,23 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         public BasePage(IWebDriver webDriver)
         {
             this.WebDriver = webDriver;
-            PageFactory.InitElements(webDriver, this);
+            SeleniumExtras.PageObjects.PageFactory.InitElements(webDriver, this);
         }
 
-        protected abstract Boolean SelfVerify();
+        public abstract Boolean Verify();
+
+        public abstract void Navigate();
 
         protected String GetPageHeading()
         {
             return WebDriver.FindElement(_pageHeading).Text;
+        }
+
+        protected string GetPageUrl(string page)
+        {
+          return Configurator.GetConfiguratorInstance().GetBaseUrl() +
+                            Configurator.GetConfiguratorInstance().GetEmployerId() +
+                            page;
         }
     }
 }

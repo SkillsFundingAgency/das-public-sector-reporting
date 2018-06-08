@@ -11,10 +11,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public EmployerIdamsLodingPage(IWebDriver webDriver) : base(webDriver)
         {
-            SelfVerify();
         }
-
-        protected override bool SelfVerify()
+        public override void Navigate()
+        {
+            throw new NotImplementedException("Page should never be called directly");
+        }
+        public override bool Verify()
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }

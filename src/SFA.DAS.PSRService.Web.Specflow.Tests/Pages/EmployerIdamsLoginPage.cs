@@ -8,13 +8,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
     public class EmployerIdamsLoginPage : BasePage
     {
         private static String PAGE_TITLE = "Sign in";
-
         public EmployerIdamsLoginPage(IWebDriver webDriver) : base(webDriver)
         {
-            SelfVerify();
         }
-
-        protected override bool SelfVerify()
+        public override void Navigate()
+        {
+            throw new NotImplementedException("Page should never be called directly");
+        }
+        public override bool Verify()
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
@@ -31,7 +32,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         private readonly By _password = By.Name("Password");
         private readonly By _signInButton = By.Id("button-signin");
 
-        internal void LoginAsSuperUser(string emailAddress, string password)
+        internal void Login(string emailAddress, string password)
         {
             FormCompletionHelper.EnterText(_emailAddress, emailAddress);
             FormCompletionHelper.EnterText(_password, password);

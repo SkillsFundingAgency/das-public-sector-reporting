@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenQA.Selenium;
+using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 
@@ -11,10 +12,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public YourEmployeesPage(IWebDriver webDriver) : base(webDriver)
         {
-            SelfVerify();
         }
-        
-        protected override bool SelfVerify()
+        public override void Navigate()
+        {
+            WebDriver.Url = GetPageUrl(QuestionPageUrls.YourEmployees);
+        }
+        public override bool Verify()
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }

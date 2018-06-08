@@ -6,16 +6,17 @@ using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 {
-    public class ReportConfirmationPage : BasePage
+    public class ReportCreatePage : BasePage
     {
         private static String PAGE_TITLE = "Reporting your progress towards the public sector apprenticeship target";
 
-        public ReportConfirmationPage(IWebDriver webDriver) : base(webDriver)
+        public ReportCreatePage(IWebDriver webDriver) : base(webDriver)
         {
         }
+
         public override void Navigate()
         {
-            WebDriver.Url = GetPageUrl(PageUrls.ReportConfirmSubmision);
+            WebDriver.Url = GetPageUrl(PageUrls.ReportCreate);
         }
         public override bool Verify()
         {

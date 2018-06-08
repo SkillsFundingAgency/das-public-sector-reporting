@@ -11,7 +11,7 @@
         public const string QuestionEdit = "/Question/{0}";
     }
 
-    public static class QuestionPAgeUrls
+    public static class QuestionPageUrls
     {
         private const string QuesionBaseUrl = "/Question";
         public const string YourEmployees = QuesionBaseUrl + "/";

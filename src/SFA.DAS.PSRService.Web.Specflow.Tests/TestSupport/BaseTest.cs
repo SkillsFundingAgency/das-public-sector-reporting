@@ -14,6 +14,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
     public class BaseTest
     {
         protected static IWebDriver webDriver;
+        protected static PageFactory pageFactory;
 
         [Before]
         public static void SetUp()
@@ -67,6 +68,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
             webDriver.SwitchTo().Window(currentWindow);
 
             PageInteractionHelper.SetDriver(webDriver);
+
+            pageFactory = new PageFactory(webDriver);
+
         }
 
         [After]

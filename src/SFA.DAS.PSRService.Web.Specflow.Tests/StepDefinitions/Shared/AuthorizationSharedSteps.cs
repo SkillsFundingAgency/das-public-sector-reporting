@@ -13,17 +13,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Given(@"Full access is granted")]
         public void SuperUserAcccess()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl();
+            pageFactory.Homepage.Navigate();
             
             if (webDriver.FindElement(By.CssSelector("h1")).Text == "Sign in")
             {
-                var loginPage = new EmployerIdamsLoginPage(webDriver);
+                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetSuperUser(), Configurator.GetConfiguratorInstance().GetSuperUserPassword());
 
-                loginPage.LoginAsSuperUser(Configurator.GetConfiguratorInstance().GetSuperUser(), Configurator.GetConfiguratorInstance().GetSuperUserPassword());
-
-               // var loading = new EmployerIdamsLodingPage(webDriver);
-
-                var homepage = new PsrsHomepage(webDriver);
+                pageFactory.Homepage.Verify();
             }
 
         }
@@ -31,37 +27,30 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Given(@"Edit access is granted")]
         public void EditAccess()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl();
+            pageFactory.Homepage.Navigate();
 
             if (webDriver.FindElement(By.CssSelector("h1")).Text == "Sign in")
             {
-                var loginPage = new EmployerIdamsLoginPage(webDriver);
+                pageFactory.IdamsLogin.Login(
+                                            Configurator.GetConfiguratorInstance().GetEditUser()
+                                            , Configurator.GetConfiguratorInstance().GetEditUserPassword());
 
-                loginPage.LoginAsSuperUser(Configurator.GetConfiguratorInstance().GetEditUser(), Configurator.GetConfiguratorInstance().GetEditUserPassword());
-
-                // var loading = new EmployerIdamsLodingPage(webDriver);
-
-                var homepage = new PsrsHomepage(webDriver);
+                pageFactory.Homepage.Verify();
             }
-
         }
 
         [Given(@"View access is granted")]
         public void ViewAccess()
         {
-            webDriver.Url = Configurator.GetConfiguratorInstance().GetBaseUrl();
+            pageFactory.Homepage.Navigate();
 
             if (webDriver.FindElement(By.CssSelector("h1")).Text == "Sign in")
             {
-                var loginPage = new EmployerIdamsLoginPage(webDriver);
+                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetViewUser(), Configurator.GetConfiguratorInstance().GetViewUserPassword());
 
-                loginPage.LoginAsSuperUser(Configurator.GetConfiguratorInstance().GetViewUser(), Configurator.GetConfiguratorInstance().GetViewUserPassword());
-
-                // var loading = new EmployerIdamsLodingPage(webDriver);
-
-                var homepage = new PsrsHomepage(webDriver);
+                pageFactory.Homepage.Verify();
             }
-
+            
         }
 
     }

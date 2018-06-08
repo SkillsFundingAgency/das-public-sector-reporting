@@ -30,14 +30,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework
                     FileName = "dotnet",
                     Arguments = "run",
                     UseShellExecute = false,
-                    WorkingDirectory = @"C:\Users\matt\Source\das-public-sector-reporting\src\SFA.DAS.PSRService.Web\"
+                    WorkingDirectory = @"C:\Source\das-public-sector-reporting\src\SFA.DAS.PSRService.Web\"
                 }
             };
             _webprocess.Start();
 
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(Configurator.GetConfiguratorInstance().GetBaseUrl());
+                    client.BaseAddress = new Uri(Configurator.GetConfiguratorInstance().GetBaseUrl() + Configurator.GetConfiguratorInstance().GetEmployerId() + "/home/");
 
                     bool webAppRunning = false;
                     int sleepTimerSec = 2;
