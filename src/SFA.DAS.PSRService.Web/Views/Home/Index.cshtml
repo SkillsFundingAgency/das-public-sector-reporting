@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.PSRService.Web.ViewModels.Home
+@using SFA.DAS.PSRService.Web.SubmitActions
 @model SFA.DAS.PSRService.Web.ViewModels.Home.IndexViewModel
 
 @{
@@ -30,24 +31,38 @@
                             </h2>
                         </legend>
                         <div class="multiple-choice">
-                            @if (Model.CanEditReport)
+                            @if (Model.Readonly)
                             {
-                                <input id="home-action-edit" type="radio" name="action" value="edit">
+                                if (Model.CurrentReportAlreadySubmitted)
+                                {
+                                    <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" disabled="disabled">
+                                    <label for="home-action-view">View report</label>
+                                }
+                                else
+                                {
+                                    <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue">
+                                    <label for="home-action-view">View report</label>
+                                }
+                            }
+                            else
+                         if (Model.CanEditReport)
+                            {
+                                <input id="home-action-edit" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Edit.SubmitValue">
                                 <label for="home-action-edit">Edit report</label>
                             }
                             else if (Model.CanCreateReport)
                             {
-                                <input id="home-action-create" type="radio" name="action" value="create">
+                                <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Create.SubmitValue">
                                 <label for="home-action-create">Create a new report</label>
                             }
                             else
                             {
-                                <input id="home-action-create" type="radio" name="action" value="create" disabled="disabled">
+                                <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Create.SubmitValue" disabled="disabled">
                                 <label for="home-action-create">Create a new report</label>
                             }
                         </div>
                         <div class="multiple-choice">
-                            <input id="home-action-list" type="radio" name="action" value="list">
+                            <input id="home-action-list" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.List.SubmitValue">
                             <label for="home-action-list">View a previously submitted report</label>
                         </div>
                     </fieldset>

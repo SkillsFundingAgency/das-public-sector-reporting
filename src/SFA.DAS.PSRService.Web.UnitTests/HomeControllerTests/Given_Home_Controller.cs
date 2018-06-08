@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
@@ -12,12 +8,10 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
-using SFA.DAS.PSRService.Web.ViewModels.Home;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 {
-    [TestFixture]
-    public class Given_Home_Controller :GivenWhenThen<HomeController>
+    public abstract class Given_Home_Controller :GivenWhenThen<HomeController>
     {
         protected Mock<IReportService> _mockReportService;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;

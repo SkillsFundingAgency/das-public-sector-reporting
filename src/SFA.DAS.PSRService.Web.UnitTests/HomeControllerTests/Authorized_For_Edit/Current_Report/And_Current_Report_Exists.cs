@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Unauthorized.Current_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit.Current_Report
 {
     [TestFixture]
-    public class And_Current_Report_Exists : And_Is_Unauthorized
+    public class And_Current_Report_Exists : And_User_Is_Authorized_For_Edit
     {
         protected override void Given()
         {

@@ -1,16 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
-using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Models;
-using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Submitted_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_For_Edit.No_Report
 {
     [TestFixture]
-    public class When_I_Request_The_Homepage : And_Current_Report_Submitted
+    public class When_I_Request_The_Homepage : And_No_Current_Report_Exists
     {
         private IActionResult result;
         private ViewResult viewResult;
@@ -44,7 +40,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Sub
         {
             Assert.IsNotNull(model);
         }
-
         [Test]
         public void Then_Create_Report_Is_Disabled()
         {
@@ -58,9 +53,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Sub
         }
 
         [Test]
-        public void Then_Report_Period_Matches_Current()
+        public void Then_Readonly_Is_True()
         {
-            Assert.AreEqual(period, model.Period.PeriodString);
+            model.Readonly.Should().BeTrue();
+        }
+
+        [Test]
+        public void Then_CurrentReportAlreadySubmitted_Is_False()
+        {
+            model.CurrentReportAlreadySubmitted.Should().BeFalse();
         }
     }
 }

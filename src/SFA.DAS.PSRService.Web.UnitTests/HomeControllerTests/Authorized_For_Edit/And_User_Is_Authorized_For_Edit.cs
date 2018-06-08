@@ -2,13 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit
 {
-    [TestFixture]
-    public class And_Is_Authorized : Given_Home_Controller
+    public abstract class And_User_Is_Authorized_For_Edit : Given_Home_Controller
     {
         protected override void Given()
         {

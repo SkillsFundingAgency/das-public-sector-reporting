@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Unauthorized.Submitted_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_For_Edit.Current_Report
 {
     [TestFixture]
-    public class When_I_Request_The_Homepage : And_Current_Report_Submitted
+    public class When_I_Request_The_Homepage : And_Current_Report_Exists
     {
         private IActionResult result;
         private ViewResult viewResult;
@@ -53,9 +54,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Unauthorized.S
         }
 
         [Test]
-        public void Then_Report_Period_Matches_Current()
+        public void Then_Readonly_Is_True()
         {
-            Assert.AreEqual(period, model.Period.PeriodString);
+            model.Readonly.Should().BeTrue();
+        }
+
+        [Test]
+        public void Then_CurrentReportAlreadySubmitted_Is_False()
+        {
+            model.CurrentReportAlreadySubmitted.Should().BeFalse();
         }
     }
 }

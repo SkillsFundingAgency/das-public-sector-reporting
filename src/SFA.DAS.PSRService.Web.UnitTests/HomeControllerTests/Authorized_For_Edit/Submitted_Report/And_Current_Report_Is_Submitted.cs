@@ -1,11 +1,10 @@
 ﻿using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Unauthorized.Submitted_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit.Submitted_Report
 {
     [TestFixture]
-    public class And_Current_Report_Submitted : And_Is_Authorized
+    public class And_Current_Report_Submitted : And_User_Is_Authorized_For_Edit
     {
         
         
