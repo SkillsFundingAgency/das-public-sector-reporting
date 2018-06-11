@@ -31,7 +31,7 @@
                             </h2>
                         </legend>
                         <div class="multiple-choice">
-                            @if (Model.Readonly)
+                            @if (Model.Readonly && Model.CanCreateReport == false)
                             {
                                 if (Model.CurrentReportAlreadySubmitted)
                                 {
@@ -44,13 +44,13 @@
                                     <label for="home-action-view">View report</label>
                                 }
                             }
-                            else
-                         if (Model.CanEditReport)
+                           
+                            @if (Model.CanEditReport)
                             {
                                 <input id="home-action-edit" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Edit.SubmitValue">
                                 <label for="home-action-edit">Edit report</label>
                             }
-                            else if (Model.CanCreateReport)
+                            else if (Model.CanCreateReport && Model.Readonly == false)
                             {
                                 <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Create.SubmitValue">
                                 <label for="home-action-create">Create a new report</label>
