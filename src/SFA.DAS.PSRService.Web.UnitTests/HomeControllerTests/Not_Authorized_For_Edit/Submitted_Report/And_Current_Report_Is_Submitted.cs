@@ -6,8 +6,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_Fo
     [TestFixture]
     public class And_Current_Report_Submitted : And_User_Is_Not_Authorized
     {
-        
-        
         protected override void Given()
         {
             base.Given();
@@ -15,6 +13,5 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_Fo
             var report = new Report { Submitted = true };
             _mockReportService.Setup(r => r.GetReport(period, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
         }
-        
     }
 }
