@@ -31,20 +31,20 @@
                         </h2>
                     </legend>
                     <div class="multiple-choice">
-                        @if ((Model.Readonly && Model.CanCreateReport == false) || Model.CurrentReportAlreadySubmitted == false)
+                        @if (Model.CanCreateReport == false && (Model.Readonly || Model.CanEditReport == false))
                         {
+                            if (Model.CurrentReportAlreadySubmitted == false)
+                            {
+                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" disabled="disabled">
+                            }
+                            else
+                            {
+                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue">
+                            }
 
-                            <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" disabled="disabled">
                             <label for="home-action-view">View report</label>
                         }
-                        else
-                        {
-                            <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue">
-                            <label for="home-action-view">View report</label>
-                        }
-
-
-                        @if (Model.CanEditReport)
+                        else if (Model.CanEditReport)
                         {
                             <input id="home-action-edit" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Edit.SubmitValue">
                             <label for="home-action-edit">Edit report</label>
