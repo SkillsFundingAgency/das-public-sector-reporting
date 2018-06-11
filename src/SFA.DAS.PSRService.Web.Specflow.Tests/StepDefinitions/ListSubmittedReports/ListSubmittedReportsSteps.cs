@@ -6,7 +6,7 @@ using TechTalk.SpecFlow;
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 {
   
-    public class ListSubmittedReportsSteps : HomepageSharedSteps
+    public class ListSubmittedReportsSteps : BaseTest
     {
         //[Given(@"User navigates to Homepage")]
         //public void GivenUserNavigatesToHomepage()
