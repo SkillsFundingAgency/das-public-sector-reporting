@@ -137,6 +137,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         [HttpGet]
         [Route("Confirm")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Confirm()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
