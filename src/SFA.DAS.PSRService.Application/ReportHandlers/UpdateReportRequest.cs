@@ -9,8 +9,13 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         public UpdateReportRequest(Report report)
         {
             Report = report ?? throw new ArgumentNullException(nameof(report));
+
+            AuditWindowSize = TimeSpan.FromMinutes(5); // default
         }
 
-        public Report Report { get; }
+        public Report Report { get; set; }
+        public Guid UserId { get; set; }
+        public string UserName { get; set; }
+        public TimeSpan AuditWindowSize { get; set; }
     }
 }

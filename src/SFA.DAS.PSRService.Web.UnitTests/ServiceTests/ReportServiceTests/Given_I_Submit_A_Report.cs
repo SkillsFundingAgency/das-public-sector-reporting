@@ -142,7 +142,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
 
             //Act
             //Assert
-            Assert.Throws<Exception>(() => _reportService.SubmitReport(_report));
+            Assert.Throws<InvalidOperationException>(() => _reportService.SubmitReport(_report));
         }
     }
 }

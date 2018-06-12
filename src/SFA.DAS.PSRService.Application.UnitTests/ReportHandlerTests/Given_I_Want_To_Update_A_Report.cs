@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using AutoMapper;
 using Microsoft.Extensions.FileProviders;
@@ -16,7 +13,7 @@ using SFA.DAS.PSRService.Domain.Entities;
 namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 {
     [TestFixture]
-    public class Given_I_Update_A_Report
+    public class Given_I_Want_To_Update_A_Report
     {
         private Mock<IMapper> _mapperMock;
         private Mock<IReportRepository> _reportRepositoryMock;

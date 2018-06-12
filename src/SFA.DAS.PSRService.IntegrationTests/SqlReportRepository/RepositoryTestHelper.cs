@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
@@ -26,13 +27,25 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
             }
         }
 
+        public static IEnumerable<AuditRecordDto> GetAllAuditHistory()
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                return connection.Query<AuditRecordDto>("select * from AuditHistory");
+            }
+        }
+
         public static void ClearData()
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
+                connection.Execute("if exists(select 1 from AuditHistory) truncate table AuditHistory");
                 connection.Execute("if exists(select 1 from Report) delete from Report");
             }
 
+        }
+        public static DateTime TrimDateTime(DateTime date) {
+            return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
         }
 
         public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
@@ -42,6 +55,9 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
             Assert.AreEqual(expectedReport.ReportingData, actualReport.ReportingData);
             Assert.AreEqual(expectedReport.ReportingPeriod, actualReport.ReportingPeriod);
             Assert.AreEqual(expectedReport.Submitted, actualReport.Submitted);
+            Assert.AreEqual(expectedReport.AuditWindowStartUtc, actualReport.AuditWindowStartUtc);
+            Assert.AreEqual(expectedReport.UpdatedUtc, actualReport.UpdatedUtc);
+            Assert.AreEqual(expectedReport.UpdatedBy, actualReport.UpdatedBy);
         }
     }
 }

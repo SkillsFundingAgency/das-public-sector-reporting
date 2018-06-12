@@ -11,12 +11,11 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
     public abstract class Given_I_Have_Created_A_Report
         : GivenWhenThen<IReportRepository>
     {
-        protected ReportDto CreatedReport;
+        protected ReportDto CreatedReport { get; set; }
 
         protected override void Given()
         {
-            RepositoryTestHelper
-                .ClearData();
+            RepositoryTestHelper.ClearData();
 
             SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
 
@@ -26,13 +25,15 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
                 EmployerId = "Uncle Bob",
                 ReportingData = "Original created data",
                 ReportingPeriod = "2222",
-                Submitted = true
+                Submitted = true,
+                AuditWindowStartUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow.AddMinutes(-1)),
+                UpdatedUtc = RepositoryTestHelper.TrimDateTime(DateTime.Now.AddSeconds(-30)),
+                UpdatedBy = $"{{ Id: '{Guid.NewGuid()}', Name: 'Name'}}"
             };
 
-            SUT
-                .Create(
-                    CreatedReport);
+            SUT.Create(CreatedReport);
         }
+
 
         [TearDown]
         public void ClearDatabase()
