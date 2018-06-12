@@ -33,7 +33,7 @@
                     <div class="multiple-choice">
                         @if (Model.CanCreateReport == false && (Model.Readonly || Model.CanEditReport == false))
                         {
-                            if (Model.CurrentReportAlreadySubmitted == false)
+                            if (Model.CurrentReportAlreadySubmitted)
                             {
                                 <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" disabled="disabled">
                             }
