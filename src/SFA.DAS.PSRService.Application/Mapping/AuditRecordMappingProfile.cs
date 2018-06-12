@@ -18,6 +18,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
 
                     dest.Sections = dataObject.Questions;
                     dest.ReportingPercentages = dataObject.ReportingPercentages;
+                    dest.OrganisationName = dataObject.OrganisationName;
                 });
         }
     }

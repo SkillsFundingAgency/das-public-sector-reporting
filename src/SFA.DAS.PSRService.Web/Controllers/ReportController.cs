@@ -97,7 +97,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var model = new ReportHistoryViewModel
             {
-               OrganisationName = EmployerAccount.EmployerName,
                 Period = _currentPeriod,
             };
 
