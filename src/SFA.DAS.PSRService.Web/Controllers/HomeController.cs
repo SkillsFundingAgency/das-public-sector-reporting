@@ -61,6 +61,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
             model.Period = _currentPeriod;
+            model.CurrentReportExists = report != null;
             // TODO: take submission period close date into account
             model.CanCreateReport = report == null && UserIsAuthorizedForReportEdit();
             model.CanEditReport = report != null && !report.Submitted && UserIsAuthorizedForReportEdit();

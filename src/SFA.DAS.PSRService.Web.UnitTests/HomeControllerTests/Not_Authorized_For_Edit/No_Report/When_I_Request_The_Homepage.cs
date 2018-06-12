@@ -57,7 +57,11 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_Fo
         {
             model.Readonly.Should().BeTrue();
         }
-
+        [Test]
+        public void Then_CurrentReportExists_Is_False()
+        {
+            model.CurrentReportExists.Should().BeFalse();
+        }
         [Test]
         public void Then_CurrentReportAlreadySubmitted_Is_False()
         {
