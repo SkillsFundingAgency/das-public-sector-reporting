@@ -8,9 +8,11 @@ using SFA.DAS.PSRService.Web.Controllers;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization
 {
+    [Category("Made Obsolete by automation testing")]
     [ExcludeFromCodeCoverage]
     public sealed class When_Create_Method_Is_Called : Given_A_ReportController
     {
+        //TODO: Delete when automation testing completed
         private Attribute attribute;
 
         protected override void When()

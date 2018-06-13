@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.Services
             return teamMember?.Role;
         }
 
-        public async Task<IEnumerable<EmployerIdentifier>> GetUserRoles(IList<EmployerIdentifier> values, string userId)
+        public async Task<IEnumerable<EmployerIdentifier>> GetUserRoles(IEnumerable<EmployerIdentifier> values, string userId)
         {
             var employerIdentifiers = values.ToList();
 

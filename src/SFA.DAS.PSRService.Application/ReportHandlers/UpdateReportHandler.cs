@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -18,11 +17,6 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         }
         protected override void HandleCore(UpdateReportRequest request)
         {
-            if (request.Report == null)
-            {
-                throw new Exception("No Report Supplied");
-            }
-
             request
                 .Report
                 .UpdatePercentages();

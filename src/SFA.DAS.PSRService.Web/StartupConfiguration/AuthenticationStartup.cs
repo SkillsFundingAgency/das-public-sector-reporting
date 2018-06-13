@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -88,6 +90,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddCookie(options =>
                 {
+                    options.AccessDeniedPath = new PathString("/Service/AccessDenied");
                     options.ExpireTimeSpan = TimeSpan.FromHours(1);
                     switch (configuration.SessionStore.Type)
                     {
@@ -98,8 +101,29 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                             break;
                     }
                  
+                    options.Events.OnRedirectToAccessDenied = RedirectToAccessDenied;
 
                 });
+        }
+
+        private static Task RedirectToAccessDenied(RedirectContext<CookieAuthenticationOptions> context)
+        {
+            var routeData = context.HttpContext.GetRouteData();
+            var path = context.Request.Path.Value;
+             path = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+
+            if (path.Contains("Home/Index") || path.Equals($"/Accounts/{routeData.Values["employerAccountId"]}"))
+            {
+                //default path
+                context.Response.Redirect(context.RedirectUri);
+            }
+            else
+            { 
+                //custom
+                context.Response.Redirect(context.Request.PathBase + $"/Accounts/{routeData.Values["employerAccountId"]}/Home/Index");
+            }
+
+            return Task.CompletedTask;
         }
 
         private static IEnumerable<string> GetScopes()
@@ -135,7 +159,6 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             var associatedAccountsClaim = await accountsSvc.GetClaim(userId);
             ctx.Principal.Identities.First().AddClaim(associatedAccountsClaim);
         }
-
 
     }
 }

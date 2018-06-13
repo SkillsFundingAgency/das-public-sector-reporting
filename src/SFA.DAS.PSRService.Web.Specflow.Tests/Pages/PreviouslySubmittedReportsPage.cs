@@ -27,5 +27,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             return true;
         }
+
+        public IWebElement BackButtonLink => WebDriver.WaitForElementToBeVisible(By.ClassName("link-back"));
+
+        public IWebElement NoSubmittedReportDisplayMessage => WebDriver.WaitForElementToBeVisible(By.CssSelector("#content > div > div:nth-child(2)"));
+
     }
 }

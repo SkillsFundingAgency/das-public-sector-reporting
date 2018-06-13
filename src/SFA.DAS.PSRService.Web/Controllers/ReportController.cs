@@ -137,12 +137,23 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         [HttpGet]
         [Route("Confirm")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Confirm()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
             if (report == null)
                 return new NotFoundResult();
+
+            if (report.Submitted)
+            {
+                return new RedirectResult(Url.Action("Index","Home"));
+            }
+
+            if (report.IsValidForSubmission() == false)
+            {
+                return new RedirectResult(Url.Action("Edit","Report"));
+            }
 
             var viewModel = new ReportViewModel { Report = report };
 
