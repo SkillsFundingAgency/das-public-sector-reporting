@@ -1,4 +1,5 @@
 ﻿using System;
+using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
@@ -37,12 +38,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"back link is shown as '(.*)'")]
         public void ThenBackLinkIsShownAs(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True("Back" == pageFactory.PreviouslySubmittedReports.BackButtonLink.Text);
         }
         [Then(@"I should see the message '(.*)' on the previously submitted page")]
         public void ThenIShouldSeeTheMessageOnThePreviouslySubmittedPage(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(pageFactory.PreviouslySubmittedReports.NoSubmittedReportDisplayMessage.Displayed);
         }
 
         [Then(@"I should see one submitted report displayed in list")]
