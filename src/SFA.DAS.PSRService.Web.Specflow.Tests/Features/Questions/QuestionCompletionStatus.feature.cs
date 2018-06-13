@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Questions
 {
     using TechTalk.SpecFlow;
     
@@ -18,20 +18,22 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("MenuNavigation - MPD-1428")]
-    public partial class MenuNavigation_MPD_1428Feature
+    [NUnit.Framework.DescriptionAttribute("QuestionCompletionStatus - PD-1137")]
+    public partial class QuestionCompletionStatus_PD_1137Feature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "MenuNavigation.feature"
+#line 1 "QuestionCompletionStatus.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MenuNavigation - MPD-1428", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "QuestionCompletionStatus - PD-1137", "As PSR user \r\nI want 3 statuses against data; complete, in progress and incomplet" +
+                    "e \r\nso that I can see what information has been entered and what needs updating." +
+                    "", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

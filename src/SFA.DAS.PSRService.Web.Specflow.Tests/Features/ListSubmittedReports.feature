@@ -1,4 +1,4 @@
-﻿Feature:List Submitted Reports - MPD-1151
+﻿Feature:List Submitted Reports - MPD-1151, MPD-1149
 
 Background:
 Given Full access is granted
