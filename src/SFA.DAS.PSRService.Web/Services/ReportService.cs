@@ -36,11 +36,10 @@ namespace SFA.DAS.PSRService.Web.Services
                 Id = user.Id
             };
 
-            var request = new CreateReportRequest(requestUser)
-            {
-                Period = currentPeriod.PeriodString, 
-                EmployerId = employerId,
-            };
+            var request = new CreateReportRequest(
+                requestUser,
+                employerId,
+                currentPeriod.PeriodString);
 
             var report = _mediator.Send(request).Result;
 
