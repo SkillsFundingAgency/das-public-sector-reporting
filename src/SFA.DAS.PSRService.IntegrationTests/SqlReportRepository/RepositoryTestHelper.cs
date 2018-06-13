@@ -39,14 +39,21 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
-                connection.Execute("if exists(select 1 from AuditHistory) truncate table AuditHistory");
-                connection.Execute("if exists(select 1 from Report) delete from Report");
+                connection.Execute($"delete AuditHistory where ReportId = '{ReportOneId}'");
+                connection.Execute($"delete Report where Id = '{ReportOneId}'");
+
+                connection.Execute($"delete AuditHistory where ReportId = '{ReportTwoId}'");
+                connection.Execute($"delete Report where Id = '{ReportTwoId}'");
             }
 
         }
         public static DateTime TrimDateTime(DateTime date) {
             return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
         }
+
+        public static Guid ReportOneId { get; } = new Guid("CDF3F279-3AE1-45A7-B0E6-01B06621853B");
+        public static Guid ReportTwoId { get; } = new Guid("B5B28BD5-6B3B-460F-8576-F367483B54C1");
+
 
         public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
         {

@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Subm
 
             nonsubmittedReport = new ReportDto
             {
-                Id = Guid.NewGuid(),
+                Id = RepositoryTestHelper.ReportTwoId,
                 EmployerId = EmployerId,
                 ReportingData = "Some junk piece of json",
                 ReportingPeriod = "Noo!",

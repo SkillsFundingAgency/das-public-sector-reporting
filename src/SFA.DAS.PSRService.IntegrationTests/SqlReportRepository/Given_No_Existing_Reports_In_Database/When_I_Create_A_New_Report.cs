@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
         {
             _reportCreatedViaRepository = new ReportDto
             {
-                Id = Guid.NewGuid(),
+                Id = RepositoryTestHelper.ReportOneId,
                 EmployerId = "Uncle Sam",
                 ReportingData = "Some genious piece of json",
                 ReportingPeriod = "1111",
@@ -38,7 +38,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
                 =
                 RepositoryTestHelper
                     .GetAllReports()
-                    .Single();
+                    .Single(r => r.Id.Equals(RepositoryTestHelper.ReportOneId));
 
             RepositoryTestHelper
                 .AssertReportsAreEquivalent(

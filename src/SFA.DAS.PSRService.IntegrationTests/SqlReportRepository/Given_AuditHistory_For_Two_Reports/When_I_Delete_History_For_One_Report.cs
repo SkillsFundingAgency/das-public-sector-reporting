@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
         {
             SUT
                 .DeleteHistory(
-                    reportTwoId);
+                    RepositoryTestHelper.ReportTwoId);
         }
 
 
@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
                 .GetAllAuditHistory()
                 .Should()
                 .NotContain(
-                    record => record.ReportId == reportTwoId);
+                    record => record.ReportId == RepositoryTestHelper.ReportTwoId);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
                 .GetAllAuditHistory()
                 .Should()
                 .OnlyContain(
-                    record => record.ReportId == reportOneId);
+                    record => record.ReportId == RepositoryTestHelper.ReportOneId);
 
             RepositoryTestHelper
                 .GetAllAuditHistory()

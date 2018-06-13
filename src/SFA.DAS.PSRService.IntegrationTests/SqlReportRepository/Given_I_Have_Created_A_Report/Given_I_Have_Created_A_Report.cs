@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
 
             CreatedReport = new ReportDto
             {
-                Id = Guid.NewGuid(),
+                Id = RepositoryTestHelper.ReportOneId,
                 EmployerId = "Uncle Bob",
                 ReportingData = "Original created data",
                 ReportingPeriod = "2222",
