@@ -1,21 +1,15 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using MediatR;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
-using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
 {
@@ -39,7 +33,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         }
 
         [Test]
-        public void And_sectoin_And_Report_Supplied_Then_Create_Report()
+        public void And_Section_And_Report_Supplied_Then_Create_Report()
         {
             //Arrange
             _webConfigurationMock.SetupGet(s => s.AuditWindowSize).Returns((TimeSpan?)null);
@@ -123,8 +117,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
                 Sections = sections
             };
 
+
+            var user = new UserModel
+            {
+                DisplayName = "Horatio",
+                Id = new Guid("DC850E8E-8286-47DF-8BFD-8332A6483555")
+            };
             //Act
-            _reportService.SaveReport(report, new UserModel());
+            _reportService.SaveReport(report, user);
 
             //Assert
             _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()), Times.Once);
