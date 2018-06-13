@@ -225,17 +225,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         }
 
         [Test]
-        public void When_User_Not_Supplied_Then_Throw_Error()
-        {
-            // arrange
-            var updateReportRequest = new UpdateReportRequest( new Report() );
-
-            // act
-            // assert
-            Assert.Throws<Exception>(() => _updateReportHandler.Handle(updateReportRequest, new CancellationToken()));
-        }
-
-        [Test]
         public void When_Old_Version_Cannot_Be_Found_Then_Throw_Error()
         {
             // arrange

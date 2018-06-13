@@ -29,12 +29,6 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             if (string.IsNullOrWhiteSpace(request.Period))
                 throw new Exception("Period must be supplied");
 
-            if (string.IsNullOrWhiteSpace(request.EmployerId))
-                throw new Exception("Employer Id must be supplied");
-
-            if (string.IsNullOrWhiteSpace(request.UserName))
-                throw new Exception("User Name must be supplied");
-
             var reportDto = new ReportDto
             {
                 EmployerId = request.EmployerId,
@@ -44,7 +38,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
                 ReportingData = GetQuestionConfig().Result,
                 AuditWindowStartUtc = DateTime.UtcNow,
                 UpdatedUtc = DateTime.UtcNow,
-                UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.UserId, Name = request.UserName})
+                UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name})
             };
 
             _reportRepository.Create(reportDto);

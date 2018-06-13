@@ -6,9 +6,26 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
     public class CreateReportRequest : IRequest<Report>
     {
-        public string EmployerId { get; set; }
-        public string Period { get; set; }
-        public Guid UserId { get; set; }
-        public string UserName { get; set; }
+        public CreateReportRequest(
+            User user, 
+            string employerId, 
+            string period)
+        {
+            if (string.IsNullOrWhiteSpace(employerId))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(employerId));
+
+            if (string.IsNullOrWhiteSpace(period))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(period));
+
+            EmployerId = employerId;
+            Period = period;
+
+            User = user ?? throw new ArgumentNullException(nameof(user));
+        }
+
+        public string EmployerId { get; }
+        public string Period { get; }
+
+        public User User { get; }
     }
 }

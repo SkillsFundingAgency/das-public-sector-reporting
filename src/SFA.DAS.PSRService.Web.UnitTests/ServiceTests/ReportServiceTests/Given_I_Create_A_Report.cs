@@ -55,8 +55,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
             _mediatorMock.VerifyAll();
             Assert.AreEqual("ABCDE", actualRequest.EmployerId);
             Assert.AreEqual(_period.PeriodString, actualRequest.Period);
-            Assert.AreEqual(_user.DisplayName, actualRequest.UserName);
-            Assert.AreEqual(_user.Id, actualRequest.UserId);
+            Assert.AreEqual(_user.DisplayName, actualRequest.User.Name);
+            Assert.AreEqual(_user.Id, actualRequest.User.Id);
         }
 
         [Test]

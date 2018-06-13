@@ -11,6 +11,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         private Action<UpdateReportRequest> SetUserName = (r) => { };
         private Action<UpdateReportRequest> SetUserId = (r) => { };
         private Action<UpdateReportRequest> SetAuditWindowSize = (r) => { };
+        private string _userName = "SomeUser";
+        private Guid _userId = new Guid("4CAF1741-AC15-434E-93F3-FBD8CB426B66");
 
         public UpdateReportRequestBuilder WithReport(Report report)
         {
@@ -21,14 +23,14 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
         public UpdateReportRequestBuilder WithUserName(string userName)
         {
-            SetUserName = (r) => r.UserName = userName;
+            _userName = userName;
 
             return this;
         }
 
         public UpdateReportRequestBuilder WithUserId(Guid userId)
         {
-            SetUserId = (r) => r.UserId = userId;
+            _userId = userId;
 
             return this;
         }
@@ -49,7 +51,14 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
         public UpdateReportRequest Build()
         {
-            var request = new UpdateReportRequest(_report);
+            var user = new User
+            {
+                Name = _userName,
+                Id = _userId
+            };
+
+
+            var request = new UpdateReportRequest(_report, user);
 
             SetUserName(request);
             SetUserId(request);

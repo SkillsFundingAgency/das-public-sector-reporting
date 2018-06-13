@@ -29,12 +29,17 @@ namespace SFA.DAS.PSRService.Web.Services
             }
 
             var currentPeriod = _periodService.GetCurrentPeriod();
-            var request = new CreateReportRequest
+
+            var requestUser = new User
+            {
+                Name = user.DisplayName,
+                Id = user.Id
+            };
+
+            var request = new CreateReportRequest(requestUser)
             {
                 Period = currentPeriod.PeriodString, 
                 EmployerId = employerId,
-                UserName = user.DisplayName,
-                UserId = user.Id
             };
 
             var report = _mediator.Send(request).Result;
@@ -78,12 +83,13 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public void SaveReport(Report report, UserModel user)
         {
-            var request = new UpdateReportRequest(report)
+            var reqestUser = new User
             {
-                Report = report,
-                UserId = user.Id,
-                UserName = user.DisplayName,
+                Name = user.DisplayName,
+                Id = user.Id
             };
+
+            var request = new UpdateReportRequest(report, reqestUser);
 
             if (_config.AuditWindowSize.HasValue)
                 request.AuditWindowSize = _config.AuditWindowSize.Value;

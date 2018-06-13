@@ -20,6 +20,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         private Mock<IFileProvider> _fileProviderMock;
         private CreateReportHandler _createReportHandler;
         private Report _report;
+        private string _employerId = "ABCDE";
+        private string _reportingPeriod = "1718";
 
         [SetUp]
         public void Setup()
@@ -31,8 +33,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             _report = new Report
             {
-                EmployerId = "ABCDE",
-                ReportingPeriod = "1718",
+                EmployerId = _employerId,
+                ReportingPeriod = _reportingPeriod,
                 Id = Guid.NewGuid(),
                 Submitted = false
             };
@@ -40,7 +42,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
             _mapperMock.Setup(s => s.Map<Report>(It.IsAny<ReportDto>())).Returns(_report);
-
         }
 
         [Test]
@@ -51,7 +52,14 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             var userName = "Bob Shurunkle";
             ReportDto reportDto = null;
 
-            var createReportRequest = new CreateReportRequest { EmployerId = "ABCDE", Period = "1718", UserName = userName, UserId = userId};
+            var createReportRequest =
+                new CreateReportRequestBuilder()
+                    .WithUserName(userName)
+                    .WithUserId(userId)
+                    .WithEmployerId(_employerId)
+                    .ForPeriod(_reportingPeriod)
+                    .Build();
+
             _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Callback<ReportDto>(r => reportDto = r).Verifiable();
 
             // act
@@ -67,48 +75,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             Assert.IsTrue(reportDto.UpdatedBy.Contains(userId.ToString()));
             Assert.IsNotNull(reportDto.AuditWindowStartUtc);
             Assert.IsNotNull(reportDto.UpdatedUtc);
-        }
-
-        [Test]
-        public void And_An_EmployeeId_Is_Not_Supplied_Then_Throw_Error()
-        {
-            //arrange
-            var createReportRequest = new CreateReportRequest { EmployerId = string.Empty, Period = "1718", UserName = "Homer"};
-
-            //Act
-            Assert.Throws<Exception>(() =>_createReportHandler.Handle(createReportRequest, new CancellationToken()));
-        }
-
-        [Test]
-        public void And_An_User_Is_Not_Supplied_Then_Throw_Error()
-        {
-            // arrange            
-            var createReportRequest = new CreateReportRequest {EmployerId = "acme inc", Period = "1718"};
-
-            // act
-            // assert
-            Assert.Throws<Exception>(() => _createReportHandler.Handle(createReportRequest, new CancellationToken()));
-        }
-
-        [Test]
-        public void And_Period_Is_Null_Then_Throw_Error()
-        {
-            //arrange
-            var createReportRequest = new CreateReportRequest { EmployerId = "ABCDE", Period = null, UserName = "Donald"};
-
-            // act
-            // assert
-            Assert.Throws<Exception>(() => _createReportHandler.Handle(createReportRequest, new CancellationToken()));
-        }
-
-        [Test]
-        public void And_Period_Is_Empty_Then_Throw_Error()
-        {
-            //arrange
-            var createReportRequest = new CreateReportRequest() { EmployerId = "ABCDEF", Period = "", UserName = "Donald" };
-
-            //Act
-            Assert.Throws<Exception>(() => _createReportHandler.Handle(createReportRequest, new CancellationToken()));
         }
     }
 }

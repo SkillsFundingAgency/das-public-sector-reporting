@@ -21,9 +21,6 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         protected override void HandleCore(UpdateReportRequest request)
         {
-            if (string.IsNullOrEmpty(request.UserName))
-                throw new Exception("No User Name Supplied");
-
             var oldVersion = _reportRepository.Get(request.Report.Id);
 
             if (oldVersion == null)
@@ -33,7 +30,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             var reportDto = _mapper.Map<ReportDto>(request.Report);
             reportDto.UpdatedUtc = DateTime.UtcNow;
-            reportDto.UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.UserId, Name = request.UserName});
+            reportDto.UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name});
             if (!reportDto.AuditWindowStartUtc.HasValue)
                 reportDto.AuditWindowStartUtc = reportDto.UpdatedUtc;
 
