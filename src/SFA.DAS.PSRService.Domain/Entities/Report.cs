@@ -71,13 +71,13 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
 
             if (apprenticePeriod != 0 & employmentPeriod != 0)
-                percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod) * 100;
+                percentages.EmploymentStarts = ((apprenticePeriod / employmentPeriod) * 100).ToString("F2");
 
             if (apprenticeEnd != 0 & employmentEnd != 0)
-                percentages.TotalHeadCount = (apprenticeEnd / employmentEnd) * 100;
+                percentages.TotalHeadCount = ((apprenticeEnd / employmentEnd) * 100).ToString("F2");
 
             if (apprenticePeriod != 0 & employmentStart != 0)
-                percentages.NewThisPeriod = (apprenticePeriod / employmentStart) * 100;
+                percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
 
 
             return percentages;

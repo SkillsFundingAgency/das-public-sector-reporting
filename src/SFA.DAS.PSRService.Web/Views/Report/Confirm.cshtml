@@ -10,14 +10,14 @@
     <div class="column-two-thirds">
         @if (!Model.Report.Submitted)
         {
-            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+            <a class="link-back" asp-controller="Report" asp-action="Summary">Back</a>
         }
         <h1 class="heading-xlarge">Have you checked everything is correct?</h1>
         <p>You will not be able to change your report once it has been submitted.</p>
         <form asp-controller="Report" asp-action="Submit">
             <div class="form-group">
                 <input class="button" type="Submit" value="Submit your report">
-                <a class="button text-link" asp-controller="Report" asp-action="Edit">Return to your report</a>
+                <a class="button text-link" asp-controller="Report" asp-action="Summary">Return to your report</a>
             </div>
         </form>
     </div>

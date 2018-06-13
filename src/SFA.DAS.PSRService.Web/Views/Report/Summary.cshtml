@@ -11,7 +11,15 @@
     <div class="column-full review-details">
         @if (!Model.Report.Submitted)
         {
-            <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+            if (Model.CanBeEdited)
+            {
+                <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+            }
+            else
+            {
+                <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+            }
+            
         }
         else
         {
@@ -60,7 +68,7 @@
 
         @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
         {
-            <a class="button" asp-controller="Report" asp-action="Confirm">Confirm</a>
+            <a class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
         }
         else
         {

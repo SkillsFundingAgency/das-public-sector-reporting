@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
 using NUnit.Framework;
-using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Controllers;
-using SFA.DAS.PSRService.Web.Models;
-using SFA.DAS.PSRService.Web.Services;
-using SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Current_Report;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Current_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_For_Edit.Current_Report
 {
     [TestFixture]
     public class When_I_Request_The_Homepage : And_Current_Report_Exists
@@ -30,6 +18,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Cur
             viewResult = result as ViewResult;
             model = viewResult?.Model as IndexViewModel;
         }
+
         [Test]
         public void Then_ViewResult_Is_Returned()
         {
@@ -51,6 +40,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Cur
         {
             Assert.IsNotNull(model);
         }
+
         [Test]
         public void Then_Create_Report_Is_Disabled()
         {
@@ -58,9 +48,25 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Is_Authorized.Cur
         }
 
         [Test]
-        public void Then_Edit_Report_Is_Enabled()
+        public void Then_Edit_Report_Is_Disabled()
         {
-            Assert.IsTrue(model.CanEditReport);
+            Assert.IsFalse(model.CanEditReport);
+        }
+
+        [Test]
+        public void Then_Readonly_Is_True()
+        {
+            model.Readonly.Should().BeTrue();
+        }
+        [Test]
+        public void Then_CurrentReportExists_Is_True()
+        {
+            model.CurrentReportExists.Should().BeTrue();
+        }
+        [Test]
+        public void Then_CurrentReportAlreadySubmitted_Is_False()
+        {
+            model.CurrentReportAlreadySubmitted.Should().BeFalse();
         }
     }
 }
