@@ -145,6 +145,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (report == null)
                 return new NotFoundResult();
 
+            if (report.Submitted)
+            {
+                return new RedirectResult(Url.Action("Index","Home"));
+            }
+
+            if (report.IsValidForSubmission() == false)
+            {
+                return new RedirectResult(Url.Action("Edit","Report"));
+            }
+
             var viewModel = new ReportViewModel { Report = report };
 
             if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) || !report.IsValidForSubmission())
