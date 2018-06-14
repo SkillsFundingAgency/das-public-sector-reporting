@@ -133,15 +133,60 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ListSubmittedReports.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\MenuNavigation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MenuNavigation.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Questions\QuestionCompletionStatus.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuestionCompletionStatus.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Questions\QuestionOrganisationName.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuestionOrganisationName.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Questions\QuestionValidationFormNumbers.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuestionValidationFormNumbers.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\ReportConfirmationScreen.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportConfirmationScreen.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\ReportCreate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportCreate.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\ReportEdit.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportEdit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\ReportSubmit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportSubmit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Report\ReportAuditHistory.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportAuditHistory.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Report\ReportCalculations.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportCalculations.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Report\SubmitButtonError.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubmitButtonError.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\SuperUserAuthorization.feature.cs">
       <AutoGen>True</AutoGen>
@@ -203,13 +248,49 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ListSubmittedReports.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\MenuNavigation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MenuNavigation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Questions\QuestionCompletionStatus.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>QuestionCompletionStatus.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Questions\QuestionOrganisationName.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>QuestionOrganisationName.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Questions\QuestionValidationFormNumbers.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>QuestionValidationFormNumbers.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\ReportConfirmationScreen.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ReportConfirmationScreen.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\ReportCreate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReportCreate.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\ReportEdit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ReportEdit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ReportSubmit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReportSubmit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Report\ReportAuditHistory.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReportAuditHistory.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Report\ReportCalculations.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReportCalculations.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Report\SubmitButtonError.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SubmitButtonError.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\SuperUserAuthorization.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
