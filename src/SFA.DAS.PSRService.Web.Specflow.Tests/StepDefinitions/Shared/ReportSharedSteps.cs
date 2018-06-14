@@ -74,7 +74,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportRepository.Update(_reportDto);
         }
 
-
+        [BeforeScenario]
+        public void DeleteReports()
+        {
+            _reportRepository.Delete(_reportDto.EmployerId);
+        }
 
 
 
