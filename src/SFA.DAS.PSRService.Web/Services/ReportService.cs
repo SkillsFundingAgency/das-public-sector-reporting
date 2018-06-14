@@ -73,7 +73,7 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public void SaveReport(Report report)
         {
-            var request = new UpdateReportRequest { Report = report };
+            var request = new UpdateReportRequest(report);
             _mediator.Send(request);
         }
 

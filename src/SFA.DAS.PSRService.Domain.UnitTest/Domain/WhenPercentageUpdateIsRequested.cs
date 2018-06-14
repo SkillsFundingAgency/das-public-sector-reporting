@@ -262,7 +262,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual(_report.ReportingPercentages.NewThisPeriod, 0);
+            Assert.AreEqual("0", _report.ReportingPercentages.NewThisPeriod);
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual(_report.ReportingPercentages.TotalHeadCount, 0);
+            Assert.AreEqual("0", _report.ReportingPercentages.TotalHeadCount);
         }
 
         [Test]
@@ -490,7 +490,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual(_report.ReportingPercentages.EmploymentStarts, 0);
+            Assert.AreEqual("0", _report.ReportingPercentages.EmploymentStarts);
         }
 
         [Test]
@@ -603,7 +603,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual(_report.ReportingPercentages.TotalHeadCount, 0);
+            Assert.AreEqual("0", _report.ReportingPercentages.TotalHeadCount);
         }
 
         [Test]
@@ -716,8 +716,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual(_report.ReportingPercentages.EmploymentStarts, 0);
-            Assert.AreEqual(_report.ReportingPercentages.NewThisPeriod, 0);
+            Assert.AreEqual("0", _report.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual("0", _report.ReportingPercentages.NewThisPeriod );
         }
 
         [Test]
@@ -831,9 +831,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual(_report.ReportingPercentages.TotalHeadCount.ToString("0.00"), "11.67");
-            Assert.AreEqual(_report.ReportingPercentages.EmploymentStarts.ToString("0.00"), "36.00");
-            Assert.AreEqual(_report.ReportingPercentages.NewThisPeriod.ToString("0.00"), "7.20");
+            Assert.AreEqual("11.67", _report.ReportingPercentages.TotalHeadCount);
+            Assert.AreEqual("36.00", _report.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual("7.20", _report.ReportingPercentages.NewThisPeriod);
         }
     }
 }

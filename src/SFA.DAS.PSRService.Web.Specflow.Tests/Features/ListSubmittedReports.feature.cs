@@ -18,8 +18,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("List Submitted Reports - MPD-1151")]
-    public partial class ListSubmittedReports_MPD_1151Feature
+    [NUnit.Framework.DescriptionAttribute("List Submitted Reports - MPD-1151, MPD-1149")]
+    public partial class ListSubmittedReports_MPD_1151MPD_1149Feature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -31,7 +31,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "List Submitted Reports - MPD-1151", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "List Submitted Reports - MPD-1151, MPD-1149", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

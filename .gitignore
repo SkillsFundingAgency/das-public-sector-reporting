@@ -274,3 +274,8 @@ src/Tools/PhantomJS/tools/phantomjs/ChangeLog
 LOCALConfig.json
 src/SFA.DAS.PSRService.Web/testcert.bat
 *.cs.bak
+
+# Ignore screenshots from automated browser testing
+/src/SFA.DAS.PSRService.Web.Specflow.Tests/Project/Screenshots/
+
+

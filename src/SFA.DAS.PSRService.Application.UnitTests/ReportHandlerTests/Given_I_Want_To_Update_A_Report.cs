@@ -31,7 +31,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
             _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
             _fileProviderMock = new Mock<IFileProvider>();
-            _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object);
+            _updateReportHandler = new UpdateReportHandler(_mapperMock.Object, _reportRepositoryMock.Object);
 
             var reportingDataTest = "";
             reportDto = new ReportDto()
@@ -41,8 +41,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
                 Id = Guid.NewGuid(),
                 Submitted = false,
                 ReportingData = reportingDataTest
-
-
             };
 
             _report = new Report()
@@ -51,8 +49,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
                 ReportingPeriod = "1718",
                 Id = Guid.NewGuid(),
                 Submitted = false
-
-
             };
             var fileInfo = new StringFileInfo(reportingDataTest, "QuestionConfig.json");
 
@@ -60,39 +56,20 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
             _mapperMock.Setup(s => s.Map<Report>(It.IsAny<ReportDto>())).Returns(_report);
             _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(reportDto);
-
         }
+
         [Test]
         public void And_A_Report_Is_Supplied_Then_Create_Report()
         {
-
             //arrange
 
-            var updateReportRequest = new UpdateReportRequest() { Report = new Report() };
+            var updateReportRequest = new UpdateReportRequest(new Report());
 
             //Act
             var result = _updateReportHandler.Handle(updateReportRequest, new CancellationToken());
 
-          _reportRepositoryMock.Verify(s => s.Update(reportDto));
-            
+            _reportRepositoryMock.Verify(s => s.Update(reportDto));
         }
-        [Test]
-        public void And_Report_Not_Supplied_Then_Throw_Error()
-        {
-
-            //arrange
-
-            var updateReportRequest = new UpdateReportRequest() { Report = null };
-
-            //Act
-
-            Assert.Throws<Exception>(() => _updateReportHandler.Handle(updateReportRequest, new CancellationToken()));
-
-          
-
-
-        }
-
     }
 }
 
