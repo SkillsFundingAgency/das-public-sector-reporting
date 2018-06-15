@@ -42,11 +42,11 @@ Scenario: Confirm button is displayed on review summary page
 	And the confirm submission button should be displayed
 	And the confirm submission button should have text 'Confirm'
 
-Scenario: Confirm button is clicked on review summary page
+Scenario: Continue button is clicked on review summary page
 	Given I have a valid report
 	And the report hasnt been submitted
 	And I navigate to Review summary page
-	When I click the confirm submission button
+	When I click the continue button
 	Then the confirm submission page is displayed
 
 Scenario: Super user can submit a report
