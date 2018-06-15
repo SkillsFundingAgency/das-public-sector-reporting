@@ -1,11 +1,14 @@
 ﻿Feature: QuestionOrganisationName - MPD-1141, MPD-1140
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to submit apprentice report data
+	As a public sector employer
+	I want to enter my organisation name
 
-@mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+Background:
+Given Edit access is granted
+
+Scenario: Organisation Name is pre-populated
+	Given No current report exists
+	And I create a new report
+	And I navigate to the Edit report page
+	When I navigate to the OrganisationName page
+	Then organisation name is pre-populated with name from my account
