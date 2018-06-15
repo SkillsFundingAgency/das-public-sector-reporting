@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization
         protected override void When()
         {
             attribute = SUT.GetType()
-                .GetMethod(nameof(SUT.Submit))
+                .GetMethod(nameof(SUT.SubmitPost))
                 .GetCustomAttribute(typeof(AuthorizeAttribute));
         }
 

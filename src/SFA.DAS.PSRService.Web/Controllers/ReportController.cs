@@ -165,10 +165,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(viewModel);
         }
 
+        [Route("Submit")]
+        [HttpGet]
+        public IActionResult Submit()
+        {
+            return RedirectToActionPermanent("Index", "Home");
+        }
+
         [HttpPost]
         [Route("Submit")]
         [Authorize(Policy = PolicyNames.CanSubmitReport)]
-        public IActionResult Submit()
+        public IActionResult SubmitPost()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
