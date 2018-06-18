@@ -46,5 +46,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             FormCompletionHelper.ClickElement(_submitPageFormButton);
             return new PreviouslySubmittedReportsPage(WebDriver);
         }
+
+        public IWebElement DisplayPsrsHomepageMenu => WebDriver.WaitForElementToBeVisible(By.ClassName("heading-xlarge"));
     }
 }

@@ -49,19 +49,21 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"I should see one submitted report displayed in list")]
         public void ThenIShouldSeeOneSubmittedReportDisplayedInList()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(pageFactory.PreviouslySubmittedReports.SubmittedReportDisplayed.Displayed);
+
+            Assert.True("Choose the report you wish to view" == pageFactory.PreviouslySubmittedReports.ChooseReportToView.Text);
         }
 
         [When(@"user clicks the back button")]
         public void WhenUserClicksTheBackButton()
         {
-            ScenarioContext.Current.Pending();
+            pageFactory.PreviouslySubmittedReports.BackButtonLink.Click();
         }
 
         [Then(@"the user is displayed the homepage")]
         public void ThenTheUserIsDisplayedTheHomepage()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True("Annual apprenticeship return" == pageFactory.Homepage.DisplayPsrsHomepageMenu.Text);
         }
 
 

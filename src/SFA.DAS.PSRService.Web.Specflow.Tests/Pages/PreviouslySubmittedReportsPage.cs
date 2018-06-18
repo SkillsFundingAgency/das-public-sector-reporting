@@ -32,5 +32,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public IWebElement NoSubmittedReportDisplayMessage => WebDriver.WaitForElementToBeVisible(By.CssSelector("#content > div > div:nth-child(2)"));
 
+        public IWebElement SubmittedReportDisplayed => WebDriver.WaitForElementToBeVisible(By.ClassName("column-full"));
+
+        public IWebElement ChooseReportToView => WebDriver.WaitForElementToBeVisible(By.CssSelector("#content > div > div:nth-child(2)"));
     }
 }
