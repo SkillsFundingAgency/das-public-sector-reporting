@@ -31,8 +31,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ReportCalculations - MPD-1147", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
-                    "f two numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ReportCalculations - MPD-1147", "\tIn order to meet apprenticeship targets\r\n\tAs a public sector employer\r\n\tI should" +
+                    " be shown reporting percentages based on the answers I provide to questions", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -62,6 +62,24 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Reporting Percentages")]
+        [NUnit.Framework.TestCaseAttribute("250", "150", "0", "25", "30", "5", "0", "3.33", "2.00", null)]
+        [NUnit.Framework.TestCaseAttribute("300", "350", "50", "0", "50", "50", "0", "14.29", "16.67", null)]
+        [NUnit.Framework.TestCaseAttribute("500", "500", "0", "0", "30", "30", "0", "6.00", "6.00", null)]
+        public virtual void ReportingPercentages(string employeesAtStart, string employeesAtEnd, string employeesNewInPeriod, string apprenticesAtStart, string apprenticesAtEnd, string apprenticesNewInPeriod, string employmentStarts, string totalHeadCount, string newThisPeriod, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Reporting Percentages", exampleTags);
+#line 6
+this.ScenarioSetup(scenarioInfo);
+#line 7
+testRunner.Given(string.Format("I have entered {0}, {1}, {2}, {3}, {4} and {5}", employeesAtStart, employeesAtEnd, employeesNewInPeriod, apprenticesAtStart, apprenticesAtEnd, apprenticesNewInPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 8
+testRunner.Then(string.Format("I should see {0}, {1} and {2} percentages", employmentStarts, totalHeadCount, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
         }
     }
 }
