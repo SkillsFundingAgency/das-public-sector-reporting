@@ -40,7 +40,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _controller.ObjectValidator = GetObjectValidator().Object;
 
             // act
-            var result = _controller.Submit();
+            var result = _controller.SubmitPost();
 
             // assert
             _mockReportService.VerifyAll();
@@ -103,7 +103,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             // act
-            var result = _controller.Submit();
+            var result = _controller.SubmitPost();
 
             // assert
             _mockReportService.VerifyAll();
@@ -134,7 +134,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockReportService.Setup(s => s.GetReport("1718", "ABCDE")).Returns((Report) null).Verifiable();
 
             // act
-            var result = _controller.Submit();
+            var result = _controller.SubmitPost();
 
             // assert
             _mockReportService.VerifyAll();
