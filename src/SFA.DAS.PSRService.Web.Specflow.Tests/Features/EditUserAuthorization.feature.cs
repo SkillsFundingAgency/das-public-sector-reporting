@@ -198,10 +198,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Confirm button is not available on review summary page")]
-        public virtual void ConfirmButtonIsNotAvailableOnReviewSummaryPage()
+        [NUnit.Framework.DescriptionAttribute("Continue button is not available on review summary page")]
+        public virtual void ContinueButtonIsNotAvailableOnReviewSummaryPage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm button is not available on review summary page", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Continue button is not available on review summary page", ((string[])(null)));
 #line 43
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -213,7 +213,7 @@ this.FeatureBackground();
 #line 46
  testRunner.When("I navigate to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 47
- testRunner.Then("the confirm submission button should not be available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the continue button should not be available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

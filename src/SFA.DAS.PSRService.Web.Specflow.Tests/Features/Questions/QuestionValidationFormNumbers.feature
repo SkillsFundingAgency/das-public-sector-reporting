@@ -31,7 +31,5 @@ Scenario: Clicking 'Continue' if any of the three fields are of incorrect format
 Given user navigates to the Your Employee question page
 When user enters any value in this page other than a whole number in one or more fields
 And clicks the 'Continue' button
-Then display the following message at the top of the page with red borders
-"Please fix these errors"
-"Must be a number between 0 and 9"
+Then display the following message 'Must be a number between 0 and 9'
 And the 'Your Employee' question page is displayed

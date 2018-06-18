@@ -40,8 +40,8 @@ Scenario: Edit user can view the review summary page
 	When I navigate to Review summary page
 	Then the Review report details page is displayed
 
-Scenario: Confirm button is not available on review summary page
+Scenario: Continue button is not available on review summary page
 	Given I have a valid report
 	And the report hasnt been submitted
 	When I navigate to Review summary page
-	Then the confirm submission button should not be available
+	Then the continue button should not be available

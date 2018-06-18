@@ -202,10 +202,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Confirm button is clicked on review summary page")]
-        public virtual void ConfirmButtonIsClickedOnReviewSummaryPage()
+        [NUnit.Framework.DescriptionAttribute("Continue button is clicked on review summary page")]
+        public virtual void ContinueButtonIsClickedOnReviewSummaryPage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Confirm button is clicked on review summary page", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Continue button is clicked on review summary page", ((string[])(null)));
 #line 45
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -217,7 +217,7 @@ this.FeatureBackground();
 #line 48
  testRunner.And("I navigate to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
- testRunner.When("I click the confirm submission button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I click the continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 50
  testRunner.Then("the confirm submission page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
