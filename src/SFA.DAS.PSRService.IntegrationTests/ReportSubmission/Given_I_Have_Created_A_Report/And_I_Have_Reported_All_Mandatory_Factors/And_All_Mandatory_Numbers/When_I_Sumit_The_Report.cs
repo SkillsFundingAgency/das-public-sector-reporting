@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
         protected override void When()
         {
-            submitResponse = SUT.Submit();
+            submitResponse = SUT.SubmitPost();
         }
 
         [Test]
