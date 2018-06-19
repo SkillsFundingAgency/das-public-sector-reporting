@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -22,7 +23,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework
         {
 
             if(Configurator.GetConfiguratorInstance().GetBaseUrl().Contains("localhost"))
-            { 
+            {
             _webprocess = new Process
             {
                 StartInfo =
@@ -30,7 +31,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework
                     FileName = "dotnet",
                     Arguments = "run",
                     UseShellExecute = false,
-                    WorkingDirectory = @"C:\Source\das-public-sector-reporting\src\SFA.DAS.PSRService.Web\"
+                    WorkingDirectory = BuildWorkingDirectory()
                 }
             };
             _webprocess.Start();
@@ -72,7 +73,33 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework
             }
         }
 
-        [AfterTestRun]
+        private static string BuildWorkingDirectory()
+        {
+            var thisType = typeof(StartWebApplication);
+
+            var assemblyPath =
+                Path
+                    .GetDirectoryName(
+                        thisType
+                            .Assembly
+                            .Location);
+
+
+            var sourcePath =
+                new DirectoryInfo(assemblyPath)
+                    .Parent
+                    .Parent
+                    .Parent
+                    .FullName;
+
+            return
+                Path
+                    .Combine(
+                        sourcePath,
+                        @"SFA.DAS.PSRService.Web");
+        }
+
+[AfterTestRun]
         public static void StopApplication()
         {
             if (_webprocess != null && _webprocess.HasExited == false)
