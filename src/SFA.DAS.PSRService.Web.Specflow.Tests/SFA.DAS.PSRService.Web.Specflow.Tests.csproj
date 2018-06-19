@@ -214,6 +214,7 @@
     <Compile Include="Repository\Period.cs" />
     <Compile Include="Repository\ReportDto.cs" />
     <Compile Include="Repository\SQLReportRepository.cs" />
+    <Compile Include="StepArgumentTransformations\StepArgumentTransformations.cs" />
     <Compile Include="StepDefinitions\ReportEditSteps.cs" />
     <Compile Include="StepDefinitions\Shared\AuthorizationSharedSteps.cs" />
     <Compile Include="Pages\PreviouslySubmittedReportsPage.cs" />
