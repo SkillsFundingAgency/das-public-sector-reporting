@@ -14,6 +14,6 @@
     public static class QuestionPageUrls
     {
         private const string QuesionBaseUrl = "/Question";
-        public const string YourEmployees = QuesionBaseUrl + "/";
+        public const string YourEmployees = QuesionBaseUrl + "/YourEmployees";
     }
 }

@@ -70,7 +70,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
 #line 7
 testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-testRunner.And("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
 testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -114,9 +114,10 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("user can submit an edited question")]
-        public virtual void UserCanSubmitAnEditedQuestion()
+        [NUnit.Framework.TestCaseAttribute("100", "150", "50", null)]
+        public virtual void UserCanSubmitAnEditedQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can submit an edited question", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can submit an edited question", exampleTags);
 #line 20
 this.ScenarioSetup(scenarioInfo);
 #line 6
@@ -124,12 +125,11 @@ this.FeatureBackground();
 #line 21
  testRunner.Given("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.And("the question values <atStart>, <atEnd> and <newThisPeriod> have been edited", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.When("I click on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
- testRunner.Then("The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have be" +
-                    "en saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("The Your Employees question values {0}, {1} and {2} have been saved", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -9,13 +9,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
     public class ReportEditSteps : BaseTest
     {
         [Given(@"the question values (.*), (.*) and (.*) have been edited")]
-        public void GivenTheQuestionValuesAndHaveBeenEdited(string p0, string p1, string p2)
+        public void GivenTheQuestionValuesAndHaveBeenEdited(string atStart, string atEnd, string newThisPeriod)
         {
             var yourEmployees = new YourEmployeesPage(webDriver);
 
-            yourEmployees.EditAtStartValue(p0);
-            yourEmployees.EditAtEndValue(p1);
-            yourEmployees.EditAtNewThisPeriodValue(p2);
+            yourEmployees.EditAtStartValue(atStart);
+            yourEmployees.EditAtEndValue(atEnd);
+            yourEmployees.EditAtNewThisPeriodValue(newThisPeriod);
         }
 
         [When(@"I click on '(.*)' question link")]
@@ -29,7 +29,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [When(@"I click on the save question")]
         public void WhenIClickOnTheSaveQuestion()
         {
-            ScenarioContext.Current.Pending();
             var yourEmployees = new YourEmployeesPage(webDriver);
             yourEmployees.SaveQuestionAnswers();
         }

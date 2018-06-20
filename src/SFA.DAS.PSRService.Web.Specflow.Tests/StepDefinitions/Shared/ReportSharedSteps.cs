@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
+using System.Reflection;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Repository;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
@@ -19,6 +20,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 
         private string _validReportJson = "{\"OrganisationName\":\"THE INSTITUTION OF OCCUPATIONAL SAFETY AND HEALTH\",\"Questions\":[{\"SubSections\":[{\"SubSections\":null,\"Questions\":[{\"Id\":\"atStart\",\"Answer\":\"321\",\"Optional\":false,\"Type\":0},{\"Id\":\"atEnd\",\"Answer\":\"36\",\"Optional\":false,\"Type\":0},{\"Id\":\"newThisPeriod\",\"Answer\":\"32\",\"Optional\":false,\"Type\":0}],\"Id\":\"YourEmployees\",\"Title\":\"Your employees\",\"SummaryText\":\"Number of employees who work in England\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"atStart\",\"Answer\":\"142\",\"Optional\":false,\"Type\":0},{\"Id\":\"atEnd\",\"Answer\":\"152\",\"Optional\":false,\"Type\":0},{\"Id\":\"newThisPeriod\",\"Answer\":\"32\",\"Optional\":false,\"Type\":0}],\"Id\":\"YourApprentices\",\"Title\":\"Your apprentices\",\"SummaryText\":\"Number of apprentices who work in England\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"atStart\",\"Answer\":\"\",\"Optional\":true,\"Type\":0}],\"Id\":\"FullTimeEquivalent\",\"Title\":\"Full time equivalents\",\"SummaryText\":\"Number of full-time equivalents who work in England (optional)\"}],\"Questions\":null,\"Id\":\"ReportNumbers\",\"Title\":\"Report numbers in the following categories\",\"SummaryText\":null},{\"SubSections\":[{\"SubSections\":null,\"Questions\":[{\"Id\":\"OutlineActions\",\"Answer\":\"dsadsada\",\"Optional\":false,\"Type\":2}],\"Id\":\"OutlineActions\",\"Title\":\"Outline any actions you have taken to help you progress towards meeting the public sector target\",\"SummaryText\":\"Outline any actions you have taken to help you progress towards meeting the public sector target\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"Challenges\",\"Answer\":\"dsadsad\",\"Optional\":false,\"Type\":2}],\"Id\":\"Challenges\",\"Title\":\"Tell us about any challenges you have faced in your efforts to meet the target\",\"SummaryText\":\"Tell us about any challenges you have faced in your efforts to meet the target\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"TargetPlans\",\"Answer\":\"dsadsadas\",\"Optional\":false,\"Type\":2}],\"Id\":\"TargetPlans\",\"Title\":\"How are you planning to ensure you meet the target in future?\",\"SummaryText\":\"How are you planning to ensure you meet the target in future?\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"AnythingElse\",\"Answer\":\"\",\"Optional\":true,\"Type\":2}],\"Id\":\"AnythingElse\",\"Title\":\"Do you have anything else you want to tell us? (optional)\",\"SummaryText\":\"Do you have anything else you want to tell us? (optional)\"}],\"Questions\":null,\"Id\":\"Factors\",\"Title\":\"Factors that impacted your ability to meet the target\",\"SummaryText\":null}],\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":100.0,\"TotalHeadCount\":422.22222222222222222222222222,\"NewThisPeriod\":9.968847352024922118380062310}}";
         private string _invalidReportJson = "{\"OrganisationName\":\"THE INSTITUTION OF OCCUPATIONAL SAFETY AND HEALTH\",\"Questions\":[{\"SubSections\":[{\"SubSections\":null,\"Questions\":[{\"Id\":\"atStart\",\"Answer\":\"321\",\"Optional\":false,\"Type\":0},{\"Id\":\"atEnd\",\"Answer\":\"36\",\"Optional\":false,\"Type\":0},{\"Id\":\"newThisPeriod\",\"Answer\":\"32\",\"Optional\":false,\"Type\":0}],\"Id\":\"YourEmployees\",\"Title\":\"Your employees\",\"SummaryText\":\"Number of employees who work in England\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"atStart\",\"Answer\":\"142\",\"Optional\":false,\"Type\":0},{\"Id\":\"atEnd\",\"Answer\":\"\",\"Optional\":false,\"Type\":0},{\"Id\":\"newThisPeriod\",\"Answer\":\"\",\"Optional\":false,\"Type\":0}],\"Id\":\"YourApprentices\",\"Title\":\"Your apprentices\",\"SummaryText\":\"Number of apprentices who work in England\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"atStart\",\"Answer\":\"\",\"Optional\":true,\"Type\":0}],\"Id\":\"FullTimeEquivalent\",\"Title\":\"Full time equivalents\",\"SummaryText\":\"Number of full-time equivalents who work in England (optional)\"}],\"Questions\":null,\"Id\":\"ReportNumbers\",\"Title\":\"Report numbers in the following categories\",\"SummaryText\":null},{\"SubSections\":[{\"SubSections\":null,\"Questions\":[{\"Id\":\"OutlineActions\",\"Answer\":\"dsadsada\",\"Optional\":false,\"Type\":2}],\"Id\":\"OutlineActions\",\"Title\":\"Outline any actions you have taken to help you progress towards meeting the public sector target\",\"SummaryText\":\"Outline any actions you have taken to help you progress towards meeting the public sector target\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"Challenges\",\"Answer\":\"dsadsad\",\"Optional\":false,\"Type\":2}],\"Id\":\"Challenges\",\"Title\":\"Tell us about any challenges you have faced in your efforts to meet the target\",\"SummaryText\":\"Tell us about any challenges you have faced in your efforts to meet the target\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"TargetPlans\",\"Answer\":\"dsadsadas\",\"Optional\":false,\"Type\":2}],\"Id\":\"TargetPlans\",\"Title\":\"How are you planning to ensure you meet the target in future?\",\"SummaryText\":\"How are you planning to ensure you meet the target in future?\"},{\"SubSections\":null,\"Questions\":[{\"Id\":\"AnythingElse\",\"Answer\":\"\",\"Optional\":true,\"Type\":2}],\"Id\":\"AnythingElse\",\"Title\":\"Do you have anything else you want to tell us? (optional)\",\"SummaryText\":\"Do you have anything else you want to tell us? (optional)\"}],\"Questions\":null,\"Id\":\"Factors\",\"Title\":\"Factors that impacted your ability to meet the target\",\"SummaryText\":null}],\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":100.0,\"TotalHeadCount\":422.22222222222222222222222222,\"NewThisPeriod\":9.968847352024922118380062310}}";
+
         public ReportSharedSteps()
         {
             var connectionString = ConfigurationManager.ConnectionStrings[PersistenceNames.PsrsDBConnectionString]
@@ -32,6 +34,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
             _reportDto.ReportingData = "{}";
         }
+
+        [Given(@"a report has been created")]
+        public void GivenAReportHasBeenCreated()
+        {
+            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
+            _reportDto.ReportingData = ReadNewlyCreatedReportData();
+
+            _reportRepository.Create(_reportDto);
+        }
+
 
         [Given(@"no current report exists")]
         public void GivenNoCurrentReportExists()
@@ -80,7 +92,23 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportRepository.Delete(_reportDto.EmployerId);
         }
 
+        private string ReadNewlyCreatedReportData()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
 
+            var resourceName = @"SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared.NewlyCreatedReportData.json";
 
+            string readData;
+
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    readData = reader.ReadToEnd();
+                }
+            }
+
+            return readData;
+        }
     }
 }

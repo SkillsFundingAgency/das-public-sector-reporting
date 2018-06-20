@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SFA.DAS.PSRService.Web.Specflow.Tests</RootNamespace>
-    <AssemblyName>SFA.DAS.PSRService.Web.Specflow.Tests</AssemblyName>
+    <AssemblyName>`</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -306,6 +306,7 @@
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="StepDefinitions\Shared\NewlyCreatedReportData.json" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
