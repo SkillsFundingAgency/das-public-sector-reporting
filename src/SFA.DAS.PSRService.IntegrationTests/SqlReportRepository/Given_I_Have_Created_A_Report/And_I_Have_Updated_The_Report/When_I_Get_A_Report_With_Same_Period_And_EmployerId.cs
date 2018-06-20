@@ -9,11 +9,11 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
     public class When_I_Get_A_Report_With_Same_Period_And_EmployerId
     : And_I_Have_Updated_The_Report_Data
     {
-        private ReportDto retrievedReport;
+        private ReportDto _retrievedReport;
 
         protected override void When()
         {
-            retrievedReport
+            _retrievedReport
                 =
                 SUT
                     .Get(
@@ -24,11 +24,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
         [Test]
         public void Then_The_Retrieved_Report_Data_Is_The_Updated_Data()
         {
-            Assert
-                .AreEqual(
-                    UpdatedReportingData
-                    , retrievedReport
-                        .ReportingData);
+            RepositoryTestHelper.AssertReportsAreEquivalent(UpdatedReport, _retrievedReport);
         }
     }
 }

@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class CreateReportHandler : RequestHandler<CreateReportRequest,Report>
+    public class CreateReportHandler : RequestHandler<CreateReportRequest, Report>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
@@ -25,19 +26,19 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         protected override Report HandleCore(CreateReportRequest request)
         {
-            if (String.IsNullOrWhiteSpace(request.Period))
+            if (string.IsNullOrWhiteSpace(request.Period))
                 throw new Exception("Period must be supplied");
 
-            if(string.IsNullOrWhiteSpace(request.EmployerId))
-                throw new Exception("Employer Id must be supplied");
-
-            var reportDto = new ReportDto()
+            var reportDto = new ReportDto
             {
                 EmployerId = request.EmployerId,
                 Submitted = false,
                 Id = Guid.NewGuid(),
                 ReportingPeriod = request.Period,
-                ReportingData = GetQuestionConfig().Result
+                ReportingData = GetQuestionConfig().Result,
+                AuditWindowStartUtc = DateTime.UtcNow,
+                UpdatedUtc = DateTime.UtcNow,
+                UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name})
             };
 
             _reportRepository.Create(reportDto);
@@ -50,11 +51,9 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             var questionsConfig = _fileProvider.GetFileInfo("/QuestionConfig.json");
 
             using (var jsonContents = questionsConfig.CreateReadStream())
+            using (StreamReader sr = new StreamReader(jsonContents))
             {
-                using (StreamReader sr = new StreamReader(jsonContents))
-                {
-                    return Task.FromResult(sr.ReadToEnd());
-                }
+                return Task.FromResult(sr.ReadToEnd());
             }
         }
     }

@@ -23,7 +23,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Subm
 
             SubmittedReport = new ReportDto
             {
-                Id = Guid.NewGuid(),
+                Id = RepositoryTestHelper.ReportOneId,
                 EmployerId = EmployerId,
                 ReportingData = "Some dumb piece of json",
                 ReportingPeriod = "2222",
