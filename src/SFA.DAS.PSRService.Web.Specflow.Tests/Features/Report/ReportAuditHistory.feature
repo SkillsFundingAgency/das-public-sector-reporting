@@ -5,7 +5,6 @@
 
 Background: 
 	Given Edit access is granted
-	Given AuditWindowSize is set to five minutes
 	Given no current report exists
 
 Scenario: Single user delay between report creation and first edit
