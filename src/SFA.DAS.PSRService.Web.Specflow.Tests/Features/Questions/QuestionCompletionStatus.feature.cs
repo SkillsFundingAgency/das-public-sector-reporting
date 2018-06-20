@@ -31,9 +31,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Questions
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "QuestionCompletionStatus - PD-1137", "As PSR user \r\nI want 3 statuses against data; complete, in progress and incomplet" +
-                    "e \r\nso that I can see what information has been entered and what needs updating." +
-                    "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "QuestionCompletionStatus - PD-1137", "\tIn order to help me provide apprentice report data\r\n\tAs a public sector employer" +
+                    "\r\n\tI want to be informed when sections of the report are complete ", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -63,6 +62,130 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Questions
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
+        }
+        
+        public virtual void FeatureBackground()
+        {
+#line 7
+#line 8
+testRunner.Given("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Your Employees Incomplete")]
+        public virtual void YourEmployeesIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Your Employees Incomplete", ((string[])(null)));
+#line 10
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 11
+ testRunner.Given("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 12
+ testRunner.Given("I navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 13
+ testRunner.And("I answer new at start question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+ testRunner.And("I answer new at end question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+ testRunner.But("I do not answer new this period question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
+#line 16
+ testRunner.When("I click Continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 17
+ testRunner.Then("I am returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 18
+    testRunner.And("no completion status is shown for your employees", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Your Employees Complete")]
+        public virtual void YourEmployeesComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Your Employees Complete", ((string[])(null)));
+#line 20
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 21
+ testRunner.Given("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
+ testRunner.Given("I navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 23
+ testRunner.And("I answer new at start question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+ testRunner.And("I answer new at end question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+ testRunner.And("I answer new this period question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.When("I click Continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+ testRunner.Then("I am returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+    testRunner.And("no completion status is for your employees is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Your Apprentices Incomplete")]
+        public virtual void YourApprenticesIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Your Apprentices Incomplete", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 31
+ testRunner.Given("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 32
+ testRunner.Given("I navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 33
+ testRunner.And("I answer new at start question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.And("I answer new at end question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.But("I do not answer new this period question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
+#line 36
+ testRunner.When("I click Continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then("I am returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 38
+    testRunner.And("no completion status is shown for your apprentices", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Your Apprentices Complete")]
+        public virtual void YourApprenticesComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Your Apprentices Complete", ((string[])(null)));
+#line 40
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 41
+ testRunner.Given("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
+ testRunner.Given("I navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 43
+ testRunner.And("I answer new at start question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
+ testRunner.And("I answer new at end question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+ testRunner.And("I answer new this period question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+ testRunner.When("I click Continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
+ testRunner.Then("I am returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 48
+    testRunner.And("no completion status is for your apprentices is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
         }
     }
 }
