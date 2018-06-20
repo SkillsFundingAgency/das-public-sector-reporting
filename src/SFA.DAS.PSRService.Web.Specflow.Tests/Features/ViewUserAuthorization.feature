@@ -5,7 +5,7 @@ Background:
 Given View access is granted
 
 Scenario: View user cannot view create report page
-	Given No current report exists
+	Given no current report exists
 	When User navigates to Homepage
 	Then Create Report radio button does not exist
 

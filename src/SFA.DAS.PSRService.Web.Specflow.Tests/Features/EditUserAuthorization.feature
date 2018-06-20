@@ -6,14 +6,14 @@ Given Edit access is granted
 
 Scenario: Edit user can view create report page
 	Given User navigates to Homepage
-	And No current report exists
+	And no current report exists
 	When Selects Homepage 'Create a report' Radio button
 	And I click on Continue button
 	Then the create report page is displayed
 
 Scenario: Edit user can create a report
 	Given User navigates to the Create report page
-	And No current report exists
+	And no current report exists
 	When I click on Start button
 	Then New report is created
 

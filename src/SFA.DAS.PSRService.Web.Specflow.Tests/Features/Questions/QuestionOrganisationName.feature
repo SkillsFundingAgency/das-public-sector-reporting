@@ -7,7 +7,7 @@ Background:
 Given Edit access is granted
 
 Scenario: Organisation Name is pre-populated
-	Given No current report exists
+	Given no current report exists
 	And I create a new report
 	And I navigate to the Edit report page
 	When I navigate to the OrganisationName page

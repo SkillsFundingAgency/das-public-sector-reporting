@@ -33,7 +33,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportDto.ReportingData = "{}";
         }
 
-        [Given(@"No current report exists")]
+        [Given(@"no current report exists")]
         public void GivenNoCurrentReportExists()
         {
             _reportRepository.Delete(_reportDto.EmployerId);
