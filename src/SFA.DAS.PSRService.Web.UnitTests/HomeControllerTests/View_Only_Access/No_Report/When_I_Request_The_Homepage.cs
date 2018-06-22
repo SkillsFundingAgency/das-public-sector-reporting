@@ -1,20 +1,22 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit.No_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.No_Report
 {
     [TestFixture]
     public class When_I_Request_The_Homepage : And_No_Current_Report_Exists
-    { private IActionResult result;
+    {
+        private IActionResult result;
         private ViewResult viewResult;
         private IndexViewModel model;
 
         protected override void When()
         {
             result = SUT.Index();
-
             viewResult = result as ViewResult;
             model = viewResult?.Model as IndexViewModel;
         }
@@ -40,11 +42,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
         {
             Assert.IsNotNull(model);
         }
-
         [Test]
-        public void Then_Create_Report_Is_Enabled()
+        public void Then_Create_Report_Is_Disabled()
         {
-            Assert.IsTrue(model.CanCreateReport);
+            Assert.IsFalse(model.CanCreateReport);
         }
 
         [Test]
@@ -54,9 +55,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
         }
 
         [Test]
-        public void Then_Readonly_Is_False()
+        public void Then_Readonly_Is_True()
         {
-            model.Readonly.Should().BeFalse();
+            model.Readonly.Should().BeTrue();
         }
         [Test]
         public void Then_CurrentReportExists_Is_False()
@@ -67,6 +68,25 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
         public void Then_CurrentReportAlreadySubmitted_Is_False()
         {
             model.CurrentReportAlreadySubmitted.Should().BeFalse();
+        }
+
+        [Test]
+        public void Then_The_Welcome_Message_Is_View_Only_No_Report()
+        {
+            var
+                expectedMessage
+                    =
+                    WelcomeMessageBuilder
+                        .BuildWelcomeMesssage()
+                        .ForPeriod(new Period(period))
+                        .WhereUserCanOnlyView()
+                        .AndReportDoesNotExist();
+
+            model
+                .WelcomeMessage
+                .Should()
+                .BeEquivalentTo(
+                    expectedMessage);
         }
     }
 }

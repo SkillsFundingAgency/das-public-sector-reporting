@@ -1,20 +1,22 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_For_Edit.Current_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit_But_Not_Submit.No_Report
 {
     [TestFixture]
-    public class When_I_Request_The_Homepage : And_Current_Report_Exists
-    {
-        private IActionResult result;
+    public class When_I_Request_The_Homepage : And_No_Current_Report_Exists
+    { private IActionResult result;
         private ViewResult viewResult;
         private IndexViewModel model;
 
         protected override void When()
         {
             result = SUT.Index();
+
             viewResult = result as ViewResult;
             model = viewResult?.Model as IndexViewModel;
         }
@@ -42,9 +44,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_Fo
         }
 
         [Test]
-        public void Then_Create_Report_Is_Disabled()
+        public void Then_Create_Report_Is_Enabled()
         {
-            Assert.IsFalse(model.CanCreateReport);
+            Assert.IsTrue(model.CanCreateReport);
         }
 
         [Test]
@@ -54,19 +56,38 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Not_Authorized_Fo
         }
 
         [Test]
-        public void Then_Readonly_Is_True()
+        public void Then_Readonly_Is_False()
         {
-            model.Readonly.Should().BeTrue();
+            model.Readonly.Should().BeFalse();
         }
         [Test]
-        public void Then_CurrentReportExists_Is_True()
+        public void Then_CurrentReportExists_Is_False()
         {
-            model.CurrentReportExists.Should().BeTrue();
+            model.CurrentReportExists.Should().BeFalse();
         }
         [Test]
         public void Then_CurrentReportAlreadySubmitted_Is_False()
         {
             model.CurrentReportAlreadySubmitted.Should().BeFalse();
+        }
+
+        [Test]
+        public void Then_The_Welcome_Message_Is_Edit_No_Report()
+        {
+            var
+                expectedMessage
+                    =
+                    WelcomeMessageBuilder
+                        .BuildWelcomeMesssage()
+                        .ForPeriod(new Period(period))
+                        .WhereUserCanEdit()
+                        .AndReportDoesNotExist();
+
+            model
+                .WelcomeMessage
+                .Should()
+                .BeEquivalentTo(
+                    expectedMessage);
         }
     }
 }

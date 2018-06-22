@@ -1,12 +1,14 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit.Current_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit_But_Not_Submit.Submitted_Report
 {
     [TestFixture]
-    public class When_I_Request_The_Homepage : And_Current_Report_Exists
+    public class When_I_Request_The_Homepage : And_Current_Report_Submitted
     {
         private IActionResult result;
         private ViewResult viewResult;
@@ -18,6 +20,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
             viewResult = result as ViewResult;
             model = viewResult?.Model as IndexViewModel;
         }
+
         [Test]
         public void Then_ViewResult_Is_Returned()
         {
@@ -39,6 +42,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
         {
             Assert.IsNotNull(model);
         }
+
         [Test]
         public void Then_Create_Report_Is_Disabled()
         {
@@ -46,9 +50,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
         }
 
         [Test]
-        public void Then_Edit_Report_Is_Enabled()
+        public void Then_Edit_Report_Is_Disabled()
         {
-            Assert.IsTrue(model.CanEditReport);
+            Assert.IsFalse(model.CanEditReport);
+        }
+
+        [Test]
+        public void Then_Report_Period_Matches_Current()
+        {
+            Assert.AreEqual(period, model.Period.PeriodString);
         }
 
         [Test]
@@ -62,9 +72,28 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
             model.CurrentReportExists.Should().BeTrue();
         }
         [Test]
-        public void Then_CurrentReportAlreadySubmitted_Is_False()
+        public void Then_CurrentReportAlreadySubmitted_Is_True()
         {
-            model.CurrentReportAlreadySubmitted.Should().BeFalse();
+            model.CurrentReportAlreadySubmitted.Should().BeTrue();
+        }
+
+        [Test]
+        public void Then_The_Welcome_Message_Is_Edit_Report_Submitted()
+        {
+            var
+                expectedMessage
+                    =
+                    WelcomeMessageBuilder
+                        .BuildWelcomeMesssage()
+                        .ForPeriod(new Period(period))
+                        .WhereUserCanEdit()
+                        .AndReportIsAlreadySubmitted();
+
+            model
+                .WelcomeMessage
+                .Should()
+                .BeEquivalentTo(
+                    expectedMessage);
         }
     }
 }
