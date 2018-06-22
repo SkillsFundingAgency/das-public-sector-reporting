@@ -82,9 +82,7 @@ namespace SFA.DAS.PSRService.Web.Attributes
                 switch (questionType)
                 {
                     case QuestionType.Number:
-
                         MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(questionType));
-
                         break;
                     case QuestionType.ShortText:
                         MergeAttribute(context.Attributes, "data-word-limit", "100");
