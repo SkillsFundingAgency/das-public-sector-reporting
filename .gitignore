@@ -272,3 +272,5 @@ src/Tools/PhantomJS/tools/phantomjs/ChangeLog
 
 # Ignore local Azure config
 LOCALConfig.json
+src/SFA.DAS.PSRService.Web/wwwroot/js/*.min.css
+src/SFA.DAS.PSRService.Web/wwwroot/js/*.min.js
