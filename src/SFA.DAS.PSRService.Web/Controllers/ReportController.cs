@@ -43,7 +43,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            return View("Edit", new ReportViewModel {Report = report});
+            var viewModel = new ReportViewModel
+            {
+                Report = report,
+                UserCanSubmitReports = UserIsAuthorizedForReportSubmission()
+            };
+
+            return View("Edit", viewModel);
         }
 
         [HttpGet]
