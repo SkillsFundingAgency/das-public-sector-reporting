@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -127,6 +128,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 TryValidateModel(reportViewModel);
 
+                reportViewModel.Subtitle = GetSubtitleForUserAccessLevel();
+
                 return View("Summary",reportViewModel);
             }
             catch
@@ -236,6 +239,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
+
         private bool UserIsAuthorizedForReportSubmission()
         {
             return
@@ -247,6 +251,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     .Result
                     .Succeeded;
         }
+
         private bool UserIsAuthorizedForReportEdit()
         {
             return
@@ -257,6 +262,27 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         PolicyNames.CanEditReport)
                     .Result
                     .Succeeded;
+        }
+
+        private string GetSubtitleForUserAccessLevel()
+        {
+            var firstStep =
+                SummaryPageMessageBuilder
+                    .GetSubtitle();
+
+            if (UserIsAuthorizedForReportSubmission())
+                return
+                    firstStep
+                        .ForUserWhoCanSubmit();
+
+            if (UserIsAuthorizedForReportEdit())
+                return
+                    firstStep
+                        .ForUserWhoCanEditButNotSubmit();
+
+            return
+                firstStep
+                    .ForViewOnlyUser();
         }
     }
 }

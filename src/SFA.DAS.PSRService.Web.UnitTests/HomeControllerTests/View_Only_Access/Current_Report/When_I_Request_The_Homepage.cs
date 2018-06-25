@@ -79,8 +79,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.
             var
             expectedMessage
                 =
-                WelcomeMessageBuilder
-                    .BuildWelcomeMesssage()
+                HomePageMessageBuilder
+                    .BuildMesssage()
                     .ForPeriod(new Period(period))
                     .WhereUserCanOnlyView()
                     .AndReportIsInProgress();

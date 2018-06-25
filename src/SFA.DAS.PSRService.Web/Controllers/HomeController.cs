@@ -151,8 +151,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private string BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
         {
             var firstStep =
-                WelcomeMessageBuilder
-                    .BuildWelcomeMesssage()
+                HomePageMessageBuilder
+                    .BuildMesssage()
                     .ForPeriod(_currentPeriod);
 
             var secondStep = 
@@ -165,7 +165,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         private string BuildMessageBasedOnReportStatus(
-            ReportStatusWelcomeMessageBuilder secondStep,
+            ReportStatusHomePageMessageBuilder secondStep,
             Report report)
         {
             if (report == null)
@@ -183,8 +183,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     .AndReportIsInProgress();
         }
 
-        private ReportStatusWelcomeMessageBuilder SetSecondStepBasedOnUserAccessLevel(
-            UserAccessLevelWeclomeMessageBuilder firstStep)
+        private ReportStatusHomePageMessageBuilder SetSecondStepBasedOnUserAccessLevel(
+            UserAccessLevelHomePageMessageBuilder firstStep)
         {
             if (UserIsAuthorizedForReportSubmission())
                 return

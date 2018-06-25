@@ -7,10 +7,10 @@ using Moq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Submitted_Report
 {
     [ExcludeFromCodeCoverage]
-    public abstract class Given_A_Valid_Report
+    public abstract class Given_A_Valid_Submitted_Report
     :Given_A_ReportController
     {
         protected override void Given()

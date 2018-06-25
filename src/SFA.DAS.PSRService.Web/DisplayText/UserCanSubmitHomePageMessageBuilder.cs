@@ -2,11 +2,11 @@
 
 namespace SFA.DAS.PSRService.Web.DisplayText
 {
-    public class UserCanSubmitWelcomeMessageBuilder : ReportStatusWelcomeMessageBuilder
+    public class UserCanSubmitHomePageMessageBuilder : ReportStatusHomePageMessageBuilder
     {
         private readonly Period _period;
 
-        public UserCanSubmitWelcomeMessageBuilder(Period period)
+        public UserCanSubmitHomePageMessageBuilder(Period period)
         {
             _period = period;
         }

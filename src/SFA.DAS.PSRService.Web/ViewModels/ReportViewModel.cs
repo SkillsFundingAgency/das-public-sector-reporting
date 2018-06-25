@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using SFA.DAS.PSRService.Domain.Entities;
@@ -18,6 +19,12 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public bool CanBeEdited { get; set; }
         public bool UserCanSubmitReports { get; set; }
         public bool UserCanEditReport { get; set; }
+        public string Subtitle { get; set; }
+
+        public ReportViewModel()
+        {
+            Subtitle = String.Empty;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
