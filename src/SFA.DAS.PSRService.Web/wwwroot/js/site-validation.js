@@ -1,11 +1,11 @@
 (function($) {
   'use strict';
   if ($.validator && $.validator.unobtrusive) {
-    console.log($.validator.unobtrusive.adapters);
     $.validator.unobtrusive.adapters.addSingleVal('maxwords', 'wordcount');
     $.validator.addMethod('maxwords', function(value, element, maxwords) {
+      var wordArray = GOVUK.wordCount.createWordArray(value);
       return value
-        ? this.optional(element) || value.split(' ').length < maxwords
+        ? this.optional(element) || wordArray.length <= maxwords
         : true;
     });
 

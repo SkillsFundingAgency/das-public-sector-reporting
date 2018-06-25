@@ -88,27 +88,30 @@
     },
     init: function() {
       if (!this.elems.$wordLengthTextarea.length) return false;
-      this.elems.$wordLengthTextarea.on('keyup input', this.countWords(this));
-      this.countWords(this).call();
+      this.elems.$wordLengthTextarea.on('keyup input', this.showCount(this));
+      this.showCount(this).call();
     },
-    countWords: function(self) {
+    showCount: function(self) {
       return function() {
         var wordLimit = self.elems.$wordLengthTextarea.data('word-limit');
-        var currentWordCount = self.elems.$wordLengthTextarea
-          .val()
-          .split(/[\s]+/);
-        if (currentWordCount[0] === '') currentWordCount.splice(0, 2);
-        if (currentWordCount[currentWordCount.length - 1] === '')
-          currentWordCount.splice(1, 1);
-        var wordsLeft = wordLimit - currentWordCount.length;
-        if (currentWordCount === '') wordsLeft = wordLimit;
+        var wordArray = self.createWordArray(
+          self.elems.$wordLengthTextarea.val()
+        );
+        var wordsLeft = wordLimit - wordArray.length;
+        if (wordArray === '') wordsLeft = wordLimit;
         var word_s = wordsLeft === 1 || wordsLeft === -1 ? 'word' : 'words';
-        if (currentWordCount.length <= wordLimit) {
+        if (wordArray.length <= wordLimit) {
           $('.words-left').html(wordsLeft + ' ' + word_s + ' left');
         } else {
           $('.words-left').html((wordsLeft *= -1) + ' ' + word_s + ' too many');
         }
       };
+    },
+    createWordArray: function(string) {
+      var wordArr = string.split(/[\s]+/);
+      if (wordArr[0] === '') wordArr.splice(0, 2);
+      if (wordArr[wordArr.length - 1] === '') wordArr.splice(1, 1);
+      return wordArr;
     }
   };
 
@@ -131,6 +134,7 @@
     },
     pageResized: function(self) {
       return function() {
+        console.log(self);
         self.elems.topOfNav = self.elems.$navHolder.offset().top;
       };
     },
@@ -155,31 +159,39 @@
   }
 
   GOVUK.addCommas = {
-    elems: {
-      $inputs: $('.js-addcommas')
-    },
+    elems: $('.js-addcommas'),
     init: function() {
-      this.elems.$inputs.on('load', this.onLoaded());
-      this.elems.$inputs.on('input', this.onInput);
+      if (!this.elems.length) return false;
+      $(window).on('load', this.onLoaded(this));
+      this.elems.on('input', this.onInput(this));
     },
-    onInput: function(event) {
-      event.target.value = event.target.value
-        .replace(/\D/g, '') // removes all chars that are not digits
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ','); // add commas every 3 digits
+    onInput: function(self) {
+      return function(event) {
+        event.target.value = self.convertString(event.target.value);
+      };
     },
     onLoaded: function(self) {
-      this.elems.$inputs.each(function() {
-        var value = $(this)
-          .val()
-          .replace(/\D/g, '') // removes all chars that are not digits
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ','); // add commas every 3 digits;
-        $(this).val(value);
-      });
+      return function() {
+        self.elems.each(function() {
+          if ($(this).is('input')) {
+            $(this).val(self.convertString($(this).val()));
+          } else {
+            $(this).text(self.convertString($(this).text()));
+          }
+        });
+      };
+    },
+    convertString: function(string) {
+      return string.match(/^([0])\1*$/g)
+        ? '0'
+        : string
+            .replace(/\D/g, '') // removes all chars that are not digits
+            .replace(/^0+/g, '') // remove leading zeroes
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ','); // add commas every 3 digits
     }
   };
 
   if (window.GOVUK && GOVUK.addCommas) {
-    // GOVUK.addCommas.onLoad();
     GOVUK.addCommas.init();
   }
 }.call(this));
