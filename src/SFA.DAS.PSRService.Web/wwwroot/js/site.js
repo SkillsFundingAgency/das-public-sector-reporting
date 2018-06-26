@@ -134,7 +134,6 @@
     },
     pageResized: function(self) {
       return function() {
-        console.log(self);
         self.elems.topOfNav = self.elems.$navHolder.offset().top;
       };
     },
