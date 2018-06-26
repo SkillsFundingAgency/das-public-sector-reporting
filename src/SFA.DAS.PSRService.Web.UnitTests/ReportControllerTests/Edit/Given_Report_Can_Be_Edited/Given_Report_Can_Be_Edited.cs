@@ -13,7 +13,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Edit.Given_Repo
     public abstract class Given_Report_Can_Be_Edited
     : GivenWhenThen<ReportController>
     {
-        private ReportController _controller;
         private Mock<IReportService> _mockReportService;
         private Mock<IUrlHelper> _mockUrlHelper;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
