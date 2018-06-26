@@ -2,11 +2,11 @@
 
 namespace SFA.DAS.PSRService.Web.DisplayText
 {
-    public class UserCanEditHomePageMessageBuilder : ReportStatusHomePageMessageBuilder
+    public class UserCanSubmitHomePageWelcomeMessageProvider : ReportStatusHomePageMessageBuilder
     {
         private readonly Period _period;
 
-        public UserCanEditHomePageMessageBuilder(Period period)
+        public UserCanSubmitHomePageWelcomeMessageProvider(Period period)
         {
             _period = period;
         }
@@ -14,13 +14,13 @@ namespace SFA.DAS.PSRService.Web.DisplayText
         public string AndReportIsInProgress()
         {
             return
-                $"You can edit the report for the year {_period.FullString} or review previously submitted reports.";
+                $"You can submit a new report for the year {_period.FullString} or review previously submitted reports.";
         }
 
         public string AndReportDoesNotExist()
         {
             return
-                $"You can create a new report for the year {_period.FullString} or review previously submitted reports.";
+                $"You can submit a new report for the year {_period.FullString} or review previously submitted reports.";
         }
 
         public string AndReportIsAlreadySubmitted()

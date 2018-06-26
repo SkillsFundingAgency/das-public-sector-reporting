@@ -77,8 +77,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Su
             var
                 expectedMessage
                     =
-                    HomePageMessageBuilder
-                        .BuildMesssage()
+                    HomePageWelcomeMessageProvider
+                        .GetMesssage()
                         .ForPeriod(new Period(period))
                         .WhereUserCanSubmit()
                         .AndReportDoesNotExist();

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -117,18 +116,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     .Succeeded;
         }
 
-        private bool UserIsAuthorizedForReportSubmission()
-        {
-            return
-                _authorizationService
-                    .AuthorizeAsync(
-                        User,
-                        this.ControllerContext,
-                        PolicyNames.CanSubmitReport)
-                    .Result
-                    .Succeeded;
-        }
-
         private void PopulateModelBasedOnReportStateAndUserAuthorization(IndexViewModel model, Report report)
         {
             bool reportExists = report != null;
@@ -150,55 +137,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         private string BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
         {
-            var firstStep =
-                HomePageMessageBuilder
-                    .BuildMesssage()
-                    .ForPeriod(_currentPeriod);
-
-            var secondStep = 
-                SetSecondStepBasedOnUserAccessLevel(firstStep);
-
             return
-                BuildMessageBasedOnReportStatus(
-                    secondStep,
-                    report);
-        }
 
-        private string BuildMessageBasedOnReportStatus(
-            ReportStatusHomePageMessageBuilder secondStep,
-            Report report)
-        {
-            if (report == null)
-                return
-                    secondStep
-                        .AndReportDoesNotExist();
-
-            if (report.Submitted)
-                return
-                    secondStep
-                        .AndReportIsAlreadySubmitted();
-
-            return
-                secondStep
-                    .AndReportIsInProgress();
-        }
-
-        private ReportStatusHomePageMessageBuilder SetSecondStepBasedOnUserAccessLevel(
-            UserAccessLevelHomePageMessageBuilder firstStep)
-        {
-            if (UserIsAuthorizedForReportSubmission())
-                return
-                    firstStep
-                        .WhereUserCanSubmit();
-
-            if (UserIsAuthorizedForReportEdit())
-                return
-                    firstStep
-                        .WhereUserCanEdit();
-
-            return
-                firstStep
-                    .WhereUserCanOnlyView();
+            new HomePageMessageProvider(this, _authorizationService)
+                .GetWelcomeMessage()
+                .ForPeriod(_currentPeriod)
+                .AndReport(report);
         }
     }
 }

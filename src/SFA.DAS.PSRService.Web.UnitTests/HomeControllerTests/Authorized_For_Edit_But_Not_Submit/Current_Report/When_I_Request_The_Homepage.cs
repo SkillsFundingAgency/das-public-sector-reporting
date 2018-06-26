@@ -75,8 +75,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
             var
                 expectedMessage
                     =
-                    HomePageMessageBuilder
-                        .BuildMesssage()
+                    HomePageWelcomeMessageProvider
+                        .GetMesssage()
                         .ForPeriod(new Period(period))
                         .WhereUserCanEdit()
                         .AndReportIsInProgress();
