@@ -276,5 +276,5 @@ src/SFA.DAS.PSRService.Web/testcert.bat
 *.cs.bak
 
 # Ignore minified files produced in build
-src/SFA.DAS.PSRService.Web/wwwroot/css/site.min.css
-src/SFA.DAS.PSRService.Web/wwwroot/js/site.min.js
+src/SFA.DAS.PSRService.Web/wwwroot/css/*.min.css
+src/SFA.DAS.PSRService.Web/wwwroot/js/*.min.js
