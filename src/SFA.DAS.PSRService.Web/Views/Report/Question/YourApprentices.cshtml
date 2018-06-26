@@ -11,7 +11,7 @@
         <tbody>
             <tr>
                 <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear</td>
-                <td class="numeric bold-xsmall">@questionList["atStart"].Answer</td>
+                <td class="numeric bold-xsmall js-addcommas">@questionList["atStart"].Answer</td>
                 <td class="link-right">
                     @if (submitValid)
                     {
@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear</td>
-                <td class="numeric bold-xsmall">@questionList["atEnd"].Answer</td>
+                <td class="numeric bold-xsmall js-addcommas">@questionList["atEnd"].Answer</td>
                 <td class="link-right">
                     @if (submitValid)
                     {
@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <td>Number of new apprentices in England between @ViewBag.CurrentPeriod.FullString (includes both new hires and existing employees who started an apprenticeship)</td>
-                <td class="numeric bold-xsmall">@questionList["newThisPeriod"].Answer</td>
+                <td class="numeric bold-xsmall js-addcommas">@questionList["newThisPeriod"].Answer</td>
                 <td class="link-right">
                     @if (submitValid)
                     {

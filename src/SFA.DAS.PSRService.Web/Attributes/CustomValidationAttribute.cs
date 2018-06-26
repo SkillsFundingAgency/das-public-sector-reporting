@@ -82,9 +82,7 @@ namespace SFA.DAS.PSRService.Web.Attributes
                 switch (questionType)
                 {
                     case QuestionType.Number:
-
                         MergeAttribute(context.Attributes, "data-val-number", GetErrorMessage(questionType));
-
                         break;
                     case QuestionType.ShortText:
                         MergeAttribute(context.Attributes, "data-word-limit", "100");
@@ -128,7 +126,7 @@ namespace SFA.DAS.PSRService.Web.Attributes
             switch (questionType)
             {
                 case QuestionType.Number:
-                    return "Must be a number between 0 and 9";
+                    return "Must be a whole number";
                     break;
                 case QuestionType.ShortText:
                     return "Text cannot be longer than 100 words";
