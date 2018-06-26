@@ -216,10 +216,15 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult OrganisationName(string post)
         {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!_reportService.CanBeEdited(report))
+                return new RedirectResult(Url.Action("Index", "Home"));
+
             var organisationVm = new OrganisationViewModel
             {
                 EmployerAccount = EmployerAccount,
-                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
+                Report = report
             };
 
             if (string.IsNullOrEmpty(organisationVm.Report.OrganisationName))
