@@ -68,7 +68,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                _reportService.CreateReport(EmployerAccount.AccountId);
+                var user = _userService.GetUserModel(User);
+                _reportService.CreateReport(EmployerAccount.AccountId, user);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception)
@@ -96,6 +97,23 @@ namespace SFA.DAS.PSRService.Web.Controllers
             }
 
             return View("List", reportListViewmodel);
+        }
+
+        [Route("History")]
+        public IActionResult History()
+        {
+            var model = new ReportHistoryViewModel
+            {
+                Period = _currentPeriod,
+            };
+
+            model.EditHistoryMostRecentFirst =
+                _reportService
+                    .GetReportEditHistoryMostRecentFirst(
+                        _currentPeriod,
+                        EmployerAccount.AccountId);
+
+            return View("History", model);
         }
 
         [Route("Summary/{period}")]
@@ -246,7 +264,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-            _reportService.SaveReport(reportViewModel.Report);
+            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User));
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }

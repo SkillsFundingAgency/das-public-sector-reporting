@@ -8,40 +8,42 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
 {
     [ExcludeFromCodeCoverage]
     [TestFixture]
-    public class When_I_Create_A_New_Report
-    : Given_No_Existing_Reports_In_Database
+    public class When_I_Create_A_New_Report : Given_No_Existing_Reports_In_Database
     {
-        private ReportDto reportCreatedViaRepository;
+        private ReportDto _reportCreatedViaRepository;
 
         protected override void When()
         {
-            reportCreatedViaRepository = new ReportDto
+            _reportCreatedViaRepository = new ReportDto
             {
-                Id = Guid.NewGuid(),
+                Id = RepositoryTestHelper.ReportOneId,
                 EmployerId = "Uncle Sam",
                 ReportingData = "Some genious piece of json",
                 ReportingPeriod = "1111",
-                Submitted = false
+                Submitted = false,
+                AuditWindowStartUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow),
+                UpdatedUtc = RepositoryTestHelper.TrimDateTime(DateTime.UtcNow),
+                UpdatedBy = "{ FullName: 'Bob Shurunkle'}"
             };
 
             SUT
                 .Create(
-                    reportCreatedViaRepository);
+                    _reportCreatedViaRepository);
         }
 
         [Test]
         public void Then_Report_Is_Persisted_To_Underlying_Data_Store()
         {
-            var reportPersistedToDB
+            var reportPersistedToDb
                 =
                 RepositoryTestHelper
                     .GetAllReports()
-                    .Single();
+                    .Single(r => r.Id.Equals(RepositoryTestHelper.ReportOneId));
 
             RepositoryTestHelper
                 .AssertReportsAreEquivalent(
-                    reportCreatedViaRepository
-                    , reportPersistedToDB
+                    _reportCreatedViaRepository
+                    , reportPersistedToDb
                     );
         }
     }

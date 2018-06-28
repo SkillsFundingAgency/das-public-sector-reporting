@@ -9,6 +9,7 @@ using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
@@ -34,7 +35,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
         public void And_Report_Supplied_Then_Report_Saved()
         {
             //Arrange
-            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
+            _webConfigurationMock.SetupGet(s => s.AuditWindowSize).Returns((TimeSpan?)null);
             _mediatorMock.Setup(s => s.Send(It.IsAny<UpdateReportRequest>(), It.IsAny<CancellationToken>()));
 
             var Questions = new List<Question>()
@@ -115,7 +116,13 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 Sections = sections
             };
 
-            _reportService.SaveReport(report);
+            var user = new UserModel
+            {
+                DisplayName = "Horatio",
+                Id = new Guid("DC850E8E-8286-47DF-8BFD-8332A6483555")
+            };
+
+            _reportService.SaveReport(report, user);
 
             _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()));
         }

@@ -17,12 +17,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
     {
         private readonly IReportService _reportService;
         private readonly IPeriodService _periodService;
+        private readonly IUserService _userService;
 
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService)
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService, IUserService userService) 
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
             _periodService = periodService;
+            _userService = userService;
         }
 
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
@@ -87,8 +89,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         question.Answer = answeredQuestion.Answer;
                     }
                 }
-
-                _reportService.SaveReport(report);
+                
+                _reportService.SaveReport(report, _userService.GetUserModel(User));
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
 

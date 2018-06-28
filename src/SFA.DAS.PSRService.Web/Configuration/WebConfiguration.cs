@@ -22,5 +22,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public string HomeUrl { get; set; }
         [JsonRequired]
         public SessionStoreConfiguration SessionStore { get; set; }
+
+        public TimeSpan? AuditWindowSize { get; set; }
     }
 }
