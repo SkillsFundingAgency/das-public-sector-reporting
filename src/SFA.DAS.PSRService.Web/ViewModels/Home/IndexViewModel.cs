@@ -10,5 +10,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels.Home
         public Period Period { get; set; }
         public bool Readonly { get; set; }
         public bool CurrentReportAlreadySubmitted { get; set; }
+        public string WelcomeMessage { get; set; }
     }
 }

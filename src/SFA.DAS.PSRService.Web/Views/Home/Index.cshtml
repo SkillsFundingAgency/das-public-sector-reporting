@@ -11,15 +11,7 @@
         <a href="@ViewData["HomeUrl"]" class="link-back">Back to Apprentices</a>
         <h1 class="heading-xlarge">Annual apprenticeship return</h1>
         <p>
-            @if (Model.CanCreateReport || Model.CanEditReport)
-            {
-                @:You can submit a new report for the year @Model.Period.FullString or
-            }
-            else
-            {
-                @:The report for the year @Model.Period.FullString is already submitted, you can
-            }
-            review previously submitted reports.
+            @Model.WelcomeMessage
         </p>
 
         <form id="SelectOption" action="@Url.Action("Submit")" method="post">

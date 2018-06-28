@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -42,7 +43,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            return View("Edit", new ReportViewModel {Report = report});
+            var viewModel = new ReportViewModel
+            {
+                Report = report,
+                UserCanSubmitReports = UserIsAuthorizedForReportSubmission()
+            };
+
+            return View("Edit", viewModel);
         }
 
         [HttpGet]
@@ -127,6 +134,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 TryValidateModel(reportViewModel);
 
+                reportViewModel.Subtitle = GetSubtitleForUserAccessLevel();
+
                 return View("Summary",reportViewModel);
             }
             catch
@@ -207,10 +216,15 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult OrganisationName(string post)
         {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!_reportService.CanBeEdited(report))
+                return new RedirectResult(Url.Action("Index", "Home"));
+
             var organisationVm = new OrganisationViewModel
             {
                 EmployerAccount = EmployerAccount,
-                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
+                Report = report
             };
 
             if (string.IsNullOrEmpty(organisationVm.Report.OrganisationName))
@@ -236,6 +250,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
+
         private bool UserIsAuthorizedForReportSubmission()
         {
             return
@@ -247,6 +262,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     .Result
                     .Succeeded;
         }
+
         private bool UserIsAuthorizedForReportEdit()
         {
             return
@@ -257,6 +273,27 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         PolicyNames.CanEditReport)
                     .Result
                     .Succeeded;
+        }
+
+        private string GetSubtitleForUserAccessLevel()
+        {
+            var firstStep =
+                SummaryPageMessageBuilder
+                    .GetSubtitle();
+
+            if (UserIsAuthorizedForReportSubmission())
+                return
+                    firstStep
+                        .ForUserWhoCanSubmit();
+
+            if (UserIsAuthorizedForReportEdit())
+                return
+                    firstStep
+                        .ForUserWhoCanEditButNotSubmit();
+
+            return
+                firstStep
+                    .ForViewOnlyUser();
         }
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.SubmitActions;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -59,14 +60,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var model = new IndexViewModel();
 
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
             model.Period = _currentPeriod;
-            model.CurrentReportExists = report != null;
-            // TODO: take submission period close date into account
-            model.CanCreateReport = report == null && UserIsAuthorizedForReportEdit();
-            model.CanEditReport = report != null && !report.Submitted && UserIsAuthorizedForReportEdit();
-            model.Readonly = UserIsAuthorizedForReportEdit() == false;
-            model.CurrentReportAlreadySubmitted = report?.Submitted ?? false;
+
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            PopulateModelBasedOnReportStateAndUserAuthorization(model, report);
+
             return View(model);
         }
 
@@ -80,6 +79,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return
                 new BadRequestResult();
         }
+
 
         private RedirectResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
         {
@@ -114,6 +114,35 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         PolicyNames.CanEditReport)
                     .Result
                     .Succeeded;
+        }
+
+        private void PopulateModelBasedOnReportStateAndUserAuthorization(IndexViewModel model, Report report)
+        {
+            bool reportExists = report != null;
+            bool reportDoesNotExist = reportExists == false;
+            bool reportIsAlreadySubmitted = report?.Submitted ?? false;
+            bool reportIsNotYetSubmitted = reportIsAlreadySubmitted == false;
+            bool userIsAuthorizedForReportEdit = UserIsAuthorizedForReportEdit();
+            bool userIsNotAuthorizedForReportEdit = userIsAuthorizedForReportEdit == false;
+
+            model.CurrentReportExists = reportExists;
+            // TODO: take submission period close date into account
+            model.CanCreateReport =  reportDoesNotExist && userIsAuthorizedForReportEdit;
+            model.CanEditReport = reportExists && reportIsNotYetSubmitted && userIsAuthorizedForReportEdit;
+            model.Readonly = userIsNotAuthorizedForReportEdit;
+            model.CurrentReportAlreadySubmitted = reportIsAlreadySubmitted;
+
+            model.WelcomeMessage = BuildWelcomeMessageFromReportStatusAndUserAuthorization(report);
+        }
+
+        private string BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
+        {
+            return
+
+            new HomePageMessageProvider(this, _authorizationService)
+                .GetWelcomeMessage()
+                .ForPeriod(_currentPeriod)
+                .AndReport(report);
         }
     }
 }
