@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SFA.DAS.PSRService.Domain.Enums;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {
@@ -18,11 +17,26 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public Period Period { get; set; }
         public bool IsValidForSubmission()
         {
-            return !Submitted 
-                   && (Sections == null || Sections.All(s => s.IsValidForSubmission()));
-
+            return
+                ReportIsNotYetSubmitted()
+                && AllSectionsAreValid()
+                && OrganisationNameIsValid();
         }
 
+        private bool OrganisationNameIsValid()
+        {
+            return string.IsNullOrWhiteSpace(OrganisationName) == false;
+        }
+
+        private bool ReportIsNotYetSubmitted()
+        {
+            return Submitted == false;
+        }
+
+        private bool AllSectionsAreValid()
+        {
+            return Sections == null || Sections.All(s => s.IsValidForSubmission());
+        }
 
         public Section GetQuestionSection(string sectionId)
         {
@@ -114,6 +128,26 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
 
             return sectionList;
+        }
+
+        public IEnumerable<string> GetNamesOfIncompleteMandatoryQuestionSections()
+        {
+            if (OrganisationNameIsValid() == false)
+                yield return @"Organisation Name";
+
+            foreach (var text in GetSummaryTextFromFirstLevelSubSectionsNotValidForSubmission())
+            {
+                yield return text;
+            }
+        }
+
+        private IEnumerable<string> GetSummaryTextFromFirstLevelSubSectionsNotValidForSubmission()
+        {
+            return
+                Sections
+                    .SelectMany(s => s.SubSections)
+                    .Where(w => !w.IsValidForSubmission())
+                    .Select(subSection => subSection.SummaryText);
         }
     }
 }
