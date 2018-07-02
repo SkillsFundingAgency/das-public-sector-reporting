@@ -133,7 +133,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public IEnumerable<string> GetNamesOfIncompleteMandatoryQuestionSections()
         {
             if (OrganisationNameIsValid() == false)
-                yield return @"Organisation Name";
+                yield return @"Organisation";
 
             foreach (var text in GetSummaryTextFromFirstLevelSubSectionsNotValidForSubmission())
             {
