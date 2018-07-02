@@ -109,7 +109,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         public void And_The_Question_ID_Doesnt_Exist_Then_Return_Error()
         {
             // arrange
-            _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE")).Verifiable();
+            _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE")).Verifiable();
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
@@ -129,7 +129,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE")).Verifiable();
+            _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE")).Verifiable();
             _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>())).Callback<Report, UserModel>((r, u) => actualReport = r).Verifiable("Report was not saved");
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
             _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
@@ -180,7 +180,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         {
             // arrange
             Report actualReport = null;
-            var report = ReportTestModelBuilder.CurrentReportWithValidSections("123");
+            var report = ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("123");
             var url = "home/index";
             UrlActionContext actualContext = null;
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");

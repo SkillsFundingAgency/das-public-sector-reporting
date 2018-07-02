@@ -110,7 +110,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 ReportingPeriod = "1718",
                 Sections = sections,
                 Period = new Period("1718"),
-                SubmittedDetails = new Submitted()
+                SubmittedDetails = new Submitted(),
+                OrganisationName = "Some valid organisation name."
             };
 
 
