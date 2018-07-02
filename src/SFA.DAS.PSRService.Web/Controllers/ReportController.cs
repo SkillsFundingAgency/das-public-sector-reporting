@@ -166,7 +166,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var viewModel = new ReportViewModel { Report = report };
 
-            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) || !report.IsValidForSubmission())
+            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) )
                 return new RedirectResult(Url.Action("Summary", "Report"));
 
             ViewBag.CurrentPeriod = _currentPeriod;
