@@ -161,7 +161,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             if (report.IsValidForSubmission() == false)
             {
-                return new RedirectResult(Url.Action("Edit","Report"));
+                return new RedirectResult(Url.Action("Summary", "Report"));
             }
 
             var viewModel = new ReportViewModel { Report = report };
