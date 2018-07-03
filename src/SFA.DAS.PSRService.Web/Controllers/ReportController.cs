@@ -118,7 +118,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     Report = report,
                     Period = _currentPeriod,
                     CanBeEdited = _reportService.CanBeEdited(report) && UserIsAuthorizedForReportEdit(),
-                    UserCanSubmitReports = UserIsAuthorizedForReportSubmission()
+                    UserCanSubmitReports = UserIsAuthorizedForReportSubmission(),
+                    IsReadOnly = (UserIsAuthorizedForReportEdit() == false)
                 };
 
 
