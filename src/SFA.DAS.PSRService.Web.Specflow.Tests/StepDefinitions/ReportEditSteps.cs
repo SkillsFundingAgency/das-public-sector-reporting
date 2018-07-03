@@ -37,6 +37,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void ThenTheEditReportPageIsDisplayed()
         {
             var reportEdit = new ReportEditPage(webDriver);
+
+            reportEdit.Verify();
         }
         
         [Then(@"the Your employees page is displayed")]
