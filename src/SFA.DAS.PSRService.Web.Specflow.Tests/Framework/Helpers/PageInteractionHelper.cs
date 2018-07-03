@@ -76,6 +76,19 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
                 + "\n Found: " + actual);
         }
 
+        public static Boolean VerifyValue(By locator, String expected)
+        {
+            String actual = WebDriver.FindElement(locator).GetAttribute("value");
+            if (actual.Contains(expected))
+            {
+                return true;
+            }
+
+            throw new Exception("Value verification failed: "
+                + "\n Expected: " + expected
+                + "\n Found: " + actual);
+        }
+
         public static void WaitForPageToLoad(int implicitWaitTime = 10)
         {
             Thread.Sleep(500);

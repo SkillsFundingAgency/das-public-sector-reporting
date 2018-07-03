@@ -42,15 +42,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public void VerifyAtStartValue(string expected)
         {
-            PageInteractionHelper.VerifyText(atStart, expected);
+            PageInteractionHelper.VerifyValue(atStart, expected);
         }
         public void VerifyAtEndValue(string expected)
         {
-            PageInteractionHelper.VerifyText(atEnd, expected);
+            PageInteractionHelper.VerifyValue(atEnd, expected);
         }
         public void VerifyNewThisPeriodValue(string expected)
         {
-            PageInteractionHelper.VerifyText(newThisPeriod, expected);
+            PageInteractionHelper.VerifyValue(newThisPeriod, expected);
         }
 
     }

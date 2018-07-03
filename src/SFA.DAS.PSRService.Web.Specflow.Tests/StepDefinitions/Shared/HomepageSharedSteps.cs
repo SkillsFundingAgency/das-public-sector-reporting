@@ -21,5 +21,20 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                     break;
             }
         }
+
+        [When(@"I Select Homepage '(.*)' Radio button")]
+        public void WhenISelectHomepageRadioButton(string p0)
+        {
+            PsrsHomepage homepage = new PsrsHomepage(webDriver);
+
+            switch (p0)
+            {
+                case "Create a new report":
+                    homepage.SelectCreateReport();
+                    break;
+            }
+        }
+
+
     }
 }

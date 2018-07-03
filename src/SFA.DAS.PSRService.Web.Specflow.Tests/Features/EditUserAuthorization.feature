@@ -7,8 +7,8 @@ Given Edit access is granted
 Scenario: Edit user can view create report page
 	Given User navigates to Homepage
 	And no current report exists
-	When Selects Homepage 'Create a report' Radio button
-	And I click on Continue button
+	When I Select Homepage 'Create a new report' Radio button
+	And I click on homepage Continue button
 	Then the create report page is displayed
 
 Scenario: Edit user can create a report
@@ -18,7 +18,7 @@ Scenario: Edit user can create a report
 	Then New report is created
 
 Scenario: Edit user can edit a report
-	Given  A Current report exists
+	Given a report has been created
 	And the report hasnt been submitted
 	When I navigate to the Edit report page
 	Then the edit report page is displayed
@@ -29,8 +29,8 @@ Scenario: Edit user can edit a report question
 	Then the Your employees page is displayed
 
 Scenario: Edit user can submit an edited question
-	Given User navigates to the 'Your employees' question page
-	And the <firstvalue>, <secondvalue> and <thirdValue> have been edited
+	Given User navigates to the Your employees question page
+	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
 	When I click on the save question
 	Then The 'Your Employees' question values are saved
 

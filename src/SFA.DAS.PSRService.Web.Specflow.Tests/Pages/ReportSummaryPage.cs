@@ -23,6 +23,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
+        public IWebElement ReportSummaryOrganisationName => WebDriver.WaitForElementToBeVisible(By.ClassName("task-list-section"));
 
     }
 }
