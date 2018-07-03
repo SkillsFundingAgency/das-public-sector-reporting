@@ -2,7 +2,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
-using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -67,9 +66,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
 
             Assert
                 .IsNotNull(reportViewModel.Report);
-
-            Assert
-                .IsNotNull(reportViewModel.Report.Id);
         }
 
         [Test]
@@ -87,6 +83,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
                 .Should()
                 .BeEquivalentTo(
                     expectedText);
+        }
+
+        [Test]
+        public void Then_ViewModel_IsReadOnly_Is_True()
+        {
+            model
+                .IsReadOnly
+                .Should()
+                .BeTrue();
         }
     }
 }

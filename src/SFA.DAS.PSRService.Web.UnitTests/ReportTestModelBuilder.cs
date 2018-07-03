@@ -68,7 +68,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests
             Questions = null,
             Title = "SectionTwo"
         };
-        public static Report CurrentReportWithValidSections(string employerId)
+        public static Report CurrentValidAndNotSubmittedReport(string employerId)
         {
             return ReportWithValidSections(employerId, DateTime.UtcNow);
         }
@@ -122,9 +122,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests
         {
             return new List<Report>()
             {
-                CurrentReportWithValidSections("ABCDE"),
+                CurrentValidAndNotSubmittedReport("ABCDE"),
                 ReportWithValidSections("ABCDE", DateTime.UtcNow.AddYears(-1)),
-                CurrentReportWithValidSections("VWXYZ")
+                CurrentValidAndNotSubmittedReport("VWXYZ")
             };
         }
 
