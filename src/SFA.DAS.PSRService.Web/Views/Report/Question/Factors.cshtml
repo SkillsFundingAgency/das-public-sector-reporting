@@ -2,53 +2,52 @@
 
 @{
     var questionList = Model.SubSections.SelectMany(w => w.Questions).ToDictionary(k => k.Id);
-
     var canBeEdited = ViewBag.CanBeEdited;
 }
 
 <div class="form-group">
     <table>
+        <caption class="heading-small">Factors that impacted your ability to meet the target</caption>
         <tbody>
-            <caption class="heading-small">Factors that impacted your ability to meet the target</caption>
             <tr>
                 <td>Outline any actions you have taken to help you progress towards meeting the public sector target</td>
                 <td class="numeric bold-xsmall">@questionList["OutlineActions"].Answer</td>
-                <td class="link-right">
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["OutlineActions"].Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
             <tr>
                 <td>Tell us about any challenges you have faced in your efforts to meet the target</td>
                 <td class="numeric bold-xsmall">@questionList["Challenges"].Answer</td>
-                <td class="link-right">
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["Challenges"].Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
             <tr>
                 <td>How are you planning to ensure you meet the target in future?</td>
                 <td class="numeric bold-xsmall">@questionList["TargetPlans"].Answer</td>
-                <td class="link-right">
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["TargetPlans"].Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
             <tr>
                 <td>Do you have anything else you want to tell us? (optional)</td>
                 <td class="numeric bold-xsmall">@questionList["AnythingElse"].Answer</td>
-                <td class="link-right">
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["AnythingElse"].Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
         </tbody>
     </table>

@@ -13,12 +13,12 @@
             <tr>
                 <td>Full-time equivalents (optional)</td>
                 <td class="numeric bold-xsmall js-addcommas">@questionList["atStart"].Answer</td>
-                <td class="link-right">
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@Model.Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
         </tbody>
     </table>

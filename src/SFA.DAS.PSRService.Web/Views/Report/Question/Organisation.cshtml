@@ -12,12 +12,12 @@
             <tr>
                 <td>Organisation Name</td>
                 <td class="numeric bold-xsmall">@Model</td>
-                <td class="link-right">
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Report" asp-action="OrganisationName">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
         </tbody>
     </table>
