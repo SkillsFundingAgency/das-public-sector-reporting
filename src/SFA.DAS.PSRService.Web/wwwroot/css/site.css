@@ -20,22 +20,26 @@
   display: block;
 }
 
-/* Review details page */
+/* Review details and report history pages */
 
-.review-details tr:first-child {
+.review-details tr:first-child,
+.report-history tr:first-child {
   border-top: 1px solid #bfc1c3;
 }
 
-.review-details tr > td:first-child {
+.review-details tr > td:first-child,
+.report-history tr > td:first-child {
   width: 33.33333%;
 }
 
-.review-details table td {
+.review-details table td,
+.report-history table td {
   font-size: 16px;
   line-height: 1.25;
 }
 
-.review-details .heading-small {
+.review-details .heading-small,
+.report-history .heading-small {
   display: table-caption;
   margin-top: 1.25em;
   margin-bottom: 1.25em;
@@ -781,13 +785,3 @@ a#link-settings:focus {
   color: #005ea5;
   border: none;
 }
-
-.psr-history-panel td.link-right {
-  display: none;
-}
-
-/*
-.history-details-section td:last-child {
-  padding-right: 0;
-}
-*/

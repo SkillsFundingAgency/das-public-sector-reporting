@@ -8,7 +8,7 @@
     ViewBag.CurrentPeriod = Model.Period;
 }
 
-<div class="grid-row">
+<div class="grid-row report-history">
     <div class="column-two-thirds">
         <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         <h1 class="heading-xlarge">Report history</h1>
@@ -16,10 +16,11 @@
     <div class="column-full">
         <div class="form-group">
             <table>
+                <caption class="heading-small">Reporting period</caption>
                 <tbody>
                 <tr>
                     <td>Reporting period</td>
-                    <td class="bold numeric">@Model.Period.FullString</td>
+                    <td class="bold-xsmall">@Model.Period.FullString</td>
                 </tr>
                 </tbody>
             </table>
@@ -27,30 +28,17 @@
 
         @foreach (var edit in Model.EditHistoryMostRecentFirst)
         {
-            @*
-            <div class="form-group">
-                <table>
-                    <caption class="heading-small">Edit</caption>
-                    <tbody>
-                    <tr>
-                        <td>previously changed by <span class="bold">@edit.UpdatedBy.Name</span> on <span class="bold">@edit.UpdatedUtc.ToString("dd MMM yyyy")</span> at <span class="bold">@edit.UpdatedUtc.ToString("HH:mm:ss")</span></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            *@
             <details>
                 <summary>
-                    <span class="summary">Edit previously changed by <span class="bold">@edit.UpdatedBy.Name</span> on <span class="bold">@edit.UpdatedUtc.ToString("dd MMM yyyy")</span> at <span class="bold">@edit.UpdatedUtc.ToString("HH:mm:ss")</span></span>
+                    <span class="summary">Edit previously changed by @edit.UpdatedBy.Name on @edit.UpdatedUtc.ToString("dd MMM yyyy") at @edit.UpdatedUtc.ToString("HH:mm:ss")</span>
                 </summary>
-                <div class="panel psr-history-panel">
+                <div>
                     @Html.Partial("Question/Organisation", edit.OrganisationName)
                     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
                     @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
                     @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
                 </div>
-            </details>
-            
+            </details>    
         }
     </div>
 
