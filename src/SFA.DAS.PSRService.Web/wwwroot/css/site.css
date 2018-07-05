@@ -38,8 +38,12 @@
   line-height: 1.25;
 }
 
-.review-details .heading-small,
-.report-history .heading-small {
+.baseline td {
+  vertical-align: baseline;
+}
+
+.review-details caption,
+.report-history caption {
   display: table-caption;
   margin-top: 1.25em;
   margin-bottom: 1.25em;

@@ -16,7 +16,7 @@
     <div class="column-full">
         <div class="form-group">
             <table>
-                <caption class="heading-small">Reporting period</caption>
+                <caption class="heading-medium">Reporting period</caption>
                 <tbody>
                 <tr>
                     <td>Reporting period</td>
@@ -30,7 +30,7 @@
         {
             <details>
                 <summary>
-                    <span class="summary">Edit previously changed by @edit.UpdatedBy.Name on @edit.UpdatedUtc.ToString("dd MMM yyyy") at @edit.UpdatedUtc.ToString("HH:mm:ss")</span>
+                    <span class="summary">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedUtc.ToString("dddd dd MMMM yyyy") at @edit.UpdatedUtc.ToString("HH:mm")</span>
                 </summary>
                 <div>
                     @Html.Partial("Question/Organisation", edit.OrganisationName)
