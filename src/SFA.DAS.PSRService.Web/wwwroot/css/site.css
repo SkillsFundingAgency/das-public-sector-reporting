@@ -29,17 +29,21 @@
 
 .review-details tr > td:first-child,
 .report-history tr > td:first-child {
-  width: 33.33333%;
+  width: 50%;
 }
 
-.review-details table td,
+/* .review-details table td,
 .report-history table td {
-  font-size: 16px;
-  line-height: 1.25;
+    font-size: 16px;
+    line-height: 1.25;
+} */
+
+.essay-questions td {
+  vertical-align: baseline;
 }
 
-.baseline td {
-  vertical-align: baseline;
+.essay-questions tr > td:first-child {
+  width: 33.33333%;
 }
 
 .review-details caption,
