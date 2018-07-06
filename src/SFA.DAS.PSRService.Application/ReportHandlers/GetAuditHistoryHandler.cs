@@ -18,13 +18,6 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             _mapper = mapper;
         }
 
-        protected Report HandleCore(GetReportRequest request)
-        {
-            var reportDto = _reportRepository.Get(request.Period,request.EmployerId);
-
-            return _mapper.Map<Report>(reportDto);
-        }
-
         protected override IEnumerable<AuditRecord> HandleCore(GetReportEditHistoryMostRecentFirst mostRecentFirst)
         {
             var report =
