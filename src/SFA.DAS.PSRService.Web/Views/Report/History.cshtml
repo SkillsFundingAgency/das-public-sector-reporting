@@ -8,46 +8,38 @@
     ViewBag.CurrentPeriod = Model.Period;
 }
 
-<div class="grid-row">
+<div class="grid-row report-history">
     <div class="column-two-thirds">
         <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         <h1 class="heading-xlarge">Report history</h1>
     </div>
-
-    <div class="form-group">
-        <table>
-            <caption class="heading-small">Reporting period</caption>
-            <tbody>
-            <tr>
-                <td>Reporting period</td>
-                <td class="numeric bold-xsmall">@Model.Period.FullString</td>
-                <td class="link-right"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    @foreach (var edit in Model.EditHistoryMostRecentFirst)
-    {
+    <div class="column-full">
         <div class="form-group">
             <table>
-                <caption class="heading-small">Edit</caption>
+                @*<caption class="heading-medium">Reporting period</caption>*@
                 <tbody>
                 <tr>
-                    <td>previously changed by</td>
-                    <td class="numeric bold-xsmall">@edit.UpdatedBy.Name</td>
-                    <td>on</td>
-                    <td class="numeric bold-xsmall">@edit.UpdatedUtc.ToString("dd MMM yyyy")</td>
-                    <td>at</td>
-                    <td class="numeric bold-xsmall">@edit.UpdatedUtc.ToString("HH:mm:ss")</td>
+                    <td>Reporting period</td>
+                    <td class="bold">@Model.Period.FullString</td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        @Html.Partial("Question/Organisation", edit.OrganisationName)
-        @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
-        @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
-        @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
-    }
+
+        @foreach (var edit in Model.EditHistoryMostRecentFirst)
+        {
+            <details>
+                <summary>
+                    <span class="summary">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedUtc.ToString("dddd dd MMMM yyyy") at @edit.UpdatedUtc.ToString("HH:mm")</span>
+                </summary>
+                <div>
+                    @Html.Partial("Question/Organisation", edit.OrganisationName)
+                    @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
+                    @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
+                    @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                </div>
+            </details>    
+        }
+    </div>
 
 </div>
