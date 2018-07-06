@@ -7,37 +7,37 @@
 
 <div class="form-group">
     <table>
-        <caption class="heading-small">Number of apprentices who work in England</caption>
+        <caption class="heading-medium">Number of apprentices who work in England</caption>
         <tbody>
             <tr>
                 <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear</td>
-                <td class="numeric bold-xsmall js-addcommas">@questionList["atStart"].Answer</td>
-                <td class="link-right">
+                <td class="numeric bold js-addcommas">@questionList["atStart"].Answer</td>
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@Model.Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
             <tr>
                 <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear</td>
-                <td class="numeric bold-xsmall js-addcommas">@questionList["atEnd"].Answer</td>
-                <td class="link-right">
+                <td class="numeric bold js-addcommas">@questionList["atEnd"].Answer</td>
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@Model.Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
             <tr>
                 <td>Number of new apprentices in England between @ViewBag.CurrentPeriod.FullString (includes both new hires and existing employees who started an apprenticeship)</td>
-                <td class="numeric bold-xsmall js-addcommas">@questionList["newThisPeriod"].Answer</td>
-                <td class="link-right">
+                <td class="numeric bold js-addcommas">@questionList["newThisPeriod"].Answer</td>
                     @if (canBeEdited)
                     {
+                    <td class="link-right">
                         <a asp-controller="Question" asp-action="Index" asp-route-id="@Model.Id">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
         </tbody>
     </table>
