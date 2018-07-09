@@ -5,7 +5,13 @@
   },
   {
     "outputFileName": "wwwroot/js/site.min.js",
-    "inputFiles": ["wwwroot/js/site-nav.js", "wwwroot/js/site.js"],
+    "inputFiles": [
+      "wwwroot/js/details.polyfill.js",
+      "wwwroot/js/shim-links-with-button-role.js",
+      "wwwroot/js/show-hide-content.js",
+      "wwwroot/js/site-nav.js",
+      "wwwroot/js/site.js"
+    ],
     "minify": {
       "renameLocals": true
     }

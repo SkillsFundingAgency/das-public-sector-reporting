@@ -16,12 +16,12 @@ namespace SFA.DAS.PSRService.Web.DisplayText
 
         public string ForUserWhoCanSubmit()
         {
-            return "Check or amend your information before you continue";
+            return "Check or amend your information before you continue.";
         }
 
         public string ForUserWhoCanEditButNotSubmit()
         {
-            return "Check or amend your information";
+            return "Check or amend your information.";
         }
     }
 }

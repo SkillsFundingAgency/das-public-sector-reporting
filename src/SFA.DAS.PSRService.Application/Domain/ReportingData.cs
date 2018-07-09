@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.Domain
 {
-    public class ReportMapping
+    public class ReportingData
     {
     
         public IEnumerable<Section> Questions { get; set; }

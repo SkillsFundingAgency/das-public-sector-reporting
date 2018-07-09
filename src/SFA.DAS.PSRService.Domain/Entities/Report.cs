@@ -15,6 +15,10 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public Submitted SubmittedDetails { get; set; }
         public ReportingPercentages ReportingPercentages {get; set; }
         public Period Period { get; set; }
+        public DateTime? AuditWindowStartUtc { get; set; }
+        public DateTime? UpdatedUtc { get; set; }
+        public User UpdatedBy { get; set; }
+
         public bool IsValidForSubmission()
         {
             return
