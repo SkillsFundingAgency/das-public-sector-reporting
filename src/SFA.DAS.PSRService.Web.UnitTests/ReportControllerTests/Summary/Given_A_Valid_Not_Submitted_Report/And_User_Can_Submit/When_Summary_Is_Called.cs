@@ -68,9 +68,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
 
             Assert
                 .IsNotNull(reportViewModel.Report);
-
-            Assert
-                .IsNotNull(reportViewModel.Report.Id);
         }
 
         [Test]
@@ -88,6 +85,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
                 .Should()
                 .BeEquivalentTo(
                     expectText);
+        }
+
+        [Test]
+        public void Then_ViewModel_IsReadOnly_Is_False()
+        {
+            model
+                .IsReadOnly
+                .Should()
+                .BeFalse();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_The_Report_Is_Valid_To_Submit_Then_Show_Confirm_View()
         {
             // arrange
-            var report = new Report(); // not submitted and empty sections, should be valid for submission
+            var report = ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDEF");
 
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
@@ -142,33 +142,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         }
 
         [Test]
-        public void When_The_Report_Is_Invalid_To_Submit_Then_Redirect_To_Edit()
-        {
-            var url = "report/edit";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            // arrange
-            var report = ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE"); // not submitted and empty sections, should be valid for submission
-
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
-            _controller.ObjectValidator = GetObjectValidator().Object;
-
-            // act
-            var result = _controller.Confirm();
-
-            // assert
-            Assert.AreEqual(typeof(RedirectResult), result.GetType());
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual(actualContext.Action, "Edit");
-            Assert.AreEqual(actualContext.Controller,actualContext.Controller);
-        }
-
-        [Test]
         public void When_The_Report_Is_Submitted_Redirect_To_Home()
         {
             // arrange
@@ -178,7 +151,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
 
-            var report = ReportTestModelBuilder.CurrentReportWithValidSections("ABCDE"); // not submitted and empty sections, should be valid for submission
+            var report = ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE");
 
             report.Submitted = true;
 

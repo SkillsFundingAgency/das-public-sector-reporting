@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -26,10 +27,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
         [Test]
         public void Then_ViewModel_UserCanSubmitReports_Is_False()
         {
-            var reportViewModel = ((ViewResult)result).Model as ReportViewModel;
-
-            Assert
-                .IsFalse(reportViewModel.UserCanSubmitReports);
+            model
+                .UserCanSubmitReports
+                .Should()
+                .BeFalse();
         }
 
         [Test]
@@ -62,13 +63,19 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
         [Test]
         public void Then_ViewModel_Has_Report()
         {
-            var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+            model
+                .Report
+                .Should()
+                .NotBeNull();
+        }
 
-            Assert
-                .IsNotNull(reportViewModel.Report);
-
-            Assert
-                .IsNotNull(reportViewModel.Report.Id);
+        [Test]
+        public void Then_ViewModel_IsReadOnly_Is_False()
+        {
+            model
+                .IsReadOnly
+                .Should()
+                .BeFalse();
         }
     }
 }

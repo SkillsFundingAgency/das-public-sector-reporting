@@ -20,6 +20,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public bool UserCanSubmitReports { get; set; }
         public bool UserCanEditReport { get; set; }
         public string Subtitle { get; set; }
+        public bool IsReadOnly { get; set; }
 
         public ReportViewModel()
         {
@@ -33,9 +34,9 @@ namespace SFA.DAS.PSRService.Web.ViewModels
             if (Report.IsValidForSubmission() || Report.Sections == null)
                 return validationResults;
 
-            foreach (var section in Report.Sections.SelectMany(s => s.SubSections).Where(w => !w.IsValidForSubmission()))
+            foreach (var summaryText in Report.GetNamesOfIncompleteMandatoryQuestionSections())
             {
-                validationResults.Add(new ValidationResult($"{section.SummaryText} questions are mandatory"));
+                validationResults.Add(new ValidationResult($"{summaryText} questions are mandatory"));
             }
 
             return validationResults;
