@@ -8,7 +8,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 {
     public class ReportSummaryPage : BasePage
     {
-        private static String PAGE_TITLE = "Reporting your progress towards the public sector apprenticeship target";
+        private static String PAGE_TITLE = "Review details";
 
         public ReportSummaryPage(IWebDriver webDriver) : base(webDriver)
         {

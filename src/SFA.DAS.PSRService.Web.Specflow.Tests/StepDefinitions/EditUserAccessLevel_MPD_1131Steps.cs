@@ -37,17 +37,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportEdit.Navigate();
         }
         
-        [When(@"I clicks on '(.*)' link")]
-        public void WhenIClicksOnLink(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I navigate to Review summary page")]
-        public void WhenINavigateToReviewSummaryPage()
-        {
-            ScenarioContext.Current.Pending();
-        }
         
         [Then(@"the create report page is displayed")]
         public void ThenTheCreateReportPageIsDisplayed()

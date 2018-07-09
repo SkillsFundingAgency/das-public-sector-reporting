@@ -24,18 +24,24 @@ Scenario: Edit user can edit a report
 	Then the edit report page is displayed
 
 Scenario: Edit user can edit a report question
-	Given User navigates to the Edit report page
-	When  I clicks on 'Number of employees who work in England' link
+	Given a report has been created
+	And  User navigates to the Edit report page
+	When  I click on 'Number of employees who work in England' question link
 	Then the Your employees page is displayed
 
-Scenario: Edit user can submit an edited question
-	Given User navigates to the Your employees question page
+Scenario Outline: Edit user can submit an edited question
+	Given a report has been created
+	And User navigates to the Your employees question page
 	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
 	When I click on the save question
-	Then The 'Your Employees' question values are saved
+	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
+	Examples: 
+	| atStart | atEnd | newThisPeriod |
+	| 100     | 150   | 50            |
 
 Scenario: Edit user can view the review summary page
-	Given I have a valid report
+	Given a report has been created
+	And I have a valid report
 	And the report hasnt been submitted
 	When I navigate to Review summary page
 	Then the Review report details page is displayed
