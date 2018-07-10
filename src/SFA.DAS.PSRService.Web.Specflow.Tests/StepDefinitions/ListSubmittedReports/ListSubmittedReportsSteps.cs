@@ -52,7 +52,17 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"the User should see the message '(.*)' on the previously submitted page")]
         public void ThenIShouldSeeTheMessageOnThePreviouslySubmittedPage(string p0)
         {
-            Assert.True(pageFactory.PreviouslySubmittedReports.NoSubmittedReportDisplayMessage.Displayed);
+            var message = pageFactory.PreviouslySubmittedReports.NoSubmittedReportDisplayMessage;
+
+            Assert
+                .IsTrue(
+                    message
+                        .Displayed);
+
+            Assert
+                .AreEqual(
+                    p0,
+                    message.Text);
         }
 
         [Then(@"I should see one submitted report displayed in list")]
