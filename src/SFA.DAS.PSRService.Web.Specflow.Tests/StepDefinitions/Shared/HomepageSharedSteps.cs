@@ -1,5 +1,4 @@
-﻿using System;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
+﻿using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -8,18 +7,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
    
     public class HomepageSharedSteps : BaseTest
     {
-       
-        [When(@"Selects Homepage '(.*)' Radio button")]
-        public void WhenSelectsHomepageRadioButton(string p0)
+        [Given(@"User selects Homepage View a previously submitted report Radio button")]
+        public void GivenUserSelectsHomepageViewAPreviouslySubmittedReportRadioButton()
         {
-            PsrsHomepage homepage = new PsrsHomepage(webDriver);
-
-            switch (p0)
-            {
-                case "View a previously submitted report":
-                    homepage.SelectPreviouslySubmittedReports();
-                    break;
-            }
+            new PsrsHomepage(webDriver)
+                .SelectPreviouslySubmittedReports();
         }
 
         [When(@"I Select Homepage '(.*)' Radio button")]

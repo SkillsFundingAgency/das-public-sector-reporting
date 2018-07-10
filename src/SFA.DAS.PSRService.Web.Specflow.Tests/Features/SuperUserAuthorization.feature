@@ -7,8 +7,8 @@ Given Full access is granted
 Scenario: Super user can view create report page
 	Given User navigates to Homepage
 	And no current report exists
-	When Selects Homepage 'Create a report' Radio button
-	And I click on Continue button
+	And User selects Homepage View a previously submitted report Radio button
+	When I click on homepage Continue button
 	Then the create report page is displayed
 
 Scenario: Super user can create a report

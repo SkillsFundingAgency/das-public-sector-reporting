@@ -5,8 +5,8 @@ Given Full access is granted
 
 Scenario: User Navigates to submitted reports page
 		Given User navigates to Homepage
-		When Selects Homepage 'View a previously submitted report' Radio button
-		And I click on homepage Continue button
+		And User selects Homepage View a previously submitted report Radio button
+		When I click on homepage Continue button
 		Then I should be taken to the Submitted Reports page
 		And back link is shown as 'Back'
 
