@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public IWebElement BackButtonLink => WebDriver.WaitForElementToBeVisible(By.ClassName("link-back"));
 
-        public IWebElement NoSubmittedReportDisplayMessage => WebDriver.WaitForElementToBeVisible(By.CssSelector("#content > div > div:nth-child(2)"));
+        public IWebElement NoSubmittedReportDisplayMessage => WebDriver.WaitForElementToBeVisible(By.CssSelector(@"[data-automated-test-id=""submitted-report-list-display-message""]"));
 
         public IWebElement SubmittedReportDisplayed => WebDriver.WaitForElementToBeVisible(By.ClassName("column-full"));
 
