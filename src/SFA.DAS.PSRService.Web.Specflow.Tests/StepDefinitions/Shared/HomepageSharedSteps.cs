@@ -4,7 +4,6 @@ using TechTalk.SpecFlow;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 {
-   
     public class HomepageSharedSteps : BaseTest
     {
         [Given(@"User selects Homepage View a previously submitted report Radio button")]
@@ -20,19 +19,5 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             new PsrsHomepage(webDriver)
                 .SelectCreateReport();
         }
-        [When(@"I Select Homepage '(.*)' Radio button")]
-        public void WhenISelectHomepageRadioButton(string p0)
-        {
-            PsrsHomepage homepage = new PsrsHomepage(webDriver);
-
-            switch (p0)
-            {
-                case "Create a new report":
-                    homepage.SelectCreateReport();
-                    break;
-            }
-        }
-
-
     }
 }

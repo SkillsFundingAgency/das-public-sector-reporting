@@ -7,7 +7,7 @@ Given Edit access is granted
 Scenario: Edit user can view create report page
 	Given User navigates to Homepage
 	And no current report exists
-	When I Select Homepage 'Create a new report' Radio button
+	And User selects Homepage Create a report Radio button
 	When User clicks on homepage Continue button
 	Then the create report page is displayed
 
