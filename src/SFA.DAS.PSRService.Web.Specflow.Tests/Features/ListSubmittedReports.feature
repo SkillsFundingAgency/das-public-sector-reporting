@@ -7,7 +7,7 @@ Scenario: User Navigates to submitted reports page
 		Given User navigates to Homepage
 		And User selects Homepage View a previously submitted report Radio button
 		When User clicks on homepage Continue button
-		Then I should be taken to the Submitted Reports page
+		Then User should be taken to the Submitted Reports page
 		And back link is shown as 'Back'
 
 Scenario: User Views previously submitted reports when no reports submitted

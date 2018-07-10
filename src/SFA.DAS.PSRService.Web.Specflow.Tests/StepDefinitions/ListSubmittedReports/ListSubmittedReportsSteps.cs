@@ -36,8 +36,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             homepage.ClickContinueButton();
         }
 
-        [Then(@"I should be taken to the Submitted Reports page")]
-        public void ThenIShouldBeOnSubmittedReportsPage()
+        [Then(@"User should be taken to the Submitted Reports page")]
+        public void ThenUserShouldBeTakenToTheSubmittedReportsPage()
         {
             var submittedReports = new PreviouslySubmittedReportsPage(webDriver);
         }

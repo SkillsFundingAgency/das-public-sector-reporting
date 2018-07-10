@@ -87,7 +87,7 @@ this.FeatureBackground();
 #line 9
   testRunner.When("User clicks on homepage Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
-  testRunner.Then("I should be taken to the Submitted Reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("User should be taken to the Submitted Reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11
   testRunner.And("back link is shown as \'Back\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
