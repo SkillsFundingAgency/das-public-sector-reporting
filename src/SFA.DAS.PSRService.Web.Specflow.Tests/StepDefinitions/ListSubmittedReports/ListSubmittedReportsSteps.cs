@@ -39,7 +39,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"User should be taken to the Submitted Reports page")]
         public void ThenUserShouldBeTakenToTheSubmittedReportsPage()
         {
-            var submittedReports = new PreviouslySubmittedReportsPage(webDriver);
+            pageFactory
+                .PreviouslySubmittedReports
+                .Verify();
         }
 
         [Then(@"back link is shown as '(.*)'")]
