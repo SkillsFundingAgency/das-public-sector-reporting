@@ -14,6 +14,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                 .SelectPreviouslySubmittedReports();
         }
 
+        [Given(@"User selects Homepage Create a report Radio button")]
+        public void GivenUserSelectsHomepageCreateAReportRadioButton()
+        {
+            new PsrsHomepage(webDriver)
+                .SelectCreateReport();
+        }
         [When(@"I Select Homepage '(.*)' Radio button")]
         public void WhenISelectHomepageRadioButton(string p0)
         {

@@ -85,7 +85,7 @@ this.FeatureBackground();
 #line 8
   testRunner.And("User selects Homepage View a previously submitted report Radio button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
-  testRunner.When("I click on homepage Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("User clicks on homepage Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
   testRunner.Then("I should be taken to the Submitted Reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11

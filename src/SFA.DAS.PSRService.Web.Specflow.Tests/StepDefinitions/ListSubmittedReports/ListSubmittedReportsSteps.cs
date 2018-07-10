@@ -12,14 +12,21 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         //[Given(@"User navigates to Homepage")]
         //public void GivenUserNavigatesToHomepage()
         //{
-            //ScenarioContext.Current.Pending();
-       // }
+        //ScenarioContext.Current.Pending();
+        // }
 
         //[When(@"Selects Homepage '(.*)' Radio button")]
         //public void WhenSelectsHomepageRadioButton(string p0)
-       // {
-            //ScenarioContext.Current.Pending();
+        // {
+        //ScenarioContext.Current.Pending();
         //}
+        [When(@"User clicks on homepage Continue button")]
+        public void WhenUserClicksOnHomepageContinueButton()
+        {
+            PsrsHomepage homepage = new PsrsHomepage(webDriver);
+
+            homepage.ClickContinueButton();
+        }
 
         [When(@"I click on homepage Continue button")]
         public void WhenIClickOnContinueButton()
