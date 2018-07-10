@@ -19,6 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Data", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{F85262CD-4210-4352-B691-30F40D99B4D2}"
 	ProjectSection(SolutionItems) = preProject
+		AzureTopicConfigurationStrucuture.json = AzureTopicConfigurationStrucuture.json
 		..\azure\parameters.json = ..\azure\parameters.json
 		..\azure\template.json = ..\azure\template.json
 	EndProjectSection
@@ -29,6 +30,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployments", "deployments"
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.PSRService.Database", "SFA.DAS.PSRService.Database\SFA.DAS.PSRService.Database.sqlproj", "{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Api.Types", "SFA.DAS.PSRService.Api.Types\SFA.DAS.PSRService.Api.Types\SFA.DAS.PSRService.Api.Types.csproj", "{C523CB89-E7EE-4A19-8D85-6C3F42387FF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PSRService.Api", "SFA.DAS.PSRService.Api\SFA.DAS.PSRService.Api.csproj", "{A28B76DE-9DA1-446F-8FDE-0F6B9A23914C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PSRService.Api.Client", "SFA.DAS.PSRService.Api.Client\SFA.DAS.PSRService.Api.Client.csproj", "{A26B17FB-802B-4A2B-BC4C-1E1988F70644}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +73,18 @@ Global
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1DC90FAB-1424-474D-90DC-FBFCC7CBD362}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C523CB89-E7EE-4A19-8D85-6C3F42387FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C523CB89-E7EE-4A19-8D85-6C3F42387FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C523CB89-E7EE-4A19-8D85-6C3F42387FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C523CB89-E7EE-4A19-8D85-6C3F42387FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A28B76DE-9DA1-446F-8FDE-0F6B9A23914C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28B76DE-9DA1-446F-8FDE-0F6B9A23914C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28B76DE-9DA1-446F-8FDE-0F6B9A23914C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28B76DE-9DA1-446F-8FDE-0F6B9A23914C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A26B17FB-802B-4A2B-BC4C-1E1988F70644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A26B17FB-802B-4A2B-BC4C-1E1988F70644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A26B17FB-802B-4A2B-BC4C-1E1988F70644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A26B17FB-802B-4A2B-BC4C-1E1988F70644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
