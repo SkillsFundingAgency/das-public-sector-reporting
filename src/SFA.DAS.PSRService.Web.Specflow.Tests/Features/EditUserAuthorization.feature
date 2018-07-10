@@ -5,15 +5,15 @@ Background:
 Given Edit access is granted
 
 Scenario: Edit user can view create report page
-	Given User navigates to Homepage
-	And no current report exists
+	Given  no current report exists
+	And User navigates to Homepage
 	And User selects Homepage Create a report Radio button
 	When User clicks on homepage Continue button
 	Then the create report page is displayed
 
 Scenario: Edit user can create a report
-	Given User navigates to the Create report page
-	And no current report exists
+	Given no current report exists
+	And User navigates to the Create report page
 	When I click on Start button
 	Then New report is created
 
