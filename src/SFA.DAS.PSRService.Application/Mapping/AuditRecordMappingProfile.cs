@@ -10,6 +10,8 @@ namespace SFA.DAS.PSRService.Application.Mapping
         public AuditRecordMappingProfile()
         {
             CreateMap<AuditRecordDto, AuditRecord>()
+                .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
+                .ForMember(dest => dest.ReportingPercentages, opts => opts.Ignore())
                 .ForMember(dest => dest.Sections, opts => opts.Ignore())
                 .ForMember(dest => dest.UpdatedBy, opts => opts.MapFrom(s => s == null ? null : JsonConvert.DeserializeObject<User>(s.UpdatedBy)))
                 .AfterMap((src, dest) =>
