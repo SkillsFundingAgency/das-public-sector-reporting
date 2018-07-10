@@ -49,7 +49,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             Assert.True("Back" == pageFactory.PreviouslySubmittedReports.BackButtonLink.Text);
         }
 
-        [Then(@"I should see the message '(.*)' on the previously submitted page")]
+        [Then(@"the User should see the message '(.*)' on the previously submitted page")]
         public void ThenIShouldSeeTheMessageOnThePreviouslySubmittedPage(string p0)
         {
             Assert.True(pageFactory.PreviouslySubmittedReports.NoSubmittedReportDisplayMessage.Displayed);

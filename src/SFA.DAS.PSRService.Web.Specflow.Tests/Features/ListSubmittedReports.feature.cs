@@ -110,8 +110,8 @@ this.FeatureBackground();
 #line 16
  testRunner.And("user navigates to previously submitted reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.Then("I should see the message \'There are currently no submitted reports to show\' on th" +
-                    "e previously submitted page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the User should see the message \'There are currently no submitted reports to show" +
+                    "\' on the previously submitted page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
