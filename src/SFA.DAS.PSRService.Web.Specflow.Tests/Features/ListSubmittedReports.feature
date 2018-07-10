@@ -27,5 +27,5 @@ Scenario: User Views previously submitted reports when one report submitted
 	And the report has been submitted
 	And user navigates to previously submitted reports page
 	When user clicks the back button
-	Then the user is displayed the homepage
+	Then the user is returned to the homepage
 	

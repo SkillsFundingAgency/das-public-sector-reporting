@@ -6,7 +6,6 @@ using TechTalk.SpecFlow;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 {
-  
     public class ListSubmittedReportsSteps : BaseTest
     {
         //[Given(@"User navigates to Homepage")]
@@ -49,6 +48,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             Assert.True("Back" == pageFactory.PreviouslySubmittedReports.BackButtonLink.Text);
         }
+
         [Then(@"I should see the message '(.*)' on the previously submitted page")]
         public void ThenIShouldSeeTheMessageOnThePreviouslySubmittedPage(string p0)
         {
@@ -60,7 +60,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             Assert.True(pageFactory.PreviouslySubmittedReports.SubmittedReportDisplayed.Displayed);
 
-            Assert.True("Choose the report you wish to view" == pageFactory.PreviouslySubmittedReports.ChooseReportToView.Text);
+            Assert.True("Choose the report you wish to view" ==
+                        pageFactory.PreviouslySubmittedReports.ChooseReportToView.Text);
         }
 
         [When(@"user clicks the back button")]
@@ -69,12 +70,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.PreviouslySubmittedReports.BackButtonLink.Click();
         }
 
-        [Then(@"the user is displayed the homepage")]
-        public void ThenTheUserIsDisplayedTheHomepage()
+        [Then(@"the user is returned to the homepage")]
+        public void ThenTheUserIsReturnedToTheHomepage()
         {
-            Assert.True("Annual apprenticeship return" == pageFactory.Homepage.DisplayPsrsHomepageMenu.Text);
+            pageFactory
+                .Homepage
+                .Verify();
         }
-
-
     }
 }
