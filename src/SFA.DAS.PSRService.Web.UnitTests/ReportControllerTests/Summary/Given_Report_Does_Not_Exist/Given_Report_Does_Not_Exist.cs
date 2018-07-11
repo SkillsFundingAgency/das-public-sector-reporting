@@ -26,12 +26,5 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_R
         {
             result = _controller.Summary("NoReport");
         }
-
-        [Test]
-        public void Then_Result_Is_NotFoundResult()
-        {
-            Assert
-                .IsAssignableFrom<NotFoundResult>(result);
-        }
     }
 }
