@@ -60,11 +60,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Su
         }
 
         [Test]
-        public void Then_CurrentReportExists_Is_True()
-        {
-            model.CurrentReportExists.Should().BeTrue();
-        }
-        [Test]
         public void Then_CurrentReportAlreadySubmitted_Is_False()
         {
             model.CurrentReportAlreadySubmitted.Should().BeFalse();

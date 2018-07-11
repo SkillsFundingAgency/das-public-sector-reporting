@@ -59,11 +59,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.
         {
             model.Readonly.Should().BeTrue();
         }
-        [Test]
-        public void Then_CurrentReportExists_Is_False()
-        {
-            model.CurrentReportExists.Should().BeFalse();
-        }
+
         [Test]
         public void Then_CurrentReportAlreadySubmitted_Is_False()
         {

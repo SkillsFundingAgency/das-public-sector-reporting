@@ -125,7 +125,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             bool userIsAuthorizedForReportEdit = UserIsAuthorizedForReportEdit();
             bool userIsNotAuthorizedForReportEdit = userIsAuthorizedForReportEdit == false;
 
-            model.CurrentReportExists = reportExists;
             // TODO: take submission period close date into account
             model.CanCreateReport =  reportDoesNotExist && userIsAuthorizedForReportEdit;
             model.CanEditReport = reportExists && reportIsNotYetSubmitted && userIsAuthorizedForReportEdit;
