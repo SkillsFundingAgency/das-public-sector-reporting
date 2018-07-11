@@ -18,7 +18,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels
 
         public bool CanBeEdited { get; set; }
         public bool UserCanSubmitReports { get; set; }
-        public bool UserCanEditReport { get; set; }
         public string Subtitle { get; set; }
         public bool IsReadOnly { get; set; }
 
