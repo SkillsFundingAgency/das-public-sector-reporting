@@ -90,10 +90,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
 
             var auditRecord = (AuditRecord)_mapper.Map(dto, typeof(AuditRecordDto), typeof(AuditRecord));
 
-            //Assert.AreEqual(_updatedTimeInSummerWithKindUnspecified.Ticks, auditRecord.UpdatedUtc.Ticks);
-            Assert.AreEqual(_updatedTimeInWinterWithKindUnspecified.Ticks, auditRecord.UpdatedUtc.Ticks);
-
-            //TODO: Test with an input date that is NOT summertime
             var calculatedLocalTime = _updatedTimeInWinterWithKindUnspecified;
             Assert.AreEqual(calculatedLocalTime.Ticks, auditRecord.UpdatedLocal.Ticks);
         }

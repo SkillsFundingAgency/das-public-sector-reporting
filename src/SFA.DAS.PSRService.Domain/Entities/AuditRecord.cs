@@ -5,23 +5,26 @@ namespace SFA.DAS.PSRService.Domain.Entities
 {
     public class AuditRecord
     {
-        private TimeZoneInfo _ukDaylightSavingAwareTimeZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+        public User UpdatedBy { get; }
+        public DateTime UpdatedUtc { get; }
+        public DateTime UpdatedLocal { get; }
+        public IEnumerable<Section> Sections { get; }
+        public ReportingPercentages ReportingPercentages { get; }
+        public string OrganisationName { get; }
 
-        public DateTime UpdatedUtc { get; set; }
-        public IEnumerable<Section> Sections { get; set; }
-        public User UpdatedBy { get; set; }
-        public ReportingPercentages ReportingPercentages { get; set; }
-        public string OrganisationName { get; set; }
-
-        public DateTime UpdatedLocal
+        public AuditRecord(string organisationName, IEnumerable<Section> sections, ReportingPercentages reportingPercentages, User updatedBy, DateTime updatedUtc)
         {
-            get
-            {
-                var converted = TimeZoneInfo.ConvertTimeFromUtc(
-                    UpdatedUtc, 
-                    _ukDaylightSavingAwareTimeZone);
-                return new DateTime(converted.Ticks, DateTimeKind.Local);
-            }
+            OrganisationName = organisationName;
+            Sections = sections;
+            ReportingPercentages = reportingPercentages;
+            UpdatedBy = updatedBy;
+
+            UpdatedUtc = DateTime.SpecifyKind(updatedUtc, DateTimeKind.Utc);
+
+            UpdatedLocal = DateTime.SpecifyKind(TimeZoneInfo.ConvertTimeFromUtc(
+                UpdatedUtc,
+                TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time")),
+                DateTimeKind.Local);
         }
     }
 }
