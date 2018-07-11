@@ -25,7 +25,7 @@
                     <div class="multiple-choice">
                         @if (Model.Readonly)
                         {
-                            if (Model.CurrentReportExists && Model.CurrentReportAlreadySubmitted == false)
+                            if (Model.CurrentReportAlreadySubmitted == false)
                             {
                                 <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue">
                             }
