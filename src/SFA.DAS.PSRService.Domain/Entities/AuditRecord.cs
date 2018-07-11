@@ -13,9 +13,15 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public ReportingPercentages ReportingPercentages { get; set; }
         public string OrganisationName { get; set; }
 
-        public DateTime UpdatedLocal => TimeZoneInfo
-            .ConvertTimeFromUtc(
-                UpdatedUtc,
-                _ukDaylightSavingAwareTimeZone);
+        public DateTime UpdatedLocal
+        {
+            get
+            {
+                var converted = TimeZoneInfo.ConvertTimeFromUtc(
+                    UpdatedUtc, 
+                    _ukDaylightSavingAwareTimeZone);
+                return new DateTime(converted.Ticks, DateTimeKind.Local);
+            }
+        }
     }
 }
