@@ -35,11 +35,20 @@
             }
             else
             {
-                <legend>
-                    <h1 class="heading-xlarge">Review details</h1>
+                if (Model.IsReadOnly)
+                {
+                    <legend>
+                    <h1 class="heading-xlarge">View details</h1>
                     <p>@Model.Subtitle</p>
                 </legend>
-
+                }
+                else
+                {
+                    <legend>
+                        <h1 class="heading-xlarge">Review details</h1>
+                        <p>@Model.Subtitle</p>
+                    </legend>
+                }
             <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
                 <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
                     @(Model.IsReadOnly ? "These are the current errors" : "Please fix these errors" )
