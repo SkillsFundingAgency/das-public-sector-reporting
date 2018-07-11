@@ -8,24 +8,43 @@
 }
 
 <div class="grid-row">
-    <div class="column-full review-details">
-        @if (!Model.Report.Submitted)
+    @if (Model.Report == null)
+    {
+        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+        if (Model.IsReadOnly)
         {
-            if (Model.CanBeEdited)
-            {
-                <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
-            }
-            else
-            {
-                <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
-            }
-            
+            <legend>
+                <h1 class="heading-xlarge">View details</h1>
+            </legend>
         }
         else
         {
-            <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
+            <legend>
+                <h1 class="heading-xlarge">Review details</h1>
+            </legend>
         }
-       
+            <p>There is currently no report to show</p>
+    }
+    else
+    {
+        <div class="column-full review-details">
+            @if (!Model.Report.Submitted)
+            {
+                if (Model.CanBeEdited)
+                {
+                    <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+                }
+                else
+                {
+                    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+                }
+
+            }
+            else
+            {
+                <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
+            }
+
 
             @if (Model.Report.Submitted)
             {
@@ -38,9 +57,9 @@
                 if (Model.IsReadOnly)
                 {
                     <legend>
-                    <h1 class="heading-xlarge">View details</h1>
-                    <p>@Model.Subtitle</p>
-                </legend>
+                        <h1 class="heading-xlarge">View details</h1>
+                        <p>@Model.Subtitle</p>
+                    </legend>
                 }
                 else
                 {
@@ -49,41 +68,42 @@
                         <p>@Model.Subtitle</p>
                     </legend>
                 }
-            <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-                <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
-                    @(Model.IsReadOnly ? "These are the current errors" : "Please fix these errors" )
-                </h2>
-            </div>
-        }
+                <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                    <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+                        @(Model.IsReadOnly ? "These are the current errors" : "Please fix these errors")
+                    </h2>
+                </div>
+            }
 
-        <div class="form-group">
-            <table>
-                @*<caption class="heading-medium">Reporting period</caption>*@
-                <tbody>
+            <div class="form-group">
+                <table>
+                    @*<caption class="heading-medium">Reporting period</caption>*@
+                    <tbody>
                     <tr>
                         <td>Reporting period</td>
                         <td class="bold">@Model.Period.FullString</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
 
-        @Html.Partial("Question/Organisation", Model.Report.OrganisationName)
-        @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
-        @Html.Partial("Question/ReportingPercentages", Model.Percentages)
-        @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
+            @Html.Partial("Question/Organisation", Model.Report.OrganisationName)
+            @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @Html.Partial("Question/ReportingPercentages", Model.Percentages)
+            @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
-        @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
-        {
-            <a class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
-        }
-        else
-        {
-            if (Model.Report.Submitted)
+            @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
             {
-                <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+                <a class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
             }
-        }
-    </div>
+            else
+            {
+                if (Model.Report.Submitted)
+                {
+                    <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+                }
+            }
+        </div>
+    }
 </div>

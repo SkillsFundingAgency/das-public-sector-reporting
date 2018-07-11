@@ -30,7 +30,13 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         {
             var validationResults = new List<ValidationResult>();
 
-            if (Report.IsValidForSubmission() || Report.Sections == null)
+            if (Report == null)
+                return validationResults;
+
+            if (Report.Sections == null)
+                return validationResults;
+
+            if (Report.IsValidForSubmission())
                 return validationResults;
 
             foreach (var summaryText in Report.GetNamesOfIncompleteMandatoryQuestionSections())
