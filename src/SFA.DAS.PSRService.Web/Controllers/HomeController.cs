@@ -52,7 +52,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 [Home.Edit.SubmitValue] = Home.Edit,
                 [Home.List.SubmitValue] = Home.List,
                 [Home.Create.SubmitValue] = Home.Create,
-                [Home.View.SubmitValue] = Home.View
+                [Home.View.SubmitValue] = Home.View,
+                [Home.AlreadySubmitted.SubmitValue] = Home.AlreadySubmitted
             };
         }
 
