@@ -220,7 +220,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             ViewBag.CurrentPeriod = _currentPeriod;
 
-            return View("Submitted");
+            return View("SubmitConfirmation");
         }
 
         [Route("OrganisationName")]
