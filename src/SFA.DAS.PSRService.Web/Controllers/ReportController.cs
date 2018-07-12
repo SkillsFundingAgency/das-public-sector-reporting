@@ -35,6 +35,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _currentPeriod = periodService.GetCurrentPeriod();
         }
 
+        [Route("AlreadySubmitted")]
+        public ViewResult AlreadySubmitted()
+        {
+            ViewBag.CurrentPeriod = _currentPeriod;
+
+            return View("AlreadySubmitted");
+        }
+
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Edit()
         {
