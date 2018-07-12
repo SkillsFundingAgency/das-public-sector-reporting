@@ -57,7 +57,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Create()
         {
+            var report = _reportService.GetReport(
+                _currentPeriod.PeriodString,
+                EmployerAccount.AccountId);
+
+            ViewBag.CurrentReportIsAlreadySubmitted = report?.Submitted ?? false;
             ViewBag.CurrentPeriod = _currentPeriod;
+
             return View("Create");
         }
 
