@@ -20,7 +20,7 @@ Scenario: User Views previously submitted reports when one report submitted
 		Given A Current report exists
 	And the report has been submitted
 	And user navigates to previously submitted reports page
-	Then I should see one submitted report displayed in list
+	Then the user should see one submitted report displayed in list
 
 	Scenario: User on previously submitted reports page can click back button
 	Given A Current report exists

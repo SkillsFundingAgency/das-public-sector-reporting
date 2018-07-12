@@ -132,7 +132,7 @@ this.FeatureBackground();
 #line 22
  testRunner.And("user navigates to previously submitted reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.Then("I should see one submitted report displayed in list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the user should see one submitted report displayed in list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
