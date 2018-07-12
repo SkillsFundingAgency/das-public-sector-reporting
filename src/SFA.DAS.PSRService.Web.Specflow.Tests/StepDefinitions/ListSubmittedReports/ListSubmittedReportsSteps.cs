@@ -70,8 +70,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             Assert.True(pageFactory.PreviouslySubmittedReports.SubmittedReportDisplayed.Displayed);
 
-            Assert.True("Choose the report you wish to view" ==
-                        pageFactory.PreviouslySubmittedReports.ChooseReportToView.Text);
+            var listCount = pageFactory.PreviouslySubmittedReports.SubmittedReportListCount;
+            Assert.AreEqual(1, listCount);
         }
 
         [When(@"user clicks the back button")]

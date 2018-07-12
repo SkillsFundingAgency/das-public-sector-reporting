@@ -17,7 +17,7 @@
     <div class="column-two-thirds">
         <p>Choose the report you wish to view</p>
     </div>
-    <div class="column-full">
+    <div class="column-full" data-automated-test-id="submitted-report-list">
         <table>
             <thead>
                 <tr>
@@ -29,7 +29,7 @@
             <tbody>
             @foreach (var result in Model.SubmittedReports)
             {
-                <tr>
+                <tr data-automated-test-id="submitted-report-item">
                     <th scope="row">@result.OrganisationName</th>
                     <td>@Model.Periods[result.ReportingPeriod].FullString</td>
                     <td class="link-right"><a href="../Report/Summary/@result.ReportingPeriod">View</a></td>

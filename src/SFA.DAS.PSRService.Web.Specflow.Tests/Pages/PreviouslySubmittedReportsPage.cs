@@ -32,8 +32,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public IWebElement NoSubmittedReportDisplayMessage => WebDriver.WaitForElementToBeVisible(By.CssSelector(@"[data-automated-test-id=""submitted-report-list-display-message""]"));
 
-        public IWebElement SubmittedReportDisplayed => WebDriver.WaitForElementToBeVisible(By.ClassName("column-full"));
+        public IWebElement SubmittedReportDisplayed => WebDriver.WaitForElementToBeVisible(By.CssSelector(@"[data-automated-test-id=""submitted-report-list""]"));
 
-        public IWebElement ChooseReportToView => WebDriver.WaitForElementToBeVisible(By.CssSelector("#content > div > div:nth-child(2)"));
+        public int SubmittedReportListCount
+        {
+            get
+            {
+                var reportItemRows = WebDriver.FindElements(By.CssSelector(@"[data-automated-test-id=""submitted-report-item""]"));
+                return reportItemRows != null ? reportItemRows.Count : 0;
+            }
+        }
     }
 }
