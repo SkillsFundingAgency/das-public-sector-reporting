@@ -27,12 +27,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportEdit.Navigate();
         }
 
-        [Given(@"I navigate to Review summary page")]
-        [When(@"I navigate to Review summary page")]
-        public void GivenINavigateToReviewSummaryPage()
+        [Given(@"User navigates to Review summary page")]
+        [When(@"User navigates to Review summary page")]
+        public void GivenUserNavigatesToReviewSummaryPage()
         {
             pageFactory.ReportSummary.Navigate();
         }
+
         [Given(@"user navigates to confirm submission page")]
         public void GivenUserNavigatesToConfirmSubmissionPage()
         {

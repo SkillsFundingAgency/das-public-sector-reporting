@@ -7,8 +7,8 @@
 #
 #Scenario: User clicks on menu link
 #	Given User navigates to Homepage
-#	When I click on the <menuItem>
-#	Then i should be taken to <url>
+#	When User clicks on the <menuItem>
+#	Then User should be taken to <url>
 #
 #Examples: 
 #| menuItem   | url |

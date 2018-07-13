@@ -27,14 +27,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             homepage.ClickContinueButton();
         }
 
-        [When(@"I click on homepage Continue button")]
-        public void WhenIClickOnContinueButton()
-        {
-            PsrsHomepage homepage = new PsrsHomepage(webDriver);
-
-            homepage.ClickContinueButton();
-        }
-
         [Then(@"User should be taken to the Submitted Reports page")]
         public void ThenUserShouldBeTakenToTheSubmittedReportsPage()
         {

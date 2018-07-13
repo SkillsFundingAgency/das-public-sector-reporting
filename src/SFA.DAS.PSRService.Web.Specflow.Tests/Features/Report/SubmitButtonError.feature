@@ -7,10 +7,10 @@ Background:
 Given Full access is granted
 And A Current report exists
 And the report hasnt been submitted
-And I have an invalid report
+And An invalid report
 
 Scenario: User tries to submit a report
-Given I navigate to Review summary page
+Given User navigates to Review summary page
 Then the Summary page should be displayed
 And display the error summary widget at the top of the page
 And do not display the Report 'Submit' button

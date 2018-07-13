@@ -75,7 +75,7 @@ testRunner.And("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.
 #line 9
 testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
-testRunner.And("I have an invalid report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("An invalid report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -89,7 +89,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 13
-testRunner.Given("I navigate to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("User navigates to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
 testRunner.Then("the Summary page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15

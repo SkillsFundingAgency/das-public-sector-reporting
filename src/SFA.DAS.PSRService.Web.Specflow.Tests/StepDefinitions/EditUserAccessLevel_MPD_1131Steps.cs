@@ -25,14 +25,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         //}
        
         
-        [When(@"I click on Start button")]
-        public void WhenIClickOnStartButton()
+        [When(@"User clicks on Start button")]
+        public void WhenUserClicksOnStartButton()
         {
             pageFactory.ReportCreate.StartButton.Click();
         }
         
-        [When(@"I navigate to the Edit report page")]
-        public void WhenINavigateToTheEditReportPage()
+        [When(@"User navigates to the Edit report page")]
+        public void WhenUserNavigatesToTheEditReportPage()
         {
             pageFactory.ReportEdit.Navigate();
         }

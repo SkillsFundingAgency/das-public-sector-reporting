@@ -8,7 +8,7 @@ Given Edit access is granted
 
 Scenario: Organisation Name is pre-populated
 	Given no current report exists
-	And I create a new report
-	And I navigate to the Edit report page
-	When I navigate to the OrganisationName page
+	And User creates a new report
+	And User navigates to the Edit report page
+	When User navigates to the OrganisationName page
 	Then organisation name is pre-populated with name from my account

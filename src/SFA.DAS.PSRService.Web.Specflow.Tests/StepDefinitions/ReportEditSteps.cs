@@ -18,16 +18,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             yourEmployees.EditAtNewThisPeriodValue(newThisPeriod);
         }
 
-        [When(@"I click on '(.*)' question link")]
-        public void WhenIClicksOnQuestionLink(string p0)
+        [When(@"User clicks on '(.*)' question link")]
+        public void WhenUserClicksOnQuestionLink(string p0)
         {
             var reportEdit = new ReportEditPage(webDriver);
 
             reportEdit.ClicksQuestionLink(p0);
         }
         
-        [When(@"I click on the save question")]
-        public void WhenIClickOnTheSaveQuestion()
+        [When(@"User clicks on the save question")]
+        public void WhenUserClicksOnTheSaveQuestion()
         {
             var yourEmployees = new YourEmployeesPage(webDriver);
             yourEmployees.SaveQuestionAnswers();

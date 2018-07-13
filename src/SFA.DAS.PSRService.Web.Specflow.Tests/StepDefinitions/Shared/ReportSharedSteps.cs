@@ -65,8 +65,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportRepository.Update(_reportDto);
         }
 
-        [Given(@"I have a valid report")]
-        public void GivenIHaveAValidReport()
+        [Given(@"A valid report")]
+        public void GivenAValidReport()
         {
             _reportDto.ReportingData = _validReportJson;
             _reportRepository.Update(_reportDto);
@@ -79,8 +79,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportRepository.Update(_reportDto);
         }
 
-        [Given(@"I have an invalid report")]
-        public void GivenIHaveAnInvalidReport()
+        [Given(@"An invalid report")]
+        public void GivenAnInvalidReport()
         {
             _reportDto.ReportingData = _invalidReportJson;
             _reportRepository.Update(_reportDto);

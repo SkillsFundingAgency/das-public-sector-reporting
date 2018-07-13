@@ -14,13 +14,13 @@ Scenario: user can edit a report
 
 Scenario: user can edit a report question
 	Given User navigates to the Edit report page
-	When  I click on 'Number of employees who work in England' question link
+	When  User clicks on 'Number of employees who work in England' question link
 	Then the Your employees page is displayed
 
 Scenario Outline: user can submit an edited question
 	Given User navigates to the Your employees question page
 	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
-	When I click on the save question
+	When User clicks on the save question
 	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
 	Examples: 
 	| atStart | atEnd | newThisPeriod |
