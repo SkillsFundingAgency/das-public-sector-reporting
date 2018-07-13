@@ -18,13 +18,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         //    ScenarioContext.Current.Pending();
         //}
         
-        [Given(@"the (.*), (.*) and (.*) have been edited")]
-        //public void GivenTheAndHaveBeenEdited(string p0, string p1, string p2)
-        //{
-        //    ScenarioContext.Current.Pending();
-        //}
-       
-        
         [When(@"User clicks on Start button")]
         public void WhenUserClicksOnStartButton()
         {
@@ -49,13 +42,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             Assert.True(pageFactory.ReportSummary.ReportSummaryOrganisationName.Displayed);
         }
-        
-        [Then(@"The '(.*)' question values are saved")]
-        public void ThenTheQuestionValuesAreSaved(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+         
         [Then(@"the Review report details page is displayed")]
         public void ThenTheReviewReportDetailsPageIsDisplayed()
         {

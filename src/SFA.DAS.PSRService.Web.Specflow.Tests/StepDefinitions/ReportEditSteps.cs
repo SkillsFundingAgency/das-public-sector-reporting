@@ -60,6 +60,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             yourEmployees.VerifyAtStartValue(p0);
             yourEmployees.VerifyAtEndValue(p1);
             yourEmployees.VerifyNewThisPeriodValue(p2);
+
+            //TODO: Check that the values have been updated in the repository
         }
 
     }

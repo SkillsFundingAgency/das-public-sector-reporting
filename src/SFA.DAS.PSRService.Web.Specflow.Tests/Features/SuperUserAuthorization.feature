@@ -28,11 +28,15 @@ Scenario: Super user can edit a report question
 	When  User clicks on 'Number of employees who work in England' link
 	Then the Your employees page is displayed
 
-Scenario: Super user can submit an edited question
-	Given User navigates to the Your employees question page
-	And the <firstvalue>, <secondvalue> and <thirdValue> have been edited
+Scenario Outline: Super user can submit an edited question
+	Given a report has been created
+	And User navigates to the Your employees question page
+	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
 	When User clicks on the save question
-	Then The 'Your Employees' question values are saved
+	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
+	Examples: 
+	| atStart | atEnd | newThisPeriod |
+	| 100     | 150   | 50            |
 
 Scenario: Confirm button is displayed on review summary page
 	Given A valid report
