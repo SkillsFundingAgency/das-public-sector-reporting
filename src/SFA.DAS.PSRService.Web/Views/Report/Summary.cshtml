@@ -97,6 +97,10 @@
             {
                 <a class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
             }
+            else if (Model.IsValidForSubmission && !Model.UserCanSubmitReports && !Model.IsReadOnly)
+            { 
+                <a class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
+            }
             else
             {
                 if (Model.Report.Submitted)

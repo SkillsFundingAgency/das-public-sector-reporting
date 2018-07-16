@@ -193,6 +193,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        [Route("EditComplete")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult EditComplete()
+        {
+            return View("EditComplete");
+        }
+
         [Route("Submit")]
         [HttpGet]
         public IActionResult Submit()
