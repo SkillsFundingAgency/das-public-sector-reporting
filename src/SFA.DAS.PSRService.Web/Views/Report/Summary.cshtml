@@ -58,15 +58,15 @@
                 {
                     <legend>
                         <h1 class="heading-xlarge">View details</h1>
-                        <p>@Model.Subtitle</p>
                     </legend>
+                    <p>@Model.Subtitle</p>
                 }
                 else
                 {
                     <legend>
                         <h1 class="heading-xlarge">Review details</h1>
-                        <p>@Model.Subtitle</p>
                     </legend>
+                    <p style="white-space: pre-line">@Model.Subtitle</p>
                 }
                 <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
                     <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
