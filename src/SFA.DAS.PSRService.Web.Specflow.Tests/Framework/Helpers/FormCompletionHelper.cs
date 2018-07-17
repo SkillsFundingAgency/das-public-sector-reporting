@@ -62,7 +62,19 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
             var radioToSelect = radios.FirstOrDefault(radio => radio.GetAttribute("for") == forAttribute);
 
             if (radioToSelect != null)
+            {
                 ClickElement(radioToSelect);
+            }
+        }
+
+        public static void SelectRadioOptionById(String id)
+        {
+            var radioOption = WebDriver.FindElement(By.Id(id));
+
+            if (radioOption != null)
+            {
+                ClickElement(radioOption);
+            }
         }
     }
 }

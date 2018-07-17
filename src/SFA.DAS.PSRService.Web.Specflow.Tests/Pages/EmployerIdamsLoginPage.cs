@@ -20,14 +20,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
-        private readonly By _selectPageForm = By.Id("selectOption");
-        private readonly By _submitPageFormButton = By.Id("SubmitSelectOptionForm");
-
         internal void SelectPreviouslySubmittedReports()
         {
-            FormCompletionHelper.SelectRadioOptionByForAttribute(_selectPageForm, "home-action-list");
-           
+            FormCompletionHelper.SelectRadioOptionById( "home-action-list");
         }
+
         private readonly By _emailAddress = By.Name("EmailAddress");
         private readonly By _password = By.Name("Password");
         private readonly By _signInButton = By.Id("button-signin");

@@ -27,18 +27,17 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         internal void SelectPreviouslySubmittedReports()
         {
-            FormCompletionHelper.SelectRadioOptionByForAttribute(_selectPageForm, "home-action-list");
-           
+            FormCompletionHelper.SelectRadioOptionById("home-action-list");
         }
 
         internal void SelectEditReport()
         {
-            FormCompletionHelper.SelectRadioOptionByForAttribute(_selectPageForm, "home-action-edit");
+            FormCompletionHelper.SelectRadioOptionById("home-action-edit");
         }
 
         internal void SelectCreateReport()
         {
-            FormCompletionHelper.SelectRadioOptionByForAttribute(_selectPageForm, "home-action-create");
+            FormCompletionHelper.SelectRadioOptionById("home-action-create");
         }
 
         internal PreviouslySubmittedReportsPage ClickContinueButton()
