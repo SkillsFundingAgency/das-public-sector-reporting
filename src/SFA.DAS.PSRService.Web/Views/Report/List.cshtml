@@ -17,7 +17,7 @@
     <div class="column-two-thirds">
         <p>Choose the report you wish to view</p>
     </div>
-    <div class="column-full" data-automated-test-id="submitted-report-list">
+    <div id="submitted-report-list" class="column-full">
         <table>
             <thead>
                 <tr>
@@ -29,7 +29,7 @@
             <tbody>
             @foreach (var result in Model.SubmittedReports)
             {
-                <tr data-automated-test-id="submitted-report-item">
+                <tr>
                     <th scope="row">@result.OrganisationName</th>
                     <td>@Model.Periods[result.ReportingPeriod].FullString</td>
                     <td class="link-right"><a href="../Report/Summary/@result.ReportingPeriod">View</a></td>
@@ -42,7 +42,7 @@
 
     @if (Model.SubmittedReports.Count() == 0)
     {
-    <div class="column-two-thirds" data-automated-test-id="submitted-report-list-display-message">
+    <div  id="submitted-report-list-display-message" class="column-two-thirds">
         <p>There are currently no submitted reports to show</p>
     </div>
     }
