@@ -52,7 +52,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 [Home.Edit.SubmitValue] = Home.Edit,
                 [Home.List.SubmitValue] = Home.List,
                 [Home.Create.SubmitValue] = Home.Create,
-                [Home.View.SubmitValue] = Home.View
+                [Home.View.SubmitValue] = Home.View,
+                [Home.AlreadySubmitted.SubmitValue] = Home.AlreadySubmitted
             };
         }
 
@@ -125,7 +126,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             bool userIsAuthorizedForReportEdit = UserIsAuthorizedForReportEdit();
             bool userIsNotAuthorizedForReportEdit = userIsAuthorizedForReportEdit == false;
 
-            model.CurrentReportExists = reportExists;
             // TODO: take submission period close date into account
             model.CanCreateReport =  reportDoesNotExist && userIsAuthorizedForReportEdit;
             model.CanEditReport = reportExists && reportIsNotYetSubmitted && userIsAuthorizedForReportEdit;

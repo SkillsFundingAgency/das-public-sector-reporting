@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             // assert
             _mockReportService.VerifyAll();
             Assert.IsAssignableFrom<ViewResult>(result);
-            Assert.AreEqual("Submitted", ((ViewResult) result).ViewName);
+            Assert.AreEqual("SubmitConfirmation", ((ViewResult) result).ViewName);
         }
 
         private static Mock<IObjectModelValidator> GetObjectValidator()

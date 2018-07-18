@@ -1,0 +1,18 @@
+﻿@model object
+
+@{
+
+    ViewBag.Title = $"Current report already submitted";
+
+    Layout = "_Layout";
+}
+
+<div class="column-two-thirds">
+
+    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+
+    <h1 class="heading-large">Report submitted</h1>
+
+    <p>The report for the year @ViewBag.CurrentPeriod.StartYear to @ViewBag.CurrentPeriod.EndYear is already submitted.</p>
+
+</div>

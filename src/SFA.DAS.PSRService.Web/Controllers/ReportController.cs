@@ -35,6 +35,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _currentPeriod = periodService.GetCurrentPeriod();
         }
 
+        [Route("AlreadySubmitted")]
+        public ViewResult AlreadySubmitted()
+        {
+            ViewBag.CurrentPeriod = _currentPeriod;
+
+            return View("AlreadySubmitted");
+        }
+
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Edit()
         {
@@ -128,9 +136,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 var report = _reportService.GetReport(period, EmployerAccount.AccountId);
 
-                if (report == null)
-                    return new NotFoundResult();
-
                 var reportViewModel = new ReportViewModel
                 {
                     Report = report,
@@ -140,12 +145,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     IsReadOnly = (UserIsAuthorizedForReportEdit() == false)
                 };
 
-
-
-                if (reportViewModel.Report == null)
-                    return new RedirectResult(Url.Action("Index", "Home"));
-
-                reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
+                reportViewModel.IsValidForSubmission = reportViewModel.Report?.IsValidForSubmission() ?? false;
                 reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
                 reportViewModel.Period = reportViewModel.Report?.Period;
 
@@ -228,7 +228,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             ViewBag.CurrentPeriod = _currentPeriod;
 
-            return View("Submitted");
+            return View("SubmitConfirmation");
         }
 
         [Route("OrganisationName")]

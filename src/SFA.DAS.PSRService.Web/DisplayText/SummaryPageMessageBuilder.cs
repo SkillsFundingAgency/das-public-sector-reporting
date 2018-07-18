@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.DisplayText
 
         public string ForViewOnlyUser()
         {
-            return String.Empty;
+            return @"You do not have the admin rights needed to edit or submit this report.";
         }
 
         public string ForUserWhoCanSubmit()
@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.Web.DisplayText
 
         public string ForUserWhoCanEditButNotSubmit()
         {
-            return "Check or amend your information.";
+            return $"You can check or change your information.{Environment.NewLine} You do not have the admin rights needed to submit this report.";
         }
     }
 }
