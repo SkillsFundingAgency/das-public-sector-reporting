@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 using StructureMap;
@@ -26,8 +33,28 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
         {
             _container = new Container();
             _container.Configure(TestHelper.ConfigureIoc());
+
+            //Replace authorization service with one tailored to this test
+            //TODO: Refactor test to Geiven-Then-When style and find a better way of onfiguring authorization
+            _container.Inject<IAuthorizationService>(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
         }
 
+        private static IAuthorizationService BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit()
+        {
+            var policyNames = new[] { PolicyNames.CanEditReport, PolicyNames.CanSubmitReport };
+
+            var service = new Mock<IAuthorizationService>();
+            service
+                .Setup(
+                    m => m.AuthorizeAsync(
+                        It.IsAny<ClaimsPrincipal>(),
+                        It.IsAny<object>(),
+                        It.Is<string>(x => policyNames.Contains(x))))
+                .Returns(
+                    Task.FromResult(AuthorizationResult.Success()));
+
+            return service.Object;
+        }
 
         [Test]
         public void AndThereAreNoReportsThenCreateReportIsEnabled()
