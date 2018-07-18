@@ -101,8 +101,8 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
                 config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
                 config.For<IMediator>().Use<Mediator>();
-                config.For(typeof(ILogger<UserService>)).Use(c => new Mock<ILogger<UserService>>().Object);
-                config.For<IAuthorizationService>().Use(c => new Mock<IAuthorizationService>().Object);
+                config.For(typeof(ILogger<UserService>)).Use(Mock.Of<ILogger<UserService>>());
+                config.For<IAuthorizationService>().Use(Mock.Of<IAuthorizationService>());
 
                 var mockEmployerAccountService = new Mock<IEmployerAccountService>();
                 var employerIdentifier = new EmployerIdentifier {AccountId = "111", EmployerName = "222"};

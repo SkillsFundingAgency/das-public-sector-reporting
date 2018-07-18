@@ -36,11 +36,13 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
 
             //Replace authorization service with one tailored to this test
             //TODO: Refactor test to Geiven-Then-When style and find a better way of onfiguring authorization
-            _container.Inject<IAuthorizationService>(BuildMockAuthorizationService(new[] { PolicyNames.CanEditReport, PolicyNames.CanSubmitReport }));
+            _container.Inject<IAuthorizationService>(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
         }
 
-        private static IAuthorizationService BuildMockAuthorizationService(IEnumerable<string> policyNames)
+        private static IAuthorizationService BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit()
         {
+            var policyNames = new[] { PolicyNames.CanEditReport, PolicyNames.CanSubmitReport };
+
             var service = new Mock<IAuthorizationService>();
             service
                 .Setup(
