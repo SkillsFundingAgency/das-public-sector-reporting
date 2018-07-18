@@ -27,70 +27,70 @@
     }
     else
     {
-        <div class="column-full review-details">
-            @if (!Model.Report.Submitted)
-            {
-                if (Model.CanBeEdited)
+            <div class="column-full review-details">
+                @if (!Model.Report.Submitted)
                 {
-                    <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+                    if (Model.CanBeEdited)
+                    {
+                        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+                    }
+                    else
+                    {
+                        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+                    }
+
                 }
                 else
                 {
-                    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+                    <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
                 }
 
-            }
-            else
-            {
-                <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
-            }
 
-
-            @if (Model.Report.Submitted)
-            {
-                <legend>
-                    <h1 class="heading-xlarge">Submitted details</h1>
-                </legend>
-            }
-            else
-            {
-                if (Model.IsReadOnly)
+                @if (Model.Report.Submitted)
                 {
                     <legend>
-                        <h1 class="heading-xlarge">View details</h1>
-                        <p>@Model.Subtitle</p>
+                        <h1 class="heading-xlarge">Submitted details</h1>
                     </legend>
                 }
                 else
                 {
-                    <legend>
-                        <h1 class="heading-xlarge">Review details</h1>
-                        <p>@Model.Subtitle</p>
-                    </legend>
+                    if (Model.IsReadOnly)
+                    {
+                        <legend>
+                            <h1 class="heading-xlarge">View details</h1>
+                        </legend>
+                        <p style="white-space: pre-line">@Model.Subtitle</p>
+                    }
+                    else
+                    {
+                        <legend>
+                            <h1 class="heading-xlarge">Review details</h1>
+                        </legend>
+                        <p style="white-space: pre-line">@Model.Subtitle</p>
+                    }
+                    <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                        <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+                            @(Model.IsReadOnly ? "These are the current errors" : "Please fix these errors")
+                        </h2>
+                    </div>
                 }
-                <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-                    <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
-                        @(Model.IsReadOnly ? "These are the current errors" : "Please fix these errors")
-                    </h2>
+
+                <div class="form-group">
+                    <table>
+                        @*<caption class="heading-medium">Reporting period</caption>*@
+                        <tbody>
+                            <tr>
+                                <td>Reporting period</td>
+                                <td class="bold">@Model.Period.FullString</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            }
 
-            <div class="form-group">
-                <table>
-                    @*<caption class="heading-medium">Reporting period</caption>*@
-                    <tbody>
-                    <tr>
-                        <td>Reporting period</td>
-                        <td class="bold">@Model.Period.FullString</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            @Html.Partial("Question/Organisation", Model.Report.OrganisationName)
-            @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
-            @Html.Partial("Question/ReportingPercentages", Model.Percentages)
-            @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
+                @Html.Partial("Question/Organisation", Model.Report.OrganisationName)
+                @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+                @Html.Partial("Question/ReportingPercentages", Model.Percentages)
+                @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
@@ -103,11 +103,11 @@
             }
             else
             {
-                if (Model.Report.Submitted)
-                {
-                    <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
-                }
-            }
-        </div>
+                    if (Model.Report.Submitted)
+                    {
+                        <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+                    }
+             }
+            </div>
     }
 </div>
