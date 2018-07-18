@@ -38,7 +38,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         }
 
         [Test]
-        public void The_Report_Doesnt_Exist_Then_Should_Not_Error()
+        public void The_Report_Does_Not_Exist_Then_Should_Not_Error()
         {
             // arrange
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns("report/create");

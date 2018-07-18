@@ -19,7 +19,7 @@ Scenario: Super user can create a report
 
 Scenario: Super user can edit a report
 	Given  A Current report exists
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When User navigates to the Edit report page
 	Then the edit report page is displayed
 
@@ -40,7 +40,7 @@ Scenario Outline: Super user can submit an edited question
 
 Scenario: Confirm button is displayed on review summary page
 	Given A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When User navigates to Review summary page
 	Then the Review report details page is displayed
 	And the confirm submission button should be displayed
@@ -48,14 +48,14 @@ Scenario: Confirm button is displayed on review summary page
 
 Scenario: Continue button is clicked on review summary page
 	Given A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	And User navigates to Review summary page
 	When I click the continue button
 	Then the confirm submission page is displayed
 
 Scenario: Super user can submit a report
 	Given A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	And user navigates to confirm submission page
 	When I click the 'Submit your report' button
 	Then the report should be submitted

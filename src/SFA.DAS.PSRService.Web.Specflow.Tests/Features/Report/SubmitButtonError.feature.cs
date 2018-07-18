@@ -73,7 +73,7 @@ testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow
 #line 8
 testRunner.And("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
-testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("the report has not been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
 testRunner.And("An invalid report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -103,3 +103,5 @@ testRunner.And("do not display the Report \'Submit\' button", ((string)(null)), 
 }
 #pragma warning restore
 #endregion
+
+

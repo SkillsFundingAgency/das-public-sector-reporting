@@ -6,7 +6,7 @@
 Background:
 Given Full access is granted
 And A Current report exists
-And the report hasnt been submitted
+And the report has not been submitted
 And An invalid report
 
 Scenario: User tries to submit a report

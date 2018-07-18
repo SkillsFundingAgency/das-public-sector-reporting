@@ -244,7 +244,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         }
 
         [Test]
-        public void When_Old_Version_Doesnt_Have_New_Values_They_Are_Recorded_And_No_Audit_Created()
+        public void When_Old_Version_Does_Not_Have_New_Values_They_Are_Recorded_And_No_Audit_Created()
         {
             // arrange
             var justNow = DateTime.UtcNow.AddSeconds(-1);

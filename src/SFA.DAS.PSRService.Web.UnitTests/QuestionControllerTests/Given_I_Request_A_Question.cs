@@ -46,7 +46,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         }
 
         [Test]
-        public void And_A_Report_Doesnt_Exist_Then_Redirect_Home()
+        public void And_A_Report_Does_Not_Exist_Then_Redirect_Home()
         {
             // arrange
             var url = "home/index";
@@ -70,7 +70,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         }
 
         [Test]
-        public void And_A_Valid_Report_Doesnt_Exist_Then_Redirect_Home()
+        public void And_A_Valid_Report_Does_Not_Exist_Then_Redirect_Home()
         {
             // arrange
             var url = "home/index";
@@ -95,7 +95,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
         }
 
         [Test]
-        public void And_The_Question_ID_Doesnt_Exist_Then_Return_Error()
+        public void And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
         {
             // arrange
             var url = "home/index";

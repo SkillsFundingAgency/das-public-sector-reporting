@@ -11,7 +11,7 @@ Scenario: View user cannot view create report page
 
 Scenario: View user cannot edit a report
 	Given  A Current report exists
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When User navigates to the Edit report page
 	Then the Home page should be displayed
 
@@ -22,12 +22,12 @@ Scenario: View user cannot edit a report question
 
 Scenario: View user can view the review details page
 	Given A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When I navigate to Review details page
 	Then the Review report details page is displayed
 
 Scenario: Confirm button is not available on review details page
 	Given A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When I navigate to Review details page
 	Then the confirm submission button should not be available

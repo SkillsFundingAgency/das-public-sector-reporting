@@ -6,7 +6,7 @@ So that my organisation can submit information.
 Background: 
 Given Full access is granted
 And  a report has been created
-And the report hasnt been submitted
+And the report has not been submitted
 
 Scenario: user can edit a report
 	Given User navigates to the Edit report page

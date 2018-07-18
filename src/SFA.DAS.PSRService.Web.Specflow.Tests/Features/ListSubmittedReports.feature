@@ -12,7 +12,7 @@ Scenario: User Navigates to submitted reports page
 
 Scenario: User Views previously submitted reports when no reports submitted
 	Given A Current report exists
-	And the report hasnt been submitted
+	And the report has not been submitted
 	And user navigates to previously submitted reports page
 	Then the User should see the message 'There are currently no submitted reports to show' on the previously submitted page
 

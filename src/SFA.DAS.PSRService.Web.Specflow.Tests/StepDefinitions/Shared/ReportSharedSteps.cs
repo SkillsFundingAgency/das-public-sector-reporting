@@ -58,8 +58,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportRepository.Create(_reportDto);
         }
 
-        [Given(@"the report hasnt been submitted")]
-        public void GivenTheReportHasntBeenSubmitted()
+        [Given(@"the report has not been submitted")]
+        public void GivenTheReportHasNotBeenSubmitted()
         {
             _reportDto.Submitted = false;
             _reportRepository.Update(_reportDto);

@@ -19,7 +19,7 @@ Scenario: Edit user can create a report
 
 Scenario: Edit user can edit a report
 	Given a report has been created
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When User navigates to the Edit report page
 	Then the edit report page is displayed
 
@@ -42,12 +42,12 @@ Scenario Outline: Edit user can submit an edited question
 Scenario: Edit user can view the review summary page
 	Given a report has been created
 	And A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When User navigates to Review summary page
 	Then the Review report details page is displayed
 
 Scenario: Continue button is not available on review summary page
 	Given A valid report
-	And the report hasnt been submitted
+	And the report has not been submitted
 	When User navigates to Review summary page
 	Then the continue button should not be available

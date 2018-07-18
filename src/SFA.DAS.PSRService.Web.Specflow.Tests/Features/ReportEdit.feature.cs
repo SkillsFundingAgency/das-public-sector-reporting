@@ -72,7 +72,7 @@ testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow
 #line 8
 testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
-testRunner.And("the report hasnt been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("the report has not been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -137,3 +137,5 @@ this.FeatureBackground();
 }
 #pragma warning restore
 #endregion
+
+
