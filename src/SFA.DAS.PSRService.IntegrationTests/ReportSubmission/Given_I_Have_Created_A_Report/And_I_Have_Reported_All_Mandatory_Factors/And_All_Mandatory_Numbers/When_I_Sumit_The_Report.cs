@@ -17,11 +17,11 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
         }
 
         [Test]
-        public void Then_I_Am_Presented_With_The_Submitted_View()
+        public void Then_I_Am_Presented_With_The_SubmitConfirmation_View()
         {
             Assert
                 .AreEqual(
-                    "Submitted"
+                    "SubmitConfirmation"
                     , ((ViewResult) submitResponse).ViewName);
         }
 
