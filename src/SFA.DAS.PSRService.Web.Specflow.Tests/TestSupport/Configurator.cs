@@ -28,15 +28,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
             _browserStackBrowser = ConfigurationManager.AppSettings["BrowserStack.Browser"];
             _employerId = ConfigurationManager.AppSettings["EmployerId"];
 
-            _superUser = "matt.derry@digital.education.gov.uk";
-            _superUserPassword = "Service123";
-            _editUser = "matt.derry@digital.education.gov.uk";
-            _editUserPassword = "Service123";
-            _viewUser = "matt.derry@digital.education.gov.uk";
-            _viewUserPassword = "Service123";
-
-
-
+            _viewUser = "Sender1@gmail.com";
+            _viewUserPassword = "Sender1@gm";
+            _editUser = "Sender2@gmail.com";
+            _editUserPassword = "Sender2@gm";
+            _superUser = "Sender3@gmail.com";
+            _superUserPassword = "Sender3@gm";
         }
 
         public static Configurator GetConfiguratorInstance()
