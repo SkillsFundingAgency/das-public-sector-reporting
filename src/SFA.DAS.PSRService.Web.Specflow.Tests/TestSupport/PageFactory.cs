@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         public YourEmployeesPage QuestionYourEmployees => new YourEmployeesPage(webDriver);
 
         //Employer Idams pages
-        public EmployerIdamsLodingPage IdamsLoading => new EmployerIdamsLodingPage(webDriver);
+        public EmployerIdamsLoadingPage IdamsLoading => new EmployerIdamsLoadingPage(webDriver);
         public EmployerIdamsLoginPage IdamsLogin => new EmployerIdamsLoginPage(webDriver);
     }
 }

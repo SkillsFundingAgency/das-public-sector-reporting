@@ -5,11 +5,11 @@ using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 {
-    public class EmployerIdamsLodingPage : BasePage
+    public class EmployerIdamsLoadingPage : BasePage
     {
         private static String PAGE_TITLE = "Loading...";
 
-        public EmployerIdamsLodingPage(IWebDriver webDriver) : base(webDriver)
+        public EmployerIdamsLoadingPage(IWebDriver webDriver) : base(webDriver)
         {
         }
         public override void Navigate()
