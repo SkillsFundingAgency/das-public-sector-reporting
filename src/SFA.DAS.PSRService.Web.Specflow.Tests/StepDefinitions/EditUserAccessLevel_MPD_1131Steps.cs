@@ -1,7 +1,5 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -52,7 +50,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"the continue button should not be available")]
         public void ThenTheContinueButtonShouldNotBeAvailable()
         {
-            ScenarioContext.Current.Pending();
+            Assert.IsFalse(pageFactory.ReportSummary.DoesContinueButtonExist);
         }
     }
 }
