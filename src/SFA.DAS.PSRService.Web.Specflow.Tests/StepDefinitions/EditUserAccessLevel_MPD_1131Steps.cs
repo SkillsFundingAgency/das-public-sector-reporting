@@ -46,9 +46,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"the Review report details page is displayed")]
         public void ThenTheReviewReportDetailsPageIsDisplayed()
         {
-            ScenarioContext.Current.Pending();
+            pageFactory.ReportSummary.Verify();
         }
-        
+
         [Then(@"the continue button should not be available")]
         public void ThenTheContinueButtonShouldNotBeAvailable()
         {

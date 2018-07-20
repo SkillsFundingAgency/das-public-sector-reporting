@@ -95,13 +95,13 @@
 
                 @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
                 {
-                    <a class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
+                    <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
                 }
                 else
                 {
                     if (Model.Report.Submitted)
                     {
-                        <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+                        <a id="report-summary-list" class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
                     }
                 }
             </div>

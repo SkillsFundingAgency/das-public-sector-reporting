@@ -14,12 +14,18 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.Homepage.Navigate();
         }
+
+        [When(@"User navigates to Homepage")]
+        public void WhenUserNavigatesToHomepage()
+        {
+            pageFactory.Homepage.Navigate();
+        }
+
         [Given(@"User navigates to the Create report page")]
         public void GivenUserNavigatesToTheCreateReportPage()
         {
             pageFactory.ReportCreate.Navigate();
         }
-
 
         [Given(@"User navigates to the Edit report page")]
         public void GivenUserNavigatesToTheEditReportPage()
@@ -28,8 +34,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
 
         [Given(@"User navigates to Review summary page")]
-        [When(@"User navigates to Review summary page")]
         public void GivenUserNavigatesToReviewSummaryPage()
+        {
+            pageFactory.ReportSummary.Navigate();
+        }
+
+        [When(@"User navigates to Review summary page")]
+        public void WhenUserNavigatesToReviewSummaryPage()
         {
             pageFactory.ReportSummary.Navigate();
         }
@@ -45,6 +56,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.PreviouslySubmittedReports.Navigate();
         }
+
         [Given(@"User navigates to the Your employees question page")]
         public void GivenUserNavigatesToTheYourEmployeesQuestionPage()
         {

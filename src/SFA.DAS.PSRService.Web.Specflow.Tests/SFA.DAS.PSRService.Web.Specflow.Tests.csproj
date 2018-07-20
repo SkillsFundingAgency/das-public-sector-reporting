@@ -206,6 +206,7 @@
     <Compile Include="Hooks\StartWebApplication.cs" />
     <Compile Include="Pages\Questions\YourEmployeesEditPage.cs" />
     <Compile Include="Pages\ReportConfirmationPage.cs" />
+    <Compile Include="Pages\ViewOnlyReportSummaryPage.cs" />
     <Compile Include="Pages\ReportSummaryPage.cs" />
     <Compile Include="Pages\ReportCreatePage.cs" />
     <Compile Include="Pages\Questions\QuestionEditBasePage.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="StepDefinitions\Shared\ReportSharedSteps.cs" />
     <Compile Include="StepDefinitions\Shared\HomepageSharedSteps.cs" />
     <Compile Include="StepDefinitions\ListSubmittedReports\ListSubmittedReportsSteps.cs" />
+    <Compile Include="StepDefinitions\ViewUserAccessLevelSteps.cs" />
     <Compile Include="StepDefinitions\SuperUserAccessLevelSteps.cs" />
     <Compile Include="TestSupport\BasePage.cs" />
     <Compile Include="TestSupport\BaseTest.cs" />

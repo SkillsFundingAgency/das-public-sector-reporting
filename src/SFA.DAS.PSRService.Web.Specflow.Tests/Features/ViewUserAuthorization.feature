@@ -4,10 +4,11 @@ View user should be able to view the current and previously submitted reports bu
 Background:
 Given View access is granted
 
-Scenario: View user cannot view create report page
+Scenario: View user cannot view report but not create report page
 	Given no current report exists
 	When User navigates to Homepage
-	Then Create Report radio button does not exist
+	Then View Report radio button does exist
+	But Create Report radio button does not exist
 
 Scenario: View user cannot edit a report
 	Given  A Current report exists
@@ -23,11 +24,11 @@ Scenario: View user cannot edit a report question
 Scenario: View user can view the review details page
 	Given A valid report
 	And the report has not been submitted
-	When I navigate to Review details page
-	Then the Review report details page is displayed
+	When User navigates to Review summary page
+	Then the View report details page is displayed
 
 Scenario: Confirm button is not available on review details page
 	Given A valid report
 	And the report has not been submitted
-	When I navigate to Review details page
+	When User navigates to Review summary page
 	Then the confirm submission button should not be available

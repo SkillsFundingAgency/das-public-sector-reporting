@@ -24,6 +24,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         public ReportConfirmationPage ReportConfirmation => new ReportConfirmationPage(webDriver);
         public PreviouslySubmittedReportsPage PreviouslySubmittedReports => new PreviouslySubmittedReportsPage(webDriver);
         public ReportCreatePage ReportCreate => new ReportCreatePage(webDriver);
+        public ViewOnlyReportSummaryPage ViewOnlyReportSummary => new ViewOnlyReportSummaryPage(webDriver);
+
         //Psrs Question pages
         public YourEmployeesPage QuestionYourEmployees => new YourEmployeesPage(webDriver);
 
