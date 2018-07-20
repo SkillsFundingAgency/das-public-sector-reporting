@@ -2,10 +2,11 @@
 using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
+using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 {
-    public class ViewOnlyReportSummaryPage : ReportSummaryPage
+    public class ViewOnlyReportSummaryPage : BasePage
     {
         private static String PAGE_TITLE = "View details";
 
@@ -13,7 +14,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
         }
 
-        public bool? DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(By.Id("report-summary-continue"));
+        public bool DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(By.Id("report-summary-continue"));
 
         public override void Navigate()
         {

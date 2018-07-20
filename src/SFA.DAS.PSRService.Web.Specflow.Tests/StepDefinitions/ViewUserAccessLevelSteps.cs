@@ -1,7 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
+﻿using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
