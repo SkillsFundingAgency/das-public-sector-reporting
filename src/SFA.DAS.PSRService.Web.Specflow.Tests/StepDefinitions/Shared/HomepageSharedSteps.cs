@@ -1,5 +1,4 @@
-﻿using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
-using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
+﻿using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
@@ -9,15 +8,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Given(@"User selects Homepage View a previously submitted report Radio button")]
         public void GivenUserSelectsHomepageViewAPreviouslySubmittedReportRadioButton()
         {
-            new PsrsHomepage(webDriver)
-                .SelectPreviouslySubmittedReports();
+            pageFactory.Homepage.SelectPreviouslySubmittedReports();
         }
 
         [Given(@"User selects Homepage Create a report Radio button")]
         public void GivenUserSelectsHomepageCreateAReportRadioButton()
         {
-            new PsrsHomepage(webDriver)
-                .SelectCreateReport();
+            pageFactory.Homepage.SelectCreateReport();
         }
 
         [Then(@"the Home page should be displayed")]
