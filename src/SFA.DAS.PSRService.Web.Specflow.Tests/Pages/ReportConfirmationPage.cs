@@ -8,7 +8,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 {
     public class ReportConfirmationPage : BasePage
     {
-        private static String PAGE_TITLE = "ave you checked everything is correct?";
+        private static String PAGE_TITLE = "Have you checked everything is correct?";
 
         private readonly By _backButtonLink = By.ClassName("link-back");
         private readonly By _returnToYourReportButton = By.LinkText("Return to your report");

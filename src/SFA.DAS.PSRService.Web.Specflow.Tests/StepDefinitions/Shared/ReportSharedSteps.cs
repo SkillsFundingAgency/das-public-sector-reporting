@@ -109,9 +109,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"the report submitted page should be displayed")]
         public void ThenTheReportSubmittedPageIsDisplayed()
         {
-            ScenarioContext.Current.Pending();
-            //pageFactory.SubmitConfirmation.Verify();
-            //url - Report/Submit
+            pageFactory.ReportSubmitConfirmation.Verify();
         }
 
         [BeforeScenario]
