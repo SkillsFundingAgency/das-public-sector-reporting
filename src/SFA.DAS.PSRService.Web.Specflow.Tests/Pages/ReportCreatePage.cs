@@ -18,14 +18,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             WebDriver.Url = GetPageUrl(PageUrls.ReportCreate);
         }
+
         public override bool Verify()
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
-        public IWebElement ReportsPageBeforeYouStartHeader => WebDriver.WaitForElementToBeVisible(By.ClassName("heading-medium"));
-
-        public IWebElement StartButton => WebDriver.WaitForElementToBeClickable(By.CssSelector("#content > div > form > div > button"));
-
+        public void ClickStartButton()
+        {
+            FormCompletionHelper.ClickElement(By.CssSelector("#content > div > form > div > button"));
+        }
     }
 }

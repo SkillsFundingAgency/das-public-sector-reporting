@@ -22,12 +22,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
-        public void ClicksQuestionLink(string linkText)
+        public void ClickQuestionLink(string linkText)
         {
             FormCompletionHelper.ClickElement(By.LinkText(linkText));
         }
 
-        public void ClicksReportSummaryLink(string linkText)
+        public void ClickReportSummaryLink(string linkText)
         {
 
         }

@@ -19,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [When(@"User clicks on Start button")]
         public void WhenUserClicksOnStartButton()
         {
-            pageFactory.ReportCreate.StartButton.Click();
+            pageFactory.ReportCreate.ClickStartButton();
         }
         
         [When(@"User navigates to the Edit report page")]
@@ -28,17 +28,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportEdit.Navigate();
         }
         
-        
         [Then(@"the create report page is displayed")]
         public void ThenTheCreateReportPageIsDisplayed()
         {
-            Assert.True("Before you start" == pageFactory.ReportCreate.ReportsPageBeforeYouStartHeader.Text);
+            Assert.True(pageFactory.ReportCreate.Verify());
         }
         
         [Then(@"New report is created")]
         public void ThenNewReportIsCreated()
         {
-            Assert.True(pageFactory.ReportSummary.ReportSummaryOrganisationName.Displayed);
+            Assert.True(pageFactory.ReportSummary.IsOrganisationNameDisplayed);
         }
          
         [Then(@"the Review report details page is displayed")]

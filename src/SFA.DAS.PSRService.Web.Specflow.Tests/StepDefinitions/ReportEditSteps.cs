@@ -23,7 +23,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             var reportEdit = new ReportEditPage(webDriver);
 
-            reportEdit.ClicksQuestionLink(p0);
+            reportEdit.ClickQuestionLink(p0);
         }
         
         [When(@"User clicks on the save question")]
@@ -53,7 +53,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             var reportEdit = new ReportEditPage(webDriver);
 
-            reportEdit.ClicksQuestionLink("Number of employees who work in England");
+            reportEdit.ClickQuestionLink("Number of employees who work in England");
 
             var yourEmployees = ThenTheYourEmployeesPageIsDisplayed();
 

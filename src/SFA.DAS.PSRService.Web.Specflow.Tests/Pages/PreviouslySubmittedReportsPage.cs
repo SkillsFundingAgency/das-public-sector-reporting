@@ -28,11 +28,18 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             return true;
         }
 
-        public IWebElement BackButtonLink => WebDriver.WaitForElementToBeVisible(By.ClassName("link-back"));
+        private readonly By _backButtonLink = By.ClassName("link-back");
 
-        public IWebElement NoSubmittedReportDisplayMessage => WebDriver.WaitForElementToBeVisible(By.Id("submitted-report-list-display-message"));
+        internal void ClickBackButtonLink()
+        {
+            FormCompletionHelper.ClickElement(_backButtonLink);
+        }
 
-        public IWebElement SubmittedReportDisplayed => WebDriver.WaitForElementToBeVisible(By.Id("submitted-report-list"));
+        public bool IsSubmittedReportDisplayed => PageInteractionHelper.IsElementPresent(By.Id("submitted-report-list"));
+
+        public bool VerifyBackButtonText(string text) => PageInteractionHelper.VerifyText(_backButtonLink, text);
+
+        public bool VerifyNoSubmittedReportDisplayMessageText(string text) => PageInteractionHelper.VerifyText(By.Id("submitted-report-list-display-message"), text);
 
         public int SubmittedReportListCount
         {

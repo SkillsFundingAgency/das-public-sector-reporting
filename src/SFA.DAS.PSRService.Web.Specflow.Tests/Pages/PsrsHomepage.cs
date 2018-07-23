@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
@@ -25,6 +24,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         private readonly By _selectPageForm = By.CssSelector("label");
         private readonly By _submitPageFormButton = By.Id("SubmitSelectOptionForm");
+        private readonly By _signInButton = By.CssSelector("h1");
 
         internal void SelectPreviouslySubmittedReports()
         {
@@ -47,10 +47,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             return new PreviouslySubmittedReportsPage(WebDriver);
         }
 
-        public IWebElement DisplayPsrsHomepageMenu => WebDriver.WaitForElementToBeVisible(By.ClassName("heading-xlarge"));
-        
+        internal bool IsPsrsHomepageMenuDisplayed => PageInteractionHelper.IsElementPresent(By.ClassName("heading-xlarge"));
+
         internal bool DoesCreateReportButtonExist => PageInteractionHelper.IsElementPresent(By.Id("home-action-create"));
 
         internal bool DoesViewReportButtonExist => PageInteractionHelper.IsElementPresent(By.Id("home-action-view"));
+
+        public bool IsSignInDisplayed => PageInteractionHelper.IsElementPresent(_signInButton)
+                                         && PageInteractionHelper.VerifyText(_signInButton, "Sign in");
     }
 }

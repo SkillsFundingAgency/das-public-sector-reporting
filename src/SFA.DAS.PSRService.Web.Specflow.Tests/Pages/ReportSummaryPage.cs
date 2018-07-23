@@ -18,14 +18,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             WebDriver.Url = GetPageUrl(PageUrls.ReportSummary);
         }
-
+        
         public override bool Verify()
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
-        public bool? DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(By.Id("report-summary-continue"));
+        public bool DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(By.Id("report-summary-continue"));
 
-        public IWebElement ReportSummaryOrganisationName => WebDriver.WaitForElementToBeVisible(By.ClassName("task-list-section"));
+        public bool IsOrganisationNameDisplayed => PageInteractionHelper.IsElementPresent(By.ClassName("task-list-section"));
     }
 }

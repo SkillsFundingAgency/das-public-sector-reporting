@@ -1,6 +1,4 @@
-﻿using OpenQA.Selenium;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
-using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
+﻿using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
@@ -15,13 +13,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.Homepage.Navigate();
             
-            if (webDriver.FindElement(By.CssSelector("h1")).Text == "Sign in")
+            if (pageFactory.Homepage.IsSignInDisplayed)
             {
-                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetSuperUser(), Configurator.GetConfiguratorInstance().GetSuperUserPassword());
+                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetSuperUser(),
+                                             Configurator.GetConfiguratorInstance().GetSuperUserPassword());
 
                 pageFactory.Homepage.Verify();
             }
-
         }
 
         [Given(@"Edit access is granted")]
@@ -29,11 +27,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.Homepage.Navigate();
 
-            if (webDriver.FindElement(By.CssSelector("h1")).Text == "Sign in")
+            if (pageFactory.Homepage.IsSignInDisplayed)
             {
-                pageFactory.IdamsLogin.Login(
-                                            Configurator.GetConfiguratorInstance().GetEditUser()
-                                            , Configurator.GetConfiguratorInstance().GetEditUserPassword());
+                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetEditUser(), 
+                                             Configurator.GetConfiguratorInstance().GetEditUserPassword());
 
                 pageFactory.Homepage.Verify();
             }
@@ -44,14 +41,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.Homepage.Navigate();
 
-            if (webDriver.FindElement(By.CssSelector("h1")).Text == "Sign in")
+            if (pageFactory.Homepage.IsSignInDisplayed)
             {
-                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetViewUser(), Configurator.GetConfiguratorInstance().GetViewUserPassword());
+                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetViewUser(), 
+                                             Configurator.GetConfiguratorInstance().GetViewUserPassword());
 
                 pageFactory.Homepage.Verify();
             }
-            
         }
-
     }
 }
