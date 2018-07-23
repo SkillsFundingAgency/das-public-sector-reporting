@@ -18,17 +18,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         // {
         //ScenarioContext.Current.Pending();
         //}
-        [When(@"User clicks on homepage Continue button")]
-        public void WhenUserClicksOnHomepageContinueButton()
-        {
-            PsrsHomepage homepage = new PsrsHomepage(webDriver);
 
-            homepage.ClickContinueButton();
-        }
-
-        [When(@"user clicks the back button")]
-        public void WhenUserClicksTheBackButton()
-        {
+        [When(@"user clicks the List Submitted Reports back button")]
+        public void WhenUserClicksTheListSubmittedReportsBackButton()
+        { 
             pageFactory.PreviouslySubmittedReports.ClickBackButtonLink();
         }
 

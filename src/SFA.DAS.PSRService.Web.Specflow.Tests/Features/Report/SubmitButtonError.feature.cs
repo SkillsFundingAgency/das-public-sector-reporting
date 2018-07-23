@@ -91,7 +91,7 @@ this.FeatureBackground();
 #line 13
 testRunner.Given("User navigates to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
-testRunner.Then("the Summary page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("the Report Summary page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
 testRunner.And("display the error summary widget at the top of the page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16

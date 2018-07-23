@@ -11,6 +11,6 @@ And An invalid report
 
 Scenario: User tries to submit a report
 Given User navigates to Review summary page
-Then the Summary page should be displayed
+Then the Report Summary page should be displayed
 And display the error summary widget at the top of the page
 And do not display the Report 'Submit' button

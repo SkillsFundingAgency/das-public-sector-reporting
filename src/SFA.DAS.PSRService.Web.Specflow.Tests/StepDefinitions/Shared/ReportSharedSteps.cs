@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Repository;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
@@ -84,6 +85,33 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             _reportDto.ReportingData = _invalidReportJson;
             _reportRepository.Update(_reportDto);
+        }
+        
+        [Then(@"the report should be submitted")]
+        public void ThenTheReportShouldBeSubmitted()
+        {
+            var currentReportDto = _reportRepository.Get(_reportDto.ReportingPeriod, _reportDto.EmployerId );
+            Assert.True(currentReportDto.Submitted);
+        }
+
+        [Then(@"the Report Summary page should be displayed")]
+        public void ThenTheReportSummaryPageIsDisplayed()
+        {
+            pageFactory.ReportSummary.Verify();
+        }
+
+        [Then(@"the submit report confirmation page should be displayed")]
+        public void ThenTheSubmitReportConfirmationPageIsDisplayed()
+        {
+            pageFactory.ReportConfirmation.Verify();
+        }
+
+        [Then(@"the report submitted page should be displayed")]
+        public void ThenTheReportSubmittedPageIsDisplayed()
+        {
+            ScenarioContext.Current.Pending();
+            //pageFactory.SubmitConfirmation.Verify();
+            //url - Report/Submit
         }
 
         [BeforeScenario]

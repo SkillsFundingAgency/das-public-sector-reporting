@@ -26,6 +26,6 @@ Scenario: User Views previously submitted reports when one report submitted
 	Given A Current report exists
 	And the report has been submitted
 	And user navigates to previously submitted reports page
-	When user clicks the back button
+	When user clicks the List Submitted Reports back button
 	Then the user is returned to the homepage
 	

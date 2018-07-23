@@ -7,12 +7,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
     [Binding]
     public class ViewUserAccessLevelSteps : BaseTest
     {
-        [Then(@"the Home page should be displayed")]
-        public void ThenTheUserIsReturnedToTheHomepage()
-        {
-            pageFactory.Homepage.Verify();
-        }
-
         [Then(@"the View report details page is displayed")]
         public void ThenTheViewReportDetailsPageIsDisplayed()
         {

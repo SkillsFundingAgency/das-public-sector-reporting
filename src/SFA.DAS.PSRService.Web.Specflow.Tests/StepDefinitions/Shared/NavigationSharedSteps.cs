@@ -21,6 +21,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.Homepage.Navigate();
         }
 
+        [When(@"User clicks on homepage Continue button")]
+        public void WhenUserClicksOnHomepageContinueButton()
+        {
+            pageFactory.Homepage.ClickContinueButton();
+        }
+        
         [Given(@"User navigates to the Create report page")]
         public void GivenUserNavigatesToTheCreateReportPage()
         {

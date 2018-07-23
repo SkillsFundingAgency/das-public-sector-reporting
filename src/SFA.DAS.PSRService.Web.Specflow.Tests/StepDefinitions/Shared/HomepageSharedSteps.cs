@@ -19,5 +19,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             new PsrsHomepage(webDriver)
                 .SelectCreateReport();
         }
+
+        [Then(@"the Home page should be displayed")]
+        public void ThenTheUserIsReturnedToTheHomepage()
+        {
+            pageFactory.Homepage.Verify();
+        }
     }
 }
