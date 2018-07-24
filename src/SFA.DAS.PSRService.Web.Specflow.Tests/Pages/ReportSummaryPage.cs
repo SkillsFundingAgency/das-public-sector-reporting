@@ -9,6 +9,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
     public class ReportSummaryPage : BasePage
     {
         private static String PAGE_TITLE = "Review details";
+        
+        private readonly By _continueButton = By.Id("report-summary-continue");
+        private readonly By _organisationName = By.ClassName("task-list-section");
 
         public ReportSummaryPage(IWebDriver webDriver) : base(webDriver)
         {
@@ -24,8 +27,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
-        public bool DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(By.Id("report-summary-continue"));
+        public bool DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(_continueButton);
 
-        public bool IsOrganisationNameDisplayed => PageInteractionHelper.IsElementPresent(By.ClassName("task-list-section"));
+        public bool IsOrganisationNameDisplayed => PageInteractionHelper.IsElementPresent(_organisationName);
+
+        internal void ClickContinue()
+        {
+            FormCompletionHelper.ClickElement(_continueButton);
+        }
     }
 }

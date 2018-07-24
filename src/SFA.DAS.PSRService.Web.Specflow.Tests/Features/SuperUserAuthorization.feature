@@ -24,8 +24,9 @@ Scenario: Super user can edit a report
 	Then the edit report page is displayed
 
 Scenario: Super user can edit a report question
-	Given User navigates to the Edit report page
-	When  User clicks on 'Number of employees who work in England' link
+	Given a report has been created
+	And User navigates to the Edit report page
+	When  User clicks on 'Number of employees who work in England' question link
 	Then the Your employees page is displayed
 
 Scenario Outline: Super user can submit an edited question
@@ -38,25 +39,20 @@ Scenario Outline: Super user can submit an edited question
 	| atStart | atEnd | newThisPeriod |
 	| 100     | 150   | 50            |
 
-Scenario: Confirm button is displayed on review summary page
-	Given A valid report
-	And the report has not been submitted
-	When User navigates to Review summary page
-	Then the Review report details page is displayed
-	And the confirm submission button should be displayed
-	And the confirm submission button should have text 'Confirm'
-
 Scenario: Continue button is clicked on review summary page
-	Given A valid report
+	Given a report has been created
+	And A valid report
 	And the report has not been submitted
 	And User navigates to Review summary page
-	When I click the continue button
+	When user clicks the continue button
 	Then the confirm submission page is displayed
+	And the confirm submission button should have text 'Submit your report'
 
 Scenario: Super user can submit a report
-	Given A valid report
+	Given a report has been created
+	And A valid report
 	And the report has not been submitted
 	And user navigates to confirm submission page
-	When I click the 'Submit your report' button
+	When user clicks the submit your report button
 	Then the report should be submitted
 	

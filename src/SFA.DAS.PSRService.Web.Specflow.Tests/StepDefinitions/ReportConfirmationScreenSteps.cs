@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -23,6 +23,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void WhenUserClicksTheSubmitYourReportButton()
         {
             pageFactory.ReportConfirmation.ClickSubmitYourReport() ;
+        }
+
+        [Then(@"the confirm submission button should have text '(.*)'")]
+        public void ThenTheConfirmSubmissionButtonShouldHaveText(string p0)
+        {
+            Assert.True(pageFactory.ReportConfirmation.DoesSubmitButtonExist);
+            pageFactory.ReportConfirmation.VerifySubmitButtonText(p0);
         }
     }
 }

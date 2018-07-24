@@ -11,8 +11,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         private static String PAGE_TITLE = "Have you checked everything is correct?";
 
         private readonly By _backButtonLink = By.ClassName("link-back");
-        private readonly By _returnToYourReportButton = By.LinkText("Return to your report");
-        private readonly By _submitYourReportButton = By.CssSelector(".button[value='Submit your report']");//"Submit your report");
+        private readonly By _returnToYourReportButton = By.Id("report-confirm-return");
+        private readonly By _submitYourReportButton = By.Id("report-confirm-submit");
 
         public ReportConfirmationPage(IWebDriver webDriver) : base(webDriver)
         {
@@ -42,5 +42,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             FormCompletionHelper.ClickElement(_submitYourReportButton);
         }
+
+        public bool DoesSubmitButtonExist => PageInteractionHelper.IsElementPresent(_submitYourReportButton);
+
+        public bool VerifySubmitButtonText(string text) => PageInteractionHelper.VerifyValue(_submitYourReportButton, text);
     }
 }
