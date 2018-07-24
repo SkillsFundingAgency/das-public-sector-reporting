@@ -4,7 +4,7 @@ View user should be able to view the current and previously submitted reports bu
 Background:
 Given View access is granted
 
-Scenario: View user cannot view report but not create report page
+Scenario: View user can view report but not create report page
 	Given no current report exists
 	When User navigates to Homepage
 	Then View Report radio button does exist

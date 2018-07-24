@@ -73,10 +73,10 @@ testRunner.Given("View access is granted", ((string)(null)), ((TechTalk.SpecFlow
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("View user cannot view report but not create report page")]
-        public virtual void ViewUserCannotViewReportButNotCreateReportPage()
+        [NUnit.Framework.DescriptionAttribute("View user can view report but not create report page")]
+        public virtual void ViewUserCanViewReportButNotCreateReportPage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View user cannot view report but not create report page", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View user can view report but not create report page", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -178,5 +178,3 @@ this.FeatureBackground();
 }
 #pragma warning restore
 #endregion
-
-
