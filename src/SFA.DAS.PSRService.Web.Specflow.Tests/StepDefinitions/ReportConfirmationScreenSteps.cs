@@ -28,7 +28,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"the confirm submission button should have text '(.*)'")]
         public void ThenTheConfirmSubmissionButtonShouldHaveText(string p0)
         {
-            Assert.True(pageFactory.ReportConfirmation.DoesSubmitButtonExist);
             pageFactory.ReportConfirmation.VerifySubmitButtonText(p0);
         }
     }
