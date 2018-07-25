@@ -204,6 +204,8 @@
     <Compile Include="Framework\Helpers\RandomDataGenerator.cs" />
     <Compile Include="Framework\Helpers\SqlDatabaseConnectionHelper.cs" />
     <Compile Include="Hooks\StartWebApplication.cs" />
+    <Compile Include="Pages\Questions\FullTimeEquivalentEditPage.cs" />
+    <Compile Include="Pages\Questions\YourApprenticesEditPage.cs" />
     <Compile Include="Pages\Questions\YourEmployeesEditPage.cs" />
     <Compile Include="Pages\ReportConfirmationPage.cs" />
     <Compile Include="Pages\ReportSubmitConfirmationPage.cs" />

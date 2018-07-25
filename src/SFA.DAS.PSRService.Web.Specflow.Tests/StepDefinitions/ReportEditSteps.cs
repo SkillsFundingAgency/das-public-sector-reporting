@@ -38,7 +38,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
         
         [Then(@"the Your employees page is displayed")]
-        public YourEmployeesPage ThenTheYourEmployeesPageIsDisplayed()
+        public YourEmployeesEditPage ThenTheYourEmployeesPageIsDisplayed()
         {
             return pageFactory.QuestionYourEmployees;
         }

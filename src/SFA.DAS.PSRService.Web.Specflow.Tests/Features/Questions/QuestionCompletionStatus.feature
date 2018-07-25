@@ -6,43 +6,53 @@
 
 Background:
 Given Edit access is granted
+And a report has been created
 
 Scenario: Your Employees Incomplete
-	Given A Current report exists
-	Given I navigates to the Your employees question page
-	And I answer new at start question
-	And I answer new at end question
-	But I do not answer new this period question
-	When I click Continue
-	Then I am returned to report edit page
+	Given User navigates to the Your employees question page
+	And User answers new at start question
+	And User answers new at end question
+	But User does not answer new this period question
+	When User clicks Continue
+	Then User is returned to report edit page
     And no completion status is shown for your employees
 
 Scenario: Your Employees Complete
-	Given A Current report exists
-	Given I navigates to the Your employees question page
-	And I answer new at start question
-	And I answer new at end question
-	And I answer new this period question
-	When I click Continue
-	Then I am returned to report edit page
-    And no completion status is for your employees is COMPLETE
+	Given User navigates to the Your employees question page
+	And User answers new at start question
+	And User answers new at end question
+	And User answers new this period question
+	When User clicks Continue
+	Then User is returned to report edit page
+    And completion status for your employees is COMPLETE
 
 Scenario: Your Apprentices Incomplete
-	Given A Current report exists
-	Given I navigates to the Your apprentices question page
-	And I answer new at start question
-	And I answer new at end question
-	But I do not answer new this period question
-	When I click Continue
-	Then I am returned to report edit page
+	Given User navigates to the Your apprentices question page
+	And User answers new at start question
+	And User answers new at end question
+	But User does not answer new this period question
+	When User clicks Continue
+	Then User is returned to report edit page
     And no completion status is shown for your apprentices
 
 Scenario: Your Apprentices Complete
-	Given A Current report exists
-	Given I navigates to the Your apprentices question page
-	And I answer new at start question
-	And I answer new at end question
-	And I answer new this period question
-	When I click Continue
-	Then I am returned to report edit page
-    And no completion status is for your apprentices is COMPLETE
+	Given User navigates to the Your apprentices question page
+	And User answers new at start question
+	And User answers new at end question
+	And User answers new this period question
+	When User clicks Continue
+	Then User is returned to report edit page
+    And completion status for your apprentices is COMPLETE
+
+Scenario: Full Time Equivalent Incomplete
+	Given User navigates to the Full time equivalent question page
+	When User clicks Continue
+	Then User is returned to report edit page
+    And no completion status is shown for full time equivalent
+		
+	Scenario: Full Time Equivalent Complete
+	Given User navigates to the Full time equivalent question page
+	And User answers full time equivalents question
+	When User clicks Continue
+	Then User is returned to report edit page
+    And completion status for full time equivalent is COMPLETE

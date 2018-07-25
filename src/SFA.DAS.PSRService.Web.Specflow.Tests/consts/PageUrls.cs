@@ -15,7 +15,9 @@
 
     public static class QuestionPageUrls
     {
-        private const string QuesionBaseUrl = "/Question";
-        public const string YourEmployees = QuesionBaseUrl + "/YourEmployees";
+        private const string QuestionBaseUrl = "/Question";
+        public const string YourEmployees = QuestionBaseUrl + "/YourEmployees";
+        public const string YourApprentices = QuestionBaseUrl + "/YourApprentices";
+        public const string FullTimeEquivalent = QuestionBaseUrl + "/FullTimeEquivalent";
     }
 }

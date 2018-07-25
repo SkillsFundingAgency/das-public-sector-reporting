@@ -69,5 +69,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionYourEmployees.Navigate();
         }
 
+        [Given(@"User navigates to the Your apprentices question page")]
+        public void GivenUserNavigatesToTheYourApprenticesQuestionPage()
+        {
+            pageFactory.QuestionYourApprentices.Navigate();
+        }
+
+        [Given(@"User navigates to the Full time equivalent question page")]
+        public void GivenUserNavigatesToTheFullTimeEquivalentQuestionPage()
+        {
+            pageFactory.QuestionFullTimeEquivalent.Navigate();
+        }
     }
 }

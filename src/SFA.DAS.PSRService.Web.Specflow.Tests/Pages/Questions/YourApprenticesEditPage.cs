@@ -6,11 +6,11 @@ using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 {
-    public class YourEmployeesEditPage : QuestionEditPage
+    public class YourApprenticesEditPage : QuestionEditPage
     {
-        private static String PAGE_TITLE = "Your employees";
+        private static String PAGE_TITLE = "Your apprentices";
 
-        public YourEmployeesEditPage(IWebDriver webDriver) : base(webDriver)
+        public YourApprenticesEditPage(IWebDriver webDriver) : base(webDriver)
         {
         }
         public override void Navigate()
