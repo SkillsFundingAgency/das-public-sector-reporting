@@ -71,8 +71,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
 testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
 testRunner.And("no current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 9
-testRunner.And("no partially completed report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -81,18 +79,18 @@ testRunner.And("no partially completed report exists", ((string)(null)), ((TechT
         public virtual void UserSeesTheCreateReportPage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User sees the \'Create Report\' page", ((string[])(null)));
-#line 11
+#line 10
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
+#line 11
+testRunner.Given("User navigates to Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
-testRunner.Given("user navigates to the home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.And("User selects Homepage Create a report Radio button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
-testRunner.When("user selects the \'create a report\' radio button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When("User clicks on homepage Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
-testRunner.And("user clicks \'continue\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
-testRunner.Then("the \'Create Report\' page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("the create report page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -102,18 +100,18 @@ testRunner.Then("the \'Create Report\' page is displayed", ((string)(null)), ((T
         public virtual void UserCanCreateAReportForTheFirstTime()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User can create a report for the first time", ((string[])(null)));
-#line 17
+#line 16
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
+#line 17
+testRunner.Given("User navigates to the Create report page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
-testRunner.Given("user navigates to the \'Create Report\' page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.When("User clicks on Start button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
-testRunner.When("user clicks the \'start\' button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
 testRunner.Then("a new report is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 21
-testRunner.And("the \'Edit report\' page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+testRunner.And("the edit report page is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -121,3 +119,5 @@ testRunner.And("the \'Edit report\' page is displayed", ((string)(null)), ((Tech
 }
 #pragma warning restore
 #endregion
+
+

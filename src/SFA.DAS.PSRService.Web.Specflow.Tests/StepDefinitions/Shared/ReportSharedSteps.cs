@@ -86,7 +86,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportDto.ReportingData = _invalidReportJson;
             _reportRepository.Update(_reportDto);
         }
-        
+
+        [Then(@"a new report is created")]
+        public void ThenANewReportIsCreated()
+        {
+            var currentReportDto = _reportRepository.Get(_reportDto.ReportingPeriod, _reportDto.EmployerId);
+            Assert.NotNull(currentReportDto);
+        }
+
         [Then(@"the report should be submitted")]
         public void ThenTheReportShouldBeSubmitted()
         {
@@ -135,6 +142,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             }
 
             return readData;
+        }
+
+        [Given(@"User creates a new report")]
+        public void GivenUserCreatesANewReport()
+        {
+            pageFactory.Homepage.Navigate();
+            pageFactory.Homepage.SelectCreateReport();
+            pageFactory.Homepage.ClickContinueButton();
+            pageFactory.ReportCreate.ClickStartButton();
         }
     }
 }

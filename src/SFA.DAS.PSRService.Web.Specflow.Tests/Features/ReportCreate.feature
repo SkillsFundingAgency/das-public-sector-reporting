@@ -6,16 +6,15 @@ So that my organisation can submit information.
 Background: 
 Given Full access is granted
 And no current report exists
-And no partially completed report exists
 
 Scenario: User sees the 'Create Report' page 
-Given user navigates to the home page
-When user selects the 'create a report' radio button 
-And user clicks 'continue'
-Then the 'Create Report' page is displayed
+Given User navigates to Homepage
+And User selects Homepage Create a report Radio button
+When User clicks on homepage Continue button
+Then the create report page is displayed
 
 Scenario: User can create a report for the first time
-Given user navigates to the 'Create Report' page 
-When user clicks the 'start' button 
+Given User navigates to the Create report page 
+When User clicks on Start button
 Then a new report is created 
-And the 'Edit report' page is displayed
+And the edit report page is displayed
