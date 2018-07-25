@@ -8,7 +8,7 @@
 <fieldset>
     <div class="form-group">
         <h1>
-            <label for="actions-taken">
+            <label asp-for="@Model.Questions.ToArray()[0].Answer">
                 <span class="heading-large">@Model.CurrentSection.Title</span>
                 <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
             </label>
