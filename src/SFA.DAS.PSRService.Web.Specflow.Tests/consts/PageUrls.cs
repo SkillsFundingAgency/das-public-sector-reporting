@@ -9,6 +9,7 @@
         public const string ReportConfirmSubmision = "/Report/Confirm";
         public const string ReportPreviouslySubmittedList = "/Report/List";
         public const string ReportSubmitConfirmation = "/Report/SubmitConfirmation";
+        public const string ReportOrganisationName = "/Report/OrganisationName";
         public const string QuestionEdit = "/Question/{0}";
     }
 

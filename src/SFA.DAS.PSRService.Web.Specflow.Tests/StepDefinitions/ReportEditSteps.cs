@@ -20,7 +20,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [When(@"User clicks on '(.*)' question link")]
         public void WhenUserClicksOnQuestionLink(string p0)
         {
-            pageFactory.ReportEdit.ClickQuestionLink(p0);
+            var linkText = p0.Contains("''") ? p0.Replace("''", "'") : p0;
+
+            pageFactory.ReportEdit.ClickQuestionLink(linkText);
         }
         
         [When(@"User clicks on the save question")]
@@ -53,6 +55,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             yourEmployees.VerifyNewThisPeriodValue(p2);
 
             //TODO: Check that the values have been updated in the repository
+        }
+
+        [Then(@"organisation name is pre-populated with name from my account")]
+        public void ThenOrganisationNameIsPrePopulatedWithNameFromMyAccount()
+        {
+            pageFactory.ReportOrganisationName.VerifyOrganisationNameHasValue();
         }
     }
 }
