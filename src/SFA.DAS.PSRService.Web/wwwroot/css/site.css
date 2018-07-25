@@ -793,3 +793,18 @@ a#link-settings:focus {
   color: #005ea5;
   border: none;
 }
+
+aside.related {
+  border-top: 4px solid #005ea5;
+  padding-top: 15px;
+}
+
+aside.related > h2 {
+  margin-top: 0;
+}
+
+@media (min-width: 641px) {
+  aside.related { 
+    border-top-width: 10px;
+  }
+}
