@@ -23,7 +23,7 @@
                 <h1 class="heading-xlarge">Review details</h1>
             </legend>
         }
-            <p>There is currently no report to show</p>
+            <p>No reports have been created yet.</p>
     }
     else
     {
@@ -93,17 +93,21 @@
                 @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
 
 
-                @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
-                {
-                    <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
-                }
-                else
-                {
+            @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
+            {
+                <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
+            }
+            else if (Model.IsValidForSubmission && !Model.UserCanSubmitReports && !Model.IsReadOnly)
+            { 
+                <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
+            }
+            else
+            {
                     if (Model.Report.Submitted)
                     {
                         <a id="report-summary-list" class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
                     }
-                }
+             }
             </div>
     }
 </div>
