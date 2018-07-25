@@ -93,9 +93,9 @@ testRunner.Given("User navigates to Review summary page", ((string)(null)), ((Te
 #line 14
 testRunner.Then("the Report Summary page should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
-testRunner.And("display the error summary widget at the top of the page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("the error summary is displayed at the top of the page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
-testRunner.And("do not display the Report \'Submit\' button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("the Continue button is not displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

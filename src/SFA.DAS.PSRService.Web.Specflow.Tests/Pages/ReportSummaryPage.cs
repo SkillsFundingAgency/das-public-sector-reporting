@@ -12,6 +12,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         
         private readonly By _continueButton = By.Id("report-summary-continue");
         private readonly By _organisationName = By.ClassName("task-list-section");
+        private readonly By _errorSummary = By.ClassName("error-summary-heading");
 
         public ReportSummaryPage(IWebDriver webDriver) : base(webDriver)
         {
@@ -30,6 +31,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         public bool DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(_continueButton);
 
         public bool IsOrganisationNameDisplayed => PageInteractionHelper.IsElementPresent(_organisationName);
+
+        public bool IsErrorSummaryDisplayed => PageInteractionHelper.IsElementPresent(_errorSummary);
 
         internal void ClickContinue()
         {
