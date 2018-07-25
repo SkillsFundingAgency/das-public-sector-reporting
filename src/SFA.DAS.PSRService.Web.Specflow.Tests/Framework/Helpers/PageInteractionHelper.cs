@@ -53,7 +53,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
 
         public static Boolean VerifyText(String actual, String expected)
         {
-            if (actual.Contains(expected))
+            if (actual.Equals(expected))
             {
                 return true;
             }
@@ -66,7 +66,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
         public static Boolean VerifyText(By locator, String expected)
         {
             String actual = WebDriver.FindElement(locator).Text;
-            if (actual.Contains(expected))
+            if (actual.Equals(expected))
             {
                 return true;
             }
@@ -79,7 +79,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
         public static Boolean VerifyValue(By locator, String expected)
         {
             String actual = WebDriver.FindElement(locator).GetAttribute("value");
-            if (actual.Contains(expected))
+            if (actual.Equals(expected))
             {
                 return true;
             }
