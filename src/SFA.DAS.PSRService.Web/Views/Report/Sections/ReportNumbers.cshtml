@@ -22,7 +22,7 @@
                         <a class="task-name" href="./Question/@subSection.Id" id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
                         @if (subSection.IsComplete())
                         {
-                            <span class="task-completed">COMPLETE</span>
+                            <span  id="@($"{subSection.Id}-task-completed")" class="task-completed">COMPLETE</span>
                         }
                     </li>
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
@@ -37,7 +36,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         internal bool VerifyComplete(string questionId)
         {
-            if (IsComplete(questionId))
+            if (PageInteractionHelper.IsElementPresent(By.Id(questionId + "-task-completed")))
             {
                 return true;
             }
@@ -47,41 +46,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         internal bool VerifyIncomplete(string questionId)
         {
-            if (!IsComplete(questionId))
+            if (!PageInteractionHelper.IsElementPresent(By.Id(questionId + "-task-completed")))
             {
                 return true;
             }
 
-            throw new Exception($"A question with id {questionId} was not found or was already complete.");
-        }
-
-        private bool IsComplete(string questionId)
-        {
-            try
-            {
-                PageInteractionHelper.TurnOffImplicitWaits();
-
-                var questions = WebDriver.FindElements(By.ClassName("task-list-item"));
-
-                foreach (var question in questions)
-                {
-                    if (question.FindElements(By.Id(questionId)).Any())
-                    {
-                        var sv = question.FindElements(By.ClassName("task-completed")).FirstOrDefault();
-                        if (sv != null
-                            && String.Compare(sv.Text, "COMPLETE", StringComparison.InvariantCultureIgnoreCase) == 0)
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-            finally
-            {
-                PageInteractionHelper.TurnOnImplicitWaits();
-            }
+            throw new Exception($"Question {questionId} was complete.");
         }
     }
 }
