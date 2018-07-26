@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
                 PageInteractionHelper
                     .VerifyText(
                         By.Id("reportingpercentages-employmentstarts"),
-                        expectedPercentage.ToString("0.00"));
+                        expectedPercentage.ToString("0.00")+"%");
         }
 
         public bool ReportingPercentagesTotalHeadCountIs(decimal expectedPercentage)
@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
                 PageInteractionHelper
                     .VerifyText(
                         By.Id("reportingpercentages-totalheadcount"),
-                        expectedPercentage.ToString("0.00"));
+                        expectedPercentage.ToString("0.00")+"%");
         }
 
         public bool ReportingPercentagesNewThisPeriodIs(decimal expectedPercentage)
@@ -63,7 +63,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
                 PageInteractionHelper
                     .VerifyText(
                         By.Id("reportingpercentages-newthisperiod"),
-                        expectedPercentage.ToString("0.00"));
+                        expectedPercentage.ToString("0.00")+"%");
         }
     }
 }
