@@ -3,9 +3,25 @@
 	As a public sector employer
 	I should be shown reporting percentages based on the answers I provide to questions
 
+Background:
+Given Edit access is granted
+And a report has been created
+
 Scenario Outline: Reporting Percentages
-Given I have entered <employeesAtStart>, <employeesAtEnd>, <employeesNewInPeriod>, <apprenticesAtStart>, <apprenticesAtEnd> and <apprenticesNewInPeriod>
-Then I should see <EmploymentStarts>, <TotalHeadCount> and <NewThisPeriod> percentages
+Given User navigates to the Your employees question page
+And User answers the Your Employees new at start question with <employeesAtStart>
+And User answers the Your Employees new at end question with <employeesAtEnd> 
+And User answers the Your Employees new this period question with <employeesNewInPeriod>
+And User clicks Continue on Your Employees question page
+And User navigates to the Your apprentices question page
+And User answers the Your Apprentices new at start question with <apprenticesAtStart>
+And User answers the Your Apprentices new at end question with <apprenticesAtEnd>
+And User answers the Your Apprentices new this period question with <apprenticesNewInPeriod>
+And User clicks Continue on Your Apprentices question page
+When User navigates to Review summary page
+Then Reporting percentages employment starts is <EmploymentStarts>
+And Reporting percentages total head count is <TotalHeadCount>
+And Reporting percentages new this period is <NewThisPeriod>
 Examples: 
 | employeesAtStart | employeesAtEnd | employeesNewInPeriod | apprenticesAtStart | apprenticesAtEnd | apprenticesNewInPeriod | EmploymentStarts | TotalHeadCount | NewThisPeriod |
 | 250              | 150            | 0                    | 25                 | 30               | 5                      | 0                | 3.33           | 2.00          |

@@ -17,22 +17,22 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             yourEmployees.EditAtNewThisPeriodValue(newThisPeriod);
         }
 
-        [Given(@"User answers the Your Employees new at start question")]
-        public void GivenUserAnswersTheYourEmployeesNewAtStartQuestion()
+        [Given(@"User answers the Your Employees new at start question with (.*)")]
+        public void GivenUserAnswersTheYourEmployeesNewAtStartQuestionWith(int numberOfEmployees)
         {
-            pageFactory.QuestionYourEmployees.EditAtStartValue("1");
+            pageFactory.QuestionYourEmployees.EditAtStartValue(numberOfEmployees.ToString());
         }
 
-        [Given(@"User answers the Your Employees new at end question")]
-        public void GivenUserAnswersTheYourEmployeesNewAtEndQuestion()
+        [Given(@"User answers the Your Employees new at end question with (.*)")]
+        public void GivenUserAnswersTheYourEmployeesNewAtEndQuestionWith(int numberOfEmployees)
         {
-            pageFactory.QuestionYourEmployees.EditAtEndValue("2");
+            pageFactory.QuestionYourEmployees.EditAtEndValue(numberOfEmployees.ToString());
         }
 
-        [Given(@"User answers the Your Employees new this period question")]
-        public void GivenUserAnswersTheYourEmployeesNewThisPeriodQuestion()
+        [Given(@"User answers the Your Employees new this period question with (.*)")]
+        public void GivenUserAnswersTheYourEmployeesNewThisPeriodQuestionWith(int numberOfEmployees)
         {
-            pageFactory.QuestionYourEmployees.EditAtNewThisPeriodValue("3");
+            pageFactory.QuestionYourEmployees.EditAtNewThisPeriodValue(numberOfEmployees.ToString());
         }
 
         [Given(@"User does not answer the Your Employees new this period question")]
@@ -41,22 +41,22 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             //Do nothing
         }
 
-        [Given(@"User answers the Your Apprentices new at start question")]
-        public void GivenUserAnswersTheYourApprenticesNewAtStartQuestion()
+        [Given(@"User answers the Your Apprentices new at start question with (.*)")]
+        public void GivenUserAnswersTheYourApprenticesNewAtStartQuestionWith(int numberOfApprentices)
         {
-            pageFactory.QuestionYourApprentices.EditAtStartValue("3");
+            pageFactory.QuestionYourApprentices.EditAtStartValue(numberOfApprentices.ToString());
         }
 
-        [Given(@"User answers the Your Apprentices new at end question")]
-        public void GivenUserAnswersTheYourApprenticesNewAtEndQuestion()
+        [Given(@"User answers the Your Apprentices new at end question with (.*)")]
+        public void GivenUserAnswersTheYourApprenticesNewAtEndQuestionWith(int numberOfApprentices)
         {
-            pageFactory.QuestionYourApprentices.EditAtEndValue("3");
+            pageFactory.QuestionYourApprentices.EditAtEndValue(numberOfApprentices.ToString());
         }
 
-        [Given(@"User answers the Your Apprentices new this period question")]
-        public void GivenUserAnswersTheYourApprenticesNewThisPeriodQuestion()
+        [Given(@"User answers the Your Apprentices new this period question with (.*)")]
+        public void GivenUserAnswersTheYourApprenticesNewThisPeriodQuestionWith(int numberOfApprentices)
         {
-            pageFactory.QuestionYourApprentices.EditAtNewThisPeriodValue("3");
+            pageFactory.QuestionYourApprentices.EditAtNewThisPeriodValue(numberOfApprentices.ToString());
         }
 
         [Given(@"User does not answer the Your Apprentices new this period question")]
@@ -118,12 +118,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
 
         [When(@"User clicks Continue on Your Employees question page")]
+        [Given(@"User clicks Continue on Your Employees question page")]
         public void WhenUserClicksContinueOnYourEmployeesQuestionPage()
         {
             pageFactory.QuestionYourEmployees.SaveQuestionAnswers();
         }
 
         [When(@"User clicks Continue on Your Apprentices question page")]
+        [Given(@"User clicks Continue on Your Apprentices question page")]
         public void WhenUserClicksContinueOnYourApprenticesQuestionPage()
         {
             pageFactory.QuestionYourApprentices.SaveQuestionAnswers();

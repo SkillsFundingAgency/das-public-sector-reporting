@@ -24,5 +24,34 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             Assert.True(pageFactory.ReportSummary.IsErrorSummaryDisplayed);
         }
+        [Then(@"Reporting percentages employment starts is (.*)")]
+        public void ThenReportingPercentagesEmploymentStartsIs(decimal expectedPercentage)
+        {
+            Assert.IsTrue(
+                pageFactory
+                    .ReportSummary
+                    .ReportingPercentagesEmploymentStartsIs(expectedPercentage),
+                $"Expected Employment Starts percentage to be: {expectedPercentage}");
+        }
+
+        [Then(@"Reporting percentages total head count is (.*)")]
+        public void ThenReportingPercentagesTotalHeadCountIs(decimal expectedPercentage)
+        {
+            Assert.IsTrue(
+                pageFactory
+                    .ReportSummary
+                    .ReportingPercentagesTotalHeadCountIs(expectedPercentage),
+                $"Expected Total Head Count percentage to be: {expectedPercentage}");
+        }
+
+        [Then(@"Reporting percentages new this period is (.*)")]
+        public void ThenReportingPercentagesNewThisPeriodIs(decimal expectedPercentage)
+        {
+            Assert.IsTrue(
+                pageFactory
+                    .ReportSummary
+                    .ReportingPercentagesNewThisPeriodIs(expectedPercentage),
+                $"Expected New This Period percentage to be: {expectedPercentage}");
+        }
     }
 }

@@ -64,6 +64,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 6
+#line 7
+testRunner.Given("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 8
+testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Reporting Percentages")]
         [NUnit.Framework.TestCaseAttribute("250", "150", "0", "25", "30", "5", "0", "3.33", "2.00", null)]
@@ -72,12 +82,38 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
         public virtual void ReportingPercentages(string employeesAtStart, string employeesAtEnd, string employeesNewInPeriod, string apprenticesAtStart, string apprenticesAtEnd, string apprenticesNewInPeriod, string employmentStarts, string totalHeadCount, string newThisPeriod, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Reporting Percentages", exampleTags);
-#line 6
+#line 10
 this.ScenarioSetup(scenarioInfo);
-#line 7
-testRunner.Given(string.Format("I have entered {0}, {1}, {2}, {3}, {4} and {5}", employeesAtStart, employeesAtEnd, employeesNewInPeriod, apprenticesAtStart, apprenticesAtEnd, apprenticesNewInPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
-testRunner.Then(string.Format("I should see {0}, {1} and {2} percentages", employmentStarts, totalHeadCount, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 6
+this.FeatureBackground();
+#line 11
+testRunner.Given("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 12
+testRunner.And(string.Format("User answers the Your Employees new at start question with {0}", employeesAtStart), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+testRunner.And(string.Format("User answers the Your Employees new at end question with {0}", employeesAtEnd), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+testRunner.And(string.Format("User answers the Your Employees new this period question with {0}", employeesNewInPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+testRunner.And("User clicks Continue on Your Employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 16
+testRunner.And("User navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+testRunner.And(string.Format("User answers the Your Apprentices new at start question with {0}", apprenticesAtStart), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
+testRunner.And(string.Format("User answers the Your Apprentices new at end question with {0}", apprenticesAtEnd), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+testRunner.And(string.Format("User answers the Your Apprentices new this period question with {0}", apprenticesNewInPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+testRunner.And("User clicks Continue on Your Apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+testRunner.When("User navigates to Review summary page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 22
+testRunner.Then(string.Format("Reporting percentages employment starts is {0}", employmentStarts), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+testRunner.And(string.Format("Reporting percentages total head count is {0}", totalHeadCount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+testRunner.And(string.Format("Reporting percentages new this period is {0}", newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -85,3 +121,5 @@ testRunner.Then(string.Format("I should see {0}, {1} and {2} percentages", emplo
 }
 #pragma warning restore
 #endregion
+
+

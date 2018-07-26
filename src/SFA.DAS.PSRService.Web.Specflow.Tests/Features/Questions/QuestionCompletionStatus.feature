@@ -10,8 +10,8 @@ And a report has been created
 
 Scenario: Your Employees Incomplete
 	Given User navigates to the Your employees question page
-	And User answers the Your Employees new at start question
-	And User answers the Your Employees new at end question
+	And User answers the Your Employees new at start question with 5
+	And User answers the Your Employees new at end question with 10
 	But User does not answer the Your Employees new this period question
 	When User clicks Continue on Your Employees question page
 	Then User is returned to report edit page
@@ -19,17 +19,17 @@ Scenario: Your Employees Incomplete
 
 Scenario: Your Employees Complete
 	Given User navigates to the Your employees question page
-	And User answers the Your Employees new at start question
-	And User answers the Your Employees new at end question
-	And User answers the Your Employees new this period question
+	And User answers the Your Employees new at start question with 1
+	And User answers the Your Employees new at end question with 1
+	And User answers the Your Employees new this period question with 0
 	When User clicks Continue on Your Employees question page
 	Then User is returned to report edit page
     And completion status for your employees is COMPLETE
 
 Scenario: Your Apprentices Incomplete
 	Given User navigates to the Your apprentices question page
-	And User answers the Your Apprentices new at start question
-	And User answers the Your Apprentices new at end question
+	And User answers the Your Apprentices new at start question with 3
+	And User answers the Your Apprentices new at end question with 3
 	But User does not answer the Your Apprentices new this period question
 	When User clicks Continue on Your Apprentices question page
 	Then User is returned to report edit page
@@ -37,9 +37,9 @@ Scenario: Your Apprentices Incomplete
 
 Scenario: Your Apprentices Complete
 	Given User navigates to the Your apprentices question page
-	And User answers the Your Apprentices new at start question
-	And User answers the Your Apprentices new at end question
-	And User answers the Your Apprentices new this period question
+	And User answers the Your Apprentices new at start question with 3
+	And User answers the Your Apprentices new at end question with 5
+	And User answers the Your Apprentices new this period question with 2
 	When User clicks Continue on Your Apprentices question page
 	Then User is returned to report edit page
     And completion status for your apprentices is COMPLETE
