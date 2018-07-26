@@ -4,9 +4,9 @@
     {
         public ReportingPercentages()
         {
-            EmploymentStarts = "0";
-            TotalHeadCount = "0";
-            NewThisPeriod = "0";
+            EmploymentStarts = "0.00";
+            TotalHeadCount = "0.00";
+            NewThisPeriod = "0.00";
         }
         public string EmploymentStarts { get; set; }
         public string TotalHeadCount { get; set; }
