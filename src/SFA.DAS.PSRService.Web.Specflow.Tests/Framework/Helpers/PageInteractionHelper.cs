@@ -89,7 +89,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
                 + "\n Found: " + actual);
         }
 
-        public static Boolean VerifyValueIsNotNullOrEmpty(By locator)
+        public static Boolean VerifyHasValue(By locator)
         {
             String actual = WebDriver.FindElement(locator).GetAttribute("value");
             if (!String.IsNullOrEmpty(actual))
@@ -98,8 +98,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
             }
 
             throw new Exception("Value verification failed: "
-                                + "\n Expected a non-null or non-empty value"
-                                + "\n Found : " + actual);
+                                + "\n Expected value");
         }
 
         public static void WaitForPageToLoad(int implicitWaitTime = 10)

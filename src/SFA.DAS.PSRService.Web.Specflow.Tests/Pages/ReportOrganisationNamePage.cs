@@ -29,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public bool VerifyOrganisationNameHasValue()
         {
-            return PageInteractionHelper.VerifyValueIsNotNullOrEmpty(_organisationName);
+            return PageInteractionHelper.VerifyHasValue(_organisationName);
         }
 
         internal void ClickContinue()

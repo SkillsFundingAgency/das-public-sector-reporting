@@ -5,9 +5,9 @@
 
 #Steps need to be check for consistancy of naming convention
 Background:
-Given user is already logged in as a super user
+Given Full access is granted
 And a report has been created 
-And a report has not been submitted
+And the report has not been submitted
 
 Scenario: Clicking outside the @start field 
 Given user is in the @start field

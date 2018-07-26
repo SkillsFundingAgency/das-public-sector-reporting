@@ -68,11 +68,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Questions
         {
 #line 7
 #line 8
-testRunner.Given("user is already logged in as a super user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
 testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
-testRunner.And("a report has not been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("the report has not been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -166,3 +166,5 @@ testRunner.And("the \'Your Employee\' question page is displayed", ((string)(nul
 }
 #pragma warning restore
 #endregion
+
+

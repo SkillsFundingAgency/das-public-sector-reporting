@@ -9,28 +9,30 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
     {
         private static String PAGE_TITLE = "Full time equivalents";
 
+        private readonly By _fullTimeEquivalents = By.Name("Section.Questions[0].Answer");
+
         public FullTimeEquivalentEditPage(IWebDriver webDriver) : base(webDriver)
         {
         }
+
         public override void Navigate()
         {
-            WebDriver.Url = GetPageUrl(QuestionPageUrls.YourEmployees);
+            WebDriver.Url = GetPageUrl(QuestionPageUrls.FullTimeEquivalent);
         }
+
         public override bool Verify()
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
 
-        By fullTimeEquivalents = By.Name("Section.Questions[0].Answer");
-
         public void EditFullTimeEquivalents(string value)
         {
-            FormCompletionHelper.EnterText(fullTimeEquivalents,value);
+            FormCompletionHelper.EnterText(_fullTimeEquivalents,value);
         }
-        
+
         public void VerifyFullTimeEquivalentsValue(string expected)
         {
-            PageInteractionHelper.VerifyValue(fullTimeEquivalents, expected);
+            PageInteractionHelper.VerifyValue(_fullTimeEquivalents, expected);
         }
     }
 }
