@@ -50,9 +50,9 @@ Scenario: Full Time Equivalent Incomplete
 	Then User is returned to report edit page
     And no completion status is shown for full time equivalent
 		
-	Scenario: Full Time Equivalent Complete
+Scenario: Full Time Equivalent Complete
 	Given User navigates to the Full time equivalent question page
-	And User answers full time equivalents question
+	And User answers full time equivalents question with 4
 	When User clicks Continue on Full time equivalent question page
 	Then User is returned to report edit page
     And completion status for full time equivalent is COMPLETE

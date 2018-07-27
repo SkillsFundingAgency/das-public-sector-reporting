@@ -65,10 +65,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             //Do nothing
         }
 
-        [Given(@"User answers full time equivalents question")]
-        public void GivenUserAnswersFullTimeEquivalentsQuestion()
+        [Given(@"User answers full time equivalents question with (.*)")]
+        public void GivenUserAnswersFullTimeEquivalentsQuestionWith(int numberOfFullTimeEquivalents)
         {
-            pageFactory.QuestionFullTimeEquivalent.EditFullTimeEquivalents("4");
+            pageFactory.QuestionFullTimeEquivalent.EditFullTimeEquivalents(numberOfFullTimeEquivalents.ToString());
         }
 
         [When(@"User clicks on '(.*)' question link")]

@@ -209,13 +209,13 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Full Time Equivalent Complete", ((string[])(null)));
 #line 53
- this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 54
  testRunner.Given("User navigates to the Full time equivalent question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 55
- testRunner.And("User answers full time equivalents question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User answers full time equivalents question with 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
  testRunner.When("User clicks Continue on Full time equivalent question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
