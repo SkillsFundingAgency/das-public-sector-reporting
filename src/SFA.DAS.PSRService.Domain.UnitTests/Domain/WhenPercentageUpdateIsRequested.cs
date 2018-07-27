@@ -262,7 +262,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0", _report.ReportingPercentages.NewThisPeriod);
+            Assert.AreEqual("0.00", _report.ReportingPercentages.NewThisPeriod);
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0", _report.ReportingPercentages.TotalHeadCount);
+            Assert.AreEqual("0.00", _report.ReportingPercentages.TotalHeadCount);
         }
 
         [Test]
@@ -490,7 +490,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0", _report.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual("0.00", _report.ReportingPercentages.EmploymentStarts);
         }
 
         [Test]
@@ -603,7 +603,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0", _report.ReportingPercentages.TotalHeadCount);
+            Assert.AreEqual("0.00", _report.ReportingPercentages.TotalHeadCount);
         }
 
         [Test]
@@ -716,8 +716,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
 
             // Assert
             Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0", _report.ReportingPercentages.EmploymentStarts);
-            Assert.AreEqual("0", _report.ReportingPercentages.NewThisPeriod );
+            Assert.AreEqual("0.00", _report.ReportingPercentages.EmploymentStarts);
+            Assert.AreEqual("0.00", _report.ReportingPercentages.NewThisPeriod );
         }
 
         [Test]
