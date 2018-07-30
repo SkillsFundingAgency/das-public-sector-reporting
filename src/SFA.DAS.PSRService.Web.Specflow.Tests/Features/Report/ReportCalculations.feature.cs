@@ -76,9 +76,9 @@ testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlo
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Reporting Percentages")]
-        [NUnit.Framework.TestCaseAttribute("250", "150", "0", "25", "30", "5", "0", "3.33", "2.00", null)]
-        [NUnit.Framework.TestCaseAttribute("300", "350", "50", "0", "50", "50", "0", "14.29", "16.67", null)]
-        [NUnit.Framework.TestCaseAttribute("500", "500", "0", "0", "30", "30", "0", "6.00", "6.00", null)]
+        [NUnit.Framework.TestCaseAttribute("250", "150", "0", "25", "30", "5", "0", "20", "2", null)]
+        [NUnit.Framework.TestCaseAttribute("300", "350", "50", "0", "50", "50", "100", "14.29", "16.67", null)]
+        [NUnit.Framework.TestCaseAttribute("500", "500", "0", "0", "30", "30", "0", "6", "6", null)]
         public virtual void ReportingPercentages(string employeesAtStart, string employeesAtEnd, string employeesNewInPeriod, string apprenticesAtStart, string apprenticesAtEnd, string apprenticesNewInPeriod, string employmentStarts, string totalHeadCount, string newThisPeriod, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Reporting Percentages", exampleTags);

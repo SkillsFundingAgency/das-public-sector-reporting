@@ -24,6 +24,6 @@ And Reporting percentages total head count is <TotalHeadCount>
 And Reporting percentages new this period is <NewThisPeriod>
 Examples: 
 | employeesAtStart | employeesAtEnd | employeesNewInPeriod | apprenticesAtStart | apprenticesAtEnd | apprenticesNewInPeriod | EmploymentStarts | TotalHeadCount | NewThisPeriod |
-| 250              | 150            | 0                    | 25                 | 30               | 5                      | 0                | 3.33           | 2.00          |
-| 300              | 350            | 50                   | 0                  | 50               | 50                     | 0                | 14.29          | 16.67         |
-| 500             | 500            | 0                    | 0                 | 30               | 30                      | 0                | 6.00           | 6.00          |
+| 250                         | 150                       | 0                                       | 25                             | 30                           | 5                                         | 0                               | 20                        | 2                         |
+| 300                         | 350                      | 50                                     | 0                               | 50                           | 50                                      | 100                           | 14.29                   | 16.67                 |
+| 500                         | 500                      | 0                                       | 0                               | 30                           | 30                                      | 0                               | 6                           | 6                        |
