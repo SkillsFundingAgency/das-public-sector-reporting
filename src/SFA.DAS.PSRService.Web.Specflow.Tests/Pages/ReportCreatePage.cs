@@ -10,6 +10,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
     {
         private static String PAGE_TITLE = "Report 2017 to 2018 public sector apprenticeship target data";
 
+        private readonly By _startButton = By.Id("report-create-start");
+
         public ReportCreatePage(IWebDriver webDriver) : base(webDriver)
         {
         }
@@ -26,7 +28,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public void ClickStartButton()
         {
-            FormCompletionHelper.ClickElement(By.CssSelector("#content > div > form > div > button"));
+            FormCompletionHelper.ClickElement(_startButton);
         }
     }
 }
