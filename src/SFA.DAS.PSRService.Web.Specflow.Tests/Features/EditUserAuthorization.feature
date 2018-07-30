@@ -40,14 +40,20 @@ Scenario Outline: Edit user can submit an edited question
 	| 100     | 150   | 50            |
 
 Scenario: Edit user can view the review summary page
-	Given a report has been created
-	And A valid report
+	Given A valid report has been created
 	And the report has not been submitted
 	When User navigates to Review summary page
 	Then the Review report details page is displayed
 
-Scenario: Continue button is not available on review summary page
-	Given A valid report
+Scenario: Edit user sees Continue button on review summary page
+	Given A valid report has been created
 	And the report has not been submitted
 	When User navigates to Review summary page
-	Then the continue button should not be available
+	Then the continue button should be available
+
+Scenario: Edit user clicks Continue button on review summary page
+	Given A valid report has been created
+	And the report has not been submitted
+	And User navigates to Review summary page
+	When user clicks the continue button
+	Then the edit complete page is displayed

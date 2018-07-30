@@ -1,4 +1,5 @@
-﻿using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
+﻿using NUnit.Framework;
+using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -177,6 +178,18 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void ThenNoCompletionStatusIsShownForFullTimeEquivalent()
         {
             pageFactory.ReportEdit.VerifyIncomplete("FullTimeEquivalent");
+        }
+
+        [Then(@"the confirm submission page is displayed")]
+        public void ThenTheConfirmSubmissionageIsDisplayed()
+        {
+            Assert.True(pageFactory.ReportConfirmation.Verify());
+        }
+
+        [Then(@"the edit complete page is displayed")]
+        public void ThenTheEditCompletePageIsDisplayed()
+        {
+            Assert.True(pageFactory.ReportEditComplete.Verify());
         }
     }
 }

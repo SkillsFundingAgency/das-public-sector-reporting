@@ -207,6 +207,7 @@
     <Compile Include="Pages\Questions\FullTimeEquivalentEditPage.cs" />
     <Compile Include="Pages\Questions\YourApprenticesEditPage.cs" />
     <Compile Include="Pages\Questions\YourEmployeesEditPage.cs" />
+    <Compile Include="Pages\ReportEditCompletePage.cs" />
     <Compile Include="Pages\ReportConfirmationPage.cs" />
     <Compile Include="Pages\ReportSubmitConfirmationPage.cs" />
     <Compile Include="Pages\ReportOrganisationNamePage.cs" />

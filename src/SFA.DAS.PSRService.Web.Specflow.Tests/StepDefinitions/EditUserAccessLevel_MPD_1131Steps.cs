@@ -51,5 +51,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             Assert.IsFalse(pageFactory.ReportSummary.DoesContinueButtonExist);
         }
+
+        [Then(@"the continue button should be available")]
+        public void ThenTheContinueButtonShouldBeAvailable()
+        {
+            Assert.IsTrue(pageFactory.ReportSummary.DoesContinueButtonExist);
+        }
     }
 }

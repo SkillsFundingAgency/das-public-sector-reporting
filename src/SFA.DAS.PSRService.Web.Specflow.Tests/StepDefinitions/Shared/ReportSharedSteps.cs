@@ -73,6 +73,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             _reportRepository.Update(_reportDto);
         }
 
+        [Given(@"A valid report has been created")]
+        public void GivenAValidReportHasBeenCreated()
+        {
+            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
+            _reportDto.ReportingData = _validReportJson;
+
+            _reportRepository.Create(_reportDto);
+        }
+
         [Given(@"the report has been submitted")]
         public void GivenTheReportHasBeenSubmitted()
         {

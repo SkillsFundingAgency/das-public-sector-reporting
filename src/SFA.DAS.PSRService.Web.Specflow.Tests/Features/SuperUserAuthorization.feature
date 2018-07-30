@@ -39,9 +39,8 @@ Scenario Outline: Super user can submit an edited question
 	| atStart | atEnd | newThisPeriod |
 	| 100     | 150   | 50            |
 
-Scenario: Continue button is clicked on review summary page
-	Given a report has been created
-	And A valid report
+Scenario: Super user clicks Continue button on review summary page
+	Given A valid report has been created
 	And the report has not been submitted
 	And User navigates to Review summary page
 	When user clicks the continue button
@@ -49,8 +48,7 @@ Scenario: Continue button is clicked on review summary page
 	And the confirm submission button should have text 'Submit your report'
 
 Scenario: Super user can submit a report
-	Given a report has been created
-	And A valid report
+	Given A valid report has been created
 	And the report has not been submitted
 	And user navigates to confirm submission page
 	When user clicks the submit your report button

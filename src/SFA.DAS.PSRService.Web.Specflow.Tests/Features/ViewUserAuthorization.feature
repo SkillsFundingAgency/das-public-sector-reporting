@@ -22,13 +22,13 @@ Scenario: View user cannot edit a report question
 	Then the Home page should be displayed
 
 Scenario: View user can view the review details page
-	Given A valid report
+	Given A valid report has been created
 	And the report has not been submitted
 	When User navigates to Review summary page
 	Then the View report details page is displayed
 
 Scenario: Confirm button is not available on review details page
-	Given A valid report
+	Given A valid report has been created
 	And the report has not been submitted
 	When User navigates to Review summary page
 	Then the confirm submission button should not be available
