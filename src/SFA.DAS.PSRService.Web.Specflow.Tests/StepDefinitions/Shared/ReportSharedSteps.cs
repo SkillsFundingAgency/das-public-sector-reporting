@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Repository;
@@ -175,34 +173,46 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
 
         [Then(@"The Your Employees question values (.*), (.*) and (.*) have been saved")]
-        public void ThenTheYourEmployeesQuestionValuesAndHaveBeenSaved(string p0, string p1, string p2)
+        public void ThenTheYourEmployeesQuestionValuesAndHaveBeenSaved(string atStart, string atEnd, string newThisPeriod)
         {
             pageFactory.ReportEdit.ClickQuestionLink("Number of employees who work in England");
 
             var yourEmployees = pageFactory.QuestionYourEmployees;
 
-            yourEmployees.VerifyAtStartValue(p0);
-            yourEmployees.VerifyAtEndValue(p1);
-            yourEmployees.VerifyNewThisPeriodValue(p2);
+            yourEmployees.VerifyAtStartValue(atStart);
+            yourEmployees.VerifyAtEndValue(atEnd);
+            yourEmployees.VerifyNewThisPeriodValue(newThisPeriod);
 
-            VerifyYourEmployeesValues(p0, p1, p2);
+            VerifyYourEmployeesAtStart(atStart);
+            VerifyYourEmployeesAtEnd(atEnd);
+            VerifyYourEmployeesNewThisPeriod(newThisPeriod);
         }
 
-        private void VerifyYourEmployeesValues(string atStart, string atEnd, string newThisPeriod)
+        private void VerifyYourEmployeesNewThisPeriod(string newThisPeriod)
         {
-            var dto = _reportRepository.Get(_reportDto.ReportingPeriod, _reportDto.EmployerId);
+            _reportRepository
+                .VerifyForReportId(_reportDto.Id)
+                .YourEmployees
+                .NewThisPeriod
+                .HasAnswer(newThisPeriod);
+        }
 
-            var jsonObject = JObject.Parse(dto.ReportingData);
+        private void VerifyYourEmployeesAtEnd(string atEnd)
+        {
+            _reportRepository
+                .VerifyForReportId(_reportDto.Id)
+                .YourEmployees
+                .AtEnd
+                .HasAnswer(atEnd);
+        }
 
-            var questions = jsonObject["Questions"]
-                    .SingleOrDefault(s => s["Id"].Value<String>() == "ReportNumbers")
-                    ["SubSections"].SingleOrDefault(s => s["Id"].Value<String>() == "YourEmployees")
-                    ["Questions"]
-                    .ToList();
-
-            Assert.AreEqual(atStart, questions.Single(q => q["Id"].Value<String>() == "atStart")["Answer"].Value<String>());
-            Assert.AreEqual(atEnd, questions.Single(q => q["Id"].Value<String>() == "atEnd")["Answer"].Value<String>());
-            Assert.AreEqual(newThisPeriod, questions.Single(q => q["Id"].Value<String>() == "newThisPeriod")["Answer"].Value<String>());
+        private void VerifyYourEmployeesAtStart(string atStart)
+        {
+            _reportRepository
+                .VerifyForReportId(_reportDto.Id)
+                .YourEmployees
+                .AtStart
+                .HasAnswer(atStart);
         }
     }
 }

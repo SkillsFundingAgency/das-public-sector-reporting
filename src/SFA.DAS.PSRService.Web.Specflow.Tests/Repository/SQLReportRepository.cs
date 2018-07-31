@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+using SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
 {
@@ -20,6 +22,17 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
             {
                 var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
                     new {employerId, period});
+                return report;
+            }
+        }
+
+        public ReportDto GetReportWithId(Guid reportId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where ID = @reportId",
+                    new { reportId });
+
                 return report;
             }
         }
@@ -61,6 +74,13 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
                 connection.Execute("DELETE FROM [dbo].[Report] WHERE [employerId] = @employerId",
                     new { employerId });
             }
+        }
+
+        public ReportDataVerifier VerifyForReportId(Guid reportId)
+        {
+            return new ReportDataVerifier(
+                GetReportWithId(reportId)
+                    .ReportingData);
         }
     }
 }
