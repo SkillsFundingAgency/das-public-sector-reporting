@@ -183,12 +183,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             yourEmployees.VerifyAtEndValue(atEnd);
             yourEmployees.VerifyNewThisPeriodValue(newThisPeriod);
 
-            VerifyYourEmployeesAtStart(atStart);
-            VerifyYourEmployeesAtEnd(atEnd);
-            VerifyYourEmployeesNewThisPeriod(newThisPeriod);
+            VerifyYourEmployeesAtStartHasBeenPersisted(atStart);
+            VerifyYourEmployeesAtEndHasBeenPersisted(atEnd);
+            VerifyYourEmployeesNewThisPeriodHasBeenPersisted(newThisPeriod);
         }
 
-        private void VerifyYourEmployeesNewThisPeriod(string newThisPeriod)
+        private void VerifyYourEmployeesNewThisPeriodHasBeenPersisted(string newThisPeriod)
         {
             _reportRepository
                 .VerifyForReportId(_reportDto.Id)
@@ -197,7 +197,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                 .HasAnswer(newThisPeriod);
         }
 
-        private void VerifyYourEmployeesAtEnd(string atEnd)
+        private void VerifyYourEmployeesAtEndHasBeenPersisted(string atEnd)
         {
             _reportRepository
                 .VerifyForReportId(_reportDto.Id)
@@ -206,7 +206,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                 .HasAnswer(atEnd);
         }
 
-        private void VerifyYourEmployeesAtStart(string atStart)
+        private void VerifyYourEmployeesAtStartHasBeenPersisted(string atStart)
         {
             _reportRepository
                 .VerifyForReportId(_reportDto.Id)
