@@ -317,7 +317,9 @@
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="StepDefinitions\Shared\NewlyCreatedReportData.json" />
+    <EmbeddedResource Include="StepDefinitions\Shared\ReportData\NewlyCreatedReportData.json" />
+    <EmbeddedResource Include="StepDefinitions\Shared\ReportData\InvalidReportData.json" />
+    <EmbeddedResource Include="StepDefinitions\Shared\ReportData\ValidReportData.json" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
