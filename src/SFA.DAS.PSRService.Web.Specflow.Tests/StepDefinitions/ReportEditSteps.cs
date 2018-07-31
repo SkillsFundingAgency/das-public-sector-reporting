@@ -97,21 +97,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             return pageFactory.QuestionYourEmployees;
         }
-
-        [Then(@"The Your Employees question values (.*), (.*) and (.*) have been saved")]
-        public void ThenTheYourEmployeesQuestionValuesAndHaveBeenSaved(string p0, string p1, string p2)
-        {
-            pageFactory.ReportEdit.ClickQuestionLink("Number of employees who work in England");
-
-            var yourEmployees = pageFactory.QuestionYourEmployees;
-
-            yourEmployees.VerifyAtStartValue(p0);
-            yourEmployees.VerifyAtEndValue(p1);
-            yourEmployees.VerifyNewThisPeriodValue(p2);
-
-            //TODO: Check that the values have been updated in the repository
-        }
-
+        
         [Then(@"organisation name is pre-populated with name from my account")]
         public void ThenOrganisationNameIsPrePopulatedWithNameFromMyAccount()
         {
