@@ -219,10 +219,10 @@
     <Compile Include="Pages\ReportEditPage.cs" />
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
     <Compile Include="Repository\Period.cs" />
-    <Compile Include="Repository\DataVerification\ReportDataVerifier.cs" />
+    <Compile Include="Repository\DataVerification\ReportVerifier.cs" />
     <Compile Include="Repository\ReportDto.cs" />
     <Compile Include="Repository\SQLReportRepository.cs" />
-    <Compile Include="Repository\DataVerification\YourEmployeesReportDataVerifier.cs" />
+    <Compile Include="Repository\DataVerification\YourEmployeesVerifier.cs" />
     <Compile Include="StepArgumentTransformations\StepArgumentTransformations.cs" />
     <Compile Include="StepDefinitions\EditUserAccessLevel_MPD_1131Steps.cs" />
     <Compile Include="StepDefinitions\ReportSubmitConfirmationScreenSteps.cs" />

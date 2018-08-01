@@ -5,6 +5,7 @@ using System.Reflection;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Repository;
+using SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -190,28 +191,28 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 
         private void VerifyYourEmployeesNewThisPeriodHasBeenPersisted(string newThisPeriod)
         {
-            _reportRepository
-                .VerifyForReportId(_reportDto.Id)
+            ReportVerifier
+                .VerifyReport(_reportRepository.GetReportWithId(_reportDto.Id))
                 .YourEmployees
-                .NewThisPeriod
+                .NewThisPeriodQuestion
                 .HasAnswer(newThisPeriod);
         }
 
         private void VerifyYourEmployeesAtEndHasBeenPersisted(string atEnd)
         {
-            _reportRepository
-                .VerifyForReportId(_reportDto.Id)
+            ReportVerifier
+                .VerifyReport(_reportRepository.GetReportWithId(_reportDto.Id))
                 .YourEmployees
-                .AtEnd
+                .AtEndQuestion
                 .HasAnswer(atEnd);
         }
 
         private void VerifyYourEmployeesAtStartHasBeenPersisted(string atStart)
         {
-            _reportRepository
-                .VerifyForReportId(_reportDto.Id)
+            ReportVerifier
+                .VerifyReport(_reportRepository.GetReportWithId(_reportDto.Id))
                 .YourEmployees
-                .AtStart
+                .AtStartQuestion
                 .HasAnswer(atStart);
         }
     }

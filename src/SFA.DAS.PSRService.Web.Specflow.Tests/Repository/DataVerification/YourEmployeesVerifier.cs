@@ -5,11 +5,11 @@ using Newtonsoft.Json.Linq;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 {
-    public class YourEmployeesReportDataVerifier
+    public class YourEmployeesVerifier
     {
-        private IEnumerable<JToken> yourEmployeesQuestions;
+        private readonly IEnumerable<JToken> yourEmployeesQuestions;
 
-        public YourEmployeesReportDataVerifier(string reportData)
+        public YourEmployeesVerifier(string reportData)
         {
             yourEmployeesQuestions = JObject.Parse(reportData)["Questions"]
                 .SingleOrDefault(s => Extensions.Value<String>(s["Id"]) == "ReportNumbers")
@@ -18,17 +18,17 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
                 .ToList();
         }
 
-        public QuestionVerifier AtStart =>
+        public QuestionVerifier AtStartQuestion =>
             new QuestionVerifier(
                 yourEmployeesQuestions
                     .Single(q => q["Id"].Value<String>() == "atStart"));
 
-        public QuestionVerifier AtEnd =>
+        public QuestionVerifier AtEndQuestion =>
             new QuestionVerifier(
                 yourEmployeesQuestions
                     .Single(q => q["Id"].Value<String>() == "atEnd"));
 
-        public QuestionVerifier NewThisPeriod =>
+        public QuestionVerifier NewThisPeriodQuestion =>
             new QuestionVerifier(
                 yourEmployeesQuestions
                     .Single(q => q["Id"].Value<String>() == "newThisPeriod"));

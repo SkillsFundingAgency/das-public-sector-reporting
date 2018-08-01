@@ -75,12 +75,5 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
                     new { employerId });
             }
         }
-
-        public ReportDataVerifier VerifyForReportId(Guid reportId)
-        {
-            return new ReportDataVerifier(
-                GetReportWithId(reportId)
-                    .ReportingData);
-        }
     }
 }
