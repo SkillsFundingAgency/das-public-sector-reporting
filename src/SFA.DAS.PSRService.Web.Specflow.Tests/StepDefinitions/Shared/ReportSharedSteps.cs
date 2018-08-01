@@ -173,7 +173,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
 
         [Then(@"The Your Employees question values (.*), (.*) and (.*) have been saved")]
-        public void ThenTheYourEmployeesQuestionValuesAndHaveBeenSaved(string atStart, string atEnd, string newThisPeriod)
+        public void ThenTheYourEmployeesQuestionValuesHaveBeenSaved(string atStart, string atEnd, string newThisPeriod)
         {
             pageFactory.ReportEdit.ClickQuestionLink("Number of employees who work in England");
 
