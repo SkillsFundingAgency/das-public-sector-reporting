@@ -7,6 +7,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         private static Configurator _configuratorInstance = null;
 
         private readonly string _browser;
+        private readonly bool _runBrowserInHeadlessMode;
         private readonly string _baseUrl;
         private readonly string _baseGovUkUrl;
         private readonly string _browserStackBrowser;
@@ -23,6 +24,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         private Configurator()
         {
             _browser = ConfigurationManager.AppSettings["Browser"];
+            bool.TryParse(ConfigurationManager.AppSettings["RunBrowserInHeadlessMode"], out _runBrowserInHeadlessMode);
             _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
             _baseGovUkUrl = ConfigurationManager.AppSettings["BaseGovUkUrl"];
             _browserStackBrowser = ConfigurationManager.AppSettings["BrowserStack.Browser"];
@@ -44,6 +46,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         public string GetBrowser()
         {
             return _browser;
+        }
+        
+        public bool GetRunBrowserInHeadlessMode()
+        {
+            return _runBrowserInHeadlessMode;
         }
 
         public string GetBaseGovUkUrl()

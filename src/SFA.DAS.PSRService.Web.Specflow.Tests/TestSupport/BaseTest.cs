@@ -19,20 +19,38 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         [Before]
         public static void SetUp()
         {
-            String browser = Configurator.GetConfiguratorInstance().GetBrowser();
-            switch(browser)
+            var browser = Configurator.GetConfiguratorInstance().GetBrowser();
+            var runInHeadlessMode = Configurator.GetConfiguratorInstance().GetRunBrowserInHeadlessMode();
+
+            switch (browser)
             {
                 case "firefox" :
-                    webDriver = new FirefoxDriver();
+                    var firefoxOptions = new FirefoxOptions
+                    {
+                        AcceptInsecureCertificates = true,
+                        UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
+                    };
+                    if (runInHeadlessMode)
+                    {
+                        firefoxOptions.AddArguments("--headless");
+                    }
+
+                    webDriver = new FirefoxDriver(firefoxOptions);
                     webDriver.Manage().Window.Maximize();
                     break;
 
                 case "chrome" :
                     // JC - checkthis out to see if works
-                    ChromeOptions options = new ChromeOptions();
-                    options.AcceptInsecureCertificates = true;
-                    options.UnhandledPromptBehavior = UnhandledPromptBehavior.Accept;
-                    webDriver = new ChromeDriver(options);
+                    var chromeOptions = new ChromeOptions
+                    {
+                        AcceptInsecureCertificates = true,
+                        UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
+                    };
+                    if (runInHeadlessMode)
+                    {
+                        chromeOptions.AddArguments("headless");
+                    }
+                    webDriver = new ChromeDriver(chromeOptions);
                     break;
 
                 case "ie":
