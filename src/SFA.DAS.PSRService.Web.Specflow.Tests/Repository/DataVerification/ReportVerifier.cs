@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
+﻿namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 {
     public class ReportVerifier
     {
@@ -12,6 +10,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
         }
 
         public YourEmployeesVerifier YourEmployees => new YourEmployeesVerifier(_report.ReportingData);
+
+        public YourApprenticesVerifier YourApprentices => new YourApprenticesVerifier(_report.ReportingData);
 
         internal static ReportVerifier VerifyReport(ReportDto report)
         {

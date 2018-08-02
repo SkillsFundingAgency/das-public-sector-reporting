@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
+using SFA.DAS.PSRService.Web.Specflow.Tests.Repository;
+using SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -8,14 +11,31 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
     [Binding]
     public class ReportEditSteps : BaseTest
     {
-        [Given(@"the question values (.*), (.*) and (.*) have been edited")]
-        public void GivenTheQuestionValuesAndHaveBeenEdited(string atStart, string atEnd, string newThisPeriod)
+        private readonly SQLReportRepository _reportRepository;
+
+        public ReportEditSteps(SQLReportRepository reportRepositoryFromContext)
+        {
+            _reportRepository = reportRepositoryFromContext;
+        }
+
+        [Given(@"the your employees question values (.*), (.*) and (.*) have been edited")]
+        public void GivenTheYourEmployeesQuestionValuesAndHaveBeenEdited(string atStart, string atEnd, string newThisPeriod)
         {
             var yourEmployees = pageFactory.QuestionYourEmployees;
 
             yourEmployees.EditAtStartValue(atStart);
             yourEmployees.EditAtEndValue(atEnd);
             yourEmployees.EditAtNewThisPeriodValue(newThisPeriod);
+        }
+
+        [Given(@"the your apprentices question values (.*), (.*) and (.*) have been edited")]
+        public void GivenTheYourApprenticesQuestionValuesAndHaveBeenEdited(string atStart, string atEnd, string newThisPeriod)
+        {
+            var yourApprentices = pageFactory.QuestionYourApprentices;
+
+            yourApprentices.EditAtStartValue(atStart);
+            yourApprentices.EditAtEndValue(atEnd);
+            yourApprentices.EditAtNewThisPeriodValue(newThisPeriod);
         }
 
         [Given(@"User answers the Your Employees new at start question with (.*)")]
@@ -176,6 +196,61 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void ThenTheEditCompletePageIsDisplayed()
         {
             Assert.True(pageFactory.ReportEditComplete.Verify());
+        }
+
+        [Then(@"The Your Apprentices question values (.*), (.*) and (.*) have been saved")]
+        public void ThenTheYourApprenticesQuestionValuesAndHaveBeenSaved(string atStart, string atEnd, string newThisPeriod)
+        {
+            pageFactory.ReportEdit.ClickQuestionLink("Number of apprentices who work in England");
+
+            var yourApprentices = pageFactory.QuestionYourApprentices;
+
+            yourApprentices.VerifyAtStartValue(atStart);
+            yourApprentices.VerifyAtEndValue(atEnd);
+            yourApprentices.VerifyNewThisPeriodValue(newThisPeriod);
+
+            VerifyYourApprenticesAtStartHasBeenPersisted(atStart);
+            VerifyYourApprenticesAtEndHasBeenPersisted(atEnd);
+            VerifyYourApprenticesNewThisPeriodHasBeenPersisted(newThisPeriod);
+        }
+
+        private void VerifyYourApprenticesNewThisPeriodHasBeenPersisted(string newThisPeriod)
+        {
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .YourApprentices
+                .NewThisPeriodQuestion
+                .HasAnswer(newThisPeriod);
+        }
+
+        private void VerifyYourApprenticesAtEndHasBeenPersisted(string atEnd)
+        {
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .YourApprentices
+                .AtEndQuestion
+                .HasAnswer(atEnd);
+        }
+
+
+        private void VerifyYourApprenticesAtStartHasBeenPersisted(string atStart)
+        {
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .YourApprentices
+                .AtStartQuestion
+                .HasAnswer(atStart);
+        }
+
+        private ReportDto GetCurrentReport()
+        {
+            return
+                _reportRepository
+                    .GetReportWithId(
+                        ScenarioContext
+                            .Current
+                            .Get<Guid>(
+                                ContextKeys.CurrentReportID));
         }
     }
 }

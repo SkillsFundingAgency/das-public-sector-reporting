@@ -4,7 +4,7 @@ I want to be able to edit a report that has already been started
 So that my organisation can submit information.
 
 Background: 
-Given Full access is granted
+Given Edit access is granted
 And  a report has been created
 And the report has not been submitted
 
@@ -17,11 +17,24 @@ Scenario: user can edit a report question
 	When  User clicks on 'Number of employees who work in England' question link
 	Then the Your employees page is displayed
 
-Scenario Outline: user can submit an edited question
+Scenario Outline: user can update YourEmployees question
 	Given User navigates to the Your employees question page
-	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
+	And the your employees question values <atStart>, <atEnd> and <newThisPeriod> have been edited
 	When User clicks on the save question
 	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
 	Examples: 
 	| atStart | atEnd | newThisPeriod |
-	| 100     | 150   | 50            |
+	| 100     | 150   | 50              |
+	| 1000    | 750   | 0               |
+	| 850     | 1000  | 150           |
+	
+Scenario Outline: user can update YourApprentices question
+	Given User navigates to the Your apprentices question page
+	And the your apprentices question values <atStart>, <atEnd> and <newThisPeriod> have been edited
+	When User clicks on the save question
+	Then The Your Apprentices question values <atStart>, <atEnd> and <newThisPeriod> have been saved
+	Examples: 
+	| atStart | atEnd | newThisPeriod |
+	| 100     | 150   | 50              |
+	| 1000    | 750   | 0               |
+	| 850     | 1000  | 150           |

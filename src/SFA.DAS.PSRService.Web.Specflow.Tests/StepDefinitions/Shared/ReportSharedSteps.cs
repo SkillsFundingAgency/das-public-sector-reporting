@@ -20,14 +20,15 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 
         private ReportDto _reportDto = new ReportDto();
 
-        public ReportSharedSteps()
+        public ReportSharedSteps(SQLReportRepository repositoryFromContext)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings[PersistenceNames.PsrsDBConnectionString]
-                .ConnectionString;
+            _reportRepository = repositoryFromContext;
 
-            _reportRepository = new SQLReportRepository(connectionString);
+            var reportId = new Guid("34C46350-6383-4FB8-823D-8DC189862400");
 
-            _reportDto.Id = new Guid("34C46350-6383-4FB8-823D-8DC189862400");
+            ScenarioContext.Current.Set(reportId, ContextKeys.CurrentReportID);
+
+            _reportDto.Id = reportId;
 
             _reportDto.EmployerId = Configurator.GetConfiguratorInstance().GetEmployerId();
             _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;

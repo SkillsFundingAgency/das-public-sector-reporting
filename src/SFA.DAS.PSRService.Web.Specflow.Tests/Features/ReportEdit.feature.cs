@@ -68,7 +68,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features
         {
 #line 6
 #line 7
-testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
 testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
@@ -113,11 +113,13 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("user can submit an edited question")]
+        [NUnit.Framework.DescriptionAttribute("user can update YourEmployees question")]
         [NUnit.Framework.TestCaseAttribute("100", "150", "50", null)]
-        public virtual void UserCanSubmitAnEditedQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("1000", "750", "0", null)]
+        [NUnit.Framework.TestCaseAttribute("850", "1000", "150", null)]
+        public virtual void UserCanUpdateYourEmployeesQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can submit an edited question", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update YourEmployees question", exampleTags);
 #line 20
 this.ScenarioSetup(scenarioInfo);
 #line 6
@@ -125,7 +127,7 @@ this.FeatureBackground();
 #line 21
  testRunner.Given("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.And(string.Format("the question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the your employees question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
@@ -133,9 +135,31 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("user can update YourApprentices question")]
+        [NUnit.Framework.TestCaseAttribute("100", "150", "50", null)]
+        [NUnit.Framework.TestCaseAttribute("1000", "750", "0", null)]
+        [NUnit.Framework.TestCaseAttribute("850", "1000", "150", null)]
+        public virtual void UserCanUpdateYourApprenticesQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update YourApprentices question", exampleTags);
+#line 31
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 32
+ testRunner.Given("User navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 33
+ testRunner.And(string.Format("the your apprentices question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 35
+ testRunner.Then(string.Format("The Your Apprentices question values {0}, {1} and {2} have been saved", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
 #endregion
-
-

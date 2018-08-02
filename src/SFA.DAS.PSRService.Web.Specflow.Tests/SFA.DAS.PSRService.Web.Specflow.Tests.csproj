@@ -205,6 +205,7 @@
     <Compile Include="Framework\Helpers\SqlDatabaseConnectionHelper.cs" />
     <Compile Include="Hooks\StartWebApplication.cs" />
     <Compile Include="Pages\Questions\FullTimeEquivalentEditPage.cs" />
+    <Compile Include="Pages\Questions\ReportNumbersEditPage.cs" />
     <Compile Include="Pages\Questions\YourApprenticesEditPage.cs" />
     <Compile Include="Pages\Questions\YourEmployeesEditPage.cs" />
     <Compile Include="Pages\ReportEditCompletePage.cs" />
@@ -218,6 +219,8 @@
     <Compile Include="Pages\EmployerIdamsLoadingPage.cs" />
     <Compile Include="Pages\ReportEditPage.cs" />
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
+    <Compile Include="Repository\DataVerification\ReportNumbersVerifier.cs" />
+    <Compile Include="Repository\DataVerification\YourApprenticesVerifier.cs" />
     <Compile Include="Repository\Period.cs" />
     <Compile Include="Repository\DataVerification\ReportVerifier.cs" />
     <Compile Include="Repository\ReportDto.cs" />
@@ -245,7 +248,9 @@
     <Compile Include="TestSupport\BaseTest.cs" />
     <Compile Include="TestSupport\BrowserStackDriver.cs" />
     <Compile Include="TestSupport\Configurator.cs" />
+    <Compile Include="TestSupport\ContextKeys.cs" />
     <Compile Include="TestSupport\PageFactory.cs" />
+    <Compile Include="TestSupport\RepositoryProvider.cs" />
     <Compile Include="TestSupport\SeleniumExtention.cs" />
   </ItemGroup>
   <ItemGroup>
