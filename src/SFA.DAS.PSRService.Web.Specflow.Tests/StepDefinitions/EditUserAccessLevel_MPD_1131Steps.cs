@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -8,8 +7,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
     [Binding]
     public class EditUserAccessLevel_MPD_1131Steps : BaseTest
     {
-        private IWebDriver webDriver;
-
         //[Given(@"User navigates to the '(.*)' question page")]
         //public void GivenUserNavigatesToTheQuestionPage(string p0)
         //{
