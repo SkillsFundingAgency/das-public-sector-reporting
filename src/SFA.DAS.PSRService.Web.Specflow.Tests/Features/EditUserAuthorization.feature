@@ -32,7 +32,7 @@ Scenario: Edit user can edit a report question
 Scenario Outline: Edit user can submit an edited question
 	Given a report has been created
 	And User navigates to the Your employees question page
-	And the question values <atStart>, <atEnd> and <newThisPeriod> have been edited
+	And the your employees question values <atStart>, <atEnd> and <newThisPeriod> have been edited
 	When User clicks on the save question
 	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
 	Examples: 
