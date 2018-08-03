@@ -24,9 +24,10 @@ Scenario Outline: user can update YourEmployees question
 	Then The Your Employees question values <atStart>, <atEnd> and <newThisPeriod> have been saved
 	Examples: 
 	| atStart | atEnd | newThisPeriod |
-	| 100     | 150   | 50              |
-	| 1000    | 750   | 0               |
+	| 100     | 150   | 50            |
+	| 1000    | 750   | 0             |
 	| 850     | 1000  | 150           |
+	| 850000  | 1000000  | 150        |
 	
 Scenario Outline: user can update YourApprentices question
 	Given User navigates to the Your apprentices question page
@@ -35,6 +36,7 @@ Scenario Outline: user can update YourApprentices question
 	Then The Your Apprentices question values <atStart>, <atEnd> and <newThisPeriod> have been saved
 	Examples: 
 	| atStart | atEnd | newThisPeriod |
-	| 100     | 150   | 50              |
-	| 1000    | 750   | 0               |
+	| 100     | 150   | 50            |
+	| 1000    | 750   | 0             |
 	| 850     | 1000  | 150           |
+	| 850000  | 1000000  | 150        |

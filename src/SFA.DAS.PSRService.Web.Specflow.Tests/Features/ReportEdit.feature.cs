@@ -117,6 +117,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("100", "150", "50", null)]
         [NUnit.Framework.TestCaseAttribute("1000", "750", "0", null)]
         [NUnit.Framework.TestCaseAttribute("850", "1000", "150", null)]
+        [NUnit.Framework.TestCaseAttribute("850000", "1000000", "150", null)]
         public virtual void UserCanUpdateYourEmployeesQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update YourEmployees question", exampleTags);
@@ -141,20 +142,21 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("100", "150", "50", null)]
         [NUnit.Framework.TestCaseAttribute("1000", "750", "0", null)]
         [NUnit.Framework.TestCaseAttribute("850", "1000", "150", null)]
+        [NUnit.Framework.TestCaseAttribute("850000", "1000000", "150", null)]
         public virtual void UserCanUpdateYourApprenticesQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update YourApprentices question", exampleTags);
-#line 31
+#line 32
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 32
- testRunner.Given("User navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
- testRunner.And(string.Format("the your apprentices question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("the your apprentices question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 36
  testRunner.Then(string.Format("The Your Apprentices question values {0}, {1} and {2} have been saved", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

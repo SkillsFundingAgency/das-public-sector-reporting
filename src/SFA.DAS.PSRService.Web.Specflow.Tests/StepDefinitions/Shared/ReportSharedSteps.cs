@@ -175,19 +175,19 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
 
         [Then(@"The Your Employees question values (.*), (.*) and (.*) have been saved")]
-        public void ThenTheYourEmployeesQuestionValuesHaveBeenSaved(string atStart, string atEnd, string newThisPeriod)
+        public void ThenTheYourEmployeesQuestionValuesHaveBeenSaved(int atStart, int atEnd, int newThisPeriod)
         {
             pageFactory.ReportEdit.ClickQuestionLink("Number of employees who work in England");
 
             var yourEmployees = pageFactory.QuestionYourEmployees;
 
-            yourEmployees.VerifyAtStartValue(atStart);
-            yourEmployees.VerifyAtEndValue(atEnd);
-            yourEmployees.VerifyNewThisPeriodValue(newThisPeriod);
+            yourEmployees.VerifyAtStartValue(atStart.ToString("N0"));
+            yourEmployees.VerifyAtEndValue(atEnd.ToString("N0"));
+            yourEmployees.VerifyNewThisPeriodValue(newThisPeriod.ToString("N0"));
 
-            VerifyYourEmployeesAtStartHasBeenPersisted(atStart);
-            VerifyYourEmployeesAtEndHasBeenPersisted(atEnd);
-            VerifyYourEmployeesNewThisPeriodHasBeenPersisted(newThisPeriod);
+            VerifyYourEmployeesAtStartHasBeenPersisted(atStart.ToString());
+            VerifyYourEmployeesAtEndHasBeenPersisted(atEnd.ToString());
+            VerifyYourEmployeesNewThisPeriodHasBeenPersisted(newThisPeriod.ToString());
         }
 
         private void VerifyYourEmployeesNewThisPeriodHasBeenPersisted(string newThisPeriod)
