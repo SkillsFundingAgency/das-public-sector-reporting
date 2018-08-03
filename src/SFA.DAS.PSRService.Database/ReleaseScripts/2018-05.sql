@@ -21,7 +21,7 @@ USING (
             CASE 
 				WHEN a.submitted = 0 OR JSON_VALUE([ReportingData], '$.ReportingPercentages[0].EmploymentStarts') IS NOT NULL 
 				THEN '' 
-				ELSE JSON_MODIFY([ReportingData], '$.ReportingPercentages', JSON_QUERY(N'{"EmploymentStarts":"' + FORMAT(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureA, 0))), 4), '######0.00') + '" ,"TotalHeadCount":"' + FORMAT(ROUND(((100 * a.FigureD) / CONVERT(DECIMAL, nullif(a.FigureC, 0))), 4), '######0.00') + '","NewThisPeriod":"' + FORMAT(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureH, 0))), 4), '######0.00') + '"}')) 
+				ELSE JSON_MODIFY([ReportingData], '$.ReportingPercentages', JSON_QUERY(N'{"EmploymentStarts":"' + FORMAT(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureA, 0))), 4), '######0.00') + '","TotalHeadCount":"' + FORMAT(ROUND(((100 * a.FigureD) / CONVERT(DECIMAL, nullif(a.FigureC, 0))), 4), '######0.00') + '","NewThisPeriod":"' + FORMAT(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureH, 0))), 4), '######0.00') + '"}')) 
 			END newReportingData
         FROM (
             SELECT [OrganisationName] AS Organisation_Name,
