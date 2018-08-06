@@ -8,10 +8,8 @@
     <div class="column-two-thirds">
         <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         <form class="questionForm" method="post" asp-action="@Model.CurrentSection.Id">
-            <input type="hidden" name="Section.Report.Id" value="@Model.Report.Id" />
-            <input type="hidden" name="Section.Report.EmployerId" value="@Model.Report.EmployerId" />
-            <input type="hidden" name="Section.Report.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
-            <input type="hidden" name="Section.CurrentSection.Id" value="@Model.CurrentSection.Id" />
+            <input type="hidden" name="section.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
+            <input type="hidden" name="section.Id" value="@Model.CurrentSection.Id" />
 
             <!-- Validation summary-->
             <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">

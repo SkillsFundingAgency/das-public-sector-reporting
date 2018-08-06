@@ -1,0 +1,19 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "Report submitted";
+    Layout = "_Layout";
+}
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <div class="govuk-box-highlight">
+            <h1 class="heading-xlarge">Report submitted</h1>
+            <p class="font-medium">
+                for the period <br>
+                               <strong class="bold">@ViewBag.CurrentPeriod.FullString</strong>
+            </p>
+        </div>
+        <p>The report has been submitted to the Department for Education.</p>
+    </div>
+</div>

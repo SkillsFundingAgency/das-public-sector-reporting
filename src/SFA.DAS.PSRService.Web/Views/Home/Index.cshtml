@@ -1,60 +1,67 @@
-﻿@model SFA.DAS.PSRService.Web.Models.Home.IndexViewModel
+﻿@using SFA.DAS.PSRService.Web.ViewModels.Home
+@using SFA.DAS.PSRService.Web.SubmitActions
+@model SFA.DAS.PSRService.Web.ViewModels.Home.IndexViewModel
 
 @{
     ViewData["Title"] = "Public sector reporting";
 }
 
-    <div class="grid-row">
-        <div class="column-two-thirds">
-            <a href="@ViewData["HomeUrl"]" class="link-back">Back to Apprentices</a>
-            <h1 class="heading-xlarge">Annual apprenticeship return</h1>
-            <p>
-                @if (Model.CanCreateReport || Model.CanEditReport)
-                {
-                    @:You can submit a new report for the year @Model.PeriodName or
-                }
-                else
-                {
-                    @:The report for the year @Model.PeriodName is already submitted, you can
-                }
-                review previously submitted reports.
-            </p>
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a href="@ViewData["HomeUrl"]" class="link-back">Back to Apprentices</a>
+        <h1 class="heading-xlarge">Annual apprenticeship return</h1>
+        <p>
+            @Model.WelcomeMessage
+        </p>
 
-            <form action="@Url.Action("Submit")" method="post">
-                <div class="form-group">
-                    <fieldset>
-                        <legend>
-                            <h2 class="heading-medium">
-                                What do you want to do?
-                            </h2>
-                        </legend>
-                        <div class="multiple-choice">
-                            @if (Model.CanEditReport)
+        <form action="@Url.Action("Submit")" method="post">
+            <div class="form-group">
+                <fieldset>
+                    <legend>
+                        <h2 class="heading-medium">
+                            What do you want to do?
+                        </h2>
+                    </legend>
+                    <div class="multiple-choice">
+                        @if (Model.Readonly)
+                        {
+                            if (Model.CurrentReportAlreadySubmitted == false)
                             {
-                                <input id="home-action-edit" type="radio" name="action" value="edit">
-                                <label for="home-action-edit">Edit report</label>
-                            }
-                            else if (Model.CanCreateReport)
-                            {
-                                <input id="home-action-create" type="radio" name="action" value="create">
-                                <label for="home-action-create">Create a new report</label>
+                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue">
                             }
                             else
                             {
-                                <input id="home-action-create" type="radio" name="action" value="create" disabled="disabled">
-                                <label for="home-action-create">Create a new report</label>
+                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue">
                             }
-                        </div>
-                        <div class="multiple-choice">
-                            <input id="home-action-list" type="radio" name="action" value="list">
-                            <label for="home-action-list">View a previously submitted report</label>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="form-group">
-                    <input class="button" type="submit" value="Continue">
-                </div>
-            </form>
 
-        </div>
+                            <label for="home-action-view">View report</label>
+                        }
+                        else if (Model.CanEditReport)
+                        {
+                            <input id="home-action-edit" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Edit.SubmitValue">
+                            <label for="home-action-edit">Edit report</label>
+                        }
+                        else if (Model.CanCreateReport)
+                        {
+                            <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Create.SubmitValue">
+                            <label for="home-action-create">Create a new report</label>
+                        }
+                        else
+                        {
+                            <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue">
+                            <label for="home-action-create">Create a new report</label>
+                        }
+                    </div>
+                    <div class="multiple-choice">
+                        <input id="home-action-list" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.List.SubmitValue">
+                        <label for="home-action-list">View a submitted report</label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="form-group">
+                <input class="button" type="submit" value="Continue">
+            </div>
+        </form>
+
     </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@using SFA.DAS.PSRService.Web.ViewModels
+@model SFA.DAS.PSRService.Web.ViewModels.ReportHistoryViewModel
+
+@{
+    ViewBag.Title = "Current report edit history";
+    Layout = "_Layout";
+    ViewBag.CanBeEdited = false;
+    ViewBag.CurrentPeriod = Model.Period;
+}
+
+<div class="grid-row report-history">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        <h1 class="heading-xlarge">Report history</h1>
+    </div>
+    <div class="column-full">
+        <div class="form-group">
+            <table>
+                @*<caption class="heading-medium">Reporting period</caption>*@
+                <tbody>
+                <tr>
+                    <td>Reporting period</td>
+                    <td class="bold">@Model.Period.FullString</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @foreach (var edit in Model.EditHistoryMostRecentFirst)
+        {
+            <details>
+                <summary>
+                    <span class="summary">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
+                </summary>
+                <div>
+                    @Html.Partial("Question/Organisation", edit.OrganisationName)
+                    @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
+                    @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
+                    @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                </div>
+            </details>    
+        }
+    </div>
+
+</div>

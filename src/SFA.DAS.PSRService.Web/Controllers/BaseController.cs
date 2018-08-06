@@ -7,7 +7,7 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-    [Authorize("HasEmployerAccount")]
+
     public abstract class BaseController : Controller
     {
         private readonly IEmployerAccountService _employerAccountService;

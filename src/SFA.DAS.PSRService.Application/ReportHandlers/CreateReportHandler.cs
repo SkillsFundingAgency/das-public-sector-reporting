@@ -1,17 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
-    public class CreateReportHandler : IRequestHandler<CreateReportRequest,Report>
+    public class CreateReportHandler : RequestHandler<CreateReportRequest, Report>
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
@@ -24,32 +24,26 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             _fileProvider = fileProvider;
         }
 
-        public Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)
+        protected override Report HandleCore(CreateReportRequest request)
         {
-
-            if (String.IsNullOrWhiteSpace(request.Period))
+            if (string.IsNullOrWhiteSpace(request.Period))
                 throw new Exception("Period must be supplied");
 
-            if(string.IsNullOrWhiteSpace(request.EmployerId))
-                throw new Exception("Employee Id must be supplied");
-
-
-            var reportDto = new ReportDto()
+            var reportDto = new ReportDto
             {
                 EmployerId = request.EmployerId,
                 Submitted = false,
                 Id = Guid.NewGuid(),
                 ReportingPeriod = request.Period,
-                ReportingData = GetQuestionConfig().Result
+                ReportingData = GetQuestionConfig().Result,
+                AuditWindowStartUtc = DateTime.UtcNow,
+                UpdatedUtc = DateTime.UtcNow,
+                UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name})
             };
 
-            
+            _reportRepository.Create(reportDto);
 
-            reportDto = _reportRepository.Create(reportDto);
-
-            var report = _mapper.Map<Report>(reportDto);
-
-            return Task.FromResult(report);
+            return _mapper.Map<Report>(reportDto);
         }
 
         private Task<string> GetQuestionConfig()
@@ -57,12 +51,9 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             var questionsConfig = _fileProvider.GetFileInfo("/QuestionConfig.json");
 
             using (var jsonContents = questionsConfig.CreateReadStream())
+            using (StreamReader sr = new StreamReader(jsonContents))
             {
-                using (StreamReader sr = new StreamReader(jsonContents))
-                {
-
-                    return Task.FromResult(sr.ReadToEnd());
-                }
+                return Task.FromResult(sr.ReadToEnd());
             }
         }
     }

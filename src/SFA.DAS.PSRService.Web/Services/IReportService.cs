@@ -1,26 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Models;
-using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
     public interface IReportService
     {
-        Report CreateReport(string employerId);
+        void CreateReport(string employerId, UserModel user);
         Report GetReport(string period,string employerId);
-        SubmittedStatus SubmitReport(string period, string employerId, Submitted submittedDetails);
+        void SubmitReport(Report report);
         IEnumerable<Report> GetSubmittedReports(string employerId);
-        bool IsSubmitValid(Report report);
-        Section GetQuestionSection(string SectionId, Report report);
-        void SaveQuestionSection(Section SectionId, Report report);
-        string GetCurrentReportPeriod();
-        string GetCurrentReportPeriodName(string period);
-        bool IsSubmissionsOpen();
-        void SaveReport(Report report);
-        ReportingPercentages CalculatePercentages(Report report);
-        CurrentPeriod GetPeriod(string period);
+        void SaveReport(Report report, UserModel user);
+        bool CanBeEdited(Report report);
+        IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
     }
 }

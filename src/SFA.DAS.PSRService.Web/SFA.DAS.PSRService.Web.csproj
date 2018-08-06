@@ -8,12 +8,16 @@
 
   <ItemGroup>
     <Compile Remove="Authentication\**" />
+    <Compile Remove="Enums\**" />
     <Compile Remove="Pages\**" />
     <Content Remove="Authentication\**" />
+    <Content Remove="Enums\**" />
     <Content Remove="Pages\**" />
     <EmbeddedResource Remove="Authentication\**" />
+    <EmbeddedResource Remove="Enums\**" />
     <EmbeddedResource Remove="Pages\**" />
     <None Remove="Authentication\**" />
+    <None Remove="Enums\**" />
     <None Remove="Pages\**" />
   </ItemGroup>
 
@@ -56,10 +60,6 @@
     <ProjectReference Include="..\SFA.DAS.PSRService.Application\SFA.DAS.PSRService.Application.csproj" />
     <ProjectReference Include="..\SFA.DAS.PSRService.Data\SFA.DAS.PSRService.Data.csproj" />
     <ProjectReference Include="..\SFA.DAS.PSRService.Domain\SFA.DAS.PSRService.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Enums\" />
   </ItemGroup>
 
   <Target Name="ChangeAliasesOfStrongNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">

@@ -4,5 +4,6 @@
     {
         public string AccountId { get; set; }
         public string EmployerName { get; set; }
+        public string Role { get; set; }
     }
 }

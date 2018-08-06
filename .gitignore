@@ -272,5 +272,9 @@ src/Tools/PhantomJS/tools/phantomjs/ChangeLog
 
 # Ignore local Azure config
 LOCALConfig.json
+src/SFA.DAS.PSRService.Web/testcert.bat
+*.cs.bak
+
+# Ignore minified files produced in build
 src/SFA.DAS.PSRService.Web/wwwroot/css/*.min.css
 src/SFA.DAS.PSRService.Web/wwwroot/js/*.min.js

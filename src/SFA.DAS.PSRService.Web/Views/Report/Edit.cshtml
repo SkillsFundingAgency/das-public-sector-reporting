@@ -4,12 +4,16 @@
     ViewBag.Title = "Reporting your progress";
     Layout = "_Layout";
 }
+<a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+
 <div class="grid-row">
     <div class="column-two-thirds">
-        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
-        <h1 class="heading-large">Reporting your progress towards the public sector apprenticeship target</h1>
+        <h1 class="heading-xlarge">Reporting your progress towards the public sector apprenticeship target</h1>
+    </div>
+</div>
+<div class="grid-row">
+    <div class="column-two-thirds">
         <p>Use this step by step list to help you report your progress towards meeting the public sector apprenticeship target:</p>
-
         <ol class="task-list">
             @Html.Partial("Sections/OrganisationName", Model)
 
@@ -21,7 +25,11 @@
                 }
             }
 
-            @Html.Partial("Sections/Review")
+            @Html.Partial("Sections/Review", Model)
+           
         </ol>
+    </div>
+    <div class="column-one-third">
+        @Html.Partial("Sections/History")
     </div>
 </div>

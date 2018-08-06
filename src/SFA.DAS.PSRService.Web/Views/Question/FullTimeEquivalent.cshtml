@@ -6,11 +6,10 @@
     var questionsList = Model.Questions.ToArray();
 }
 
-<h1 class="heading-xlarge">
-    @* @Model.CurrentSection.Title *@
+<h1 class="heading-large">
     Your full-time equivalents (optional)
 </h1>
-<div class="form-group">
+<p>
     <details>
         <summary>
             <span class="summary">How to calculate your full-time equivalent numbers</span>
@@ -20,15 +19,12 @@
             <p>Then add your full-time employee numbers to come up with a total number of full-time equivalents. Round your total to the nearest whole number.</p>
         </div>
     </details>
+</p>
+<div class="form-group">
+    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[0].Answer">
+        Number of full-time equivalents (optional)
+        <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
+    </label>
+    <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
+    <input type="text" class="form-control form-control-1-3 js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@Model.Questions.ToArray()[0].Answer" maxlength="11" />
 </div>
-<fieldset>
-    <div class="form-group">
-        <label class="form-label-bold" for="full-time-equivalents">
-            Number of full-time equivalents (optional)
-            <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
-        </label>
-        <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
-        <input type="text" class="form-control form-control-1-3 js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@Model.Questions.ToArray()[0].Answer" maxlength="11" />
-
-    </div>
-</fieldset>

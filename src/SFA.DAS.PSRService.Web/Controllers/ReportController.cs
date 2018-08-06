@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Models;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -16,76 +15,113 @@ namespace SFA.DAS.PSRService.Web.Controllers
     [Route("accounts/{employerAccountId}/Report")]
     public class ReportController : BaseController
     {
-        private readonly ILogger<ReportController> _logger;
         private readonly IReportService _reportService;
         private readonly IUserService _userService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly Period _currentPeriod;
 
-        public ReportController(ILogger<ReportController> logger, IReportService reportService, IEmployerAccountService employerAccountService, IUserService userService, IWebConfiguration webConfiguration) 
+        public ReportController(
+            IReportService reportService,
+            IEmployerAccountService employerAccountService, 
+            IUserService userService,
+            IWebConfiguration webConfiguration, 
+            IPeriodService periodService,
+            IAuthorizationService authorizationService)
             : base(webConfiguration, employerAccountService)
         {
-            _logger = logger;
             _reportService = reportService;
             _userService = userService;
+            _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
+            _currentPeriod = periodService.GetCurrentPeriod();
         }
-    
-        public IActionResult Edit(string period)
+
+        [Route("AlreadySubmitted")]
+        public ViewResult AlreadySubmitted()
         {
+            ViewBag.CurrentPeriod = _currentPeriod;
 
-            var reportViewModel = new ReportViewModel();
-            
-            reportViewModel.Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId);
+            return View("AlreadySubmitted");
+        }
 
-            if (_reportService.IsSubmitValid(reportViewModel.Report) == false)
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult Edit()
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            return View("Edit", reportViewModel);
-        }
+            var viewModel = new ReportViewModel
+            {
+                Report = report,
+                UserCanSubmitReports = UserIsAuthorizedForReportSubmission()
+            };
 
+            return View("Edit", viewModel);
+        }
 
         [HttpGet]
         [Route("Create")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Create()
         {
-            ViewBag.CurrentPeriod = _reportService.GetPeriod(_reportService.GetCurrentReportPeriod());
+            ViewBag.CurrentPeriod = _currentPeriod;
             return View("Create");
         }
 
         [HttpPost]
         [Route("Create")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostCreate()
         {
             try
             {
-                var report = _reportService.CreateReport(EmployerAccount.AccountId);
+                var user = _userService.GetUserModel(User);
+                _reportService.CreateReport(EmployerAccount.AccountId, user);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-            
+
                 return new BadRequestResult();
             }
-          
         }
+
         [Route("List")]
         public IActionResult List()
         {
             //need to get employee id, this needs to be moves somewhere
 
-            var reportListViewmodel = new ReportListViewModel();
-
-            reportListViewmodel.SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId);
-
-           reportListViewmodel.Periods = new Dictionary<string, CurrentPeriod>();
+            var reportListViewmodel = new ReportListViewModel
+            {
+                SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId),
+                Periods = new Dictionary<string, Period>()
+            };
 
             foreach (var submittedReport in reportListViewmodel.SubmittedReports)
             {
                 if (reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod) == false)
-                     reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod,_reportService.GetPeriod(submittedReport.ReportingPeriod));
+                    reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, new Period(submittedReport.ReportingPeriod));
             }
 
-
-
             return View("List", reportListViewmodel);
+        }
+
+        [Route("History")]
+        public IActionResult History()
+        {
+            var model = new ReportHistoryViewModel
+            {
+                Period = _currentPeriod,
+            };
+
+            model.EditHistoryMostRecentFirst =
+                _reportService
+                    .GetReportEditHistoryMostRecentFirst(
+                        _currentPeriod,
+                        EmployerAccount.AccountId);
+
+            return View("History", model);
         }
 
         [Route("Summary/{period}")]
@@ -94,108 +130,197 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-                var currentPeriod = _reportService.GetCurrentReportPeriod();
+
                 if (period == null)
+                    period = _currentPeriod.PeriodString;
+
+                var report = _reportService.GetReport(period, EmployerAccount.AccountId);
+
+                var reportViewModel = new ReportViewModel
                 {
-                    period = currentPeriod;
-                }
+                    Report = report,
+                    Period = _currentPeriod,
+                    CanBeEdited = _reportService.CanBeEdited(report) && UserIsAuthorizedForReportEdit(),
+                    UserCanSubmitReports = UserIsAuthorizedForReportSubmission(),
+                    IsReadOnly = (UserIsAuthorizedForReportEdit() == false)
+                };
 
-                var report = new ReportViewModel();
-                 report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
+                reportViewModel.IsValidForSubmission = reportViewModel.Report?.IsValidForSubmission() ?? false;
+                reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
+                reportViewModel.Period = reportViewModel.Report?.Period;
 
-                report.CurrentPeriod = currentPeriod;
-                report.SubmitValid = _reportService.IsSubmitValid(report.Report);
-                report.Percentages = _reportService.CalculatePercentages(report.Report);
-                report.Period = _reportService.GetPeriod(period);
+                ViewBag.CurrentPeriod = reportViewModel.Period;
 
-                ViewBag.CurrentPeriod = report.Period;
+                TryValidateModel(reportViewModel);
 
-                if (report.Report == null)
-                    return new RedirectResult(Url.Action("Index", "Home"));
+                reportViewModel.Subtitle = GetSubtitleForUserAccessLevel();
 
-                TryValidateModel(report);
-
-                return View("Summary", report);
+                return View("Summary",reportViewModel);
             }
-            catch (Exception ex)
+            catch
             {
                 return new BadRequestResult();
             }
         }
-        [Route("Submit")]
-        public IActionResult Submit(string period)
+
+        [HttpGet]
+        [Route("Confirm")]
+        [Authorize(Policy = PolicyNames.CanSubmitReport)]
+        public IActionResult Confirm()
         {
-            if (period == null)
-                period = _reportService.GetCurrentReportPeriod();
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            var report = new ReportViewModel();
-            report.Report = _reportService.GetReport(period, EmployerAccount.AccountId);
+            if (report == null)
+                return new NotFoundResult();
 
-            TryValidateModel(report);
-            if (ModelState.IsValid == false)
-            {
-                return new RedirectResult(Url.Action("Summary", "Report"));
-            }
-
-
-            var user = _userService.GetUserModel(this.User);
-
-            var submitted = new Submitted();
-
-            submitted.SubmittedAt = DateTime.UtcNow;
-            submitted.SubmittedEmail = user.Email;
-            submitted.SubmittedName = user.DisplayName;
-            submitted.SubmttedBy = user.Id.ToString();
-            submitted.UniqueReference = "NotAUniqueReference";
-
- 
-
-            var submittedStatus = _reportService.SubmitReport(period, EmployerAccount.AccountId, submitted);
-
-            if (submittedStatus == SubmittedStatus.Invalid)
+            if (report.Submitted)
             {
                 return new RedirectResult(Url.Action("Index","Home"));
             }
 
-            ViewBag.CurrentPeriod = _reportService.GetPeriod(period);
+            if (report.IsValidForSubmission() == false)
+            {
+                return new RedirectResult(Url.Action("Summary", "Report"));
+            }
 
-            return View("Submitted");
+            var viewModel = new ReportViewModel { Report = report };
+
+            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) )
+                return new RedirectResult(Url.Action("Summary", "Report"));
+
+            ViewBag.CurrentPeriod = _currentPeriod;
+
+            return View(viewModel);
         }
 
-
-        //[Route("accounts/{employerAccountId}/[controller]/OrganisationName")]
-        [Route("OrganisationName")]
-        public IActionResult OrganisationName(string post)
+        [HttpGet]
+        [Route("EditComplete")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult EditComplete()
         {
-            var organisationVM = new OrganisationViewModel
+            return View("EditComplete");
+        }
+
+        [Route("Submit")]
+        [HttpGet]
+        public IActionResult Submit()
+        {
+            return RedirectToActionPermanent("Index", "Home");
+        }
+
+        [HttpPost]
+        [Route("Submit")]
+        [Authorize(Policy = PolicyNames.CanSubmitReport)]
+        public IActionResult SubmitPost()
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (report == null)
+                return new NotFoundResult();
+
+            if (!TryValidateModel(new ReportViewModel { Report = report }))
+                return new RedirectResult(Url.Action("Summary", "Report"));
+
+            var user = _userService.GetUserModel(User);
+
+            report.SubmittedDetails = new Submitted
             {
-                EmployerAccount = EmployerAccount,
-                Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
+                SubmittedAt = DateTime.UtcNow,
+                SubmittedEmail = user.Email,
+                SubmittedName = user.DisplayName,
+                SubmttedBy = user.Id.ToString(),
+                UniqueReference = "NotAUniqueReference"
             };
 
-            if (string.IsNullOrEmpty(organisationVM.Report.OrganisationName))
-                organisationVM.Report.OrganisationName = organisationVM.EmployerAccount.EmployerName;
+            _reportService.SubmitReport(report);
 
-            return View("OrganisationName", organisationVM);
+            ViewBag.CurrentPeriod = _currentPeriod;
+
+            return View("SubmitConfirmation");
         }
 
-        //[Route("accounts/{employerAccountId}/[controller]/Change")]
+        [Route("OrganisationName")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult OrganisationName(string post)
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!_reportService.CanBeEdited(report))
+                return new RedirectResult(Url.Action("Index", "Home"));
+
+            var organisationVm = new OrganisationViewModel
+            {
+                EmployerAccount = EmployerAccount,
+                Report = report
+            };
+
+            if (string.IsNullOrEmpty(organisationVm.Report.OrganisationName))
+                organisationVm.Report.OrganisationName = organisationVm.EmployerAccount.EmployerName;
+
+            return View("OrganisationName", organisationVm);
+        }
+
         [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Change(OrganisationViewModel organisationVm)
         {
             var reportViewModel = new ReportViewModel
             {
-                Report = _reportService.GetReport(_reportService.GetCurrentReportPeriod(), EmployerAccount.AccountId)
+                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
             };
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-            _reportService.SaveReport(reportViewModel.Report);
+            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User));
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
 
+        private bool UserIsAuthorizedForReportSubmission()
+        {
+            return
+                _authorizationService
+                    .AuthorizeAsync(
+                        User,
+                        this.ControllerContext,
+                        PolicyNames.CanSubmitReport)
+                    .Result
+                    .Succeeded;
+        }
+
+        private bool UserIsAuthorizedForReportEdit()
+        {
+            return
+                _authorizationService
+                    .AuthorizeAsync(
+                        User,
+                        this.ControllerContext,
+                        PolicyNames.CanEditReport)
+                    .Result
+                    .Succeeded;
+        }
+
+        private string GetSubtitleForUserAccessLevel()
+        {
+            var firstStep =
+                SummaryPageMessageBuilder
+                    .GetSubtitle();
+
+            if (UserIsAuthorizedForReportSubmission())
+                return
+                    firstStep
+                        .ForUserWhoCanSubmit();
+
+            if (UserIsAuthorizedForReportEdit())
+                return
+                    firstStep
+                        .ForUserWhoCanEditButNotSubmit();
+
+            return
+                firstStep
+                    .ForViewOnlyUser();
+        }
     }
 }

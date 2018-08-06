@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using SFA.DAS.AssessorService.Application.Api.Middleware;
-using SFA.DAS.PSRService.Application.Exceptions;
-using SFA.DAS.PSRService.Domain.Exceptions;
+using SFA.DAS.PSRService.Web.Middleware;
 
-namespace SFA.DAS.AssessorService.Application.Api.Middleware
+namespace SFA.DAS.PSRService.Web.Middleware
 {
     public class ErrorLoggingMiddleware
     {
@@ -33,9 +28,7 @@ namespace SFA.DAS.AssessorService.Application.Api.Middleware
             }
             catch (Exception ex)
             {
-           
                 //If any other middleware has thrown an error and it hasnt been dealt with we will end up here
-
                 try
                 {
                     //log the error.
@@ -50,20 +43,14 @@ namespace SFA.DAS.AssessorService.Application.Api.Middleware
                     exceptionList.Add(loggingEx);
                     var aggregatedException = new AggregateException(exceptionList.AsEnumerable());
                     
-                   
                     throw aggregatedException;
                 }
-              
-
-
                 //throw the error to allow the default unhandled exception behaviour
                 throw;
             }
         }
     }
-
 }
-
 
 namespace Microsoft.AspNetCore.Builder
 {

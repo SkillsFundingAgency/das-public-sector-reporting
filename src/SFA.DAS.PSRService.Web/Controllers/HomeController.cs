@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
@@ -6,11 +8,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Models;
-using SFA.DAS.PSRService.Web.Models.Home;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
+using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
-using StackExchange.Redis;
+using SFA.DAS.PSRService.Web.SubmitActions;
+using SFA.DAS.PSRService.Web.ViewModels;
+using SFA.DAS.PSRService.Web.ViewModels.Home;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
@@ -18,42 +23,77 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public class HomeController : BaseController
     {
         private readonly IReportService _reportService;
+        private readonly IPeriodService _periodService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration) 
+        private readonly Period _currentPeriod;
+
+        private readonly IReadOnlyDictionary<string, SubmitAction> submitLookup;
+
+        public HomeController(IReportService reportService, IEmployerAccountService employerAccountService,
+            IWebConfiguration webConfiguration, IPeriodService periodService,
+            IAuthorizationService authorizationService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
+            _periodService = periodService;
+            _authorizationService = authorizationService;
+
+            _currentPeriod = _periodService.GetCurrentPeriod();
+
+            submitLookup = new ReadOnlyDictionary<string, SubmitAction>(
+                buildSubmitLookups());
+        }
+
+        private IDictionary<string, SubmitAction> buildSubmitLookups()
+        {
+            return new Dictionary<string, SubmitAction>
+            {
+                [Home.Edit.SubmitValue] = Home.Edit,
+                [Home.List.SubmitValue] = Home.List,
+                [Home.Create.SubmitValue] = Home.Create,
+                [Home.View.SubmitValue] = Home.View,
+                [Home.AlreadySubmitted.SubmitValue] = Home.AlreadySubmitted
+            };
         }
 
         public IActionResult Index()
         {
             var model = new IndexViewModel();
-            var period = _reportService.GetCurrentReportPeriod();
-       
-            var report = _reportService.GetReport(period, EmployerAccount.AccountId);
-            model.PeriodName = _reportService.GetCurrentReportPeriodName(period);
-            model.CanCreateReport = report == null;
-            model.CanEditReport = report != null && !report.Submitted;
+
+            model.Period = _currentPeriod;
+
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            PopulateModelBasedOnReportStateAndUserAuthorization(model, report);
+
             return View(model);
         }
 
         public IActionResult Submit(string action)
         {
-            if (action == "create")
-                return new RedirectResult(Url.Action("Create", "Report"));
+            if (submitLookup.ContainsKey(action))
+                return
+                    BuildRedirectResultForSubmitAction(
+                        submitLookup[action]);
 
-            if (action == "edit")
-                return new RedirectResult(Url.Action("Edit", "Report"));
+            return
+                new BadRequestResult();
+        }
 
-            if (action == "list")
-                return new RedirectResult(Url.Action("List", "Report"));
 
-            return new BadRequestResult();
+        private RedirectResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
+        {
+            return
+                new RedirectResult(
+                    Url.Action(
+                        submitAction.ActionName,
+                        submitAction.ControllerName));
         }
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
         public async Task<IActionResult> Logout()
@@ -65,16 +105,44 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return Redirect(disco.EndSessionEndpoint);
         }
 
-        [Authorize]
-        public IActionResult Protected(string empolyerId)
+        private bool UserIsAuthorizedForReportEdit()
         {
+            return
+                _authorizationService
+                    .AuthorizeAsync(
+                        User,
+                        this.ControllerContext,
+                        PolicyNames.CanEditReport)
+                    .Result
+                    .Succeeded;
+        }
 
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+        private void PopulateModelBasedOnReportStateAndUserAuthorization(IndexViewModel model, Report report)
+        {
+            bool reportExists = report != null;
+            bool reportDoesNotExist = reportExists == false;
+            bool reportIsAlreadySubmitted = report?.Submitted ?? false;
+            bool reportIsNotYetSubmitted = reportIsAlreadySubmitted == false;
+            bool userIsAuthorizedForReportEdit = UserIsAuthorizedForReportEdit();
+            bool userIsNotAuthorizedForReportEdit = userIsAuthorizedForReportEdit == false;
 
+            // TODO: take submission period close date into account
+            model.CanCreateReport =  reportDoesNotExist && userIsAuthorizedForReportEdit;
+            model.CanEditReport = reportExists && reportIsNotYetSubmitted && userIsAuthorizedForReportEdit;
+            model.Readonly = userIsNotAuthorizedForReportEdit;
+            model.CurrentReportAlreadySubmitted = reportIsAlreadySubmitted;
 
+            model.WelcomeMessage = BuildWelcomeMessageFromReportStatusAndUserAuthorization(report);
+        }
 
-            var employerDetail = (EmployerIdentifier)HttpContext.Items[ContextItemKeys.EmployerIdentifier];
-            return View(employerDetail);
+        private string BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
+        {
+            return
+
+            new HomePageMessageProvider(this, _authorizationService)
+                .GetWelcomeMessage()
+                .ForPeriod(_currentPeriod)
+                .AndReport(report);
         }
     }
 }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -12,16 +10,9 @@ namespace SFA.DAS.PSRService.Web.Attributes
 {
     public class CustomAnswerValidationAttribute : ValidationAttribute, IClientModelValidator
     {
-        private string _propertyName;
-
-        public CustomAnswerValidationAttribute(string propertyName)
-        {
-            _propertyName = propertyName;
-        }
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var questionType = ((SFA.DAS.PSRService.Web.ViewModels.QuestionViewModel)validationContext.ObjectInstance).Type;
+            var questionType = ((QuestionViewModel)validationContext.ObjectInstance).Type;
 
             if (value != null)
             {
@@ -29,19 +20,20 @@ namespace SFA.DAS.PSRService.Web.Attributes
                 switch (questionType)
                 {
                     case QuestionType.Number:
-                        int result = 0;
-                        var strValue = value.ToString().Replace(",", "");
-                        if (Int32.TryParse(strValue, out result) == false)
-                        { return new ValidationResult(GetErrorMessage(questionType)); }
+                        if (!int.TryParse(value.ToString(), NumberStyles.AllowThousands, CultureInfo.GetCultureInfo("en-GB"), out _))
+                            return new ValidationResult(GetErrorMessage(questionType));
                         break;
+
                     case QuestionType.ShortText:
                         if (CountWords(value.ToString()) > 100)
-                        { return new ValidationResult(GetErrorMessage(questionType)); }
+                            return new ValidationResult(GetErrorMessage(questionType));
                         break;
+
                     case QuestionType.LongText:
                         if (CountWords(value.ToString()) > 250)
-                        { return new ValidationResult(GetErrorMessage(questionType)); }
+                            return new ValidationResult(GetErrorMessage(questionType));
                         break;
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -57,23 +49,9 @@ namespace SFA.DAS.PSRService.Web.Attributes
 
             if (context.ModelMetadata.ContainerType == typeof(QuestionViewModel))
             {
-
-
-                var propertyValue = "Value";
-
-                var property = context.MetadataProvider.GetMetadataForProperties(typeof(QuestionViewModel))
-                    .FirstOrDefault(w => w.PropertyName == "Type");
-
-
                 var index = int.Parse(context.Attributes["name"].Substring(1, 1));
-
-
-
-                var model = ((Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<
-                        SFA.DAS.PSRService.Web.ViewModels.SectionViewModel>)
+                var model = ((Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<SectionViewModel>)
                     ((Microsoft.AspNetCore.Mvc.Rendering.ViewContext)context.ActionContext).ViewData).Model;
-
-
 
                 var questionType = model.Questions[index].Type;
 
@@ -127,13 +105,13 @@ namespace SFA.DAS.PSRService.Web.Attributes
             {
                 case QuestionType.Number:
                     return "Must be a whole number";
-                    break;
+
                 case QuestionType.ShortText:
                     return "Text cannot be longer than 100 words";
-                    break;
+                    
                 case QuestionType.LongText:
                     return "Text cannot be longer than 250 words";
-                    break;
+                    
                 default:
                     throw new ArgumentOutOfRangeException();
             }

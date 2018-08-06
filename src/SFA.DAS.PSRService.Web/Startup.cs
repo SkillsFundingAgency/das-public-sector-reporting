@@ -15,6 +15,7 @@ using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
@@ -56,19 +57,15 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
-           // services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
-            services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
-
-           
-
+            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount)) ).AddControllersAsServices().AddSessionStateTempDataProvider();
+            //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
+            
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
 
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
-
-
-
+            
             return ConfigureIOC(services);
         }
 
@@ -90,7 +87,7 @@ namespace SFA.DAS.PSRService.Web
                 config.For<IWebConfiguration>().Use(Configuration);
                 //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
                 config.For<IReportService>().Use<ReportService>();
-                config.For<IReportRepository>().Use<ReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);

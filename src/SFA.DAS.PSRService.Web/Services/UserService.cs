@@ -14,9 +14,9 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public class UserService : IUserService
     {
-        private readonly ILogger<EmployerAccountService> _logger;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(ILogger<EmployerAccountService> logger)
+        public UserService(ILogger<UserService> logger)
         {
             _logger = logger;
        
@@ -24,7 +24,6 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public UserModel GetUserModel(ClaimsPrincipal identity)
         {
-
             try
             {
                 return new UserModel(identity);
@@ -34,7 +33,6 @@ namespace SFA.DAS.PSRService.Web.Services
                 _logger.LogError(e,$"Unable to map claims for user {identity.Identity.Name}",identity);
                 throw;
             }
-            
         }
     }
 }

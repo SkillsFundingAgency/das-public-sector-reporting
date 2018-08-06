@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
@@ -19,26 +17,32 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
     {
         private QuestionController _controller;
         private Mock<IReportService> _reportService;
-        private Mock<IEmployerAccountService> _EmployerAccountServiceMock;
+        private Mock<IEmployerAccountService> _employerAccountServiceMock;
         private Mock<IUrlHelper> _mockUrlHelper;
+        private Mock<IUserService> _mockUserService;
+        private Mock<IPeriodService> _periodServiceMock;
         private EmployerIdentifier _employerIdentifier;
 
         [SetUp]
         public void SetUp()
         {
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-         _EmployerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+            _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
-            _controller = new QuestionController(_reportService.Object,_EmployerAccountServiceMock.Object, null) { Url = _mockUrlHelper.Object };
-            _reportService.Setup(s => s.GetCurrentReportPeriod()).Returns("1617");
+            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
+
+            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
+            _periodServiceMock.Setup(s => s.IsSubmissionsOpen()).Returns(true);
+
+            _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
+
+            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null,_periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
+            
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
-                .Returns(_employerIdentifier);
-            _EmployerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
-                .Returns(_employerIdentifier);
-
-            _reportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
+            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
+            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
+            
         }
 
         [Test]
@@ -49,12 +53,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()
-            {
-                ReportingPeriod = "1617"
-            });
-            _reportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+            _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
+
             // act
             var result = _controller.Index("YourEmployees");
 
@@ -75,10 +76,11 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             var url = "home/index";
             UrlActionContext actualContext = null;
 
+            var report = ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE");
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report(){Submitted = false});
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(false);
-            
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+            _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
+
             // act
             var result = _controller.Index("YourEmployees");
 
@@ -100,98 +102,30 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = true });
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns((Section)null);
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE"));
+            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
             var result = _controller.Index("YourEmployees");
-
-         
-            Assert.AreEqual(result.GetType(),typeof(BadRequestResult));
             
-        }
-
-        [Test]
-        public void And_The_Question_ID_Exists_More_Than_Once_Then_Return_Error()
-        {
-            // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = true });
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>()))
-                .Throws(new Exception());
-
-            // act
-
-            Assert.Throws<Exception>(() => _controller.Index("YourEmployees"));
-            
-
-
-//            Assert.AreEqual(result.GetType(), typeof(BadRequestResult));
-
+            // assert
+            Assert.IsAssignableFrom<NotFoundResult>(result);
         }
 
         [Test]
         public void The_Question_ID_Exists_And_Report_Is_Valid_Then_Show_Question_Page()
         {
-            // arrange
-            // arrange
-            var Questions = new List<Question>()
-            {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-                ,new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-            var SectionOne = new Section()
-            {
-                Id = "SectionOne",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionOne",
-                    Questions = Questions,
-                    Title = "SubSectionOne",
-                    SummaryText = ""
-
-                }},
-                Questions = null,
-                Title = "SectionOne"
-            };
+            
 
             var url = "home/index";
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report() { Submitted = false });
-            _reportService.Setup(s => s.IsSubmitValid(It.IsAny<Report>())).Returns(true);
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE"));
+            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
-            _reportService.Setup(s => s.GetQuestionSection(It.IsAny<string>(), It.IsAny<Report>())).Returns(SectionOne);
             // act
-            var result = _controller.Index("YourEmployees");
+            var result = _controller.Index("SectionOne");
 
             // assert
             Assert.AreEqual(typeof(ViewResult), result.GetType());
@@ -206,10 +140,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             var report = sectionViewModel.Report;
             Assert.IsNotNull(report);
 
+            var sectionOne = ReportTestModelBuilder.SectionOne;
             var questionSection = sectionViewModel.CurrentSection;
             Assert.IsNotNull(questionSection);
-            Assert.AreEqual(questionSection.Id,SectionOne.Id);
-            CollectionAssert.AreEqual(questionSection.Questions,SectionOne.Questions);
+            Assert.AreEqual(questionSection.Id, sectionOne.Id);
+
+            
+
+            CollectionAssert.AreEqual(questionSection.Questions, sectionOne.Questions);
         }
     }
 }

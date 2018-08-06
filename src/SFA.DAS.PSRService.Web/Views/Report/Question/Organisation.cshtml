@@ -2,22 +2,22 @@
 
 @{
     ViewData["Title"] = "Your organisation";
-    var submitValid = ViewBag.SubmitValid;
+    var canBeEdited = ViewBag.CanBeEdited;
 }
 
 <div class="form-group">
     <table>
-        <caption class="heading-small">Organisation</caption>
+        <caption class="heading-medium">Organisation</caption>
         <tbody>
             <tr>
                 <td>Organisation Name</td>
-                <td class="numeric bold-xsmall">@Model</td>
-                <td class="link-right">
-                    @if (submitValid)
+                <td class="bold">@Model</td>
+                    @if (canBeEdited)
                     {
-                        <a href="../Report/OrganisationName">Change</a>
+                    <td class="link-right">
+                        <a asp-controller="Report" asp-action="OrganisationName">Change</a>
+                    </td>
                     }
-                </td>
             </tr>
         </tbody>
     </table>

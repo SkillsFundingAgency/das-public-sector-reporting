@@ -9,11 +9,16 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.Middleware;
+using SFA.DAS.PSRService.Web.Middleware.Authorization;
 using SFA.DAS.PSRService.Web.Utils;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration
@@ -21,21 +26,33 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
     public static class AuthenticationStartup
     {
         private static IWebConfiguration _configuration;
-        private const string HasEmployerAccountPolicyName = "HasEmployerAccount";
 
         public static void AddAuthorizationService(this IServiceCollection services)
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(HasEmployerAccountPolicyName, policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier);
-                    policy.Requirements.Add(new EmployerAccountRequirement());
-                });
+                options.AddPolicy(
+                    PolicyNames
+                        .HasEmployerAccount
+                    , policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier);
+                        policy.Requirements.Add(new EmployerAccountRequirement());
+                    });
+                options.AddPolicy(
+                    PolicyNames
+                        .CanEditReport
+                    , policy => { policy.Requirements.Add(new CanEditReport()); });
+                options.AddPolicy(
+                    PolicyNames
+                        .CanSubmitReport
+                    , policy => { policy.Requirements.Add(new CanSubmitReport()); });
             });
 
             services.AddSingleton<IAuthorizationHandler, EmployerAccountHandler>();
+            services.AddSingleton<IAuthorizationHandler, CanSubmitReportHandler>();
+            services.AddSingleton<IAuthorizationHandler, CanEditReportHandler>();
         }
 
         public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IEmployerAccountService accountsSvc)
@@ -72,6 +89,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddCookie(options =>
                 {
+                    options.AccessDeniedPath = new PathString("/Service/AccessDenied");
                     options.ExpireTimeSpan = TimeSpan.FromHours(1);
                     switch (configuration.SessionStore.Type)
                     {
@@ -82,8 +100,29 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                             break;
                     }
                  
+                    options.Events.OnRedirectToAccessDenied = RedirectToAccessDenied;
 
                 });
+        }
+
+        private static Task RedirectToAccessDenied(RedirectContext<CookieAuthenticationOptions> context)
+        {
+            var routeData = context.HttpContext.GetRouteData();
+            var path = context.Request.Path.Value;
+             path = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+
+            if (path.Contains("Home/Index") || path.Equals($"/Accounts/{routeData.Values["employerAccountId"]}"))
+            {
+                //default path
+                context.Response.Redirect(context.RedirectUri);
+            }
+            else
+            { 
+                //custom
+                context.Response.Redirect(context.Request.PathBase + $"/Accounts/{routeData.Values["employerAccountId"]}/Home/Index");
+            }
+
+            return Task.CompletedTask;
         }
 
         private static IEnumerable<string> GetScopes()
@@ -116,11 +155,9 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
         private static async Task PopulateAccountsClaim(TokenValidatedContext ctx, IEmployerAccountService accountsSvc)
         {
             var userId = ctx.Principal.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value;
-            var accounts = await accountsSvc.GetEmployerIdentifiersAsync(userId);
-            var accountsAsJson = JsonConvert.SerializeObject(accounts);
-            var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
-
+            var associatedAccountsClaim = await accountsSvc.GetClaim(userId);
             ctx.Principal.Identities.First().AddClaim(associatedAccountsClaim);
         }
+
     }
 }

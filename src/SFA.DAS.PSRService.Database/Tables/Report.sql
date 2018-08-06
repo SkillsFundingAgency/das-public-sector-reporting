@@ -4,10 +4,13 @@
     [EmployerId] NVARCHAR(50) NOT NULL, 
     [ReportingPeriod] NVARCHAR(4) NOT NULL, 
     [ReportingData] NVARCHAR(MAX) NOT NULL, 
-    [Submitted] BIT NOT NULL DEFAULT 0
+    [Submitted] BIT NOT NULL DEFAULT 0, 
+    [AuditWindowStartUtc] DATETIME NULL, 
+    [UpdatedUtc] DATETIME NULL, 
+    [UpdatedBy] NVARCHAR(MAX) NULL
 )
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_Report1] ON [dbo].[Report]
+CREATE UNIQUE NONCLUSTERED INDEX [IXU_Report_EmployerIdReportingPeriod] ON [dbo].[Report]
 (
     [EmployerId] ASC,
     [ReportingPeriod] ASC
