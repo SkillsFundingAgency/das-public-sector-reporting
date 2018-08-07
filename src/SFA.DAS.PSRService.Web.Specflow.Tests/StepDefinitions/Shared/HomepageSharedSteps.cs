@@ -3,6 +3,7 @@ using TechTalk.SpecFlow;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 {
+    [Binding]
     public class HomepageSharedSteps : BaseTest
     {
         [Given(@"User selects Homepage View a previously submitted report Radio button")]
