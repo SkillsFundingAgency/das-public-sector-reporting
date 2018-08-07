@@ -18,6 +18,7 @@
         public QuestionVerifier OutlineActions => new OutlineActionsVerifier(_report.ReportingData).SingleQuestionVerifier;
         public QuestionVerifier Challenges => new ChallengesVerifier(_report.ReportingData).SingleQuestionVerifier;
         public QuestionVerifier TargetPlans => new TargetPlansVerifier(_report.ReportingData).SingleQuestionVerifier;
+        public QuestionVerifier AnythingElse => new AnythingElseVerifier(_report.ReportingData).SingleQuestionVerifier;
 
         internal static ReportVerifier VerifyReport(ReportDto report)
         {

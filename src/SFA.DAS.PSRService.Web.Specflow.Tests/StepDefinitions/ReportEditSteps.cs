@@ -110,7 +110,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionTargetPlans.EditText(text);
         }
 
-        [Given(@"User answers Anything Else question with '(.*)'")]
+        [Given(@"User answers Anything Else question with ""(.*)""")]
         public void GivenUserAnswersAnythingElseQuestionWith(string text)
         {
             pageFactory.QuestionAnythingElse.EditText(text);
@@ -403,6 +403,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                 .Challenges
                 .HasAnswer(expectedAnswer);
         }
+
         [Then(@"The Target Plans question value ""(.*)"" has been saved")]
         public void ThenTheTargetPlansQuestionValueHasBeenSaved(string expectedAnswer)
         {
@@ -415,6 +416,21 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .TargetPlans
+                .HasAnswer(expectedAnswer);
+        }
+
+        [Then(@"The Anything Else question value ""(.*)"" has been saved")]
+        public void ThenTheAnythingElseQuestionValueHasBeenSaved(string expectedAnswer)
+        {
+            Given(@"User navigates to the Anything Else question page");
+
+            pageFactory
+                .QuestionAnythingElse
+                .VerifyText(expectedAnswer);
+
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .AnythingElse
                 .HasAnswer(expectedAnswer);
         }
     }

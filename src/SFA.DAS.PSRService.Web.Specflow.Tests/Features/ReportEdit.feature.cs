@@ -259,6 +259,30 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("user can update Anything Else question")]
+        [NUnit.Framework.TestCaseAttribute("\"one\"", null)]
+        [NUnit.Framework.TestCaseAttribute("\"two\"", null)]
+        [NUnit.Framework.TestCaseAttribute(@"Ut vehicula rhoncus imperdiet. Suspendisse sit amet nunc ut ligula hendrerit consequat. Nullam sodales gravida tincidunt. Curabitur vitae elementum mi. Nunc in condimentum erat. Vivamus non consequat metus. Phasellus at tellus malesuada, convallis mi eget, consequat nulla. Mauris pretium mattis urna, et venenatis quam pellentesque condimentum. Donec pellentesque lectus a tellus dictum mollis. Quisque et sem felis. Duis sed elit at metus aliquet finibus ac id tellus. Aliquam pretium eleifend eleifend. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce semper aliquet condimentum. Aliquam at aliquet mi. Donec tincidunt, erat a aliquet rutrum, ipsum sapien egestas turpis, eu aliquet tortor urna sit amet justo.", null)]
+        public virtual void UserCanUpdateAnythingElseQuestion(string answer_Text, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Anything Else question", exampleTags);
+#line 90
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 91
+ testRunner.Given("User navigates to the Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 92
+ testRunner.And(string.Format("User answers Anything Else question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 94
+ testRunner.Then(string.Format("The Anything Else question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

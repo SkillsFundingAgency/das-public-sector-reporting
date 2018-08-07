@@ -104,7 +104,7 @@ Scenario: Anything Else Incomplete
 		
 Scenario: Anything Else Complete
 	Given User navigates to the Anything Else question page
-	And User answers Anything Else question with 'some text'
+	And User answers Anything Else question with "some text"
 	When User clicks Continue on Anything Else question page
 	Then User is returned to report edit page
     And completion status for anything else is COMPLETE

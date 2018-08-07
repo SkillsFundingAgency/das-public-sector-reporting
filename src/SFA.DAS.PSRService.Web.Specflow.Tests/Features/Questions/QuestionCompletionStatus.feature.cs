@@ -391,7 +391,7 @@ this.FeatureBackground();
 #line 106
  testRunner.Given("User navigates to the Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 107
- testRunner.And("User answers Anything Else question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User answers Anything Else question with \"some text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
  testRunner.When("User clicks Continue on Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 109
