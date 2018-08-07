@@ -303,7 +303,7 @@ this.FeatureBackground();
 #line 80
  testRunner.Given("User navigates to the Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 81
- testRunner.And("User answers Challenges question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User answers Challenges question with \"some text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
  testRunner.When("User clicks Continue on Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 83

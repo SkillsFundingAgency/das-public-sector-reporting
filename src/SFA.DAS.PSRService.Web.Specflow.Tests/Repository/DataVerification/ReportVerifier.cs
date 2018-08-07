@@ -16,6 +16,7 @@
         public FullTimeEquivalentsVerifier FullTimeEquivalents => new FullTimeEquivalentsVerifier(_report.ReportingData);
 
         public QuestionVerifier OutlineActions => new OutlineActionsVerifier(_report.ReportingData).SingleQuestionVerifier;
+        public QuestionVerifier Challenges => new ChallengesVerifier(_report.ReportingData).SingleQuestionVerifier;
 
         internal static ReportVerifier VerifyReport(ReportDto report)
         {

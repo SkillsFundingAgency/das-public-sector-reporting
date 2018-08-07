@@ -211,6 +211,30 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("user can update Challenges question")]
+        [NUnit.Framework.TestCaseAttribute("\"one\"", null)]
+        [NUnit.Framework.TestCaseAttribute("\"two\"", null)]
+        [NUnit.Framework.TestCaseAttribute(@"Donec at iaculis mi. Duis in tempor libero. Aenean tortor augue, venenatis et leo in, laoreet bibendum sem. In scelerisque nisi et tincidunt maximus. Proin sagittis consequat velit, fermentum iaculis elit placerat et. Proin quis luctus tortor. Nullam nec tellus laoreet, tincidunt neque et, eleifend enim. Aliquam rutrum erat nunc, non congue sapien laoreet in. Aliquam eleifend mauris nunc. Sed at massa vulputate, laoreet ipsum eu, auctor neque. Maecenas elementum sed risus id posuere. Curabitur sit amet sem sed libero gravida efficitur vitae in erat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat pulvinar ex, vitae aliquet eros ullamcorper ac. Phasellus vel sapien vitae odio vestibulum rutrum sed id ligula. Phasellus in felis id magna convallis semper quis non lectus.", null)]
+        public virtual void UserCanUpdateChallengesQuestion(string answer_Text, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Challenges question", exampleTags);
+#line 68
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 69
+ testRunner.Given("User navigates to the Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 70
+ testRunner.And(string.Format("User answers Challenges question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 72
+ testRunner.Then(string.Format("The Challenges question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

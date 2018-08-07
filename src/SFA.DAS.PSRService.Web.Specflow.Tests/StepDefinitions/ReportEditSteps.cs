@@ -98,7 +98,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionOutlineActions.EditText(text);
         }
 
-        [Given(@"User answers Challenges question with '(.*)'")]
+        [Given(@"User answers Challenges question with ""(.*)""")]
         public void GivenUserAnswersChallengesQuestionWith(string text)
         {
             pageFactory.QuestionChallenges.EditText(text);
@@ -386,6 +386,21 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .OutlineActions
+                .HasAnswer(expectedAnswer);
+        }
+
+        [Then(@"The Challenges question value ""(.*)"" has been saved")]
+        public void ThenTheChallengesQuestionValueHasBeenSaved(string expectedAnswer)
+        {
+            Given(@"User navigates to the Challenges question page");
+
+            pageFactory
+                .QuestionChallenges
+                .VerifyText(expectedAnswer);
+
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .Challenges
                 .HasAnswer(expectedAnswer);
         }
     }

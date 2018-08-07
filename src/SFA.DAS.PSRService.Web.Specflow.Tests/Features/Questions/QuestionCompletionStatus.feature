@@ -78,7 +78,7 @@ Scenario: Challenges Incomplete
 		
 Scenario: Challenges Complete
 	Given User navigates to the Challenges question page
-	And User answers Challenges question with 'some text'
+	And User answers Challenges question with "some text"
 	When User clicks Continue on Challenges question page
 	Then User is returned to report edit page
     And completion status for challenges is COMPLETE
