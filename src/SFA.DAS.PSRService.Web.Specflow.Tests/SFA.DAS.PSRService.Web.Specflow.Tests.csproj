@@ -235,6 +235,7 @@
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportFactorsVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportNumbersVerifier.cs" />
+    <Compile Include="Repository\DataVerification\TargetPlansVerifier.cs" />
     <Compile Include="Repository\DataVerification\YourApprenticesVerifier.cs" />
     <Compile Include="Repository\Period.cs" />
     <Compile Include="Repository\DataVerification\ReportVerifier.cs" />

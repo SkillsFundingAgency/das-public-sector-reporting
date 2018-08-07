@@ -347,7 +347,7 @@ this.FeatureBackground();
 #line 93
  testRunner.Given("User navigates to the Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 94
- testRunner.And("User answers Target Plans question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User answers Target Plans question with \"some text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 95
  testRunner.When("User clicks Continue on Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 96

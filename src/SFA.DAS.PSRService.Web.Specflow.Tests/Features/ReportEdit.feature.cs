@@ -235,6 +235,30 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("user can update Target Plans question")]
+        [NUnit.Framework.TestCaseAttribute("\"one\"", null)]
+        [NUnit.Framework.TestCaseAttribute("\"two\"", null)]
+        [NUnit.Framework.TestCaseAttribute(@"Curabitur ullamcorper augue nec tellus malesuada, sit amet facilisis nisl dignissim. Nulla eu gravida nulla, ut venenatis sapien. Phasellus aliquet orci ac lorem placerat, nec lobortis turpis consectetur. Mauris eu congue magna, eget cursus dolor. Fusce ex urna, accumsan vel dolor vel, dapibus consectetur tortor. Pellentesque maximus lobortis tortor, non pharetra neque commodo at. Phasellus odio dolor, consequat eget est non, semper iaculis metus. Curabitur elementum nulla risus, eget placerat erat facilisis in. Praesent feugiat ante sit amet rutrum eleifend. Phasellus eget maximus massa.", null)]
+        public virtual void UserCanUpdateTargetPlansQuestion(string answer_Text, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Target Plans question", exampleTags);
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 80
+ testRunner.Given("User navigates to the Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 81
+ testRunner.And(string.Format("User answers Target Plans question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 83
+ testRunner.Then(string.Format("The Target Plans question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

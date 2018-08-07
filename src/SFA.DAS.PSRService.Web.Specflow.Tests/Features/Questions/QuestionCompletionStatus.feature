@@ -91,7 +91,7 @@ Scenario: Challenges Complete
 		
 Scenario: Target Plans Complete
 	Given User navigates to the Target Plans question page
-	And User answers Target Plans question with 'some text'
+	And User answers Target Plans question with "some text"
 	When User clicks Continue on Target Plans question page
 	Then User is returned to report edit page
     And completion status for target plans is COMPLETE

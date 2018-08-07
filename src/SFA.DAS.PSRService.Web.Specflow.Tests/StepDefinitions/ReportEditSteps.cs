@@ -104,7 +104,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionChallenges.EditText(text);
         }
 
-        [Given(@"User answers Target Plans question with '(.*)'")]
+        [Given(@"User answers Target Plans question with ""(.*)""")]
         public void GivenUserAnswersTargetPlansQuestionWith(string text)
         {
             pageFactory.QuestionTargetPlans.EditText(text);
@@ -401,6 +401,20 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .Challenges
+                .HasAnswer(expectedAnswer);
+        }
+        [Then(@"The Target Plans question value ""(.*)"" has been saved")]
+        public void ThenTheTargetPlansQuestionValueHasBeenSaved(string expectedAnswer)
+        {
+            Given(@"User navigates to the Target Plans question page");
+
+            pageFactory
+                .QuestionTargetPlans
+                .VerifyText(expectedAnswer);
+
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .TargetPlans
                 .HasAnswer(expectedAnswer);
         }
     }
