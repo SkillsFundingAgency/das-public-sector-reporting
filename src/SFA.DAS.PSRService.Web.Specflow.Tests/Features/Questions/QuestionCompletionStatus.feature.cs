@@ -225,9 +225,183 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Outline Actions Incomplete")]
+        public virtual void OutlineActionsIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Outline Actions Incomplete", ((string[])(null)));
+#line 60
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 61
+ testRunner.Given("User navigates to the Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 62
+ testRunner.When("User clicks Continue on Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 64
+    testRunner.And("no completion status is shown for outline actions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Outline Actions Complete")]
+        public virtual void OutlineActionsComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Outline Actions Complete", ((string[])(null)));
+#line 66
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 67
+ testRunner.Given("User navigates to the Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 68
+ testRunner.And("User answers Outline Actions question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.When("User clicks Continue on Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 70
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 71
+    testRunner.And("completion status for outline actions is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Challenges Incomplete")]
+        public virtual void ChallengesIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Challenges Incomplete", ((string[])(null)));
+#line 73
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 74
+ testRunner.Given("User navigates to the Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 75
+ testRunner.When("User clicks Continue on Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 76
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 77
+    testRunner.And("no completion status is shown for challenges", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Challenges Complete")]
+        public virtual void ChallengesComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Challenges Complete", ((string[])(null)));
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 80
+ testRunner.Given("User navigates to the Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 81
+ testRunner.And("User answers Challenges question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+ testRunner.When("User clicks Continue on Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 83
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 84
+    testRunner.And("completion status for challenges is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Target Plans Incomplete")]
+        public virtual void TargetPlansIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Target Plans Incomplete", ((string[])(null)));
+#line 86
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 87
+ testRunner.Given("User navigates to the Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 88
+ testRunner.When("User clicks Continue on Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 89
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 90
+    testRunner.And("no completion status is shown for target plans", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Target Plans Complete")]
+        public virtual void TargetPlansComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Target Plans Complete", ((string[])(null)));
+#line 92
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 93
+ testRunner.Given("User navigates to the Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 94
+ testRunner.And("User answers Target Plans question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+ testRunner.When("User clicks Continue on Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 96
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
+    testRunner.And("completion status for target plans is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Anything Else Incomplete")]
+        public virtual void AnythingElseIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Anything Else Incomplete", ((string[])(null)));
+#line 99
+ this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 100
+ testRunner.Given("User navigates to the Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+ testRunner.When("User clicks Continue on Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 102
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 103
+    testRunner.And("no completion status is shown for anything else", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Anything Else Complete")]
+        public virtual void AnythingElseComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Anything Else Complete", ((string[])(null)));
+#line 105
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 106
+ testRunner.Given("User navigates to the Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 107
+ testRunner.And("User answers Anything Else question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.When("User clicks Continue on Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 109
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 110
+    testRunner.And("completion status for anything else is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
 #endregion
-
-

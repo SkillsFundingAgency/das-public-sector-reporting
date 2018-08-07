@@ -35,6 +35,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         public YourEmployeesEditPage QuestionYourEmployees => new YourEmployeesEditPage(webDriver);
         public YourApprenticesEditPage QuestionYourApprentices => new YourApprenticesEditPage(webDriver);
         public FullTimeEquivalentEditPage QuestionFullTimeEquivalent => new FullTimeEquivalentEditPage(webDriver);
+        public OutlineActionsEditPage QuestionOutlineActions => new OutlineActionsEditPage(webDriver);
+        public ChallengesEditPage QuestionChallenges => new ChallengesEditPage(webDriver);
+        public TargetPlansEditPage QuestionTargetPlans => new TargetPlansEditPage(webDriver);
+        public AnythingElseEditPage QuestionAnythingElse => new AnythingElseEditPage(webDriver);
 
         //Employer Idams pages
         public EmployerIdamsLoadingPage IdamsLoading => new EmployerIdamsLoadingPage(webDriver);

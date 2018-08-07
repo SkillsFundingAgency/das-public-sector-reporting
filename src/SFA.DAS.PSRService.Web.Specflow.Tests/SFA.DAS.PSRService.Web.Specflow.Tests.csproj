@@ -209,6 +209,11 @@
     <Compile Include="Framework\Helpers\RandomDataGenerator.cs" />
     <Compile Include="Framework\Helpers\SqlDatabaseConnectionHelper.cs" />
     <Compile Include="Hooks\StartWebApplication.cs" />
+    <Compile Include="Pages\Questions\FactorsQuestionEditPage.cs" />
+    <Compile Include="Pages\Questions\ChallengesEditPage.cs" />
+    <Compile Include="Pages\Questions\AnythingElseEditPage.cs" />
+    <Compile Include="Pages\Questions\TargetPlansEditPage.cs" />
+    <Compile Include="Pages\Questions\OutlineActionsEditPage.cs" />
     <Compile Include="Pages\Questions\FullTimeEquivalentEditPage.cs" />
     <Compile Include="Pages\Questions\ReportNumbersEditPage.cs" />
     <Compile Include="Pages\Questions\YourApprenticesEditPage.cs" />

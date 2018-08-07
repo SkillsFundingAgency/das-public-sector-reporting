@@ -1,7 +1,4 @@
-﻿using System;
-using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
-using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
+﻿using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
@@ -79,6 +76,30 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void GivenUserNavigatesToTheFullTimeEquivalentQuestionPage()
         {
             pageFactory.QuestionFullTimeEquivalent.Navigate();
+        }
+
+        [Given(@"User navigates to the Outline Actions question page")]
+        public void GivenUserNavigatesToTheOutlineActionsQuestionPage()
+        {
+            pageFactory.QuestionOutlineActions.Navigate();
+        }
+
+        [Given(@"User navigates to the Challenges question page")]
+        public void GivenUserNavigatesToTheChallengesQuestionPage()
+        {
+            pageFactory.QuestionChallenges.Navigate();
+        }
+
+        [Given(@"User navigates to the Target Plans question page")]
+        public void GivenUserNavigatesToTheTargetPlansQuestionPage()
+        {
+            pageFactory.QuestionTargetPlans.Navigate();
+        }
+        
+        [Given(@"User navigates to the Anything Else question page")]
+        public void GivenUserNavigatesToTheAnythingElseQuestionPage()
+        {
+            pageFactory.QuestionAnythingElse.Navigate();
         }
     }
 }

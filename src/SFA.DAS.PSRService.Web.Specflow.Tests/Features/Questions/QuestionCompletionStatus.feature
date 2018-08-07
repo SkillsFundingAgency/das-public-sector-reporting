@@ -56,3 +56,55 @@ Scenario: Full Time Equivalent Complete
 	When User clicks Continue on Full time equivalent question page
 	Then User is returned to report edit page
     And completion status for full time equivalent is COMPLETE
+
+Scenario: Outline Actions Incomplete
+	Given User navigates to the Outline Actions question page
+	When User clicks Continue on Outline Actions question page
+	Then User is returned to report edit page
+    And no completion status is shown for outline actions
+		
+Scenario: Outline Actions Complete
+	Given User navigates to the Outline Actions question page
+	And User answers Outline Actions question with 'some text'
+	When User clicks Continue on Outline Actions question page
+	Then User is returned to report edit page
+    And completion status for outline actions is COMPLETE
+
+Scenario: Challenges Incomplete
+	Given User navigates to the Challenges question page
+	When User clicks Continue on Challenges question page
+	Then User is returned to report edit page
+    And no completion status is shown for challenges
+		
+Scenario: Challenges Complete
+	Given User navigates to the Challenges question page
+	And User answers Challenges question with 'some text'
+	When User clicks Continue on Challenges question page
+	Then User is returned to report edit page
+    And completion status for challenges is COMPLETE
+
+	Scenario: Target Plans Incomplete
+	Given User navigates to the Target Plans question page
+	When User clicks Continue on Target Plans question page
+	Then User is returned to report edit page
+    And no completion status is shown for target plans
+		
+Scenario: Target Plans Complete
+	Given User navigates to the Target Plans question page
+	And User answers Target Plans question with 'some text'
+	When User clicks Continue on Target Plans question page
+	Then User is returned to report edit page
+    And completion status for target plans is COMPLETE
+
+	Scenario: Anything Else Incomplete
+	Given User navigates to the Anything Else question page
+	When User clicks Continue on Anything Else question page
+	Then User is returned to report edit page
+    And no completion status is shown for anything else
+		
+Scenario: Anything Else Complete
+	Given User navigates to the Anything Else question page
+	And User answers Anything Else question with 'some text'
+	When User clicks Continue on Anything Else question page
+	Then User is returned to report edit page
+    And completion status for anything else is COMPLETE

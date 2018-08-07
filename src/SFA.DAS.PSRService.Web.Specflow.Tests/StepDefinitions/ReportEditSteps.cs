@@ -92,6 +92,30 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionFullTimeEquivalent.EditFullTimeEquivalents(numberOfFullTimeEquivalents.ToString());
         }
 
+        [Given(@"User answers Outline Actions question with '(.*)'")]
+        public void GivenUserAnswersOutlineActionsQuestionWith(string text)
+        {
+            pageFactory.QuestionOutlineActions.EditText(text);
+        }
+
+        [Given(@"User answers Challenges question with '(.*)'")]
+        public void GivenUserAnswersChallengesQuestionWith(string text)
+        {
+            pageFactory.QuestionChallenges.EditText(text);
+        }
+
+        [Given(@"User answers Target Plans question with '(.*)'")]
+        public void GivenUserAnswersTargetPlansQuestionWith(string text)
+        {
+            pageFactory.QuestionTargetPlans.EditText(text);
+        }
+
+        [Given(@"User answers Anything Else question with '(.*)'")]
+        public void GivenUserAnswersAnythingElseQuestionWith(string text)
+        {
+            pageFactory.QuestionAnythingElse.EditText(text);
+        }
+
         [When(@"User clicks on '(.*)' question link")]
         public void WhenUserClicksOnQuestionLink(string p0)
         {
@@ -117,7 +141,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             return pageFactory.QuestionYourEmployees;
         }
-        
+
         [Then(@"organisation name is pre-populated with name from my account")]
         public void ThenOrganisationNameIsPrePopulatedWithNameFromMyAccount()
         {
@@ -142,6 +166,30 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void WhenUserClicksContinueOnFullTimeEquivalentQuestionPage()
         {
             pageFactory.QuestionFullTimeEquivalent.SaveQuestionAnswers();
+        }
+
+        [When(@"User clicks Continue on Outline Actions question page")]
+        public void WhenUserClicksContinueOnOutlineActionsQuestionPage()
+        {
+            pageFactory.QuestionOutlineActions.SaveQuestionAnswers();
+        }
+
+        [When(@"User clicks Continue on Challenges question page")]
+        public void WhenUserClicksContinueOnChallengesQuestionPage()
+        {
+            pageFactory.QuestionChallenges.SaveQuestionAnswers();
+        }
+
+        [When(@"User clicks Continue on Target Plans question page")]
+        public void WhenUserClicksContinueOnTargetPlansQuestionPage()
+        {
+            pageFactory.QuestionTargetPlans.SaveQuestionAnswers();
+        }
+
+        [When(@"User clicks Continue on Anything Else question page")]
+        public void WhenUserClicksContinueOnAnythingElseQuestionPage()
+        {
+            pageFactory.QuestionAnythingElse.SaveQuestionAnswers();
         }
 
         [Then(@"User is returned to report edit page")]
@@ -184,6 +232,54 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void ThenNoCompletionStatusIsShownForFullTimeEquivalent()
         {
             pageFactory.ReportEdit.VerifyIncomplete("FullTimeEquivalent");
+        }
+
+        [Then(@"no completion status is shown for outline actions")]
+        public void ThenNoCompletionStatusIsShownForOutlineActions()
+        {
+            pageFactory.ReportEdit.VerifyComplete("OutlineActions");
+        }
+
+        [Then(@"completion status for outline actions is COMPLETE")]
+        public void ThenCompletionStatusForOutlineActionsIsCOMPLETE()
+        {
+            pageFactory.ReportEdit.VerifyIncomplete("OutlineActions");
+        }
+        
+        [Then(@"no completion status is shown for challenges")]
+        public void ThenNoCompletionStatusIsShownForChallenges()
+        {
+            pageFactory.ReportEdit.VerifyComplete("Challenges");
+        }
+
+        [Then(@"completion status for challenges is COMPLETE")]
+        public void ThenCompletionStatusForChallengesIsCOMPLETE()
+        {
+            pageFactory.ReportEdit.VerifyIncomplete("Challenges");
+        }
+        
+        [Then(@"no completion status is shown for target plans")]
+        public void ThenNoCompletionStatusIsShownForTargetPlans()
+        {
+            pageFactory.ReportEdit.VerifyComplete("TargetPlans");
+        }
+
+        [Then(@"completion status for target plans is COMPLETE")]
+        public void ThenCompletionStatusForTargetPlansIsCOMPLETE()
+        {
+            pageFactory.ReportEdit.VerifyIncomplete("TargetPlans");
+        }
+
+        [Then(@"no completion status is shown for anything else")]
+        public void ThenNoCompletionStatusIsShownForAnythingElse()
+        {
+            pageFactory.ReportEdit.VerifyComplete("AnythingElse");
+        }
+
+        [Then(@"completion status for anything else is COMPLETE")]
+        public void ThenCompletionStatusForAnythingElseIsCOMPLETE()
+        {
+            pageFactory.ReportEdit.VerifyIncomplete("AnythingElse");
         }
 
         [Then(@"the confirm submission page is displayed")]

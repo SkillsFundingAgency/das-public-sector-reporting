@@ -21,5 +21,9 @@
         public const string YourEmployees = QuestionBaseUrl + "/YourEmployees";
         public const string YourApprentices = QuestionBaseUrl + "/YourApprentices";
         public const string FullTimeEquivalent = QuestionBaseUrl + "/FullTimeEquivalent";
+        public const string OutlineActions = QuestionBaseUrl + "/OutlineActions";
+        public const string Challenges = QuestionBaseUrl + "/Challenges";
+        public const string TargetPlans = QuestionBaseUrl + "/TargetPlans";
+        public const string AnythingElse = QuestionBaseUrl + "/AnythingElse";
     }
 }
