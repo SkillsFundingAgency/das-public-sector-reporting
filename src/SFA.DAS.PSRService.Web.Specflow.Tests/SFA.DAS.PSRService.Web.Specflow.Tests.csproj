@@ -218,6 +218,7 @@
     <Compile Include="Pages\Questions\QuestionEditBasePage.cs" />
     <Compile Include="Pages\EmployerIdamsLoadingPage.cs" />
     <Compile Include="Pages\ReportEditPage.cs" />
+    <Compile Include="Repository\DataVerification\FullTimeEquivalentsVerifier.cs" />
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportNumbersVerifier.cs" />
     <Compile Include="Repository\DataVerification\YourApprenticesVerifier.cs" />

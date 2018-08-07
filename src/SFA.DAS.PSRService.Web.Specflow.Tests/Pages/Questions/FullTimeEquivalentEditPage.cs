@@ -11,6 +11,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         private readonly By _fullTimeEquivalents = By.Name("Section.Questions[0].Answer");
 
+        private readonly By _atStart = By.Name("Section.Questions[0].Answer");
+
         public FullTimeEquivalentEditPage(IWebDriver webDriver) : base(webDriver)
         {
         }
@@ -33,6 +35,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         public void VerifyFullTimeEquivalentsValue(string expected)
         {
             PageInteractionHelper.VerifyValue(_fullTimeEquivalents, expected);
+        }
+
+        public void EditAtStartValue(string value)
+        {
+            FormCompletionHelper.EnterText(_atStart, value);
+        }
+
+        public void VerifyAtStartValue(string expected)
+        {
+            PageInteractionHelper.VerifyValue(_atStart, expected);
         }
     }
 }

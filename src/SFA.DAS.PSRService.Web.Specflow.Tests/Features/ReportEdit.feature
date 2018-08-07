@@ -40,3 +40,16 @@ Scenario Outline: user can update YourApprentices question
 	| 1000    | 750   | 0             |
 	| 850     | 1000  | 150           |
 	| 850000  | 1000000  | 150        |
+
+Scenario Outline: user can update FullTimeEquivalents question
+	Given User navigates to the Full time equivalent question page
+	And the full time equivalents question value <atStart> has been edited
+	When User clicks on the save question
+	Then The full time equivalents question value <atStart> has been saved
+	Examples: 
+	| atStart |
+	| 100     |
+	| 1000    |
+	| 850     |
+	| 850000  |
+	| 1000000  | 

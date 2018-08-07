@@ -30,7 +30,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public void EditAtStartValue(string value)
         {
-            
             FormCompletionHelper.EnterText(_atStart,value);
         }
 

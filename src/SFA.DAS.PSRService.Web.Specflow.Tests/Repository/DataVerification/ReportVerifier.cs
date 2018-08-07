@@ -13,6 +13,8 @@
 
         public YourApprenticesVerifier YourApprentices => new YourApprenticesVerifier(_report.ReportingData);
 
+        public FullTimeEquivalentsVerifier FullTimeEquivalents => new FullTimeEquivalentsVerifier(_report.ReportingData);
+
         internal static ReportVerifier VerifyReport(ReportDto report)
         {
             return new ReportVerifier(report);

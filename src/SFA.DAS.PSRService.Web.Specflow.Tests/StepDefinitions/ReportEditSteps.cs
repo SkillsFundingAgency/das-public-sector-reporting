@@ -252,5 +252,31 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                             .Get<Guid>(
                                 ContextKeys.CurrentReportID));
         }
+
+        [Given(@"the full time equivalents question value (.*) has been edited")]
+        public void GivenTheFullTimeEquivalentsQuestionValueHasBeenEdited(int atStart)
+        {
+            pageFactory
+                .QuestionFullTimeEquivalent
+                .EditAtStartValue(
+                    atStart.ToString());
+        }
+
+        [Then(@"The full time equivalents question value (.*) has been saved")]
+        public void ThenTheFullTimeEquivalentsQuestionValueHasBeenSaved(int atStart)
+        {
+            pageFactory.ReportEdit.ClickQuestionLink("Number of full-time equivalents who work in England (optional)");
+
+            pageFactory
+                .QuestionFullTimeEquivalent
+                .VerifyAtStartValue(atStart.ToString("N0"));
+
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .FullTimeEquivalents
+                .AtStartQuestion
+                .HasAnswer(atStart.ToString());
+        }
+
     }
 }
