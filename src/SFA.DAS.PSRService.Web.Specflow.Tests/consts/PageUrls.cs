@@ -8,6 +8,7 @@
         public const string ReportSummary = "/Report/Summary";
         public const string ReportConfirmSubmision = "/Report/Confirm";
         public const string ReportEditComplete = "/Report/EditComplete";
+        public const string ReportAlreadySubmitted = "/Report/AlreadySubmitted";
         public const string ReportPreviouslySubmittedList = "/Report/List";
         public const string ReportSubmitConfirmation = "/Report/SubmitConfirmation";
         public const string ReportOrganisationName = "/Report/OrganisationName";

@@ -10,6 +10,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
     {
         private static String PAGE_TITLE = "Annual apprenticeship return";
 
+
+        private readonly By _submitPageFormButton = By.Id("SubmitSelectOptionForm");
+        private readonly By _signInButton = By.CssSelector("h1");
+
         public PsrsHomepage(IWebDriver webDriver) : base(webDriver)
         {
         }
@@ -17,14 +21,14 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             WebDriver.Url = GetPageUrl(PageUrls.Home);
         }
+
         public override bool Verify()
         {
+            //Make sure homepage is loaded - can be a little slow when logging in
+            PageInteractionHelper.WaitForPageToLoad();
+
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
-
-        private readonly By _selectPageForm = By.CssSelector("label");
-        private readonly By _submitPageFormButton = By.Id("SubmitSelectOptionForm");
-        private readonly By _signInButton = By.CssSelector("h1");
 
         internal void SelectPreviouslySubmittedReports()
         {
@@ -41,6 +45,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
             FormCompletionHelper.SelectRadioOptionById("home-action-create");
         }
 
+        internal void SelectViewReport()
+        {
+            FormCompletionHelper.SelectRadioOptionById("home-action-view");
+        }
+
+        internal void SelectListSubmittedReports()
+        {
+            FormCompletionHelper.SelectRadioOptionById("home-action-list");
+        }
+
         internal PreviouslySubmittedReportsPage ClickContinueButton()
         {
             FormCompletionHelper.ClickElement(_submitPageFormButton);
@@ -50,6 +64,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         internal bool IsPsrsHomepageMenuDisplayed => PageInteractionHelper.IsElementPresent(By.ClassName("heading-xlarge"));
 
         internal bool DoesCreateReportButtonExist => PageInteractionHelper.IsElementPresent(By.Id("home-action-create"));
+
+        internal bool DoesEditReportButtonExist => PageInteractionHelper.IsElementPresent(By.Id("home-action-edit"));
 
         internal bool DoesViewReportButtonExist => PageInteractionHelper.IsElementPresent(By.Id("home-action-view"));
 
