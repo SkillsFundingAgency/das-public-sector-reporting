@@ -11,7 +11,7 @@ using TechTalk.SpecFlow;
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
 {
     [Binding]
-    public class BaseTest
+    public class BaseTest : Steps
     {
         protected static IWebDriver webDriver;
         protected static PageFactory pageFactory;

@@ -230,7 +230,9 @@
     <Compile Include="Pages\EmployerIdamsLoadingPage.cs" />
     <Compile Include="Pages\ReportEditPage.cs" />
     <Compile Include="Repository\DataVerification\FullTimeEquivalentsVerifier.cs" />
+    <Compile Include="Repository\DataVerification\OutlineActionsVerifier.cs" />
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
+    <Compile Include="Repository\DataVerification\ReportFactorsVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportNumbersVerifier.cs" />
     <Compile Include="Repository\DataVerification\YourApprenticesVerifier.cs" />
     <Compile Include="Repository\Period.cs" />

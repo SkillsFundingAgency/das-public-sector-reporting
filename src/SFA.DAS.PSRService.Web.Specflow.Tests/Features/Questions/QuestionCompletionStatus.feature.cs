@@ -259,7 +259,7 @@ this.FeatureBackground();
 #line 67
  testRunner.Given("User navigates to the Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 68
- testRunner.And("User answers Outline Actions question with \'some text\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User answers Outline Actions question with \"some text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
  testRunner.When("User clicks Continue on Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 70

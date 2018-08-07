@@ -65,7 +65,7 @@ Scenario: Outline Actions Incomplete
 		
 Scenario: Outline Actions Complete
 	Given User navigates to the Outline Actions question page
-	And User answers Outline Actions question with 'some text'
+	And User answers Outline Actions question with "some text"
 	When User clicks Continue on Outline Actions question page
 	Then User is returned to report edit page
     And completion status for outline actions is COMPLETE

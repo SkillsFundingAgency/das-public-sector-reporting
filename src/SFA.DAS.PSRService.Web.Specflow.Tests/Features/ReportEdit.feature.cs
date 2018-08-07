@@ -187,6 +187,30 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("user can update Outline Actions question")]
+        [NUnit.Framework.TestCaseAttribute("\"one\"", null)]
+        [NUnit.Framework.TestCaseAttribute("\"two\"", null)]
+        [NUnit.Framework.TestCaseAttribute(@"""Maecenas enim lorem, pharetra sed iaculis eleifend, blandit ultrices urna. Nullam at cursus magna, et auctor lectus. Maecenas consectetur, nibh in dignissim dapibus, tortor magna fringilla urna, eget tempor tortor nibh vitae felis. Fusce auctor vitae nunc nec maximus. Praesent augue lacus, venenatis quis nisi eget, suscipit faucibus eros. Nullam maximus nibh non dictum tempus. Duis ac diam non ipsum ullamcorper fringilla eu ut felis. Sed massa justo, commodo et lacus at, fringilla dignissim tellus. Ut porttitor sem et lectus mattis commodo. Suspendisse iaculis dignissim mauris, in porta libero. Sed bibendum sapien nulla, sed sodales diam sagittis at. Curabitur id ipsum aliquet, cursus diam et, lacinia tortor. Nulla leo est, dapibus eget lacus ac, fringilla faucibus orci. Pellentesque nunc lectus, vehicula non arcu quis, ultrices viverra mi. Fusce ultricies sodales nisl, vitae hendrerit nunc suscipit ut. """, null)]
+        public virtual void UserCanUpdateOutlineActionsQuestion(string answer_Text, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Outline Actions question", exampleTags);
+#line 57
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 58
+ testRunner.Given("User navigates to the Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 59
+ testRunner.And(string.Format("User answers Outline Actions question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 61
+ testRunner.Then(string.Format("The outline actions question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

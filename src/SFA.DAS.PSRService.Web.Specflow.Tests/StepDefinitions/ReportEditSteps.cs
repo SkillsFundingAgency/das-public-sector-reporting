@@ -92,7 +92,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionFullTimeEquivalent.EditFullTimeEquivalents(numberOfFullTimeEquivalents.ToString());
         }
 
-        [Given(@"User answers Outline Actions question with '(.*)'")]
+        [Given(@"User answers Outline Actions question with ""(.*)""")]
         public void GivenUserAnswersOutlineActionsQuestionWith(string text)
         {
             pageFactory.QuestionOutlineActions.EditText(text);
@@ -374,5 +374,19 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                 .HasAnswer(atStart.ToString());
         }
 
+        [Then(@"The outline actions question value ""(.*)"" has been saved")]
+        public void ThenTheOutlineActionsQuestionValueHasBeenSaved(string expectedAnswer)
+        {
+            Given(@"User navigates to the Outline Actions question page");
+
+            pageFactory
+                .QuestionOutlineActions
+                .VerifyText(expectedAnswer);
+
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .OutlineActions
+                .HasAnswer(expectedAnswer);
+        }
     }
 }
