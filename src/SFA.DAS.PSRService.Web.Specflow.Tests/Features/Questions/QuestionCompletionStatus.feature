@@ -96,7 +96,7 @@ Scenario: Target Plans Complete
 	Then User is returned to report edit page
     And completion status for target plans is COMPLETE
 
-	Scenario: Anything Else Incomplete
+Scenario: Anything Else Incomplete
 	Given User navigates to the Anything Else question page
 	When User clicks Continue on Anything Else question page
 	Then User is returned to report edit page

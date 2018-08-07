@@ -237,49 +237,49 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"no completion status is shown for outline actions")]
         public void ThenNoCompletionStatusIsShownForOutlineActions()
         {
-            pageFactory.ReportEdit.VerifyComplete("OutlineActions");
+            pageFactory.ReportEdit.VerifyIncomplete("OutlineActions");
         }
 
         [Then(@"completion status for outline actions is COMPLETE")]
         public void ThenCompletionStatusForOutlineActionsIsCOMPLETE()
         {
-            pageFactory.ReportEdit.VerifyIncomplete("OutlineActions");
+            pageFactory.ReportEdit.VerifyComplete("OutlineActions");
         }
         
         [Then(@"no completion status is shown for challenges")]
         public void ThenNoCompletionStatusIsShownForChallenges()
         {
-            pageFactory.ReportEdit.VerifyComplete("Challenges");
+            pageFactory.ReportEdit.VerifyIncomplete("Challenges");
         }
 
         [Then(@"completion status for challenges is COMPLETE")]
         public void ThenCompletionStatusForChallengesIsCOMPLETE()
         {
-            pageFactory.ReportEdit.VerifyIncomplete("Challenges");
+            pageFactory.ReportEdit.VerifyComplete("Challenges");
         }
         
         [Then(@"no completion status is shown for target plans")]
         public void ThenNoCompletionStatusIsShownForTargetPlans()
         {
-            pageFactory.ReportEdit.VerifyComplete("TargetPlans");
+            pageFactory.ReportEdit.VerifyIncomplete("TargetPlans");
         }
 
         [Then(@"completion status for target plans is COMPLETE")]
         public void ThenCompletionStatusForTargetPlansIsCOMPLETE()
         {
-            pageFactory.ReportEdit.VerifyIncomplete("TargetPlans");
+            pageFactory.ReportEdit.VerifyComplete("TargetPlans");
         }
 
         [Then(@"no completion status is shown for anything else")]
         public void ThenNoCompletionStatusIsShownForAnythingElse()
         {
-            pageFactory.ReportEdit.VerifyComplete("AnythingElse");
+            pageFactory.ReportEdit.VerifyIncomplete("AnythingElse");
         }
 
         [Then(@"completion status for anything else is COMPLETE")]
         public void ThenCompletionStatusForAnythingElseIsCOMPLETE()
         {
-            pageFactory.ReportEdit.VerifyIncomplete("AnythingElse");
+            pageFactory.ReportEdit.VerifyComplete("AnythingElse");
         }
 
         [Then(@"the confirm submission page is displayed")]
