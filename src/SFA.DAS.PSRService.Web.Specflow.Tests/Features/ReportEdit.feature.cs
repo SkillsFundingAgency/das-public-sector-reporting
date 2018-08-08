@@ -146,17 +146,17 @@ this.FeatureBackground();
         public virtual void UserCanUpdateYourApprenticesQuestion(string atStart, string atEnd, string newThisPeriod, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update YourApprentices question", exampleTags);
-#line 32
+#line 33
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 33
- testRunner.Given("User navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.And(string.Format("the your apprentices question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Your apprentices question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("the your apprentices question values {0}, {1} and {2} have been edited", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
  testRunner.Then(string.Format("The Your Apprentices question values {0}, {1} and {2} have been saved", atStart, atEnd, newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -172,17 +172,17 @@ this.FeatureBackground();
         public virtual void UserCanUpdateFullTimeEquivalentsQuestion(string answer, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update FullTimeEquivalents question", exampleTags);
-#line 44
+#line 45
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 45
- testRunner.Given("User navigates to the Full time equivalent question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
- testRunner.And(string.Format("the full time equivalents question value {0} has been edited", answer), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Full time equivalent question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 47
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("the full time equivalents question value {0} has been edited", answer), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 49
  testRunner.Then(string.Format("The full time equivalents question value {0} has been saved", answer), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -196,17 +196,17 @@ this.FeatureBackground();
         public virtual void UserCanUpdateOutlineActionsQuestion(string answer_Text, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Outline Actions question", exampleTags);
-#line 57
+#line 58
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 58
- testRunner.Given("User navigates to the Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 59
- testRunner.And(string.Format("User answers Outline Actions question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Outline Actions question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 60
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("User answers Outline Actions question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 62
  testRunner.Then(string.Format("The outline actions question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -220,17 +220,17 @@ this.FeatureBackground();
         public virtual void UserCanUpdateChallengesQuestion(string answer_Text, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Challenges question", exampleTags);
-#line 68
+#line 69
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 69
- testRunner.Given("User navigates to the Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 70
- testRunner.And(string.Format("User answers Challenges question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Challenges question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 71
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("User answers Challenges question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 73
  testRunner.Then(string.Format("The Challenges question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -244,17 +244,17 @@ this.FeatureBackground();
         public virtual void UserCanUpdateTargetPlansQuestion(string answer_Text, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Target Plans question", exampleTags);
-#line 79
+#line 80
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 80
- testRunner.Given("User navigates to the Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 81
- testRunner.And(string.Format("User answers Target Plans question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Target Plans question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 82
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("User answers Target Plans question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 84
  testRunner.Then(string.Format("The Target Plans question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -268,17 +268,17 @@ this.FeatureBackground();
         public virtual void UserCanUpdateAnythingElseQuestion(string answer_Text, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Anything Else question", exampleTags);
-#line 90
+#line 91
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 91
- testRunner.Given("User navigates to the Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 92
- testRunner.And(string.Format("User answers Anything Else question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("User navigates to the Anything Else question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 93
- testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("User answers Anything Else question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
+ testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 95
  testRunner.Then(string.Format("The Anything Else question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

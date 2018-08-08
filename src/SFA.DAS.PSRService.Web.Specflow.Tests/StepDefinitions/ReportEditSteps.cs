@@ -322,14 +322,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The Your Apprentices question values (.*), (.*) and (.*) have been saved")]
         public void ThenTheYourApprenticesQuestionValuesAndHaveBeenSaved(int atStart, int atEnd, int newThisPeriod)
         {
-            pageFactory.ReportEdit.ClickQuestionLink("Number of apprentices who work in England");
-
-            var yourApprentices = pageFactory.QuestionYourApprentices;
-
-            yourApprentices.VerifyAtStartValue(atStart.ToString("N0"));
-            yourApprentices.VerifyAtEndValue(atEnd.ToString("N0"));
-            yourApprentices.VerifyNewThisPeriodValue(newThisPeriod.ToString("N0"));
-
             VerifyYourApprenticesAtStartHasBeenPersisted(atStart.ToString());
             VerifyYourApprenticesAtEndHasBeenPersisted(atEnd.ToString());
             VerifyYourApprenticesNewThisPeriodHasBeenPersisted(newThisPeriod.ToString());
@@ -386,12 +378,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The full time equivalents question value (.*) has been saved")]
         public void ThenTheFullTimeEquivalentsQuestionValueHasBeenSaved(int answer)
         {
-            pageFactory.ReportEdit.ClickQuestionLink("Number of full-time equivalents who work in England (optional)");
-
-            pageFactory
-                .QuestionFullTimeEquivalent
-                .VerifyAtStartValue(answer.ToString("N0"));
-
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .FullTimeEquivalents
@@ -401,12 +387,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The outline actions question value ""(.*)"" has been saved")]
         public void ThenTheOutlineActionsQuestionValueHasBeenSaved(string expectedAnswer)
         {
-            Given(@"User navigates to the Outline Actions question page");
-
-            pageFactory
-                .QuestionOutlineActions
-                .VerifyText(expectedAnswer);
-
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .OutlineActions
@@ -416,12 +396,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The Challenges question value ""(.*)"" has been saved")]
         public void ThenTheChallengesQuestionValueHasBeenSaved(string expectedAnswer)
         {
-            Given(@"User navigates to the Challenges question page");
-
-            pageFactory
-                .QuestionChallenges
-                .VerifyText(expectedAnswer);
-
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .Challenges
@@ -431,12 +405,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The Target Plans question value ""(.*)"" has been saved")]
         public void ThenTheTargetPlansQuestionValueHasBeenSaved(string expectedAnswer)
         {
-            Given(@"User navigates to the Target Plans question page");
-
-            pageFactory
-                .QuestionTargetPlans
-                .VerifyText(expectedAnswer);
-
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .TargetPlans
@@ -446,12 +414,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The Anything Else question value ""(.*)"" has been saved")]
         public void ThenTheAnythingElseQuestionValueHasBeenSaved(string expectedAnswer)
         {
-            Given(@"User navigates to the Anything Else question page");
-
-            pageFactory
-                .QuestionAnythingElse
-                .VerifyText(expectedAnswer);
-
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .AnythingElse
@@ -461,12 +423,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"The organisation question value ""(.*)"" has been saved")]
         public void ThenTheOrganisationQuestionValueHasBeenSaved(string expectedAnswer)
         {
-            Given(@"User navigates to the Organisation Name question page");
-
-            pageFactory
-                .ReportOrganisationName
-                .VerifyOrganisationNameHasValue();
-
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .OrganisationName
