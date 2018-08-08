@@ -7,11 +7,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 {
     public abstract class ReportFactorsVerifier
     {
-        private IEnumerable<JToken> reportNumbersQuestions;
+        private IEnumerable<JToken> reportFactorsQuestions;
 
         public ReportFactorsVerifier(string reportData)
         {
-            reportNumbersQuestions = JObject.Parse(reportData)["Questions"]
+            reportFactorsQuestions = JObject.Parse(reportData)["Questions"]
                 .SingleOrDefault(s => Extensions.Value<String>(s["Id"]) == "Factors")
                 ["SubSections"].SingleOrDefault(s => s["Id"].Value<String>() == SectionName)
                 ["Questions"]
@@ -23,7 +23,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 
         public QuestionVerifier SingleQuestionVerifier =>
             new QuestionVerifier(
-                reportNumbersQuestions
+                reportFactorsQuestions
                     .Single(q => q["Id"].Value<String>() == QuestionName));
     }
 }

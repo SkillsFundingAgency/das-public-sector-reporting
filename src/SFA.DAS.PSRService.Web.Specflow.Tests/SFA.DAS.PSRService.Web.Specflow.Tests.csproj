@@ -232,6 +232,7 @@
     <Compile Include="Repository\DataVerification\AnythingElseVerifier.cs" />
     <Compile Include="Repository\DataVerification\ChallengesVerifier.cs" />
     <Compile Include="Repository\DataVerification\FullTimeEquivalentsVerifier.cs" />
+    <Compile Include="Repository\DataVerification\OrganisationNameVerifier.cs" />
     <Compile Include="Repository\DataVerification\OutlineActionsVerifier.cs" />
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportFactorsVerifier.cs" />

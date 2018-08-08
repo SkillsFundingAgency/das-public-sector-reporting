@@ -457,5 +457,20 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
                 .AnythingElse
                 .HasAnswer(expectedAnswer);
         }
+
+        [Then(@"The organisation question value ""(.*)"" has been saved")]
+        public void ThenTheOrganisationQuestionValueHasBeenSaved(string expectedAnswer)
+        {
+            Given(@"User navigates to the Organisation Name question page");
+
+            pageFactory
+                .ReportOrganisationName
+                .VerifyOrganisationNameHasValue();
+
+            ReportVerifier
+                .VerifyReport(GetCurrentReport())
+                .OrganisationName
+                .HasAnswer(expectedAnswer);
+        }
     }
 }

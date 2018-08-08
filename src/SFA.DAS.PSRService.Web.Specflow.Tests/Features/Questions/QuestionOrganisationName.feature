@@ -23,8 +23,19 @@ Scenario: Organisation Name Incomplete
 		
 Scenario: Organisation Name Complete
 	Given a report has been created
-	And  User navigates to the Organisation Name question page
+	And User navigates to the Organisation Name question page
 	And User answers Organisation Name question with "some text"
 	When User clicks Continue on Organisation Name question page
 	Then User is returned to report edit page
     And completion status for organisation name is COMPLETE
+
+Scenario Outline: user can update Organisation Name question
+	Given a report has been created
+	And User navigates to the Organisation Name question page
+	And User answers Organisation Name question with <answer_text>
+	When User clicks Continue on Organisation Name question page
+	Then The organisation question value <answer_text> has been saved
+Examples: 
+| answer_text |
+| "one"       |
+| "two"       |

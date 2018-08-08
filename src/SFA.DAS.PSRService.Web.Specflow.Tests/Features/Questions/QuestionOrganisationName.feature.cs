@@ -144,6 +144,31 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("user can update Organisation Name question")]
+        [NUnit.Framework.TestCaseAttribute("\"one\"", null)]
+        [NUnit.Framework.TestCaseAttribute("\"two\"", null)]
+        public virtual void UserCanUpdateOrganisationNameQuestion(string answer_Text, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update Organisation Name question", exampleTags);
+#line 32
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 33
+ testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+ testRunner.And("User navigates to the Organisation Name question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And(string.Format("User answers Organisation Name question with {0}", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.When("User clicks Continue on Organisation Name question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then(string.Format("The organisation question value {0} has been saved", answer_Text), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

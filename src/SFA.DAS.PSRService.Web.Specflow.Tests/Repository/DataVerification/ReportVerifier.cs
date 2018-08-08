@@ -8,6 +8,7 @@
         {
             _report = report;
         }
+        public OrganisationNameVerifier OrganisationName => new OrganisationNameVerifier(_report.ReportingData);
 
         public YourEmployeesVerifier YourEmployees => new YourEmployeesVerifier(_report.ReportingData);
 
