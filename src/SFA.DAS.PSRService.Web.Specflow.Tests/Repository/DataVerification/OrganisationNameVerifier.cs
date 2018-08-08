@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 {
+    [ExcludeFromCodeCoverage]
     public class OrganisationNameVerifier
     {
         private readonly String _organisationName;

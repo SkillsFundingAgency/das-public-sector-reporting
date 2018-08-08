@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 {
+    [ExcludeFromCodeCoverage]
     public abstract class ReportNumbersVerifier
     {
-        private IEnumerable<JToken> yourEmployeesQuestions;
+        private readonly IEnumerable<JToken> _numbersQuestions;
 
-        public ReportNumbersVerifier(string reportData)
+        protected ReportNumbersVerifier(string reportData)
         {
-            yourEmployeesQuestions = JObject.Parse(reportData)["Questions"]
+            _numbersQuestions = JObject.Parse(reportData)["Questions"]
                 .SingleOrDefault(s => Extensions.Value<String>(s["Id"]) == "ReportNumbers")
                 ["SubSections"].SingleOrDefault(s => s["Id"].Value<String>() == SectionName)
                 ["Questions"]
@@ -22,17 +24,17 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 
         public QuestionVerifier AtStartQuestion =>
             new QuestionVerifier(
-                yourEmployeesQuestions
+                _numbersQuestions
                     .Single(q => q["Id"].Value<String>() == "atStart"));
 
         public QuestionVerifier AtEndQuestion =>
             new QuestionVerifier(
-                yourEmployeesQuestions
+                _numbersQuestions
                     .Single(q => q["Id"].Value<String>() == "atEnd"));
 
         public QuestionVerifier NewThisPeriodQuestion =>
             new QuestionVerifier(
-                yourEmployeesQuestions
+                _numbersQuestions
                     .Single(q => q["Id"].Value<String>() == "newThisPeriod"));
     }
 }

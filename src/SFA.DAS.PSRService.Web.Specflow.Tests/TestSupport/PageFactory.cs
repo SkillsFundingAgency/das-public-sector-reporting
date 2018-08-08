@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
+using SFA.DAS.PSRService.Web.Specflow.Tests.Pages.Questions;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
 {

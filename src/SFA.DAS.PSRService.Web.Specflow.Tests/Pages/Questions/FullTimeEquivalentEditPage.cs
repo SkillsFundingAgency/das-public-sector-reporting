@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
 
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages.Questions
 {
     public class FullTimeEquivalentEditPage : QuestionEditPage
     {

@@ -1,9 +1,8 @@
-﻿using System;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages.Questions
 {
     public abstract class QuestionEditPage : BasePage
     {

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 {
+    [ExcludeFromCodeCoverage]
     public abstract class ReportFactorsVerifier
     {
-        private IEnumerable<JToken> reportFactorsQuestions;
+        private readonly IEnumerable<JToken> _reportFactorsQuestions;
 
-        public ReportFactorsVerifier(string reportData)
+        protected ReportFactorsVerifier(string reportData)
         {
-            reportFactorsQuestions = JObject.Parse(reportData)["Questions"]
+            _reportFactorsQuestions = JObject.Parse(reportData)["Questions"]
                 .SingleOrDefault(s => Extensions.Value<String>(s["Id"]) == "Factors")
                 ["SubSections"].SingleOrDefault(s => s["Id"].Value<String>() == SectionName)
                 ["Questions"]
@@ -23,7 +25,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
 
         public QuestionVerifier SingleQuestionVerifier =>
             new QuestionVerifier(
-                reportFactorsQuestions
+                _reportFactorsQuestions
                     .Single(q => q["Id"].Value<String>() == QuestionName));
     }
 }

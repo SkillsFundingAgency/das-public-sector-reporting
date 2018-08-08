@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages.Questions
 {
     public class YourApprenticesEditPage : ReportNumbersEditPage
     {
