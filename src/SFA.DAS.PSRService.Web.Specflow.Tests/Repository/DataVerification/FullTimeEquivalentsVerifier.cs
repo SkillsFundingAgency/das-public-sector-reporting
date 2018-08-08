@@ -10,5 +10,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
         }
 
         protected override string SectionName => "FullTimeEquivalent";
+
+
+        public void HasAnswer(string expectedAnswer)
+        {
+            AtStartQuestion
+                .HasAnswer(expectedAnswer);
+        }
     }
 }

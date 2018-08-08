@@ -15,10 +15,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
             _question = question;
         }
 
-        public void HasAnswer(string expectedValue)
+        public void HasAnswer(string expectedAnswer)
         {
             Assert.AreEqual(
-                expectedValue,
+                expectedAnswer,
                 _question["Answer"].Value<String>());
         }
     }

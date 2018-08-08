@@ -43,11 +43,11 @@ Scenario Outline: user can update YourApprentices question
 
 Scenario Outline: user can update FullTimeEquivalents question
 	Given User navigates to the Full time equivalent question page
-	And the full time equivalents question value <atStart> has been edited
+	And the full time equivalents question value <answer> has been edited
 	When User clicks on the save question
-	Then The full time equivalents question value <atStart> has been saved
+	Then The full time equivalents question value <answer> has been saved
 	Examples: 
-	| atStart |
+	| answer |
 	| 100     |
 	| 1000    |
 	| 850     |

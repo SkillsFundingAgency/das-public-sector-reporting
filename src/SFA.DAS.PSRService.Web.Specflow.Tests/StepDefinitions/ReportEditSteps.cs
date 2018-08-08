@@ -384,19 +384,18 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         }
 
         [Then(@"The full time equivalents question value (.*) has been saved")]
-        public void ThenTheFullTimeEquivalentsQuestionValueHasBeenSaved(int atStart)
+        public void ThenTheFullTimeEquivalentsQuestionValueHasBeenSaved(int answer)
         {
             pageFactory.ReportEdit.ClickQuestionLink("Number of full-time equivalents who work in England (optional)");
 
             pageFactory
                 .QuestionFullTimeEquivalent
-                .VerifyAtStartValue(atStart.ToString("N0"));
+                .VerifyAtStartValue(answer.ToString("N0"));
 
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .FullTimeEquivalents
-                .AtStartQuestion
-                .HasAnswer(atStart.ToString());
+                .HasAnswer(answer.ToString());
         }
 
         [Then(@"The outline actions question value ""(.*)"" has been saved")]

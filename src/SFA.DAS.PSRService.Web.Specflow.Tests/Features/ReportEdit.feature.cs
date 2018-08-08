@@ -169,7 +169,7 @@ this.FeatureBackground();
         [NUnit.Framework.TestCaseAttribute("850", null)]
         [NUnit.Framework.TestCaseAttribute("850000", null)]
         [NUnit.Framework.TestCaseAttribute("1000000", null)]
-        public virtual void UserCanUpdateFullTimeEquivalentsQuestion(string atStart, string[] exampleTags)
+        public virtual void UserCanUpdateFullTimeEquivalentsQuestion(string answer, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("user can update FullTimeEquivalents question", exampleTags);
 #line 44
@@ -179,11 +179,11 @@ this.FeatureBackground();
 #line 45
  testRunner.Given("User navigates to the Full time equivalent question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
- testRunner.And(string.Format("the full time equivalents question value {0} has been edited", atStart), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the full time equivalents question value {0} has been edited", answer), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
  testRunner.When("User clicks on the save question", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
- testRunner.Then(string.Format("The full time equivalents question value {0} has been saved", atStart), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("The full time equivalents question value {0} has been saved", answer), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
