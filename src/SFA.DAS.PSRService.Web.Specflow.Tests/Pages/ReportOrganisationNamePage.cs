@@ -10,7 +10,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
     {
         private static String PAGE_TITLE = "Your organisation";
         
-        private readonly By _continueButton = By.CssSelector("button[type='submit']");
+        private readonly By _continueButton = By.CssSelector("input[type='submit'].button");
         private readonly By _organisationName = By.Id("Report_OrganisationName");
 
         public ReportOrganisationNamePage(IWebDriver webDriver) : base(webDriver)
@@ -35,6 +35,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         internal void ClickContinue()
         {
             FormCompletionHelper.ClickElement(_continueButton);
+        }
+
+        internal void EditOrganisationName(string value)
+        {
+            FormCompletionHelper.EnterText(_organisationName, value);
+
         }
     }
 }

@@ -13,7 +13,7 @@
             <a class="task-name" href="./Report/OrganisationName" aria-describedby="organisation-name-completed">Your organisation's name</a>
             @if (!string.IsNullOrWhiteSpace(Model.Report.OrganisationName))
             {
-                <span class="task-completed">COMPLETE</span>
+                <span id="OrganisationName-task-completed" class="task-completed">COMPLETE</span>
             }
         </li>
     </ul>

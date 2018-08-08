@@ -94,9 +94,57 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Organisation Name Incomplete")]
+        public virtual void OrganisationNameIncomplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organisation Name Incomplete", ((string[])(null)));
+#line 16
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 17
+ testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
+ testRunner.And("User navigates to the Organisation Name question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+ testRunner.And("User answers Organisation Name question with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.When("User clicks Continue on Organisation Name question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+    testRunner.And("no completion status is shown for organisation name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Organisation Name Complete")]
+        public virtual void OrganisationNameComplete()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Organisation Name Complete", ((string[])(null)));
+#line 24
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 25
+ testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 26
+ testRunner.And("User navigates to the Organisation Name question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+ testRunner.And("User answers Organisation Name question with \"some text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+ testRunner.When("User clicks Continue on Organisation Name question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+    testRunner.And("completion status for organisation name is COMPLETE", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
 #endregion
-
-

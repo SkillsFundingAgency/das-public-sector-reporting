@@ -116,6 +116,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionAnythingElse.EditText(text);
         }
 
+        [Given(@"User answers Organisation Name question with ""(.*)""")]
+        public void GivenUserAnswersOrganisationNameQuestionWith(string text)
+        {
+            pageFactory.ReportOrganisationName.EditOrganisationName(text);
+        }
+
         [When(@"User clicks on '(.*)' question link")]
         public void WhenUserClicksOnQuestionLink(string p0)
         {
@@ -190,6 +196,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void WhenUserClicksContinueOnAnythingElseQuestionPage()
         {
             pageFactory.QuestionAnythingElse.SaveQuestionAnswers();
+        }
+
+        [When(@"User clicks Continue on Organisation Name question page")]
+        public void WhenUserClicksContinueOnOrganisationNameQuestionPage()
+        {
+            pageFactory.ReportOrganisationName.ClickContinue();
         }
 
         [Then(@"User is returned to report edit page")]
@@ -280,6 +292,18 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void ThenCompletionStatusForAnythingElseIsCOMPLETE()
         {
             pageFactory.ReportEdit.VerifyComplete("AnythingElse");
+        }
+
+        [Then(@"no completion status is shown for organisation name")]
+        public void ThenNoCompletionStatusIsShownForOrganisationName()
+        {
+            pageFactory.ReportEdit.VerifyIncomplete("OrganisationName");
+        }
+
+        [Then(@"completion status for organisation name is COMPLETE")]
+        public void ThenCompletionStatusForOrganisationNameIsCOMPLETE()
+        {
+            pageFactory.ReportEdit.VerifyComplete("OrganisationName");
         }
 
         [Then(@"the confirm submission page is displayed")]

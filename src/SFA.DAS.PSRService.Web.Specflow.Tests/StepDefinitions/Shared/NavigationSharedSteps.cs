@@ -101,5 +101,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.QuestionAnythingElse.Navigate();
         }
+
+        [Given(@"User navigates to the Organisation Name question page")]
+        public void GivenUserNavigatesToTheOrganisationNameQuestionPage()
+        {
+            pageFactory.ReportOrganisationName.Navigate();
+        }
     }
 }
