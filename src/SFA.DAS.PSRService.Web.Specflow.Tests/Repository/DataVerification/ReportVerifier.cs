@@ -24,6 +24,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification
         public QuestionVerifier TargetPlans => new TargetPlansVerifier(_report.ReportingData).SingleQuestionVerifier;
         public QuestionVerifier AnythingElse => new AnythingElseVerifier(_report.ReportingData).SingleQuestionVerifier;
 
+        public ReportingPercentagesVerifier ReportingPercentages => new ReportingPercentagesVerifier(_report.ReportingData);
+
         internal static ReportVerifier VerifyReport(ReportDto report)
         {
             return new ReportVerifier(report);

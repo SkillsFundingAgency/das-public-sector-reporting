@@ -111,9 +111,15 @@ testRunner.When("User navigates to Review summary page", ((string)(null)), ((Tec
 #line 22
 testRunner.Then(string.Format("Reporting percentages employment starts is {0}", employmentStarts), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
-testRunner.And(string.Format("Reporting percentages total head count is {0}", totalHeadCount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And(string.Format("{0} is saved as reporting percentages employment starts", employmentStarts), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
+testRunner.And(string.Format("Reporting percentages total head count is {0}", totalHeadCount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+testRunner.And(string.Format("{0} is saved as reporting percentages total head count", totalHeadCount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
 testRunner.And(string.Format("Reporting percentages new this period is {0}", newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+testRunner.And(string.Format("{0} is saved as reporting percentages new this period", newThisPeriod), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -121,5 +127,3 @@ testRunner.And(string.Format("Reporting percentages new this period is {0}", new
 }
 #pragma warning restore
 #endregion
-
-

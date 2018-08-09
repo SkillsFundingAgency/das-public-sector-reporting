@@ -234,8 +234,10 @@
     <Compile Include="Repository\DataVerification\FullTimeEquivalentsVerifier.cs" />
     <Compile Include="Repository\DataVerification\OrganisationNameVerifier.cs" />
     <Compile Include="Repository\DataVerification\OutlineActionsVerifier.cs" />
+    <Compile Include="Repository\DataVerification\PropertyVerifier.cs" />
     <Compile Include="Repository\DataVerification\QuestionVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportFactorsVerifier.cs" />
+    <Compile Include="Repository\DataVerification\ReportingPercentagesVerifier.cs" />
     <Compile Include="Repository\DataVerification\ReportNumbersVerifier.cs" />
     <Compile Include="Repository\DataVerification\TargetPlansVerifier.cs" />
     <Compile Include="Repository\DataVerification\YourApprenticesVerifier.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="StepDefinitions\EditUserAccessLevel_MPD_1131Steps.cs" />
     <Compile Include="StepDefinitions\HomepageSteps.cs" />
     <Compile Include="StepDefinitions\QuestionOrganisationNameSteps.cs" />
+    <Compile Include="StepDefinitions\ReportCalculationsSteps.cs" />
     <Compile Include="StepDefinitions\ReportSubmitConfirmationScreenSteps.cs" />
     <Compile Include="StepDefinitions\ReportSummaryScreenSteps.cs" />
     <Compile Include="StepDefinitions\ReportEditSteps.cs" />
