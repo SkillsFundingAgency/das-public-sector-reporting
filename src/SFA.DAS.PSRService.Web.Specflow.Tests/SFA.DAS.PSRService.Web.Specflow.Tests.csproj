@@ -247,6 +247,7 @@
     <Compile Include="StepArgumentTransformations\StepArgumentTransformations.cs" />
     <Compile Include="StepDefinitions\EditUserAccessLevel_MPD_1131Steps.cs" />
     <Compile Include="StepDefinitions\HomepageSteps.cs" />
+    <Compile Include="StepDefinitions\QuestionOrganisationNameSteps.cs" />
     <Compile Include="StepDefinitions\ReportSubmitConfirmationScreenSteps.cs" />
     <Compile Include="StepDefinitions\ReportSummaryScreenSteps.cs" />
     <Compile Include="StepDefinitions\ReportEditSteps.cs" />

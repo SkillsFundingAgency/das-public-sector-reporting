@@ -117,12 +117,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionAnythingElse.EditText(text);
         }
 
-        [Given(@"User answers Organisation Name question with ""(.*)""")]
-        public void GivenUserAnswersOrganisationNameQuestionWith(string text)
-        {
-            pageFactory.ReportOrganisationName.EditOrganisationName(text);
-        }
-
         [When(@"User clicks on '(.*)' question link")]
         public void WhenUserClicksOnQuestionLink(string p0)
         {
@@ -197,12 +191,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         public void WhenUserClicksContinueOnAnythingElseQuestionPage()
         {
             pageFactory.QuestionAnythingElse.SaveQuestionAnswers();
-        }
-
-        [When(@"User clicks Continue on Organisation Name question page")]
-        public void WhenUserClicksContinueOnOrganisationNameQuestionPage()
-        {
-            pageFactory.ReportOrganisationName.ClickContinue();
         }
 
         [Then(@"User is returned to report edit page")]
@@ -417,15 +405,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             ReportVerifier
                 .VerifyReport(GetCurrentReport())
                 .AnythingElse
-                .HasAnswer(expectedAnswer);
-        }
-
-        [Then(@"The organisation question value ""(.*)"" has been saved")]
-        public void ThenTheOrganisationQuestionValueHasBeenSaved(string expectedAnswer)
-        {
-            ReportVerifier
-                .VerifyReport(GetCurrentReport())
-                .OrganisationName
                 .HasAnswer(expectedAnswer);
         }
     }
