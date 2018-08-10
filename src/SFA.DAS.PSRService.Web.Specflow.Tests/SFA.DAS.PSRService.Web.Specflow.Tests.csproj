@@ -223,6 +223,7 @@
     <Compile Include="Pages\ReportAlreadySubmittedPage.cs" />
     <Compile Include="Pages\ReportSubmitConfirmationPage.cs" />
     <Compile Include="Pages\ReportOrganisationNamePage.cs" />
+    <Compile Include="Pages\ReportHistoryPage.cs" />
     <Compile Include="Pages\ViewOnlyReportSummaryPage.cs" />
     <Compile Include="Pages\ReportSummaryPage.cs" />
     <Compile Include="Pages\ReportCreatePage.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="StepDefinitions\HomepageSteps.cs" />
     <Compile Include="StepDefinitions\QuestionOrganisationNameSteps.cs" />
     <Compile Include="StepDefinitions\ReportCalculationsSteps.cs" />
+    <Compile Include="StepDefinitions\ReportHistorySteps.cs" />
     <Compile Include="StepDefinitions\ReportSubmitConfirmationScreenSteps.cs" />
     <Compile Include="StepDefinitions\ReportSummaryScreenSteps.cs" />
     <Compile Include="StepDefinitions\ReportEditSteps.cs" />

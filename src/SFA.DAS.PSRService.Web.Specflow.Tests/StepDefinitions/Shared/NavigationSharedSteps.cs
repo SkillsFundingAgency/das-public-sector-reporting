@@ -54,6 +54,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportConfirmation.Navigate();
         }
 
+        [Given(@"User navigates to the report history page")]
+        public void GivenUserNavigatesToTheReportHistoryPage()
+        {
+            pageFactory.ReportHistory.Navigate();
+        }
+
         [Given(@"user navigates to previously submitted reports page")]
         public void GivenUserNavigatesToPreviouslySubmittedReportsPage()
         {

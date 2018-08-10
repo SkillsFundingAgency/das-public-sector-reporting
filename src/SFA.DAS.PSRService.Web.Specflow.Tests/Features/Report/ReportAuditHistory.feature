@@ -13,7 +13,7 @@ Scenario: Single user delay between report creation and first edit creates audit
 Given The current report was created '5' minutes in the past 
 And User navigates to the report edit page
 And User sets number of employees at period start to '50'
-When User navigates to History page
+When User navigates to the report history page
 Then User see two entries in the history view 
 And the earlier report has the number of employees at period start as blank 
 And the later report has the number of employees at period start as '50' 
@@ -21,16 +21,15 @@ And the later report has the number of employees at period start as '50'
 Scenario: Audit CRUD
 Given A Current report exists
 #Probably can't use the user name - will be SenderX
-And Audit records exist with times 'x', 'y'. 'z' by user 'mikey'
-When User navigates to History page
-Then The history records exist for 'x', 'y'. 'z' by user 'mikey'
+And Audit records exist with times 'x', 'y'. 'z'
+When User navigates to the report history page
+Then The history records exist for 'x', 'y'. 'z'
 
 Scenario: User can go back to report edit page
 Given A Current report exists
-And User navigates to History page
-When User clicks the history page back link
-Then the Report edit page should be displayed
-
+And User navigates to the report history page
+When User clicks the report history page back link
+Then User is returned to report edit page
 
 
 #Scenarios below here cannot be implemented without mocking the date time behaviour

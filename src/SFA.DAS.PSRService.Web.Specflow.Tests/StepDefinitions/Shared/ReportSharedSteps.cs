@@ -109,6 +109,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             Assert.True(currentReportDto.Submitted);
         }
 
+        [Then(@"User is returned to report edit page")]
+        public void ThenUserIsReturnedToReportEditPage()
+        {
+            pageFactory.ReportEdit.Verify();
+        }
+
         [Then(@"the Report Summary page should be displayed")]
         public void ThenTheReportSummaryPageIsDisplayed()
         {
