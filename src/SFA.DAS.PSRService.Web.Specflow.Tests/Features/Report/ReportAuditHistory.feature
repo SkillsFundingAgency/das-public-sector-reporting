@@ -6,6 +6,34 @@
 Background: 
 	Given Edit access is granted
 	Given no current report exists
+#And no current audit data exists
+#TODO: Or always delete audit history in the existing "no current report"
+
+Scenario: Single user delay between report creation and first edit creates audit entries
+Given The current report was created '5' minutes in the past 
+And User navigates to the report edit page
+And User sets number of employees at period start to '50'
+When User navigates to History page
+Then User see two entries in the history view 
+And the earlier report has the number of employees at period start as blank 
+And the later report has the number of employees at period start as '50' 
+
+Scenario: Audit CRUD
+Given A Current report exists
+#Probably can't use the user name - will be SenderX
+And Audit records exist with times 'x', 'y'. 'z' by user 'mikey'
+When User navigates to History page
+Then The history records exist for 'x', 'y'. 'z' by user 'mikey'
+
+Scenario: User can go back to report edit page
+Given A Current report exists
+And User navigates to History page
+When User clicks the history page back link
+Then the Report edit page should be displayed
+
+
+
+#Scenarios below here cannot be implemented without mocking the date time behaviour
 
 Scenario: Single user delay between report creation and first edit
 Given I create a report at time 14:00
