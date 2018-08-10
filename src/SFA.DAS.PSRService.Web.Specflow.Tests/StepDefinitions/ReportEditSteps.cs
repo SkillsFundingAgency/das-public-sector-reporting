@@ -192,12 +192,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.QuestionAnythingElse.SaveQuestionAnswers();
         }
 
-        [Then(@"User is returned to report edit page")]
-        public void ThenUserIsReturnedToReportEditPage()
-        {
-            pageFactory.ReportEdit.Verify();
-        }
-
         [Then(@"completion status for your employees is COMPLETE")]
         public void ThenCompletionStatusForYourEmployeesIsCOMPLETE()
         {
