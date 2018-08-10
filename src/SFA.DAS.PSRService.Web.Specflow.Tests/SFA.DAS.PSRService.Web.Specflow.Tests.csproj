@@ -259,7 +259,6 @@
     <Compile Include="Pages\EmployerIdamsLoginPage.cs" />
     <Compile Include="Pages\PsrsHomepage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecflowIocRegister.cs" />
     <Compile Include="StepDefinitions\Shared\NavigationSharedSteps.cs" />
     <Compile Include="StepDefinitions\Shared\ReportSharedSteps.cs" />
     <Compile Include="StepDefinitions\Shared\HomepageSharedSteps.cs" />
