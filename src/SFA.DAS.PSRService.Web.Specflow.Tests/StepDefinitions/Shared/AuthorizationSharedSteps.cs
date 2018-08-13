@@ -1,7 +1,7 @@
 ﻿using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 {
     [Binding]
     public sealed class AuthorizationSharedSteps : BaseTest

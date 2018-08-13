@@ -31,22 +31,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportAlreadySubmitted.Verify();
         }
 
-        [Given(@"User navigates to not yet created page")]
-        public void GivenUserNavigatesToNotYetCreatedPage()
-        {
-            pageFactory.ReportSummary.Navigate();
-        }
-
         [When(@"User clicks the not yet created page back link")]
         public void WhenUserClicksTheNotYetCreatedPageBackLink()
         {
             pageFactory.ReportSummary.ClickBackButtonLink();
-        }
-
-        [Given(@"User navigates to report already submitted page")]
-        public void GivenUserNavigatesToReportAlreadySubmittedPage()
-        {
-            pageFactory.ReportAlreadySubmitted.Navigate();
         }
 
         [When(@"User clicks the report already submitted page back link")]

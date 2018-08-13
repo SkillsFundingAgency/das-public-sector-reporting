@@ -19,12 +19,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportCreate.ClickStartButton();
         }
         
-        [When(@"User navigates to the Edit report page")]
-        public void WhenUserNavigatesToTheEditReportPage()
-        {
-            pageFactory.ReportEdit.Navigate();
-        }
-        
         [Then(@"the create report page is displayed")]
         public void ThenTheCreateReportPageIsDisplayed()
         {

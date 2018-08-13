@@ -1,7 +1,7 @@
 ﻿using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 {
     [Binding]
     public class NavigationSharedSteps : BaseTest
@@ -35,7 +35,25 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         {
             pageFactory.ReportEdit.Navigate();
         }
+        
+        [When(@"User navigates to the Edit report page")]
+        public void WhenUserNavigatesToTheEditReportPage()
+        {
+            pageFactory.ReportEdit.Navigate();
+        }
 
+        [Given(@"User navigates to not yet created page")]
+        public void GivenUserNavigatesToNotYetCreatedPage()
+        {
+            pageFactory.ReportSummary.Navigate();
+        }
+
+        [Given(@"User navigates to report already submitted page")]
+        public void GivenUserNavigatesToReportAlreadySubmittedPage()
+        {
+            pageFactory.ReportAlreadySubmitted.Navigate();
+        }
+        
         [Given(@"User navigates to Review summary page")]
         public void GivenUserNavigatesToReviewSummaryPage()
         {

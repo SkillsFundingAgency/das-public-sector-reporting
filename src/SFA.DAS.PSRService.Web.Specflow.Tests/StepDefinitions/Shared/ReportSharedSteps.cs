@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using SFA.DAS.PSRService.Web.Specflow.Tests.consts;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Repository;
 using SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
-
-namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
+namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 {
     [Binding]
     public class ReportSharedSteps : BaseTest
