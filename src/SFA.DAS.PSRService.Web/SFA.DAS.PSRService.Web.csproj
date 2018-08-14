@@ -30,7 +30,7 @@
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
     <PackageReference Include="IdentityModel" Version="3.3.1" />
     <PackageReference Include="MediatR" Version="4.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNEtCore.Authentication.WsFederation" Version="2.1.1" />
@@ -45,7 +45,7 @@
     <PackageReference Include="SFA.DAS.Configuration.FileStorage" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-    <PackageReference Include="SFA.DAS.NServiceBus.Mvc" Version="1.0.0" />
+    <PackageReference Include="SFA.DAS.NServiceBus.Mvc" Version="2.0.1" />
     <PackageReference Include="StructureMap" Version="4.6.1" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.4" />
@@ -67,15 +67,6 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="SFA.DAS.NServiceBus">
-      <HintPath>..\..\..\..\Documents\Source\das-shared-packages\SFA.DAS.NServiceBus\SFA.DAS.NServiceBus.Mvc\bin\Debug\netstandard20\SFA.DAS.NServiceBus.dll</HintPath>
-    </Reference>
-    <Reference Include="SFA.DAS.NServiceBus.Mvc">
-      <HintPath>..\..\..\..\Documents\Source\das-shared-packages\SFA.DAS.NServiceBus\SFA.DAS.NServiceBus.Mvc\bin\Debug\netstandard20\SFA.DAS.NServiceBus.Mvc.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <Target Name="ChangeAliasesOfStrongNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">

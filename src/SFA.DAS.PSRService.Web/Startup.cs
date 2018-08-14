@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Net;
 using AutoMapper;
@@ -9,8 +11,12 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using NServiceBus;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.EAS.Web.ViewModels;
+using SFA.DAS.NServiceBus;
+using SFA.DAS.NServiceBus.AzureServiceBus;
+using SFA.DAS.NServiceBus.MsSqlServer;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
@@ -19,6 +25,10 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
+using SFA.DAS.NServiceBus.Mvc;
+using SFA.DAS.NServiceBus.NewtonsoftSerializer;
+using SFA.DAS.NServiceBus.NLog;
+using SFA.DAS.NServiceBus.StructureMap;
 using ConfigurationService = SFA.DAS.PSRService.Web.Services.ConfigurationService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -29,12 +39,14 @@ namespace SFA.DAS.PSRService.Web
         private const string ServiceName = "SFA.DAS.PSRService";
         private const string Version = "1.0";
         private IHostingEnvironment _hostingEnvironment;
+        private EndpointConfiguration nservicebusEndpointConfig;
+
 
         public Startup(IConfiguration config, IHostingEnvironment env)
         {
             Configuration = ConfigurationService.GetConfig(config["EnvironmentName"], config["ConfigurationStorageConnectionString"], Version, ServiceName).Result;
-            
-   
+
+
             var constants = new Constants(Configuration.Identity);
             UserLinksViewModel.ChangePasswordLink = $"{constants.ChangePasswordLink()}{WebUtility.UrlEncode(Configuration.ApplicationUrl + "/service/changePassword")}";
             UserLinksViewModel.ChangeEmailLink = $"{constants.ChangeEmailLink()}{WebUtility.UrlEncode(Configuration.ApplicationUrl + "/service/changeEmail")}";
@@ -50,26 +62,46 @@ namespace SFA.DAS.PSRService.Web
         {
             services.AddTransient<IEmployerAccountService, EmployerAccountService>();
             services.AddTransient<IAccountApiClient, AccountApiClient>();
-            services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
             services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
+            services.AddScoped<DbConnection>(provider => new SqlConnection(Configuration.SqlConnectionString));
 
             var sp = services.BuildServiceProvider();
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
-            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount)) ).AddControllersAsServices().AddSessionStateTempDataProvider();
-            //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
+            // services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
+            services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
             
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
 
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
-            
-            return ConfigureIOC(services);
+
+
+            var container = ConfigureIOC(services);
+
+            var endpointConfiguration = new EndpointConfiguration(Configuration.NServiceBus.Endpoint)
+                .SetupAzureServiceBusTransport(true,() => Configuration.NServiceBus.ServiceBusConnectionString, r => { })
+                
+                .SetupLicense(Configuration.NServiceBus.LicenceText)
+                .SetupInstallers()
+                .SetupMsSqlServerPersistence(() => sp.GetService<DbConnection>())
+                .SetupStructureMapBuilder(container)
+                .SetupNewtonsoftSerializer()
+                .SetupNLogFactory()
+                .SetupOutbox()
+                .SetupUnitOfWork();
+
+            services.AddNServiceBus(endpointConfiguration);
+
+            container.Populate(services);
+
+            return container.GetInstance<IServiceProvider>();
         }
 
-        private IServiceProvider ConfigureIOC(IServiceCollection services)
+
+        private IContainer ConfigureIOC(IServiceCollection services)
         {
             var container = new Container();
 
@@ -92,8 +124,6 @@ namespace SFA.DAS.PSRService.Web
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
 
-                config.Populate(services);
-
 
                 config.Scan(scanner =>
                 {
@@ -107,11 +137,15 @@ namespace SFA.DAS.PSRService.Web
                 config.For<IMediator>().Use<Mediator>();
             });
 
-            return container.GetInstance<IServiceProvider>();
+            return container;
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IApplicationLifetime applicationLifetime, IHostingEnvironment env,IServiceProvider serviceProvider)
         {
+            var endpoint = serviceProvider.GetService<IEndpointInstance>();
+            void ShutdownEndpoint() => endpoint?.Stop().GetAwaiter().GetResult();
+            applicationLifetime.ApplicationStopping.Register(ShutdownEndpoint);
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -122,10 +156,13 @@ namespace SFA.DAS.PSRService.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+
+
             app.UseStaticFiles()
                 .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()
+                .UseNserviceBusUnitOfWork()
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
@@ -133,11 +170,12 @@ namespace SFA.DAS.PSRService.Web
                         template: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
                     routes.MapRoute(
                         name: "Service-Controller",
-                        template: "Service/{action}", 
-                    defaults: new {controller = "Service"});
+                        template: "Service/{action}",
+                    defaults: new { controller = "Service" });
 
                 });
         }
+
 
         public class Constants
         {
@@ -147,10 +185,10 @@ namespace SFA.DAS.PSRService.Web
             {
                 _configuration = configuration;
             }
-            
+
             public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
             public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
-            
+
         }
     }
 }
