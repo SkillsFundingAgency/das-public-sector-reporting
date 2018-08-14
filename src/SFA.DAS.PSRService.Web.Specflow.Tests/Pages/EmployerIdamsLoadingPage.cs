@@ -20,28 +20,5 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
-
-        internal void SelectPreviouslySubmittedReports()
-        {
-            FormCompletionHelper.SelectRadioOptionById("home-action-list");
-        }
-
-        private readonly By _emailAddress = By.Name("EmailAddress");
-        private readonly By _password = By.Name("Password");
-        private readonly By _signInButton = By.Id("button-signin");
-
-        internal PsrsHomepage LoginAsSuperUser(string emailAddress, string password)
-        {
-            FormCompletionHelper.EnterText(_emailAddress, emailAddress);
-            FormCompletionHelper.EnterText(_password, password);
-
-            FormCompletionHelper.ClickElement(_signInButton);
-
-
-
-            return new PsrsHomepage(WebDriver);
-        }
-
-       
     }
 }
