@@ -138,6 +138,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
             pageFactory.ReportSummary.Verify();
         }
 
+        [Then(@"the Report Summary page with submitted report details should be displayed")]
+        public void ThenTheReportSummaryPageWithSubmittedReportDetailsIsDisplayed()
+        {
+            pageFactory.SubmittedReportSummary.Verify();
+        }
+
         [Then(@"the submit report confirmation page should be displayed")]
         public void ThenTheSubmitReportConfirmationPageIsDisplayed()
         {

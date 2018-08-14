@@ -25,6 +25,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.PreviouslySubmittedReports.ClickBackButtonLink();
         }
 
+        [When(@"user clicks on View link for report (.*)")]
+        public void WhenUserClicksOnViewLinkForReport(int reportNumber)
+        {
+            pageFactory.PreviouslySubmittedReports.ClickViewReportLink(reportNumber - 1);
+        }
+
         [Then(@"User should be taken to the Submitted Reports page")]
         public void ThenUserShouldBeTakenToTheSubmittedReportsPage()
         {

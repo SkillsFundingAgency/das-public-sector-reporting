@@ -29,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         {
             return PageInteractionHelper.VerifyPageHeading(this.GetPageHeading(), PAGE_TITLE);
         }
-
+        
         public bool DoesContinueButtonExist => PageInteractionHelper.IsElementPresent(_continueButton);
 
         public bool IsOrganisationNameDisplayed => PageInteractionHelper.IsElementPresent(_organisationName);

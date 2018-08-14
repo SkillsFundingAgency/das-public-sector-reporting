@@ -224,6 +224,7 @@
     <Compile Include="Pages\ReportSubmitConfirmationPage.cs" />
     <Compile Include="Pages\ReportOrganisationNamePage.cs" />
     <Compile Include="Pages\ReportHistoryPage.cs" />
+    <Compile Include="Pages\SubmittedReportSummaryPage.cs" />
     <Compile Include="Pages\ViewOnlyReportSummaryPage.cs" />
     <Compile Include="Pages\ReportSummaryPage.cs" />
     <Compile Include="Pages\ReportCreatePage.cs" />

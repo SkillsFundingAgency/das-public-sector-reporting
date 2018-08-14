@@ -81,15 +81,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 7
-  testRunner.Given("User navigates to Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("User navigates to Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-  testRunner.And("User selects Homepage View a previously submitted report Radio button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("User selects Homepage View a previously submitted report Radio button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
-  testRunner.When("User clicks on homepage Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("User clicks on homepage Continue button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
-  testRunner.Then("User should be taken to the Submitted Reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("User should be taken to the Submitted Reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11
-  testRunner.And("back link is shown as \'Back\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("back link is shown as \'Back\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -126,7 +126,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 20
-  testRunner.Given("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
  testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
@@ -143,11 +143,11 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User on previously submitted reports page can click back button", ((string[])(null)));
 #line 25
- this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line 26
- testRunner.Given("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 27
  testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
@@ -159,9 +159,30 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("User Views previously submitted reports detail when one report submitted")]
+        public virtual void UserViewsPreviouslySubmittedReportsDetailWhenOneReportSubmitted()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User Views previously submitted reports detail when one report submitted", ((string[])(null)));
+#line 32
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line 33
+ testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And("user navigates to previously submitted reports page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.When("user clicks on View link for report 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then("the Report Summary page with submitted report details should be displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
 #endregion
-
-
