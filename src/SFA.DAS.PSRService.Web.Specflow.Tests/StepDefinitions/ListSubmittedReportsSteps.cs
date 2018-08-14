@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Pages;
 using SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport;
 using TechTalk.SpecFlow;
 
@@ -7,18 +6,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
 {
     public class ListSubmittedReportsSteps : BaseTest
     {
-        //[Given(@"User navigates to Homepage")]
-        //public void GivenUserNavigatesToHomepage()
-        //{
-        //ScenarioContext.Current.Pending();
-        // }
-
-        //[When(@"Selects Homepage '(.*)' Radio button")]
-        //public void WhenSelectsHomepageRadioButton(string p0)
-        // {
-        //ScenarioContext.Current.Pending();
-        //}
-
         [When(@"user clicks the List Submitted Reports back button")]
         public void WhenUserClicksTheListSubmittedReportsBackButton()
         { 

@@ -265,7 +265,7 @@
     <Compile Include="StepDefinitions\Shared\NavigationSharedSteps.cs" />
     <Compile Include="StepDefinitions\Shared\ReportSharedSteps.cs" />
     <Compile Include="StepDefinitions\Shared\HomepageSharedSteps.cs" />
-    <Compile Include="StepDefinitions\ListSubmittedReports\ListSubmittedReportsSteps.cs" />
+    <Compile Include="StepDefinitions\ListSubmittedReportsSteps.cs" />
     <Compile Include="StepDefinitions\ReportConfirmationScreenSteps.cs" />
     <Compile Include="StepDefinitions\ViewUserAccessLevelSteps.cs" />
     <Compile Include="StepDefinitions\SuperUserAccessLevelSteps.cs" />
