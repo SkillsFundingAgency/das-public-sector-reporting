@@ -43,24 +43,16 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
                 capability.SetCapability(key, settings[key]);
             }
 
-            String username = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
-            if (username == null)
-            {
-                username = ConfigurationManager.AppSettings.Get("BrowserStack.User");
-            }
+            var username = AzureConfig.Getconfig().BrowserStackUser;
 
-            String accesskey = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY");
-            if (accesskey == null)
-            {
-                accesskey = ConfigurationManager.AppSettings.Get("BrowserStack.Key");
-            }
+            var accesskey = AzureConfig.Getconfig().BrowserStackKey;
 
             capability.SetCapability("browserstack.user", username);
             capability.SetCapability("browserstack.key", accesskey);
             capability.SetCapability("project", "das-psrs");
             capability.SetCapability("build", "build x.x");
 
-            File.AppendAllText("C:\\Users\\Matt\\Desktop\\sf.log", "Starting local");
+            //File.AppendAllText("C:\\Users\\Matt\\Desktop\\sf.log", "Starting local");
 
             if (capability.GetCapability("browserstack.local") != null && capability.GetCapability("browserstack.local").ToString() == "true")
             {
@@ -71,7 +63,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
                 browserStackLocal.start(bsLocalArgs);
             }
 
-            File.AppendAllText("C:\\Users\\Matt\\Desktop\\sf.log", "Starting driver");
+            //File.AppendAllText("C:\\Users\\Matt\\Desktop\\sf.log", "Starting driver");
             driver = new RemoteWebDriver(new Uri("http://" + ConfigurationManager.AppSettings.Get("BrowserStack.Server") + "/wd/hub/"), capability);
             return driver;
         }
