@@ -6,66 +6,95 @@
 Background: 
 	Given Edit access is granted
 	Given no current report exists
-#And no current audit data exists
-#TODO: Or always delete audit history in the existing "no current report"
+
+Scenario: Single user short delay between report creation and first edit creates no audit entries
+Given a report has been created
+And The current report user has been set
+And The current report was created '2' minutes in the past 
+And User navigates to the Your employees question page
+And User answers the Your Employees new at start question with 50
+When User clicks Continue on Your Employees question page
+And User navigates to the report history page
+Then User sees '0' summary entries in the history view 
 
 Scenario: Single user delay between report creation and first edit creates audit entries
-Given The current report was created '5' minutes in the past 
-And User navigates to the report edit page
-And User sets number of employees at period start to '50'
+Given a report has been created
+And The current report user has been set
+And The current report was created '5' minutes in the past 
+And User navigates to the Your employees question page
+And User answers the Your Employees new at start question with 50
+When User clicks Continue on Your Employees question page
+And User navigates to the report history page
+Then User sees '1' summary entries in the history view 
+And report number 1 has the number of employees at period start as ''
+
+Scenario: Single user delay between first and second edits creates audit entries
+Given a report has been created
+And The current report user has been set
+And The current report was created '10' minutes in the past 
+#combine ^
+And User navigates to the Your employees question page
+And User answers the Your Employees new at start question with 50
+And User clicks Continue on Your Employees question page
+And The current report was created '5' minutes in the past
+#
+And User navigates to the Your employees question page
+And User answers the Your Employees new at start question with 100
+When User clicks Continue on Your Employees question page
+#set 100 now
+And User navigates to the report history page
+Then User sees '2' summary entries in the history view 
+And report number 1 has the number of employees at period start as '50'
+And report number 2 has the number of employees at period start as ''
+
+Scenario: User can go back to report edit page
+Given a report has been created
 When User navigates to the report history page
-Then User see two entries in the history view 
-And the earlier report has the number of employees at period start as blank 
-And the later report has the number of employees at period start as '50' 
+And User clicks the report history page back link
+Then User is returned to report edit page
 
 Scenario: Audit CRUD
-Given A Current report exists
+Given a report has been created
+And The current report user has been set
 #Probably can't use the user name - will be SenderX
 And Audit records exist with times 'x', 'y'. 'z'
 When User navigates to the report history page
 Then The history records exist for 'x', 'y'. 'z'
 
-Scenario: User can go back to report edit page
-Given A Current report exists
-And User navigates to the report history page
-When User clicks the report history page back link
-Then User is returned to report edit page
-
-
 #Scenarios below here cannot be implemented without mocking the date time behaviour
 
-Scenario: Single user delay between report creation and first edit
-Given I create a report at time 14:00
-And I set number of employees at period start to '50' at time 14:06
-When I navigate to the history view
-Then I will see one entry in the history view at time 14:00
-And the 14:00 report has  the number of employees at period start as blank 
-
-Scenario: Single user multiple delayed edits
-Given I create a report at time 12:52
-And I set number of employees at period start to '50' at time 12:58
-And I set the number of employees at period end to '25' at time 13:06
-When I navigate to the history view
-Then there are two entries
-And One history entry has time 12:52
-And One history entry has time 12:58
-And the 12:52 entry has blank number of employees at period start
-And the 12:52 has blank number of employees at period end
-And 12:58 has '50' employees at period start
-And 12:58 has blank number of employees at period end. 
-
-Scenario: Single user multiple edits with audit window
-Given I create a report at time 12:52
-And I set number of employees at period start to '50' at time 12:53
-And I set the number of employees at period end to '25' at time 12:54
-When I navigate to the history view
-Then there are  no entries
-
-Scenario: Multiple user edits within audit window
-Given Bob create a report at time 11:31
-And Bob sets number of employees at period start to '50' at time 11:32
-And Alice sets number of employees at period end to '25' at time 11:33
-When Bob navigates to history view
-Then Bob will see one entry with his name at time 11:32
+#Scenario: Single user delay between report creation and first edit
+#Given I create a report at time 14:00
+#And I set number of employees at period start to '50' at time 14:06
+#When User navigates to the report history page
+#Then I will see one entry in the history view at time 14:00
+#And the 14:00 report has  the number of employees at period start as blank 
+#
+#Scenario: Single user multiple delayed edits
+#Given I create a report at time 12:52
+#And I set number of employees at period start to '50' at time 12:58
+#And I set the number of employees at period end to '25' at time 13:06
+#When User navigates to the report history page
+#Then there are two entries
+#And One history entry has time 12:52
+#And One history entry has time 12:58
+#And the 12:52 entry has blank number of employees at period start
+#And the 12:52 has blank number of employees at period end
+#And 12:58 has '50' employees at period start
+#And 12:58 has blank number of employees at period end. 
+#
+#Scenario: Single user multiple edits with audit window
+#Given I create a report at time 12:52
+#And I set number of employees at period start to '50' at time 12:53
+#And I set the number of employees at period end to '25' at time 12:54
+#When User navigates to the report history page
+#Then there are  no entries
+#
+#Scenario: Multiple user edits within audit window
+#Given Bob create a report at time 11:31
+#And Bob sets number of employees at period start to '50' at time 11:32
+#And Alice sets number of employees at period end to '25' at time 11:33
+#When Bob navigates to history view
+#Then Bob will see one entry with his name at time 11:32
 
 

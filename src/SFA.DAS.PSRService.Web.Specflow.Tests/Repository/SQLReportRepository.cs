@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using SFA.DAS.PSRService.Web.Specflow.Tests.Repository.DataVerification;
 
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
 {
@@ -67,10 +66,33 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
             }
         }
 
+        public void UpdateTime(ReportDto reportDto)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute("UPDATE [dbo].[Report] SET [UpdatedUtc] = @UpdatedUtc, [AuditWindowStartUtc] = @AuditWindowStartUtc WHERE Id = @Id",
+                    new { reportDto.UpdatedUtc, reportDto.AuditWindowStartUtc, reportDto.Id });
+            }
+        }
+        
+        public void UpdateUser(ReportDto reportDto)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute("UPDATE [dbo].[Report] SET [UpdatedBy] = @UpdatedBy WHERE Id = @Id",
+                    new { reportDto.UpdatedBy, reportDto.Id });
+            }
+        }
+
         public void Delete(string employerId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
+                connection.Execute("DELETE FROM[dbo].[AuditHistory] WHERE [ReportId] IN " +
+                                   "  (SELECT [Id] FROM [dbo].[Report] " +
+                                   "   WHERE [employerId] = @employerId)",
+                    new { employerId });
+
                 connection.Execute("DELETE FROM [dbo].[Report] WHERE [employerId] = @employerId",
                     new { employerId });
             }

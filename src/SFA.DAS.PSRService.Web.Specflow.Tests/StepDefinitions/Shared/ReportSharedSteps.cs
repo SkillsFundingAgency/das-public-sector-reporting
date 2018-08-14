@@ -12,8 +12,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
     [Binding]
     public class ReportSharedSteps : BaseTest
     {
-
-        private SQLReportRepository _reportRepository;
+        private readonly SQLReportRepository _reportRepository;
 
         private ReportDto _reportDto = new ReportDto();
 
@@ -40,12 +39,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 
             _reportRepository.Create(_reportDto);
         }
-
-
+        
         [Given(@"no current report exists")]
         public void GivenNoCurrentReportExists()
         {
-            _reportRepository.Delete(_reportDto.EmployerId);
+            DeleteReports();
         }
 
         [Given(@"A Current report exists")]
@@ -90,6 +88,28 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
         {
             _reportDto.ReportingData = ReadInvalidReportData();
             _reportRepository.Update(_reportDto);
+        }
+        
+        [Given(@"The current report user has been set")]
+        public void GivenTheCurrentReportUserHasBeenSet()
+        {
+            var userId = "0b7a9411-ca0b-401e-9008-4aa3c1f7e0c1";
+            var userName = "Sender 2";
+            //TODO: Need to get name and id from config - these need to be set to claims values
+            //var userId = Configurator.GetConfiguratorInstance().GetEditUserId();
+            //var userName = Configurator.GetConfiguratorInstance().GetEditUserName();
+            //var userString = "{ \"Id\":\"0b7a9411-ca0b-401e-9008-4aa3c1f7e0c1\",\"Name\":\"Sender 2\"}";
+            var userString = $"{{\"Id\":\"{userId}\"  ,\"Name\":\"{userName}\"}}";
+            _reportDto.UpdatedBy = userString;
+            _reportRepository.UpdateUser(_reportDto);
+        }
+
+        [Given(@"The current report was created '(.*)' minutes in the past")]
+        public void GivenTheCurrentReportWasCreatedMinutesInThePast(int minutes)
+        {
+            _reportDto.UpdatedUtc = DateTime.UtcNow.AddMinutes(-1 * minutes);
+            _reportDto.AuditWindowStartUtc = DateTime.UtcNow.AddMinutes(-1 * minutes);
+            _reportRepository.UpdateTime(_reportDto);
         }
 
         [Then(@"a new report is created")]
