@@ -148,27 +148,6 @@ testRunner.Then("User is returned to report edit page", ((string)(null)), ((Tech
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Audit CRUD")]
-        public virtual void AuditCRUD()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit CRUD", ((string[])(null)));
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 34
-testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 36
-testRunner.And("Audit records exist with times \'x\', \'y\'. \'z\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
-testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
-testRunner.Then("The history records exist for \'x\', \'y\'. \'z\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore

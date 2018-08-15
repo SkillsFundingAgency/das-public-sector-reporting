@@ -30,13 +30,6 @@ When User navigates to the report history page
 And User clicks the report history page back link
 Then User is returned to report edit page
 
-Scenario: Audit CRUD
-Given a report has been created
-#Probably can't use the user name - will be SenderX
-And Audit records exist with times 'x', 'y'. 'z'
-When User navigates to the report history page
-Then The history records exist for 'x', 'y'. 'z'
-
 #Scenarios below here cannot be implemented without mocking the date time behaviour
 
 #Scenario: Single user delay between report creation and first edit
