@@ -2,7 +2,8 @@
 {
     public enum ReportStatus
     {
-        Deleted = 0,        
-        Live = 2 
+        Started = 0,        
+        InProgress = 1,
+        Completed = 2
     }
 }

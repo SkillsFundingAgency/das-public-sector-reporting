@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SFA.DAS.PSRService.Domain.Enums;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {
@@ -10,6 +11,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string OrganisationName { get; set; }
         public string EmployerId { get; set; }
         public IEnumerable<Section> Sections { get; set; }
+        public ReportStatus Status => GetReportStatus();
         public bool Submitted { get; set; }
         public string ReportingPeriod { get; set; }
         public Submitted SubmittedDetails { get; set; }
@@ -47,6 +49,22 @@ namespace SFA.DAS.PSRService.Domain.Entities
             var sectionsList = GetSections();
 
             return sectionsList.SingleOrDefault(w => w.Id == sectionId);
+        }
+
+        private ReportStatus GetReportStatus()
+        {
+            if (Submitted)
+            {
+                return ReportStatus.Completed;
+            }
+
+            if (Sections.Any(s => s.SubSections.Any(ss=> ss.Questions.Any(q => q.Answer != ""))) ||
+                String.IsNullOrWhiteSpace(OrganisationName) == false)
+            {
+                return ReportStatus.InProgress;
+            }
+
+            return ReportStatus.Started;
         }
 
         public void UpdatePercentages()
