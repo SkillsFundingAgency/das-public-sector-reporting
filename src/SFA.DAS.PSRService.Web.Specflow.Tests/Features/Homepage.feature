@@ -26,27 +26,27 @@ Scenario: View user report shown not yet created page from Homepage
 	Then report not yet created page is shown
 	
 Scenario: Edit user is shown already submitted message from Homepage
-	Given A valid report has been created
+	Given Edit access is granted
+	And A valid report has been created
 	And the report has been submitted
-	And Edit access is granted
 	And User navigates to Homepage
 	And User selects Homepage Create a report Radio button
 	When User clicks on homepage Continue button
 	Then report already submitted page is shown
 
 Scenario: Super user is shown already submitted message from Homepage
-	Given A valid report has been created
+	Given Full access is granted
+	And A valid report has been created
 	And the report has been submitted
-	And Full access is granted
 	And User navigates to Homepage
 	And User selects Homepage Create a report Radio button
 	When User clicks on homepage Continue button
 	Then report already submitted page is shown
 
 Scenario: View user is shown already submitted message from Homepage
-	Given A valid report has been created
+	Given View access is granted
+	And A valid report has been created
 	And the report has been submitted
-	And View access is granted
 	And User navigates to Homepage
 	And User selects View report radio button
 	When User clicks on homepage Continue button
@@ -60,25 +60,25 @@ Scenario: View user is able to return to Homepage from not yet created page
 	Then the Home page should be displayed
 
 Scenario: Edit user is is able to return to Homepage from already submitted page
-	Given A valid report has been created
+	Given Edit access is granted
+	And A valid report has been created
 	And the report has been submitted
-	And Edit access is granted
 	And User navigates to report already submitted page
 	When User clicks the report already submitted page back link
 	Then the Home page should be displayed
 
 Scenario: Super user is is able to return to Homepage from already submitted page
-	Given A valid report has been created
+	Given Full access is granted
+	And A valid report has been created
 	And the report has been submitted
-	And Full access is granted
 	And User navigates to report already submitted page
 	When User clicks the report already submitted page back link
 	Then the Home page should be displayed
 
 Scenario: View user is is able to return to Homepage from already submitted page
-	Given A valid report has been created
+	Given View access is granted
+	And A valid report has been created
 	And the report has been submitted
-	And View access is granted
 	And User navigates to report already submitted page
 	When User clicks the report already submitted page back link
 	Then the Home page should be displayed

@@ -140,11 +140,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
 this.ScenarioSetup(scenarioInfo);
 #line 29
- testRunner.Given("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
- testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
- testRunner.And("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
  testRunner.And("User navigates to Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
@@ -165,11 +165,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
 this.ScenarioSetup(scenarioInfo);
 #line 38
- testRunner.Given("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
- testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.And("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
  testRunner.And("User navigates to Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
@@ -190,11 +190,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 46
 this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.Given("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("View access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 48
- testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
- testRunner.And("View access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
  testRunner.And("User navigates to Homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
@@ -236,11 +236,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
 this.ScenarioSetup(scenarioInfo);
 #line 63
- testRunner.Given("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
- testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
- testRunner.And("Edit access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
  testRunner.And("User navigates to report already submitted page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
@@ -259,11 +259,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 70
 this.ScenarioSetup(scenarioInfo);
 #line 71
- testRunner.Given("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 72
- testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
- testRunner.And("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
  testRunner.And("User navigates to report already submitted page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
@@ -282,11 +282,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 78
 this.ScenarioSetup(scenarioInfo);
 #line 79
- testRunner.Given("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("View access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
- testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("A valid report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
- testRunner.And("View access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the report has been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
  testRunner.And("User navigates to report already submitted page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
