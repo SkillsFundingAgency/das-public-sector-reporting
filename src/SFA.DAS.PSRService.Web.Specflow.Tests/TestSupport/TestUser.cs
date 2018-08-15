@@ -1,6 +1,9 @@
 ﻿
+using System.Diagnostics;
+
 namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
 {
+    [DebuggerDisplay("{" + nameof(DisplayName) + "}")]
     public class TestUser
     {
         public string Id { get; set; }

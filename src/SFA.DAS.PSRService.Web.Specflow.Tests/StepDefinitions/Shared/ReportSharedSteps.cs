@@ -93,8 +93,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
         [Given(@"The current report user has been set")]
         public void GivenTheCurrentReportUserHasBeenSet()
         {
-            //TODO: Get current user from context
-            _reportDto.UpdatedBy = Configurator.GetConfiguratorInstance().GetEditUser().ToJson();
+            var user = ScenarioContext
+                .Current
+                .Get<TestUser>(ContextKeys.CurrentUser);
+
+            _reportDto.UpdatedBy = user.ToJson();
+
             _reportRepository.UpdateUser(_reportDto);
         }
 

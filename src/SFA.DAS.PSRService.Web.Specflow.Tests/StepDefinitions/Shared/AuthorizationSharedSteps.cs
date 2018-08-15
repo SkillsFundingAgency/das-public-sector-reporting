@@ -15,7 +15,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
             
             if (pageFactory.Homepage.IsSignInDisplayed)
             {
-                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetSuperUser());
+                var user = Configurator.GetConfiguratorInstance().GetSuperUser();
+                ScenarioContext.Current.Set(user, ContextKeys.CurrentUser);
+
+                pageFactory.IdamsLogin.Login(user);
 
                 pageFactory.Homepage.Verify();
             }
@@ -28,7 +31,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 
             if (pageFactory.Homepage.IsSignInDisplayed)
             {
-                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetEditUser());
+                var user = Configurator.GetConfiguratorInstance().GetEditUser();
+                ScenarioContext.Current.Set(user, ContextKeys.CurrentUser);
+
+                pageFactory.IdamsLogin.Login(user);
 
                 pageFactory.Homepage.Verify();
             }
@@ -41,7 +47,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 
             if (pageFactory.Homepage.IsSignInDisplayed)
             {
-                pageFactory.IdamsLogin.Login(Configurator.GetConfiguratorInstance().GetViewUser());
+                var user = Configurator.GetConfiguratorInstance().GetViewUser();
+                ScenarioContext.Current.Set(user, ContextKeys.CurrentUser);
+
+                pageFactory.IdamsLogin.Login(user);
 
                 pageFactory.Homepage.Verify();
             }
