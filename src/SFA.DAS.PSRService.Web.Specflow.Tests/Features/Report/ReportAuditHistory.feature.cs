@@ -86,20 +86,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 11
-testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("a report has been created \'2\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
-testRunner.And("The current report user has been set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
-testRunner.And("The current report was created \'2\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
 testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 13
 testRunner.And("User answers the Your Employees new at start question with 50", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 14
+testRunner.And("User clicks Continue on Your Employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
-testRunner.When("User clicks Continue on Your Employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
-testRunner.And("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
 testRunner.Then("User sees \'0\' summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -110,69 +106,24 @@ testRunner.Then("User sees \'0\' summary entries in the history view", ((string)
         public virtual void SingleUserDelayBetweenReportCreationAndFirstEditCreatesAuditEntries()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single user delay between report creation and first edit creates audit entries", ((string[])(null)));
+#line 18
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 19
+testRunner.Given("a report has been created \'5\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
-this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
+testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
-testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.And("User answers the Your Employees new at start question with 50", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
-testRunner.And("The current report user has been set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
-testRunner.And("The current report was created \'5\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
-testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
-testRunner.And("User answers the Your Employees new at start question with 50", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
-testRunner.When("User clicks Continue on Your Employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
-testRunner.And("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
-testRunner.Then("User sees \'1\' summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 29
-testRunner.And("report number 1 has the number of employees at period start as \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Single user delay between first and second edits creates audit entries")]
-        public virtual void SingleUserDelayBetweenFirstAndSecondEditsCreatesAuditEntries()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Single user delay between first and second edits creates audit entries", ((string[])(null)));
-#line 31
-this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 32
-testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
-testRunner.And("The current report user has been set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
-testRunner.And("The current report was created \'10\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
-testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
-testRunner.And("User answers the Your Employees new at start question with 50", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
 testRunner.And("User clicks Continue on Your Employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
-testRunner.And("The current report was created \'5\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
-testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
-testRunner.And("User answers the Your Employees new at start question with 100", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
-testRunner.When("User clicks Continue on Your Employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
-testRunner.And("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
-testRunner.Then("User sees \'2\' summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 47
-testRunner.And("report number 1 has the number of employees at period start as \'50\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
-testRunner.And("report number 2 has the number of employees at period start as \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
+testRunner.Then("User sees \'1\' summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+testRunner.And("report number 1 has the number of employees at period start as \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -182,17 +133,17 @@ testRunner.And("report number 2 has the number of employees at period start as \
         public virtual void UserCanGoBackToReportEditPage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User can go back to report edit page", ((string[])(null)));
-#line 50
+#line 27
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 51
+#line 28
 testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 52
+#line 29
 testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 53
+#line 30
 testRunner.And("User clicks the report history page back link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 31
 testRunner.Then("User is returned to report edit page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -203,19 +154,17 @@ testRunner.Then("User is returned to report edit page", ((string)(null)), ((Tech
         public virtual void AuditCRUD()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit CRUD", ((string[])(null)));
-#line 56
+#line 33
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 57
+#line 34
 testRunner.Given("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
-testRunner.And("The current report user has been set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 36
 testRunner.And("Audit records exist with times \'x\', \'y\'. \'z\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 37
 testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 62
+#line 38
 testRunner.Then("The history records exist for \'x\', \'y\'. \'z\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

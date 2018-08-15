@@ -37,6 +37,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
             _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
             _reportDto.ReportingData = ReadNewlyCreatedReportData();
 
+            _reportDto.UpdatedBy = ScenarioContext.Current.Get<TestUser>(ContextKeys.CurrentUser).ToJson();
+
             _reportRepository.Create(_reportDto);
         }
         
@@ -72,6 +74,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
         {
             _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
             _reportDto.ReportingData = ReadValidReportData();
+            _reportDto.UpdatedBy = ScenarioContext.Current.Get<TestUser>(ContextKeys.CurrentUser).ToJson();
 
             _reportRepository.Create(_reportDto);
         }
@@ -89,25 +92,19 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
             _reportDto.ReportingData = ReadInvalidReportData();
             _reportRepository.Update(_reportDto);
         }
-        
-        [Given(@"The current report user has been set")]
-        public void GivenTheCurrentReportUserHasBeenSet()
-        {
-            var user = ScenarioContext
-                .Current
-                .Get<TestUser>(ContextKeys.CurrentUser);
 
-            _reportDto.UpdatedBy = user.ToJson();
-
-            _reportRepository.UpdateUser(_reportDto);
-        }
-
-        [Given(@"The current report was created '(.*)' minutes in the past")]
+        [Given(@"a report has been created '(.*)' minutes in the past")]
         public void GivenTheCurrentReportWasCreatedMinutesInThePast(int minutes)
         {
+            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
+            _reportDto.ReportingData = ReadNewlyCreatedReportData();
+
+            _reportDto.UpdatedBy = ScenarioContext.Current.Get<TestUser>(ContextKeys.CurrentUser).ToJson();
             _reportDto.UpdatedUtc = DateTime.UtcNow.AddMinutes(-1 * minutes);
+
             _reportDto.AuditWindowStartUtc = DateTime.UtcNow.AddMinutes(-1 * minutes);
-            _reportRepository.UpdateTime(_reportDto);
+
+            _reportRepository.Create(_reportDto);
         }
 
         [Then(@"a new report is created")]

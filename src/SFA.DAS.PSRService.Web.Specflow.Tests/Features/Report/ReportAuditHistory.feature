@@ -8,44 +8,21 @@ Background:
 	Given no current report exists
 
 Scenario: Single user short delay between report creation and first edit creates no audit entries
-Given a report has been created
-And The current report user has been set
-And The current report was created '2' minutes in the past 
-And User navigates to the Your employees question page
-And User answers the Your Employees new at start question with 50
-When User clicks Continue on Your Employees question page
-And User navigates to the report history page
-Then User sees '0' summary entries in the history view 
-
-Scenario: Single user delay between report creation and first edit creates audit entries
-Given a report has been created
-And The current report user has been set
-And The current report was created '5' minutes in the past 
-And User navigates to the Your employees question page
-And User answers the Your Employees new at start question with 50
-When User clicks Continue on Your Employees question page
-And User navigates to the report history page
-Then User sees '1' summary entries in the history view 
-And report number 1 has the number of employees at period start as ''
-
-Scenario: Single user delay between first and second edits creates audit entries
-Given a report has been created
-And The current report user has been set
-And The current report was created '10' minutes in the past 
-#combine ^
+Given a report has been created '2' minutes in the past 
 And User navigates to the Your employees question page
 And User answers the Your Employees new at start question with 50
 And User clicks Continue on Your Employees question page
-And The current report was created '5' minutes in the past
-#
+When User navigates to the report history page
+Then User sees '0' summary entries in the history view 
+
+Scenario: Single user delay between report creation and first edit creates audit entries
+Given a report has been created '5' minutes in the past 
 And User navigates to the Your employees question page
-And User answers the Your Employees new at start question with 100
-When User clicks Continue on Your Employees question page
-#set 100 now
-And User navigates to the report history page
-Then User sees '2' summary entries in the history view 
-And report number 1 has the number of employees at period start as '50'
-And report number 2 has the number of employees at period start as ''
+And User answers the Your Employees new at start question with 50
+And User clicks Continue on Your Employees question page
+When User navigates to the report history page
+Then User sees '1' summary entries in the history view 
+And report number 1 has the number of employees at period start as ''
 
 Scenario: User can go back to report edit page
 Given a report has been created
@@ -55,7 +32,6 @@ Then User is returned to report edit page
 
 Scenario: Audit CRUD
 Given a report has been created
-And The current report user has been set
 #Probably can't use the user name - will be SenderX
 And Audit records exist with times 'x', 'y'. 'z'
 When User navigates to the report history page

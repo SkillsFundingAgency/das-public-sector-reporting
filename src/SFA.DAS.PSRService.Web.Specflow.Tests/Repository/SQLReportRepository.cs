@@ -51,9 +51,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Execute(@"
-                    INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted])
-                                        VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted)",
-                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted});
+                    INSERT INTO [dbo].[Report] ([Id], [EmployerId], [ReportingPeriod], [ReportingData], [Submitted], [UpdatedUtc], [AuditWindowStartUtc], [UpdatedBy])
+                                        VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @UpdatedUtc,  @AuditWindowStartUtc, @UpdatedBy)",
+                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted, report.UpdatedUtc, report.AuditWindowStartUtc, report.UpdatedBy});
             }
         }
 
@@ -72,15 +72,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Repository
             {
                 connection.Execute("UPDATE [dbo].[Report] SET [UpdatedUtc] = @UpdatedUtc, [AuditWindowStartUtc] = @AuditWindowStartUtc WHERE Id = @Id",
                     new { reportDto.UpdatedUtc, reportDto.AuditWindowStartUtc, reportDto.Id });
-            }
-        }
-        
-        public void UpdateUser(ReportDto reportDto)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute("UPDATE [dbo].[Report] SET [UpdatedBy] = @UpdatedBy WHERE Id = @Id",
-                    new { reportDto.UpdatedBy, reportDto.Id });
             }
         }
 
