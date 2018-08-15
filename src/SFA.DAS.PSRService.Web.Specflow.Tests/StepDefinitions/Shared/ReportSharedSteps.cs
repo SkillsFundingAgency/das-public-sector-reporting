@@ -86,7 +86,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
             _reportRepository.Update(_reportDto);
         }
 
-        [Given(@"a report has been created '(.*)' minutes in the past")]
+        [Given(@"a report has been created (.*) minutes in the past")]
         public void GivenTheCurrentReportWasCreatedMinutesInThePast(int minutes)
         {
             _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;

@@ -86,7 +86,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 11
-testRunner.Given("a report has been created \'2\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("a report has been created 2 minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
 testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
@@ -96,7 +96,7 @@ testRunner.And("User clicks Continue on Your Employees question page", ((string)
 #line 15
 testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
-testRunner.Then("User sees \'0\' summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("User sees 0 summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -111,7 +111,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 19
-testRunner.Given("a report has been created \'5\' minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("a report has been created 5 minutes in the past", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
 testRunner.And("User navigates to the Your employees question page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
@@ -121,7 +121,7 @@ testRunner.And("User clicks Continue on Your Employees question page", ((string)
 #line 23
 testRunner.When("User navigates to the report history page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
-testRunner.Then("User sees \'1\' summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("User sees 1 summary entries in the history view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
 testRunner.And("report number 1 has the number of employees at period start as \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             pageFactory.ReportHistory.ClickBackButtonLink();
         }
 
-        [Then(@"User sees '(.*)' summary entries in the history view")]
+        [Then(@"User sees (.*) summary entries in the history view")]
         public void ThenUserSeesSummaryEntriesInTheHistoryView(int expectedNumberOfEntries)
         {
             Assert.AreEqual(expectedNumberOfEntries, pageFactory.ReportHistory.DetailItemCount);

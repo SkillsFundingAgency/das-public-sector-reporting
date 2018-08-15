@@ -8,20 +8,20 @@ Background:
 	Given no current report exists
 
 Scenario: Single user short delay between report creation and first edit creates no audit entries
-Given a report has been created '2' minutes in the past 
+Given a report has been created 2 minutes in the past 
 And User navigates to the Your employees question page
 And User answers the Your Employees new at start question with 50
 And User clicks Continue on Your Employees question page
 When User navigates to the report history page
-Then User sees '0' summary entries in the history view 
+Then User sees 0 summary entries in the history view 
 
 Scenario: Single user delay between report creation and first edit creates audit entries
-Given a report has been created '5' minutes in the past 
+Given a report has been created 5 minutes in the past 
 And User navigates to the Your employees question page
 And User answers the Your Employees new at start question with 50
 And User clicks Continue on Your Employees question page
 When User navigates to the report history page
-Then User sees '1' summary entries in the history view 
+Then User sees 1 summary entries in the history view 
 And report number 1 has the number of employees at period start as ''
 
 Scenario: User can go back to report edit page
