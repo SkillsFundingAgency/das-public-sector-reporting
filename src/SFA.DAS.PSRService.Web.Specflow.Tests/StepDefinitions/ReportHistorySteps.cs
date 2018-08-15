@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
         [Then(@"User sees '(.*)' summary entries in the history view")]
         public void ThenUserSeesSummaryEntriesInTheHistoryView(int expectedNumberOfEntries)
         {
-            Assert.AreEqual(expectedNumberOfEntries, pageFactory.ReportHistory.SummaryItemCount);
+            Assert.AreEqual(expectedNumberOfEntries, pageFactory.ReportHistory.DetailItemCount);
         }
         
         [Then(@"report number (.*) has the number of employees at period start as '(.*)'")]

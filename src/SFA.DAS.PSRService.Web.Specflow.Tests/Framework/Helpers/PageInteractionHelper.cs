@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
 
         public static void SetDriver(IWebDriver webDriver)
         {
-            PageInteractionHelper.WebDriver = webDriver;
+            WebDriver = webDriver;
         }
 
         public static Boolean VerifyPageHeading(String actual, String expected)
@@ -160,6 +160,24 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Framework.Helpers
             IWebElement webElement = WebDriver.FindElement(locator);
             ((IJavaScriptExecutor)WebDriver).ExecuteScript("arguments[0].scrollIntoView(true);", webElement);
             WaitForElementToBeDisplayed(locator);
+        }
+
+        public static int CountElements(By locator)
+        {
+            PageInteractionHelper.TurnOffImplicitWaits();
+            try
+            {
+                var elements = WebDriver.FindElements(locator);
+                return elements?.Count ?? 0;
+            }
+            catch (NoSuchElementException)
+            {
+                return 0;
+            }
+            finally
+            {
+                PageInteractionHelper.TurnOnImplicitWaits();
+            }
         }
 
         public static void TurnOffImplicitWaits()

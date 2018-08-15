@@ -48,13 +48,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
         public bool VerifyNoSubmittedReportDisplayMessageText(string text) => PageInteractionHelper.VerifyText(By.Id("submitted-report-list-display-message"), text);
 
-        public int SubmittedReportListCount
-        {
-            get
-            {
-                var reportItemRows = WebDriver.FindElements(By.CssSelector("#submitted-report-list table > tbody > tr"));
-                return reportItemRows?.Count ?? 0;
-            }
-        }
+        public int SubmittedReportListCount => PageInteractionHelper.CountElements(By.CssSelector("#submitted-report-list table > tbody > tr"));
     }
 }
