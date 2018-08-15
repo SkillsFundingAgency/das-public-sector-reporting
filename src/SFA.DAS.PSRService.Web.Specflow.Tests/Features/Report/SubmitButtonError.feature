@@ -5,7 +5,7 @@
 
 Background:
 Given Full access is granted
-And A Current report exists
+And a report has been created
 And the report has not been submitted
 And An invalid report
 

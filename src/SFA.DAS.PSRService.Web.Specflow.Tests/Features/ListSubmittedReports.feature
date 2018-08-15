@@ -11,7 +11,7 @@ Scenario: User Navigates to submitted reports page
 	And back link is shown as 'Back'
 
 Scenario: User Views previously submitted reports when no reports submitted
-	Given A Current report exists
+	Given a report has been created
 	And the report has not been submitted
 	And user navigates to previously submitted reports page
 	Then the User should see the message 'There are currently no submitted reports to show' on the previously submitted page

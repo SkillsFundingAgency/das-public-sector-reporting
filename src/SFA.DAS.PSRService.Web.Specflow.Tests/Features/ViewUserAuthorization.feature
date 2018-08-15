@@ -11,13 +11,13 @@ Scenario: View user can view report but not create report page
 	But Create Report radio button does not exist
 
 Scenario: View user cannot edit a report
-	Given  A Current report exists
+	Given  a report has been created
 	And the report has not been submitted
 	When User navigates to the Edit report page
 	Then the Home page should be displayed
 
 Scenario: View user cannot edit a report question
-	Given A Current report exists
+	Given a report has been created
 	When User navigates to the Edit report page
 	Then the Home page should be displayed
 

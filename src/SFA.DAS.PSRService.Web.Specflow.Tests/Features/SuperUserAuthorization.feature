@@ -18,7 +18,7 @@ Scenario: Super user can create a report
 	Then New report is created
 
 Scenario: Super user can edit a report
-	Given  A Current report exists
+	Given  a report has been created
 	And the report has not been submitted
 	When User navigates to the Edit report page
 	Then the edit report page is displayed

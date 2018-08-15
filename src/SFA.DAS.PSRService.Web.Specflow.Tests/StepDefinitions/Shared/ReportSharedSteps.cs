@@ -48,13 +48,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
             DeleteReports();
         }
 
-        [Given(@"A Current report exists")]
-        public void GivenACurrentReportExists()
-        {
-            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
-            _reportRepository.Create(_reportDto);
-        }
-
         [Given(@"the report has not been submitted")]
         public void GivenTheReportHasNotBeenSubmitted()
         {

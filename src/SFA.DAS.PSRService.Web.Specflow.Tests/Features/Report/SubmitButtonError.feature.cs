@@ -71,7 +71,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
 #line 7
 testRunner.Given("Full access is granted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-testRunner.And("A Current report exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("a report has been created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
 testRunner.And("the report has not been submitted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
@@ -103,5 +103,3 @@ testRunner.And("the Continue button is not displayed", ((string)(null)), ((TechT
 }
 #pragma warning restore
 #endregion
-
-
