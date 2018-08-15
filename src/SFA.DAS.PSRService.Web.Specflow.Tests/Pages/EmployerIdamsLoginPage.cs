@@ -29,10 +29,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
         private readonly By _password = By.Name("Password");
         private readonly By _signInButton = By.Id("button-signin");
 
-        internal void Login(string emailAddress, string password)
+        internal void Login(TestUser user)
         {
-            FormCompletionHelper.EnterText(_emailAddress, emailAddress);
-            FormCompletionHelper.EnterText(_password, password);
+            FormCompletionHelper.EnterText(_emailAddress, user.Email);
+            FormCompletionHelper.EnterText(_password, user.Password);
 
             FormCompletionHelper.ClickElement(_signInButton);
 
@@ -43,7 +43,5 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages
 
           //  return new PsrsHomepage(WebDriver);
         }
-
-       
     }
 }

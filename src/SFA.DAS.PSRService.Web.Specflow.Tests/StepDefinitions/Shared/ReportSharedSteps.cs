@@ -93,14 +93,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
         [Given(@"The current report user has been set")]
         public void GivenTheCurrentReportUserHasBeenSet()
         {
-            var userId = "0b7a9411-ca0b-401e-9008-4aa3c1f7e0c1";
-            var userName = "Sender 2";
-            //TODO: Need to get name and id from config - these need to be set to claims values
-            //var userId = Configurator.GetConfiguratorInstance().GetEditUserId();
-            //var userName = Configurator.GetConfiguratorInstance().GetEditUserName();
-            //var userString = "{ \"Id\":\"0b7a9411-ca0b-401e-9008-4aa3c1f7e0c1\",\"Name\":\"Sender 2\"}";
-            var userString = $"{{\"Id\":\"{userId}\"  ,\"Name\":\"{userName}\"}}";
-            _reportDto.UpdatedBy = userString;
+            //TODO: Get current user from context
+            _reportDto.UpdatedBy = Configurator.GetConfiguratorInstance().GetEditUser().ToJson();
             _reportRepository.UpdateUser(_reportDto);
         }
 
