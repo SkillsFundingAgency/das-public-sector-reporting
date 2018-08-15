@@ -28,15 +28,12 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
 
             _reportDto.EmployerId = Configurator.GetConfiguratorInstance().GetEmployerId();
             _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
-            _reportDto.ReportingData = "{}";
+            _reportDto.ReportingData = ReadNewlyCreatedReportData();
         }
 
         [Given(@"a report has been created")]
         public void GivenAReportHasBeenCreated()
         {
-            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
-            _reportDto.ReportingData = ReadNewlyCreatedReportData();
-
             _reportDto.UpdatedBy = ScenarioContext.Current.Get<TestUser>(ContextKeys.CurrentUser).ToJson();
 
             _reportRepository.Create(_reportDto);
@@ -65,7 +62,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
         [Given(@"A valid report has been created")]
         public void GivenAValidReportHasBeenCreated()
         {
-            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
             _reportDto.ReportingData = ReadValidReportData();
             _reportDto.UpdatedBy = ScenarioContext.Current.Get<TestUser>(ContextKeys.CurrentUser).ToJson();
 
@@ -89,9 +85,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions.Shared
         [Given(@"a report has been created (.*) minutes in the past")]
         public void GivenTheCurrentReportWasCreatedMinutesInThePast(int minutes)
         {
-            _reportDto.ReportingPeriod = new Period(DateTime.UtcNow).PeriodString;
-            _reportDto.ReportingData = ReadNewlyCreatedReportData();
-
             _reportDto.UpdatedBy = ScenarioContext.Current.Get<TestUser>(ContextKeys.CurrentUser).ToJson();
             _reportDto.UpdatedUtc = DateTime.UtcNow.AddMinutes(-1 * minutes);
 
