@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BrowserStack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
@@ -43,17 +40,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
                 capability.SetCapability(key, settings[key]);
             }
 
-            String username = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
-            if (username == null)
-            {
-                username = ConfigurationManager.AppSettings.Get("BrowserStack.User");
-            }
+            var username = AzureConfig.Getconfig().BrowserStackUser;
 
-            String accesskey = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY");
-            if (accesskey == null)
-            {
-                accesskey = ConfigurationManager.AppSettings.Get("BrowserStack.Key");
-            }
+            var accesskey = AzureConfig.Getconfig().BrowserStackKey;
 
             capability.SetCapability("browserstack.user", username);
             capability.SetCapability("browserstack.key", accesskey);
