@@ -119,5 +119,3 @@ testRunner.And("the edit report page is displayed", ((string)(null)), ((TechTalk
 }
 #pragma warning restore
 #endregion
-
-
