@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 
@@ -10,57 +12,52 @@ namespace SFA.DAS.PSRService.Data
 {
     public class SQLReportRepository : IReportRepository
     {
-        private readonly string _connectionString;
+        private readonly IUnitOfWorkContext _unitOfWork;
 
-        public SQLReportRepository(string connectionString)
+        public SQLReportRepository(IUnitOfWorkContext unitOfWork)
         {
-            _connectionString = connectionString;
+            _unitOfWork = unitOfWork;
         }
 
         public ReportDto Get(string period, string employerId)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
-                    new {employerId, period});
-                return report;
-            }
+            var connection = _unitOfWork.Get<DbConnection>();
+            var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
+                         new {employerId, period});
+
+            return report;
+            
         }
 
         public ReportDto Get(Guid id)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                return connection.QuerySingleOrDefault<ReportDto>("select * from Report where Id = @id", new {id});
-            }
+            var connection = _unitOfWork.Get<DbConnection>();
+            return connection.QuerySingleOrDefault<ReportDto>("select * from Report where Id = @id", new {id});
         }
 
         public IList<ReportDto> GetSubmitted(string employerId)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var reportData = connection.Query<ReportDto>("select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
-                    new {employerId});
-                return reportData.ToList();
-            }
+        var connection = _unitOfWork.Get<DbConnection>();
+        var reportData = connection.Query<ReportDto>("select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
+                         new {employerId});
+        return reportData.ToList();
         }
 
         public void Create(ReportDto report)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute(@"
+            var connection = _unitOfWork.Get<DbConnection>();
+            var transaction = _unitOfWork.Get<DbTransaction>();
+            connection.Execute(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted],[AuditWindowStartUtc],[UpdatedUtc],[UpdatedBy])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @AuditWindowStartUtc, @UpdatedUtc, @UpdatedBy)",
-                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted, report.AuditWindowStartUtc, report.UpdatedUtc, report.UpdatedBy});
-            }
+                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted, report.AuditWindowStartUtc, report.UpdatedUtc, report.UpdatedBy}, transaction);
         }
 
         public void Update(ReportDto reportDto)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute(@"
+        var connection = _unitOfWork.Get<DbConnection>();
+        var transaction = _unitOfWork.Get<DbTransaction>();
+            connection.Execute(@"
                     UPDATE [dbo].[Report]
                        SET [ReportingData] = @ReportingData
                           ,[Submitted] = @Submitted
@@ -68,15 +65,22 @@ namespace SFA.DAS.PSRService.Data
                           ,[UpdatedUtc] = @UpdatedUtc
                           ,[UpdatedBy] = @UpdatedBy
                      WHERE Id = @Id",
-                    new {reportDto.ReportingData, reportDto.Submitted, reportDto.AuditWindowStartUtc, reportDto.UpdatedUtc, reportDto.UpdatedBy, reportDto.Id});
-            }
+                new
+                {
+                    reportDto.ReportingData,
+                    reportDto.Submitted,
+                    reportDto.AuditWindowStartUtc,
+                    reportDto.UpdatedUtc,
+                    reportDto.UpdatedBy,
+                    reportDto.Id
+                }, transaction);
         }
 
         public void SaveAuditRecord(AuditRecordDto auditRecordDto)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute(@"
+            var connection = _unitOfWork.Get<DbConnection>();
+            var transaction = _unitOfWork.Get<DbTransaction>();
+            connection.Execute(@"
                 INSERT INTO [dbo].[AuditHistory]
                     ([UpdatedUtc]
                     ,[ReportingData]
@@ -87,27 +91,24 @@ namespace SFA.DAS.PSRService.Data
                     ,@ReportingData
                     ,@UpdatedBy
                     ,@ReportId)",
-                    new {auditRecordDto.UpdatedUtc, auditRecordDto.ReportingData, auditRecordDto.UpdatedBy, auditRecordDto.ReportId});
-            }
+                    new {auditRecordDto.UpdatedUtc, auditRecordDto.ReportingData, auditRecordDto.UpdatedBy, auditRecordDto.ReportId}, transaction);
         }
 
         public IReadOnlyList<AuditRecordDto> GetAuditRecordsMostRecentFirst(Guid reportId)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc", new {reportId}).ToList();
-            }        
+            var connection = _unitOfWork.Get<DbConnection>();
+            return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc", new {reportId}).ToList();
+                  
         }
 
         public void DeleteHistory(Guid reportId)
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Execute(@"
+            var connection = _unitOfWork.Get<DbConnection>();
+            var transaction = _unitOfWork.Get<DbTransaction>();
+            connection.Execute(@"
                     DELETE [dbo].[AuditHistory]
                      WHERE ReportId = @ReportId",
-                    new {reportId});
-            }
+                    new {reportId}, transaction);
         }
     }
 }
