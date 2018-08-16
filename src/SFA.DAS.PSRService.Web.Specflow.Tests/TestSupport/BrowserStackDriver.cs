@@ -40,9 +40,9 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
                 capability.SetCapability(key, settings[key]);
             }
 
-            var username = AzureConfig.Getconfig().BrowserStackUser;
+            var username = AzureConfig.GetConfig().BrowserStackUser;
 
-            var accesskey = AzureConfig.Getconfig().BrowserStackKey;
+            var accesskey = AzureConfig.GetConfig().BrowserStackKey;
 
             capability.SetCapability("browserstack.user", username);
             capability.SetCapability("browserstack.key", accesskey);
