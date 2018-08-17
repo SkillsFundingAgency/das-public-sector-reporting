@@ -11,7 +11,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         private readonly string _baseUrl;
         private readonly string _baseGovUkUrl;
         private readonly string _browserStackBrowser;
-        private readonly string _employerId;
 
         private Configurator()
         {
@@ -20,8 +19,6 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
             _baseUrl = ConfigurationManager.AppSettings["BaseUrl"];
             _baseGovUkUrl = ConfigurationManager.AppSettings["BaseGovUkUrl"];
             _browserStackBrowser = ConfigurationManager.AppSettings["BrowserStack.Browser"];
-            _employerId = ConfigurationManager.AppSettings["EmployerId"];
-
         }
 
         public static Configurator GetConfiguratorInstance()
@@ -56,7 +53,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
 
         public string GetEmployerId()
         {
-            return _employerId;
+            return AzureConfig.GetConfig().EmployerId;
         }
 
         public TestUser GetSuperUser()

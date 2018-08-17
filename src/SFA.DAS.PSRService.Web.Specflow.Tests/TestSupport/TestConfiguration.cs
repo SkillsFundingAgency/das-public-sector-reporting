@@ -9,5 +9,7 @@
         public TestUser ViewAccessUser { get; set; }
         public TestUser EditAccessUser { get; set; }
         public TestUser SubmitAccessUser { get; set; }
+
+        public string EmployerId { get; set; }
     }
 }
