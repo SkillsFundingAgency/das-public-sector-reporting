@@ -29,8 +29,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
 
         private void InstantiateRepository()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings[PersistenceNames.PsrsDBConnectionString]
-                .ConnectionString;
+            var connectionString = Configurator.GetConfiguratorInstance().GetDBConnectionString();
 
             _reportRepository = new SQLReportRepository(connectionString);
         }

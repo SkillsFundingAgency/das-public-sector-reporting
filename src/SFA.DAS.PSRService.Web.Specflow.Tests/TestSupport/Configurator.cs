@@ -70,5 +70,10 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.TestSupport
         {
             return AzureConfig.GetConfig().ViewAccessUser;
         }
+
+        public string GetDBConnectionString()
+        {
+            return AzureConfig.GetConfig().ConnectionString;
+        }
     }
 }

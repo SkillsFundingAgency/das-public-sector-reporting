@@ -11,5 +11,6 @@
         public TestUser SubmitAccessUser { get; set; }
 
         public string EmployerId { get; set; }
+        public string ConnectionString { get; set; }
     }
 }
