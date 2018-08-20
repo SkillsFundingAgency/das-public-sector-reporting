@@ -18,8 +18,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("ReportAuditHistory - MPD-1149")]
-    public partial class ReportAuditHistory_MPD_1149Feature
+    [NUnit.Framework.DescriptionAttribute("ReportAuditHistory - MPD-1152")]
+    public partial class ReportAuditHistory_MPD_1152Feature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -31,7 +31,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Features.Report
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ReportAuditHistory - MPD-1149", "\tIn order to help me review report data\r\n\tAs a public sector employer\r\n\tI should " +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ReportAuditHistory - MPD-1152", "\tIn order to help me review report data\r\n\tAs a public sector employer\r\n\tI should " +
                     "be able to see previous versions of the report", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }

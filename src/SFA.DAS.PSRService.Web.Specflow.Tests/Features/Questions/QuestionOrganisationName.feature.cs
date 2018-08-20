@@ -90,7 +90,7 @@ this.FeatureBackground();
 #line 13
  testRunner.When("User clicks on \'Your organisation\'\'s name\' question link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
- testRunner.Then("organisation name is pre-populated with name from my account", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("organisation name is pre-populated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

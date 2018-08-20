@@ -142,8 +142,8 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.StepDefinitions
             return pageFactory.QuestionYourEmployees;
         }
 
-        [Then(@"organisation name is pre-populated with name from my account")]
-        public void ThenOrganisationNameIsPrePopulatedWithNameFromMyAccount()
+        [Then(@"organisation name is pre-populated")]
+        public void ThenOrganisationNameIsPrePopulated()
         {
             pageFactory.ReportOrganisationName.VerifyOrganisationNameHasValue();
         }

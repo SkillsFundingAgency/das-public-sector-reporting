@@ -11,7 +11,7 @@ Scenario: Organisation Name is pre-populated
 	And User creates a new report
 	And User navigates to the Edit report page
 	When  User clicks on 'Your organisation''s name' question link
-	Then organisation name is pre-populated with name from my account
+	Then organisation name is pre-populated
 
 Scenario: Organisation Name Incomplete
 	Given a report has been created
