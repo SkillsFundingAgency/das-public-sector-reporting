@@ -11,5 +11,6 @@ namespace SFA.DAS.PSRService.Web.Services
     {
         Period GetCurrentPeriod();
         bool IsSubmissionsOpen();
+        bool ReportIsForCurrentPeriod(Report report);
     }
 }

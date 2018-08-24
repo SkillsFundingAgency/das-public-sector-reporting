@@ -32,5 +32,10 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             return DateTime.UtcNow < _config.SubmissionClose;
         }
+
+        public bool ReportIsForCurrentPeriod(Report report)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

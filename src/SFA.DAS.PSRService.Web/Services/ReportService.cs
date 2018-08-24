@@ -98,10 +98,9 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public bool CanBeEdited(Report report)
         {
-            return report != null 
-                   && !report.Submitted 
-                   && report.Period.IsCurrent 
-                   && _periodService.IsSubmissionsOpen();
+            return report != null
+                   && !report.Submitted
+                   && _periodService.ReportIsForCurrentPeriod(report);
         }
 
         public IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(
