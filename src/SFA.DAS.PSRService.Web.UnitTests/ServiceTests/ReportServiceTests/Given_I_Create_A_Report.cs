@@ -58,20 +58,5 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
             Assert.AreEqual(_user.DisplayName, actualRequest.User.Name);
             Assert.AreEqual(_user.Id, actualRequest.User.Id);
         }
-
-        [Test]
-        public void Employer_Id_And_Period_Is_Supplied_And_Submissions_Closed_Then_Throw_Exception()
-        {
-            //Arrange
-            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(-3));
-            _mediatorMock.Setup(s => s.Send(It.IsAny<CreateReportRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Report() { Id = Guid.NewGuid() });
-
-            //Act
-
-           Assert.Throws<Exception>(() => _reportService.CreateReport("ABCDE", _user));
-
-        }
-
     }
 }

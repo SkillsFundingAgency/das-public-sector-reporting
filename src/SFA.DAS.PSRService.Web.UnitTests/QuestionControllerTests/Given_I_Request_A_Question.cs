@@ -29,14 +29,20 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
-            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
+            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
-            _periodServiceMock.Setup(s => s.IsSubmissionsOpen()).Returns(true);
 
             _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
 
-            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null,_periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
+            _controller =
+                new QuestionController(
+                        _reportService.Object,
+                        _employerAccountServiceMock.Object,
+                        null,
+                        _periodServiceMock.Object,
+                        _mockUserService.Object)
+                    {Url = _mockUrlHelper.Object};
             
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
