@@ -1,15 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Given_A_Not_Submitted_Report.
-    And_Report_Is_For_Current_Period
+namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.
+    Given_A_Null_Report
 {
     [ExcludeFromCodeCoverage]
     [TestFixture]
     public class When_ReportService_CanBeEdited_Is_Called
-        : And_Report_Is_For_Current_Period
+        : Given_A_Null_Report
     {
         private bool response;
 
@@ -23,11 +24,19 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Given
         }
 
         [Test]
-        public void Then_True_Is_Returned()
+        public void Then_False_Is_Returned()
         {
             response
                 .Should()
-                .BeTrue();
+                .BeFalse();
+        }
+
+        [Test]
+        public void Then_PeriodService_ReportIsForCurrentPeriod_Is_Not_Called()
+        {
+            MockPeriodService
+                .Verify( 
+                    m => m.ReportIsForCurrentPeriod(It.IsAny<Report>()), Times.Never);
         }
     }
 }
