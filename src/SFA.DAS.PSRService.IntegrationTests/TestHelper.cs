@@ -83,7 +83,6 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 config.For<IWebConfiguration>().Use(new WebConfiguration
                 {
                     SqlConnectionString = TestHelper.ConnectionString,
-                    SubmissionClose = DateTime.Today.AddDays(1)
                 });
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);

@@ -26,13 +26,12 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
         public void SetUp()
         {
             _mediatorMock = new Mock<IMediator>();
-            _webConfigurationMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
             _period = new Period(DateTime.UtcNow);
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(_period);
 
-            _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
+            _reportService = new ReportService(Mock.Of<IWebConfiguration>(), _mediatorMock.Object, _periodServiceMock.Object);
             _user = new UserModel {Id = Guid.NewGuid(), DisplayName = "Vladimir"};
 
         }
@@ -42,7 +41,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
         {
             //Arrange
             CreateReportRequest actualRequest = null;
-            _webConfigurationMock.Setup(s => s.SubmissionClose).Returns(DateTime.UtcNow.AddDays(+3));
             _mediatorMock.Setup(s => s.Send(It.IsAny<CreateReportRequest>(), It.IsAny<CancellationToken>()))
                 .Callback<IRequest<Report>, CancellationToken>((r,c) => actualRequest = (CreateReportRequest)r)
                 .ReturnsAsync(new Report {Id = Guid.NewGuid()})
