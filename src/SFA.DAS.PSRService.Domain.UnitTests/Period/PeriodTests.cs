@@ -13,7 +13,6 @@ namespace SFA.DAS.PSRService.Domain.UnitTest
         {
             var period = new Period(DateTime.UtcNow);
 
-            Assert.AreEqual(true, period.IsCurrent);
             Assert.AreEqual("1718", period.PeriodString);
             Assert.AreEqual("2017", period.StartYear);
             Assert.AreEqual("2018", period.EndYear);
@@ -23,7 +22,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTest
         [Test]
         public void TestCurrentPeriod()
         {
-             var period1 = new Period(new DateTime(2017, 9, 30));
+            var period1 = new Period(new DateTime(2017, 9, 30));
             var period2 = new Period(new DateTime(2017, 10, 1));
             var period3 = new Period(new DateTime(2017, 4, 1));
             var period4 = new Period(new DateTime(2017, 3, 31));
@@ -34,7 +33,6 @@ namespace SFA.DAS.PSRService.Domain.UnitTest
             Assert.AreEqual("1516", period4.PeriodString);
         }
 
-
         [Test]
         public void TestCurrentPeriodName()
         {
@@ -42,7 +40,6 @@ namespace SFA.DAS.PSRService.Domain.UnitTest
             var period2 = new Period(new DateTime(2017, 10, 1));
             var period3 = new Period(new DateTime(2017, 4, 1));
             var period4 = new Period(new DateTime(2017, 3, 31));
-
 
 
             Assert.AreEqual("1 April 2016 to 31 March 2017", period1.FullString);
@@ -54,33 +51,27 @@ namespace SFA.DAS.PSRService.Domain.UnitTest
         [Test]
         public void TestCurrentPeriodNameFailsWhenNullPassed()
         {
-            try
-            {
-                var periodName1 = new Period(null).FullString;
-            }
-            catch (ArgumentException ex)
-            {
-                Assert.AreEqual("period", ex.ParamName);
-                return;
-            }
-
-            Assert.Fail("Correct exception wasn't thrown");
+            Assert
+                .That(
+                    () => new Period(null),
+                    Throws
+                        .Exception
+                        .TypeOf<ArgumentException>()
+                        .With.Property(nameof(ArgumentException.ParamName))
+                        .EqualTo("period"));
         }
 
         [Test]
         public void TestCurrentPeriodNameFailsWhenInvalidStringPassed()
         {
-            var expectedException
-                =
-                Assert
-                    .Catch<ArgumentException>(
-                        () => new Period("null!"));
-
             Assert
-                .AreEqual(
-                    "period"
-                    , expectedException
-                        .ParamName);
+                .That(
+                    () => new Period("null!"),
+                    Throws
+                        .Exception
+                        .TypeOf<ArgumentException>()
+                        .With.Property(nameof(ArgumentException.ParamName))
+                        .EqualTo("period"));
         }
     }
 }
