@@ -19,6 +19,26 @@ namespace SFA.DAS.PSRService.Domain.Entities
             _periodDateTime = period;
         }
 
+        private static int ConvertPeriodStringToYear(string period)
+        {
+            if (period == null || period.Length != 4)
+                throw new ArgumentException("Period string has to be 4 chars", nameof(period));
+
+            var year = int.Parse(period.Substring(0, 2)) + 2001;
+            return year;
+        }
+
+        public static Period ParsePeriodString(string periodString)
+        {
+            if (string.IsNullOrWhiteSpace(periodString))
+                throw new ArgumentException("Period string has to be 4 chars", nameof(periodString));
+
+            if(periodString.Length != 4)
+                throw new ArgumentException("Period string has to be 4 chars", nameof(periodString));
+
+            return new Period(DateTime.MinValue);
+        }
+
         public Period(string period)
         {
             var year = ConvertPeriodStringToYear(period);
@@ -47,15 +67,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
         private string GetCurrentReportPeriodName()
         {
             return $"1 April {_startYear} to 31 March {_endYear}";
-        }
-
-        private static int ConvertPeriodStringToYear(string period)
-        {
-            if (period == null || period.Length != 4)
-                throw new ArgumentException("Period string has to be 4 chars", nameof(period));
-
-            var year = int.Parse(period.Substring(0, 2)) + 2001;
-            return year;
         }
     }
 }

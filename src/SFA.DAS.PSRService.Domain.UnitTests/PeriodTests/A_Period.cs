@@ -65,29 +65,36 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
         }
 
         [Test]
-        public void Throws_ArgumentException_When_Null_Passed_To_Constructor()
+        public void Throws_ArgumentException_When_Null_Passed_To_ParsePeriodString()
         {
             Assert
                 .That(
-                    () => new Period(null),
+                    () => Period.ParsePeriodString(null),
                     Throws
                         .Exception
                         .TypeOf<ArgumentException>()
                         .With.Property(nameof(ArgumentException.ParamName))
-                        .EqualTo("period"));
+                        .EqualTo("periodString"));
         }
 
-        [Test]
-        public void Throws_ArgumentException_When_Invalid_String_Passed_To_Constructor()
+        [TestCase("morethanfourcharacters")]
+        [TestCase("four")]
+        [TestCase("")]
+        [TestCase("     ")]
+        [TestCase("1")]
+        [TestCase("12")]
+        [TestCase("123")]
+        public void Throws_ArgumentException_When_Invalid_String_Passed_To_ParsePeriodString(
+            string parseArgument)
         {
             Assert
                 .That(
-                    () => new Period("null!"),
+                    () => Period.ParsePeriodString(parseArgument),
                     Throws
                         .Exception
                         .TypeOf<ArgumentException>()
                         .With.Property(nameof(ArgumentException.ParamName))
-                        .EqualTo("period"));
+                        .EqualTo("periodString"));
         }
     }
 }
