@@ -55,7 +55,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         {
             var requrestWithSubmittedReport =
                 new GetReportEditHistoryMostRecentFirst(
-                    period: new Period(DateTime.UtcNow), 
+                    period: Period.FromInstantInPeriod(DateTime.UtcNow), 
                     accountId:"SomeAccountId");
 
             auditItems = SUT.Handle(requrestWithSubmittedReport, new CancellationToken()).Result;

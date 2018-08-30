@@ -10,6 +10,35 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
     [ExcludeFromCodeCoverage]
     public class A_TwentyFirstCenturyCommonEraYear
     {
+        [TestCase(2000)]
+        [TestCase(2001)]
+        [TestCase(2019)]
+        [TestCase(2999)]
+        public void Can_Be_Create_From_Integer_Year(
+            int year)
+        {
+            TwentyFirstCenturyCommonEraYear
+                .FromYearAsNumber(year)
+                .Should()
+                .NotBeNull();
+        }
+
+        [TestCase(3000)]
+        [TestCase(200)]
+        [TestCase(3019)]
+        [TestCase(1999)]
+        [TestCase(9999)]
+        public void Throws_Exception_When_Trying_To_Create_From_Invalid_Integer_Year(
+            int invalidYear)
+        {
+            Assert
+                .That(
+                    () => TwentyFirstCenturyCommonEraYear.FromYearAsNumber(invalidYear),
+                    Throws
+                        .Exception
+                        .TypeOf<ArgumentException>());
+        }
+
         [TestCase("00", 2000)]
         [TestCase("99", 2099)]
         [TestCase("12", 2012)]
@@ -37,6 +66,21 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
                 .AsTwoDigitString
                 .Should()
                 .Be(twoDigitYear);
+        }
+
+        [TestCase("00", "2000")]
+        [TestCase("99", "2099")]
+        [TestCase("12", "2012")]
+        [TestCase("19", "2019")]
+        public void Has_Expected_AsFourDigitString_Property(
+            string twoDigitYear,
+            string expectedFourDigitYear)
+        {
+            TwentyFirstCenturyCommonEraYear
+                .ParseTwoDigitYear(twoDigitYear)
+                .AsFourDigitString
+                .Should()
+                .Be(expectedFourDigitYear);
         }
 
         [TestCase("")]

@@ -73,7 +73,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Su
                     =
                     HomePageWelcomeMessageProvider
                         .GetMesssage()
-                        .ForPeriod(new Period(period))
+                        .ForPeriod(CurrentPeriod)
                         .WhereUserCanSubmit()
                         .AndReportIsInProgress();
 

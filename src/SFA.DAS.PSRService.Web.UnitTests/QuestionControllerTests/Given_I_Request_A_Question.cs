@@ -31,7 +31,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
 
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
+            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
             _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
 

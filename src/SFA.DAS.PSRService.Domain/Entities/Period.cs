@@ -1,22 +1,35 @@
 ﻿using System;
-using System.Globalization;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {
     public class Period
     {
-        private readonly DateTime _periodDateTime;
-        private int _startYear => GetReportPeriodStartYear();
-        private int _endYear => GetReportPeriodEndYear();
+        public TwentyFirstCenturyCommonEraYear StartYear { get; }
 
-        public string StartYear => (_startYear).ToString();
-        public string EndYear => (_endYear).ToString();
-        public string FullString => GetCurrentReportPeriodName();
+        public TwentyFirstCenturyCommonEraYear EndYear { get; }
+
+        public string FullString => $"1 April {StartYear.AsFourDigitString} to 31 March {EndYear.AsFourDigitString}";
+
         public string PeriodString => GetReportPeriod();
 
-        public Period(DateTime period)
+        private Period(
+            TwentyFirstCenturyCommonEraYear startYear,
+            TwentyFirstCenturyCommonEraYear endYear)
         {
-            _periodDateTime = period;
+            EndYear = endYear;
+            StartYear = startYear;
+        }
+
+        public static Period FromInstantInPeriod(DateTime instantInPeriod)
+        {
+            var endYear =
+                instantInPeriod.Month < 4
+                    ? instantInPeriod.Year - 1
+                    : instantInPeriod.Year;
+
+            return new Period(
+                startYear: TwentyFirstCenturyCommonEraYear.FromYearAsNumber(endYear - 1),
+                endYear: TwentyFirstCenturyCommonEraYear.FromYearAsNumber(endYear));
         }
 
         private static int ConvertPeriodStringToYear(string period)
@@ -33,40 +46,21 @@ namespace SFA.DAS.PSRService.Domain.Entities
             if (string.IsNullOrWhiteSpace(periodString))
                 throw new ArgumentException("Period string has to be 4 chars", nameof(periodString));
 
-            if(periodString.Length != 4)
+            if (periodString.Length != 4)
                 throw new ArgumentException("Period string has to be 4 chars", nameof(periodString));
 
-            return new Period(DateTime.MinValue);
-        }
-
-        public Period(string period)
-        {
-            var year = ConvertPeriodStringToYear(period);
-
-            _periodDateTime = new DateTime(year, 4, 1);
+            return new Period(
+                startYear:
+                TwentyFirstCenturyCommonEraYear
+                    .ParseTwoDigitYear(periodString.Substring(0, 2)),
+                endYear:
+                TwentyFirstCenturyCommonEraYear
+                    .ParseTwoDigitYear(periodString.Substring(2, 2)));
         }
 
         public string GetReportPeriod()
         {
-            return string.Concat(_startYear.ToString(CultureInfo.InvariantCulture).Substring(2),
-                _endYear.ToString(CultureInfo.InvariantCulture).Substring(2));
-        }
-
-        private int GetReportPeriodEndYear()
-        {
-            var year = _periodDateTime.Year;
-            if (_periodDateTime.Month < 4) year--;
-            return year;
-        }
-
-        private int GetReportPeriodStartYear()
-        {
-            return _endYear - 1;
-        }
-
-        private string GetCurrentReportPeriodName()
-        {
-            return $"1 April {_startYear} to 31 March {_endYear}";
+            return StartYear.AsTwoDigitString + EndYear.AsTwoDigitString;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         private IWebConfiguration _webConfiguration;
         private Mock<IPeriodService> _mockPeriodService;
         protected Mock<IAuthorizationService> _authorizationServiceMock;
-        protected string period = new Period(DateTime.UtcNow).PeriodString;
+        protected Period CurrentPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
 
         protected override void Given()
         {
@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             _mockPeriodService = new Mock<IPeriodService>();
             _authorizationServiceMock = new Mock<IAuthorizationService>(MockBehavior.Strict);
 
-            _mockPeriodService.Setup(r => r.GetCurrentPeriod()).Returns(new Period(period));
+            _mockPeriodService.Setup(r => r.GetCurrentPeriod()).Returns(CurrentPeriod);
 
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))

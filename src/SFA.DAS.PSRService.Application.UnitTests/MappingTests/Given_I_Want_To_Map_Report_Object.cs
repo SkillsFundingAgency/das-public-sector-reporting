@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
         [Test]
         public void ReportCanSerialiseToAndFro()
         {
-            var period = new Period(DateTime.UtcNow);
+            var period = Period.FromInstantInPeriod(DateTime.UtcNow);
             var report = new Report
             {
                 EmployerId = "11",

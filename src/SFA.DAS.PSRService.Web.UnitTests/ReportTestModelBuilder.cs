@@ -78,7 +78,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests
         }
         public static Report ReportWithValidSections(string employerId, DateTime periodDateTime)
         {
-            var period = new Period(periodDateTime);
+            var period = Period.FromInstantInPeriod(periodDateTime);
 
             return new Report()
             {
@@ -92,7 +92,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests
         }
         public static Report ReportWithDuplicateSections(string employerId, DateTime periodDateTime)
         {
-            var period = new Period(periodDateTime);
+            var period = Period.FromInstantInPeriod(periodDateTime);
 
             return new Report()
             {
@@ -134,7 +134,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests
         }
         public static Report ReportWithInvalidSections(string employerId, DateTime periodDateTime)
         {
-            var period = new Period(periodDateTime);
+            var period = Period.FromInstantInPeriod(periodDateTime);
 
             return new Report()
             {

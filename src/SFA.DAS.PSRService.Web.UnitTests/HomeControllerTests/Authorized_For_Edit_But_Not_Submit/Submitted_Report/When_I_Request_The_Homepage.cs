@@ -58,7 +58,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
         [Test]
         public void Then_Report_Period_Matches_Current()
         {
-            Assert.AreEqual(period, model.Period.PeriodString);
+            Assert.AreEqual(CurrentPeriod, model.Period.PeriodString);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
                     =
                     HomePageWelcomeMessageProvider
                         .GetMesssage()
-                        .ForPeriod(new Period(period))
+                        .ForPeriod(CurrentPeriod)
                         .WhereUserCanEdit()
                         .AndReportIsAlreadySubmitted();
 

@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                 .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
                 .ForMember(dest => dest.Sections, opts => opts.Ignore())
                 .ForMember(dest => dest.ReportingPercentages, opts => opts.Ignore())
-                .ForMember(dest => dest.Period, opts => opts.MapFrom(s => new Period(s.ReportingPeriod)))
+                .ForMember(dest => dest.Period, opts => opts.MapFrom(s => Period.ParsePeriodString(s.ReportingPeriod)))
                 .ForMember(dest => dest.UpdatedBy, opts => opts.MapFrom(s => s == null ? null : JsonConvert.DeserializeObject<User>(s.UpdatedBy)))
                 .AfterMap((src, dest) =>
                 {
@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                 });
 
             CreateMap<Report, ReportDto>()
-                .ForMember(dest => dest.ReportingPeriod, opts => opts.MapFrom(src => new Period(src.ReportingPeriod).PeriodString))
+                .ForMember(dest => dest.ReportingPeriod, opts => opts.MapFrom(src => Period.ParsePeriodString(src.ReportingPeriod).PeriodString))
                 .ForMember(dest => dest.ReportingData, opts => opts.MapFrom(src => SerializeData(src)))
                 .ForMember(dest => dest.UpdatedBy, opts => opts.MapFrom(src => JsonConvert.SerializeObject(src.UpdatedBy)));
         }

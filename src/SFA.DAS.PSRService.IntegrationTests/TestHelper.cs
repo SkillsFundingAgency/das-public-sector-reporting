@@ -41,7 +41,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
             ConnectionString = config["ConnectionString"];
         }
 
-        public static Period CurrentPeriod => new Period(DateTime.UtcNow.Date);
+        public static Period CurrentPeriod => Period.FromInstantInPeriod(DateTime.UtcNow.Date);
 
         public static void CreateReport(ReportDto report)
         {

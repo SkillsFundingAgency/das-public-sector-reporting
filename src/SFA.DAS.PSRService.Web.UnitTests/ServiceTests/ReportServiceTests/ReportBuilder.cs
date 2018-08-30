@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 {
                     ReportingPeriod = "1718",
                     Sections = BuildValidReportSections(),
-                    Period = new Period("1718"),
+                    Period = Period.ParsePeriodString("1718"),
                     SubmittedDetails = new Submitted(),
                     OrganisationName = "Some valid organisation name."
                 };

@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
             _mediatorMock = new Mock<IMediator>();
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
-            _period = new Period(DateTime.UtcNow);
+            _period = Period.FromInstantInPeriod(DateTime.UtcNow);
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(_period);
 
             _reportService = new ReportService(Mock.Of<IWebConfiguration>(), _mediatorMock.Object, _periodServiceMock.Object);

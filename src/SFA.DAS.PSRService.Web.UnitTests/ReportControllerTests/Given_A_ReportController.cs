@@ -35,7 +35,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             MockAuthorizationService = new Mock<IAuthorizationService>();
 
-            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
+            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
             _controller = new ReportController(
                 _mockReportService.Object, 

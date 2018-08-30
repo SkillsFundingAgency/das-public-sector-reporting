@@ -7,7 +7,7 @@ namespace SFA.DAS.PSRService.Web.Services
     {
         public Period GetCurrentPeriod()
         {
-            return new Period(DateTime.UtcNow);
+            return Period.FromInstantInPeriod(DateTime.UtcNow);
         }
 
         public bool ReportIsForCurrentPeriod(Report report)

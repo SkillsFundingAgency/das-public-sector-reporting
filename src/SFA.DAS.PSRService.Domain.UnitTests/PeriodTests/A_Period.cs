@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
@@ -19,10 +20,15 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
             int day,
             string expectedPeriodString)
         {
-            Assert
-                .AreEqual(
-                    expectedPeriodString, 
-                    new Period(new DateTime(year, month, day)).PeriodString);
+            Period
+                .FromInstantInPeriod(
+                    new DateTime(
+                        year,
+                        month,
+                        day))
+                .PeriodString
+                .Should()
+                .Be(expectedPeriodString);
         }
 
         [TestCase(2017, 9, 30, "1 April 2016 to 31 March 2017")]
@@ -35,7 +41,15 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
         int day,
         string expectedFullString)
         {
-            Assert.AreEqual(expectedFullString, new Period(new DateTime(year, month, day)).FullString);
+            Period
+                .FromInstantInPeriod(
+                    new DateTime(
+                        year,
+                        month,
+                        day))
+                .FullString
+                .Should()
+                .Be(expectedFullString);
         }
 
         [TestCase(2017, 9, 30, "2016")]
@@ -48,7 +62,16 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
             int day,
             string expectedStartYear)
         {
-            Assert.AreEqual(expectedStartYear, new Period(new DateTime(year, month, day)).StartYear);
+            Period
+                .FromInstantInPeriod(
+                    new DateTime(
+                        year,
+                        month,
+                        day))
+                .StartYear
+                .AsFourDigitString
+                .Should()
+                .Be(expectedStartYear);
         }
 
         [TestCase(2017, 9, 30, "2017")]
@@ -61,7 +84,30 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
             int day,
             string expectedEndYear)
         {
-            Assert.AreEqual(expectedEndYear, new Period(new DateTime(year, month, day)).EndYear);
+            Period
+                .FromInstantInPeriod(
+                    new DateTime(
+                        year,
+                        month,
+                        day))
+                .EndYear
+                .AsFourDigitString
+                .Should()
+                .Be(expectedEndYear);
+        }
+
+        [TestCase("1617")]
+        [TestCase("1718")]
+        [TestCase("1819")]
+        [TestCase("1516")]
+        public void Has_PeriodString_Same_As_Passed_To_ParsePeriodString(
+            string periodString)
+        {
+            Period
+                .ParsePeriodString(periodString)
+                .PeriodString
+                .Should()
+                .Be(periodString);
         }
 
         [Test]
@@ -92,9 +138,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
                     () => Period.ParsePeriodString(parseArgument),
                     Throws
                         .Exception
-                        .TypeOf<ArgumentException>()
-                        .With.Property(nameof(ArgumentException.ParamName))
-                        .EqualTo("periodString"));
+                        .TypeOf<ArgumentException>());
         }
     }
 }
