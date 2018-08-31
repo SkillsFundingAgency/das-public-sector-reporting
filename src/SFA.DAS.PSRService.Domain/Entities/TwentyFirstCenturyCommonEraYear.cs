@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {
-    public class TwentyFirstCenturyCommonEraYear
+    public class TwentyFirstCenturyCommonEraYear : IEquatable<TwentyFirstCenturyCommonEraYear>
     {
         private DateTime firstOfJanThisYear;
 
@@ -57,5 +57,26 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string AsTwoDigitString => firstOfJanThisYear.ToString("yy");
 
         public object AsFourDigitString => firstOfJanThisYear.ToString("yyyy");
+
+        public bool Equals(TwentyFirstCenturyCommonEraYear other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            return AsInt.Equals(other.AsInt);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TwentyFirstCenturyCommonEraYear) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return AsInt.GetHashCode();
+        }
     }
 }

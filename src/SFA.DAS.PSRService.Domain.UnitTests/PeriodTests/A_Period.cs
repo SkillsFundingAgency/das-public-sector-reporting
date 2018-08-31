@@ -10,6 +10,30 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
     [ExcludeFromCodeCoverage]
     public class A_Period
     {
+        [TestCase("1617", "1617", true)]
+        [TestCase("1617", "1516", false)]
+        [TestCase("2021", "2122", false)]
+        [TestCase("1718", "1718", true)]
+        [TestCase("1718", "1819", false)]
+        public void Is_Equatable_With_Another_Period(
+            string left,
+            string right,
+            bool expectedEqual)
+        {
+            var leftPeriod =
+                Period
+                    .ParsePeriodString(left);
+
+            var rightPeriod =
+                Period
+                    .ParsePeriodString(right);
+
+            leftPeriod
+                .Equals(rightPeriod)
+                .Should()
+                .Be(expectedEqual);
+        }
+
         [TestCase(2017, 9, 30, "1617")]
         [TestCase(2017, 10, 1, "1617")]
         [TestCase(2017, 4, 1, "1617")]

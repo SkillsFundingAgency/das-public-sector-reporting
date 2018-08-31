@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
@@ -10,6 +11,30 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
     [ExcludeFromCodeCoverage]
     public class A_TwentyFirstCenturyCommonEraYear
     {
+        [TestCase("00", "00", true)]
+        [TestCase("00", "10", false)]
+        [TestCase("99", "99", true)]
+        [TestCase("00", "98", false)]
+        [TestCase("01", "20", false)]
+        public void Is_Equatable_With_Another_TwentyFirstCenturyCommoonEraYear(
+            string left,
+            string right,
+            bool expectedEqual)
+        {
+            var leftYear =
+                TwentyFirstCenturyCommonEraYear
+                    .ParseTwoDigitYear(left);
+
+            var rightYear =
+                TwentyFirstCenturyCommonEraYear
+                    .ParseTwoDigitYear(right);
+
+            leftYear
+                .Equals(rightYear)
+                .Should()
+                .Be(expectedEqual);
+        }
+
         [TestCase(2000)]
         [TestCase(2001)]
         [TestCase(2019)]
