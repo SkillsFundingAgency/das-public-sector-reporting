@@ -5,30 +5,14 @@ namespace SFA.DAS.PSRService.Domain.Entities
 {
     public class TwentyFirstCenturyCommonEraYear : IEquatable<TwentyFirstCenturyCommonEraYear>
     {
-        private DateTime firstOfJanThisYear;
-
-        private TwentyFirstCenturyCommonEraYear(DateTime instantInYear)
-            : this(instantInYear.Year)
-        {
-        }
-
-        private TwentyFirstCenturyCommonEraYear(int year)
-        {
-            firstOfJanThisYear
-                =
-                new DateTime(
-                    year: year,
-                    month: 1,
-                    day: 1);
-        }
-
         public static TwentyFirstCenturyCommonEraYear FromYearAsNumber(int year)
         {
-            if(year < 2000 || year > 2999)
+            if (year < 2000 || year > 2999)
                 throw new ArgumentException($"{year} is not a 21st century common era year", nameof(year));
 
             return new TwentyFirstCenturyCommonEraYear(year);
         }
+
 
         public static TwentyFirstCenturyCommonEraYear ParseTwoDigitYear(string twoDigitYear)
         {
@@ -44,11 +28,11 @@ namespace SFA.DAS.PSRService.Domain.Entities
                     DateTimeStyles.None,
                     out parsedInstant))
             {
-                return  new TwentyFirstCenturyCommonEraYear(parsedInstant);
+                return new TwentyFirstCenturyCommonEraYear(parsedInstant);
             }
 
             throw new ArgumentException(
-                twoDigitYear+" is not a valid two digit year", 
+                twoDigitYear + " is not a valid two digit year",
                 nameof(twoDigitYear));
         }
 
@@ -77,6 +61,23 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public override int GetHashCode()
         {
             return AsInt.GetHashCode();
+        }
+
+        private DateTime firstOfJanThisYear;
+
+        private TwentyFirstCenturyCommonEraYear(DateTime instantInYear)
+            : this(instantInYear.Year)
+        {
+        }
+
+        private TwentyFirstCenturyCommonEraYear(int year)
+        {
+            firstOfJanThisYear
+                =
+                new DateTime(
+                    year: year,
+                    month: 1,
+                    day: 1);
         }
     }
 }

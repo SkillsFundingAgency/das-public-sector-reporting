@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
         [TestCase("99", "99", true)]
         [TestCase("00", "98", false)]
         [TestCase("01", "20", false)]
-        public void Is_Equatable_With_Another_TwentyFirstCenturyCommoonEraYear(
+        public void Is_Equatable_With_Another_TwentyFirstCenturyCommonEraYear(
             string left,
             string right,
             bool expectedEqual)
@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
         [TestCase(2001)]
         [TestCase(2019)]
         [TestCase(2999)]
-        public void Can_Be_Create_From_Integer_Year(
+        public void Can_Be_Created_From_Integer_Year(
             int year)
         {
             TwentyFirstCenturyCommonEraYear

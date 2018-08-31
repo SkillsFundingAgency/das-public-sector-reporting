@@ -12,14 +12,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public string PeriodString => GetReportPeriod();
 
-        private Period(
-            TwentyFirstCenturyCommonEraYear startYear,
-            TwentyFirstCenturyCommonEraYear endYear)
-        {
-            EndYear = endYear;
-            StartYear = startYear;
-        }
-
         public static Period FromInstantInPeriod(DateTime instantInPeriod)
         {
             var endYear =
@@ -30,15 +22,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return new Period(
                 startYear: TwentyFirstCenturyCommonEraYear.FromYearAsNumber(endYear - 1),
                 endYear: TwentyFirstCenturyCommonEraYear.FromYearAsNumber(endYear));
-        }
-
-        private static int ConvertPeriodStringToYear(string period)
-        {
-            if (period == null || period.Length != 4)
-                throw new ArgumentException("Period string has to be 4 chars", nameof(period));
-
-            var year = int.Parse(period.Substring(0, 2)) + 2001;
-            return year;
         }
 
         public static Period ParsePeriodString(string periodString)
@@ -84,6 +67,14 @@ namespace SFA.DAS.PSRService.Domain.Entities
             {
                 return ((StartYear != null ? StartYear.GetHashCode() : 0) * 397) ^ (EndYear != null ? EndYear.GetHashCode() : 0);
             }
+        }
+
+        private Period(
+            TwentyFirstCenturyCommonEraYear startYear,
+            TwentyFirstCenturyCommonEraYear endYear)
+        {
+            EndYear = endYear;
+            StartYear = startYear;
         }
     }
 }
