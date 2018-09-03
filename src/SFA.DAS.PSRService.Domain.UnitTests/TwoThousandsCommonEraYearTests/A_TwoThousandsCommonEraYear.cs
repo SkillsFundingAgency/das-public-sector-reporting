@@ -4,28 +4,28 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTests
+namespace SFA.DAS.PSRService.Domain.UnitTests.TwoThousandsCommonEraYearTests
 {
     [TestFixture]
     [ExcludeFromCodeCoverage]
-    public class A_TwentyFirstCenturyCommonEraYear
+    public class A_TwoThousandsCommonEraYear
     {
         [TestCase("00", "00", true)]
         [TestCase("00", "10", false)]
         [TestCase("99", "99", true)]
         [TestCase("00", "98", false)]
         [TestCase("01", "20", false)]
-        public void Is_Equatable_With_Another_TwentyFirstCenturyCommonEraYear(
+        public void Is_Equatable_With_Another_TwoThousandsCommonEraYear(
             string left,
             string right,
             bool expectedEqual)
         {
             var leftYear =
-                TwentyFirstCenturyCommonEraYear
+                TwoThousandsCommonEraYear
                     .ParseTwoDigitYear(left);
 
             var rightYear =
-                TwentyFirstCenturyCommonEraYear
+                TwoThousandsCommonEraYear
                     .ParseTwoDigitYear(right);
 
             leftYear
@@ -41,7 +41,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
         public void Can_Be_Created_From_Integer_Year(
             int year)
         {
-            TwentyFirstCenturyCommonEraYear
+            TwoThousandsCommonEraYear
                 .FromYearAsNumber(year)
                 .Should()
                 .NotBeNull();
@@ -57,7 +57,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
         {
             Assert
                 .That(
-                    () => TwentyFirstCenturyCommonEraYear.FromYearAsNumber(invalidYear),
+                    () => TwoThousandsCommonEraYear.FromYearAsNumber(invalidYear),
                     Throws
                         .Exception
                         .TypeOf<ArgumentException>());
@@ -71,7 +71,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
             string twoDigitYear,
             int expectedParsedYear)
         {
-            TwentyFirstCenturyCommonEraYear
+            TwoThousandsCommonEraYear
                 .ParseTwoDigitYear(twoDigitYear)
                 .AsInt
                 .Should()
@@ -85,7 +85,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
         public void Has_Expected_AsTwoDigitString_Property(
             string twoDigitYear)
         {
-            TwentyFirstCenturyCommonEraYear
+            TwoThousandsCommonEraYear
                 .ParseTwoDigitYear(twoDigitYear)
                 .AsTwoDigitString
                 .Should()
@@ -100,7 +100,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
             string twoDigitYear,
             string expectedFourDigitYear)
         {
-            TwentyFirstCenturyCommonEraYear
+            TwoThousandsCommonEraYear
                 .ParseTwoDigitYear(twoDigitYear)
                 .AsFourDigitString
                 .Should()
@@ -119,7 +119,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwentyFirstCenturyCommonEraYearTes
         {
             Assert
                 .That(
-                    () => TwentyFirstCenturyCommonEraYear.ParseTwoDigitYear(invalidTwoDigitYear),
+                    () => TwoThousandsCommonEraYear.ParseTwoDigitYear(invalidTwoDigitYear),
                     Throws
                         .Exception
                         .TypeOf<ArgumentException>());

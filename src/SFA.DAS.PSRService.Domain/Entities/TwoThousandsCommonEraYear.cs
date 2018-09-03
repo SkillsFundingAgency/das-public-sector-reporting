@@ -3,18 +3,18 @@ using System.Globalization;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {
-    public class TwentyFirstCenturyCommonEraYear : IEquatable<TwentyFirstCenturyCommonEraYear>
+    public class TwoThousandsCommonEraYear : IEquatable<TwoThousandsCommonEraYear>
     {
-        public static TwentyFirstCenturyCommonEraYear FromYearAsNumber(int year)
+        public static TwoThousandsCommonEraYear FromYearAsNumber(int year)
         {
             if (year < 2000 || year > 2999)
                 throw new ArgumentException($"{year} is not a 21st century common era year", nameof(year));
 
-            return new TwentyFirstCenturyCommonEraYear(year);
+            return new TwoThousandsCommonEraYear(year);
         }
 
 
-        public static TwentyFirstCenturyCommonEraYear ParseTwoDigitYear(string twoDigitYear)
+        public static TwoThousandsCommonEraYear ParseTwoDigitYear(string twoDigitYear)
         {
             var commonEra21stCenturyYearAsFourDigitString = "20" + twoDigitYear;
 
@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
                     DateTimeStyles.None,
                     out parsedInstant))
             {
-                return new TwentyFirstCenturyCommonEraYear(parsedInstant);
+                return new TwoThousandsCommonEraYear(parsedInstant);
             }
 
             throw new ArgumentException(
@@ -42,7 +42,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public object AsFourDigitString => firstOfJanThisYear.ToString("yyyy");
 
-        public bool Equals(TwentyFirstCenturyCommonEraYear other)
+        public bool Equals(TwoThousandsCommonEraYear other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -55,7 +55,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((TwentyFirstCenturyCommonEraYear) obj);
+            return Equals((TwoThousandsCommonEraYear) obj);
         }
 
         public override int GetHashCode()
@@ -65,12 +65,12 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         private DateTime firstOfJanThisYear;
 
-        private TwentyFirstCenturyCommonEraYear(DateTime instantInYear)
+        private TwoThousandsCommonEraYear(DateTime instantInYear)
             : this(instantInYear.Year)
         {
         }
 
-        private TwentyFirstCenturyCommonEraYear(int year)
+        private TwoThousandsCommonEraYear(int year)
         {
             firstOfJanThisYear
                 =

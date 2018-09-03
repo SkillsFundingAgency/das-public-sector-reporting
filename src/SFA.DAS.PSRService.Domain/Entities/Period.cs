@@ -4,9 +4,9 @@ namespace SFA.DAS.PSRService.Domain.Entities
 {
     public class Period : IEquatable<Period>
     {
-        public TwentyFirstCenturyCommonEraYear StartYear { get; }
+        public TwoThousandsCommonEraYear StartYear { get; }
 
-        public TwentyFirstCenturyCommonEraYear EndYear { get; }
+        public TwoThousandsCommonEraYear EndYear { get; }
 
         public string FullString => $"1 April {StartYear.AsFourDigitString} to 31 March {EndYear.AsFourDigitString}";
 
@@ -20,8 +20,8 @@ namespace SFA.DAS.PSRService.Domain.Entities
                     : instantInPeriod.Year;
 
             return new Period(
-                startYear: TwentyFirstCenturyCommonEraYear.FromYearAsNumber(endYear - 1),
-                endYear: TwentyFirstCenturyCommonEraYear.FromYearAsNumber(endYear));
+                startYear: TwoThousandsCommonEraYear.FromYearAsNumber(endYear - 1),
+                endYear: TwoThousandsCommonEraYear.FromYearAsNumber(endYear));
         }
 
         public static Period ParsePeriodString(string periodString)
@@ -34,10 +34,10 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
             return new Period(
                 startYear:
-                TwentyFirstCenturyCommonEraYear
+                TwoThousandsCommonEraYear
                     .ParseTwoDigitYear(periodString.Substring(0, 2)),
                 endYear:
-                TwentyFirstCenturyCommonEraYear
+                TwoThousandsCommonEraYear
                     .ParseTwoDigitYear(periodString.Substring(2, 2)));
         }
 
@@ -70,8 +70,8 @@ namespace SFA.DAS.PSRService.Domain.Entities
         }
 
         private Period(
-            TwentyFirstCenturyCommonEraYear startYear,
-            TwentyFirstCenturyCommonEraYear endYear)
+            TwoThousandsCommonEraYear startYear,
+            TwoThousandsCommonEraYear endYear)
         {
             EndYear = endYear;
             StartYear = startYear;
