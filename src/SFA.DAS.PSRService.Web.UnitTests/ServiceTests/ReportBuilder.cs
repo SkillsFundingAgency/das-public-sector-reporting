@@ -2,7 +2,7 @@
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
 {
     public class ReportBuilder
     {
