@@ -37,7 +37,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwoThousandsCommonEraYearTests
         [TestCase(2000)]
         [TestCase(2001)]
         [TestCase(2019)]
-        [TestCase(2999)]
+        [TestCase(2099)]
         public void Can_Be_Created_From_Integer_Year(
             int year)
         {
@@ -52,6 +52,8 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.TwoThousandsCommonEraYearTests
         [TestCase(3019)]
         [TestCase(1999)]
         [TestCase(9999)]
+        [TestCase(2999)]
+        [TestCase(2100)]
         public void Throws_Exception_When_Trying_To_Create_From_Invalid_Integer_Year(
             int invalidYear)
         {
