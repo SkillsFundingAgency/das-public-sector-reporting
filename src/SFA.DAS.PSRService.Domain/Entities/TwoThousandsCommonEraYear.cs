@@ -78,7 +78,5 @@ namespace SFA.DAS.PSRService.Domain.Entities
                     month: 1,
                     day: 1);
         }
-
-        private TwoThousandsCommonEraYear() { }
     }
 }

@@ -76,7 +76,5 @@ namespace SFA.DAS.PSRService.Domain.Entities
             EndYear = endYear;
             StartYear = startYear;
         }
-
-        private Period(){}
     }
 }
