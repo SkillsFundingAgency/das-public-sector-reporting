@@ -8,7 +8,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public static TwoThousandsCommonEraYear FromYearAsNumber(int year)
         {
             if (year < 2000 || year > 2099)
-                throw new ArgumentException($"{year} is not a 21st century common era year", nameof(year));
+                throw new ArgumentException($"{year} is not a two thousands common era year", nameof(year));
 
             return new TwoThousandsCommonEraYear(year);
         }
