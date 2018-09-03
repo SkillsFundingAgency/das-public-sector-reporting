@@ -26,8 +26,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
         }
 
         [Test]
-        public void 
-            Then_Report_Is_Persisted_As_Submitted()
+        public void Then_Report_Is_Persisted_As_Submitted()
         {
             TestHelper
                 .GetAllReports()
