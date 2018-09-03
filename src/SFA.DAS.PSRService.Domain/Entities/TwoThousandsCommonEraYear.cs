@@ -13,7 +13,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return new TwoThousandsCommonEraYear(year);
         }
 
-
         public static TwoThousandsCommonEraYear ParseTwoDigitYear(string twoDigitYear)
         {
             var commonEra21stCenturyYearAsFourDigitString = "20" + twoDigitYear;
@@ -40,7 +39,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public string AsTwoDigitString => firstOfJanThisYear.ToString("yy");
 
-        public object AsFourDigitString => firstOfJanThisYear.ToString("yyyy");
+        public string AsFourDigitString => firstOfJanThisYear.ToString("yyyy");
 
         public bool Equals(TwoThousandsCommonEraYear other)
         {
@@ -79,5 +78,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
                     month: 1,
                     day: 1);
         }
+
+        private TwoThousandsCommonEraYear() { }
     }
 }
