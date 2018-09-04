@@ -78,6 +78,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 {
                     _.AssemblyContainingType(typeof(Startup));
                     _.WithDefaultConventions();
+                    _.SingleImplementationsOfInterface();
                 });
 
                 config.For<IWebConfiguration>().Use(new WebConfiguration
