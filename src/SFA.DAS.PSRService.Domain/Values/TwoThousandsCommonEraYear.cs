@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace SFA.DAS.PSRService.Domain.Entities
+namespace SFA.DAS.PSRService.Domain.Values
 {
     public class TwoThousandsCommonEraYear : IEquatable<TwoThousandsCommonEraYear>
     {

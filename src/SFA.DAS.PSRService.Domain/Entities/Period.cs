@@ -1,4 +1,5 @@
 ﻿using System;
+using SFA.DAS.PSRService.Domain.Values;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {

@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Domain.Values;
 
 namespace SFA.DAS.PSRService.Domain.UnitTests.TwoThousandsCommonEraYearTests
 {
