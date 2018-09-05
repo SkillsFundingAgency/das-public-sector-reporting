@@ -26,7 +26,11 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submi
                 mediator: MockMediator.Object,
                 periodService: MockPeriodService.Object);
 
-            ValidNotSubmittedReport = new ReportBuilder().BuildReportWithValidSections();
+            ValidNotSubmittedReport = 
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build();
         }
     }
 }

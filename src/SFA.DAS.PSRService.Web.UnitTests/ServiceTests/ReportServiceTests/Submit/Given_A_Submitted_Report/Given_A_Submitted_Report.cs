@@ -21,7 +21,11 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submi
                 mediator: Mock.Of<IMediator>(),
                 periodService: Mock.Of<IPeriodService>());
 
-            AlreadySubmittedReport = new ReportBuilder().BuildAlreadySubmittedReportWithValidSections();
+            AlreadySubmittedReport = 
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WhereReportIsAlreadySubmitted()
+                    .Build();
         }      
     }
 }

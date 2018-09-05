@@ -1,25 +1,53 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
 {
-    public class ReportBuilder
+    [ExcludeFromCodeCoverage]
+    public sealed class ReportBuilder
     {
-        public Report BuildReportWithValidSections()
+        private IEnumerable<Section> _sections = Enumerable.Empty<Section>();
+        private bool _submittedStatus;
+
+        public Report Build()
         {
             return
                 new Report
                 {
                     ReportingPeriod = "1718",
-                    Sections = BuildValidReportSections(),
+                    Sections = _sections,
                     Period = Period.ParsePeriodString("1718"),
                     SubmittedDetails = new Submitted(),
-                    OrganisationName = "Some valid organisation name."
+                    OrganisationName = "Some valid organisation name.",
+                    Submitted = _submittedStatus
                 };
         }
 
-        public static IEnumerable<Section> BuildValidReportSections()
+        public ReportBuilder WithValidSections()
+        {
+            _sections = BuildValidReportSections();
+
+            return this;
+        }
+
+        public ReportBuilder WhereReportIsAlreadySubmitted()
+        {
+            _submittedStatus = true;
+
+            return this;
+        }
+
+        public ReportBuilder WhereReportIsNotAlreadySubmitted()
+        {
+            _submittedStatus = false;
+
+            return this;
+        }
+
+        private static IEnumerable<Section> BuildValidReportSections()
         {
             var questions = new List<Question>
             {
@@ -104,15 +132,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             sections.Add(sectionThree);
 
             return sections;
-        }
-
-        public Report BuildAlreadySubmittedReportWithValidSections()
-        {
-            var report = BuildReportWithValidSections();
-
-            report.Submitted = true;
-
-            return report;
         }
     }
 }
