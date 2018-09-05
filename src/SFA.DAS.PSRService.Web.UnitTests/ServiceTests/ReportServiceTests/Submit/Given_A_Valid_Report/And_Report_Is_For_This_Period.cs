@@ -12,7 +12,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submi
         {
             MockPeriodService
                 .Setup(
-                    m => m.ReportIsForCurrentPeriod(It.IsAny<Report>()))
+                    m => m.PeiordIsCurrent(It.IsAny<Period>()))
                 .Returns(true);
         }
     }

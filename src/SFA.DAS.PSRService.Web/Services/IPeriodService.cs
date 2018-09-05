@@ -5,6 +5,6 @@ namespace SFA.DAS.PSRService.Web.Services
     public interface IPeriodService
     {
         Period GetCurrentPeriod();
-        bool ReportIsForCurrentPeriod(Report report);
+        bool PeiordIsCurrent(Period comparisonPeriod);
     }
 }
