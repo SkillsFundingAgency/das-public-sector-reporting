@@ -73,7 +73,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.PeriodServiceTests
             var SUT = new PeriodService(mockDateTimeService.Object);
 
             SUT
-                .PeiordIsCurrent(comparisonPeriod)
+                .PeriodIsCurrent(comparisonPeriod)
                 .Should()
                 .Be(expectedComparisonResult);
         }

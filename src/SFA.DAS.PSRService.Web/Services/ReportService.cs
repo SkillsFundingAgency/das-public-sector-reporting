@@ -89,7 +89,7 @@ namespace SFA.DAS.PSRService.Web.Services
         {
             return report != null
                    && !report.Submitted
-                   && _periodService.PeiordIsCurrent(report.Period);
+                   && _periodService.PeriodIsCurrent(report.Period);
         }
 
         public IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(

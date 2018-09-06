@@ -17,7 +17,7 @@ namespace SFA.DAS.PSRService.Web.Services
             return Period.FromInstantInPeriod(_dateTimeService.UtcNow);
         }
 
-        public bool PeiordIsCurrent(Period comparisonPeriod)
+        public bool PeriodIsCurrent(Period comparisonPeriod)
         {
             return comparisonPeriod.Equals(GetCurrentPeriod());
         }
