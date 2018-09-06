@@ -32,7 +32,9 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.PSRService.Database
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.IntegrationTests", "SFA.DAS.PSRService.IntegrationTests\SFA.DAS.PSRService.IntegrationTests.csproj", "{A723DBC9-07CA-4FAC-BE74-13A159BF46E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PSRService.Domain.UnitTests", "SFA.DAS.PSRService.Domain.UnitTests\SFA.DAS.PSRService.Domain.UnitTests.csproj", "{FB3A3699-FCA9-451D-9BAF-8B3A81C71360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PSRService.Domain.UnitTests", "SFA.DAS.PSRService.Domain.UnitTests\SFA.DAS.PSRService.Domain.UnitTests.csproj", "{FB3A3699-FCA9-451D-9BAF-8B3A81C71360}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PSRService.MessageTypes", "SFA.DAS.PSRService.MessageTypes\SFA.DAS.PSRService.MessageTypes.csproj", "{1625821F-C313-4919-A8F8-DB8B8829B78C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{FB3A3699-FCA9-451D-9BAF-8B3A81C71360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB3A3699-FCA9-451D-9BAF-8B3A81C71360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB3A3699-FCA9-451D-9BAF-8B3A81C71360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1625821F-C313-4919-A8F8-DB8B8829B78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1625821F-C313-4919-A8F8-DB8B8829B78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1625821F-C313-4919-A8F8-DB8B8829B78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1625821F-C313-4919-A8F8-DB8B8829B78C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

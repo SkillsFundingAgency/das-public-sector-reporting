@@ -17,7 +17,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         private readonly IMapper _mapper;
         private readonly IFileProvider _fileProvider;
 
-        public CreateReportHandler(IReportRepository reportRepository, IMapper mapper, IFileProvider fileProvider)
+        public CreateReportHandler(IReportRepository reportRepository, IMapper mapper, IFileProvider fileProvider, IUnitOfWork)
         {
             _reportRepository = reportRepository;
             _mapper = mapper;
