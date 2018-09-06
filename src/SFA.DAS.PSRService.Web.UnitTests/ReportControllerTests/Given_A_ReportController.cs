@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         public Mock<IUserService> _userServiceMock;
         private Mock<IPeriodService> _periodServiceMock;
-        protected IList<Report> _reportList = ReportTestModelBuilder.ReportsWithValidSections();
         private EmployerIdentifier _employerIdentifier;
         protected Mock<IAuthorizationService> MockAuthorizationService;
 

@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
+namespace SFA.DAS.PSRService.Web.UnitTests
 {
     [ExcludeFromCodeCoverage]
     public sealed class ReportBuilder
     {
         private IEnumerable<Section> _sections = Enumerable.Empty<Section>();
         private bool _submittedStatus;
+        private string _employerId = String.Empty;
+        private Period _reportingPeriod = Period.ParsePeriodString("1718");
 
         public Report Build()
         {
@@ -19,16 +22,24 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
                 {
                     ReportingPeriod = "1718",
                     Sections = _sections,
-                    Period = Period.ParsePeriodString("1718"),
+                    Period = _reportingPeriod,
                     SubmittedDetails = new Submitted(),
-                    OrganisationName = "Some valid organisation name.",
-                    Submitted = _submittedStatus
+                    OrganisationName = $"Organisation {_employerId}",
+                    Submitted = _submittedStatus,
+                    EmployerId = _employerId
                 };
         }
 
         public ReportBuilder WithValidSections()
         {
             _sections = BuildValidReportSections();
+
+            return this;
+        }
+
+        public ReportBuilder WithInvalidSections()
+        {
+            _sections = BuildInvalidReportSections();
 
             return this;
         }
@@ -43,6 +54,30 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
         public ReportBuilder WhereReportIsNotAlreadySubmitted()
         {
             _submittedStatus = false;
+
+            return this;
+        }
+
+
+        public ReportBuilder WithEmployerId(string employerId)
+        {
+            _employerId = employerId;
+
+            return this;
+        }
+
+
+        public ReportBuilder ForPeriod(Period period)
+        {
+            _reportingPeriod = period;
+
+            return this;
+        }
+
+
+        public ReportBuilder ForCurrentPeriod()
+        {
+            _reportingPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
 
             return this;
         }
@@ -132,6 +167,54 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             sections.Add(sectionThree);
 
             return sections;
+        }
+        private static IEnumerable<Section> BuildInvalidReportSections()
+        {
+            var questions = new List<Question>()
+            {
+                new Question()
+                {
+                    Id = "atStart",
+                    Answer = "",
+                    Type = QuestionType.Number,
+                    Optional = false
+                }
+                ,new Question()
+                {
+                    Id = "atEnd",
+                    Answer = "",
+                    Type = QuestionType.Number,
+                    Optional = false
+                },
+                new Question()
+                {
+                    Id = "newThisPeriod",
+                    Answer = "1,000",
+                    Type = QuestionType.Number,
+                    Optional = false
+                }
+
+            };
+
+            var sectionOne = new Section()
+            {
+                Id = "SectionOne",
+                SubSections = new List<Section>()
+                {
+                    new Section
+                    {
+                        Id = "SubSectionOne",
+                        Questions = questions,
+                        Title = "SubSectionOne",
+                        SummaryText = ""
+
+                    }
+                },
+                Questions = null,
+                Title = "SectionOne"
+            };
+
+            return new List<Section>() { sectionOne };
         }
     }
 }
