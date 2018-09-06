@@ -28,10 +28,10 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public static Period ParsePeriodString(string periodString)
         {
             if (string.IsNullOrWhiteSpace(periodString))
-                throw new ArgumentException("Period string has to be 4 chars", nameof(periodString));
+                throw new ArgumentException($"{periodString} cannot be parsed. Should  be 4 chars e.g. 1516 to represent period 2015/2016", nameof(periodString));
 
             if (periodString.Length != 4)
-                throw new ArgumentException("Period string has to be 4 chars", nameof(periodString));
+                throw new ArgumentException($"{periodString} cannot be parsed. Should  be 4 chars e.g. 1516 to represent period 2015/2016", nameof(periodString));
 
             return new Period(
                 startYear:
