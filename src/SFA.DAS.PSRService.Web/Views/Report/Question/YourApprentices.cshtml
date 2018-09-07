@@ -10,7 +10,7 @@
         <caption class="heading-medium">Number of apprentices who work in England</caption>
         <tbody>
             <tr>
-                <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear</td>
+                <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
                 <td class="numeric bold js-addcommas">@questionList["atStart"].Answer</td>
                     @if (canBeEdited)
                     {
@@ -20,7 +20,7 @@
                     }
             </tr>
             <tr>
-                <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear</td>
+                <td>Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear.AsFourDigitString</td>
                 <td class="numeric bold js-addcommas">@questionList["atEnd"].Answer</td>
                     @if (canBeEdited)
                     {

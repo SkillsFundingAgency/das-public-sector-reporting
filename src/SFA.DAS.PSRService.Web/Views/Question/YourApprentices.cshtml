@@ -25,7 +25,7 @@
 </p>
 <div class="form-group">
     <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[0].Answer">
-        Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.StartYear
+        Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.StartYear.AsFourDigitString
         <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
     </label>
     <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
@@ -34,7 +34,7 @@
 
 <div class="form-group">
     <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[1].Answer">
-        Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.EndYear
+        Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.EndYear.AsFourDigitString
         <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
     </label>
     <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
