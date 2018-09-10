@@ -15,9 +15,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void The_Report_Exists_And_Is_Editable_Then_Show_Edit_Report()
         {
             // arrange
-            var report = _reportList.FirstOrDefault();
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
+            _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(true).Verifiable();
 
             // act
             var result = _controller.Edit();
@@ -61,9 +60,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             const string url = "report/create";
             UrlActionContext actualContext = null;
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            var report = _reportList.FirstOrDefault();
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
+            _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(false).Verifiable();
 
             // act
             var result = _controller.Edit();

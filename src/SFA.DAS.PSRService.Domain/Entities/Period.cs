@@ -1,77 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+using SFA.DAS.PSRService.Domain.Values;
 
 namespace SFA.DAS.PSRService.Domain.Entities
 {
-    public class Period
+    public class Period : IEquatable<Period>
     {
-        private DateTime _periodDateTime { get; set; }
-        private int _startYear => GetReportPeriodStartYear();
-        private int _endYear => GetReportPeriodEndYear();
+        public TwoThousandsCommonEraYear StartYear { get; }
 
-        public string StartYear => (_startYear).ToString();
-        public string EndYear => (_endYear).ToString();
-        public string FullString => GetCurrentReportPeriodName();
-        public bool IsCurrent => IsCurrentPeriod();
+        public TwoThousandsCommonEraYear EndYear { get; }
+
+        public string FullString => $"1 April {StartYear.AsFourDigitString} to 31 March {EndYear.AsFourDigitString}";
+
         public string PeriodString => GetReportPeriod();
-        
-        public Period(DateTime period)
+
+        public static Period FromInstantInPeriod(DateTime instantInPeriod)
         {
-            _periodDateTime = period;
+            var endYear =
+                instantInPeriod.Month < 4
+                    ? instantInPeriod.Year - 1
+                    : instantInPeriod.Year;
+
+            return new Period(
+                startYear: TwoThousandsCommonEraYear.FromYearAsNumber(endYear - 1),
+                endYear: TwoThousandsCommonEraYear.FromYearAsNumber(endYear));
         }
 
-        public Period(string period)
+        public static Period ParsePeriodString(string periodString)
         {
-            var year = ConvertPeriodStringToYear(period);
+            if (string.IsNullOrWhiteSpace(periodString))
+                throw new ArgumentException($"{periodString} cannot be parsed; should be 4 chars e.g. 1516 to represent period 2015/2016", nameof(periodString));
 
-            _periodDateTime = new DateTime(year,4,1);
+            if (periodString.Length != 4)
+                throw new ArgumentException($"{periodString} cannot be parsed; should be 4 chars e.g. 1516 to represent period 2015/2016", nameof(periodString));
+
+            return new Period(
+                startYear:
+                TwoThousandsCommonEraYear
+                    .ParseTwoDigitYear(periodString.Substring(0, 2)),
+                endYear:
+                TwoThousandsCommonEraYear
+                    .ParseTwoDigitYear(periodString.Substring(2, 2)));
         }
 
         public string GetReportPeriod()
         {
-            return string.Concat(_startYear.ToString(CultureInfo.InvariantCulture).Substring(2), _endYear.ToString(CultureInfo.InvariantCulture).Substring(2));
+            return StartYear.AsTwoDigitString + EndYear.AsTwoDigitString;
         }
 
-        private int GetReportPeriodEndYear()
+        public bool Equals(Period other)
         {
-            var year = _periodDateTime.Year;
-            if (_periodDateTime.Month < 4) year--;
-            return year;
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return StartYear.Equals(other.StartYear) && EndYear.Equals(other.EndYear);
         }
-        private int GetReportPeriodStartYear()
+
+        public override bool Equals(object obj)
         {
-           
-            return _endYear - 1;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Period) obj);
         }
 
-        private Period GetCurrentReportPeriod()
+        public override int GetHashCode()
         {
-            return new Period(DateTime.UtcNow.Date);
+            unchecked
+            {
+                return ((StartYear != null ? StartYear.GetHashCode() : 0) * 397) ^ (EndYear != null ? EndYear.GetHashCode() : 0);
+            }
         }
-        
-        private string GetCurrentReportPeriodName()
+
+        private Period(
+            TwoThousandsCommonEraYear startYear,
+            TwoThousandsCommonEraYear endYear)
         {
-
-            return $"1 April {_startYear} to 31 March {_endYear}";
+            EndYear = endYear;
+            StartYear = startYear;
         }
-
-        private static int ConvertPeriodStringToYear(string period)
-        {
-            if (period == null || period.Length != 4)
-                throw new ArgumentException("Period string has to be 4 chars", nameof(period));
-
-            var year = int.Parse(period.Substring(0, 2)) + 2001;
-            return year;
-        }
-
-        private bool IsCurrentPeriod()
-
-        {
-            return (GetCurrentReportPeriod().PeriodString == PeriodString);
-        }
-
-
     }
 }

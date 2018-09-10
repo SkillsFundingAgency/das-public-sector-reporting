@@ -23,11 +23,6 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public void CreateReport(string employerId, UserModel user)
         {
-            if (IsSubmissionsOpen() == false)
-            {
-                throw new Exception("Unable to create report after submissions is closed");
-            }
-
             var currentPeriod = _periodService.GetCurrentPeriod();
 
             var requestUser = new User
@@ -73,12 +68,6 @@ namespace SFA.DAS.PSRService.Web.Services
             var submittedReports = _mediator.Send(request).Result;
             return submittedReports;
         }
-        
-
-        public bool IsSubmissionsOpen()
-        {
-            return DateTime.UtcNow < _config.SubmissionClose;
-        }
 
         public void SaveReport(Report report, UserModel user)
         {
@@ -98,10 +87,9 @@ namespace SFA.DAS.PSRService.Web.Services
 
         public bool CanBeEdited(Report report)
         {
-            return report != null 
-                   && !report.Submitted 
-                   && report.Period.IsCurrent 
-                   && _periodService.IsSubmissionsOpen();
+            return report != null
+                   && !report.Submitted
+                   && _periodService.PeriodIsCurrent(report.Period);
         }
 
         public IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(

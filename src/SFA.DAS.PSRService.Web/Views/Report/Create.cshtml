@@ -1,18 +1,18 @@
 ﻿@model object
 
 @{
-    ViewBag.Title = $"Report {ViewBag.CurrentPeriod.StartYear} to {ViewBag.CurrentPeriod.EndYear} public sector apprenticeship target data";
+    ViewBag.Title = $"Report {ViewBag.CurrentPeriod.StartYear.AsFourDigitString} to {ViewBag.CurrentPeriod.EndYear.AsFourDigitString} public sector apprenticeship target data";
     Layout = "_Layout";
 }
 
 <div class="column-two-thirds">
-    <h1 class="heading-large">Report @ViewBag.CurrentPeriod.StartYear to @ViewBag.CurrentPeriod.EndYear public sector apprenticeship target data</h1>
+    <h1 class="heading-large">Report @ViewBag.CurrentPeriod.StartYear.AsFourDigitString to @ViewBag.CurrentPeriod.EndYear.AsFourDigitString public sector apprenticeship target data</h1>
     <p>This report covers the period between @ViewBag.CurrentPeriod.FullString</p>
     <p>
         It must be completed by:
     </p>
     <ul class="list list-bullet">
-        <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March @ViewBag.CurrentPeriod.StartYear</li>
+        <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</li>
     </ul>
 
     <details>
@@ -51,7 +51,7 @@
 
     <div class="panel panel-border-wide">
         <p>
-            Submissions deadline - 30 September @ViewBag.CurrentPeriod.EndYear
+            Submissions deadline - 30 September @ViewBag.CurrentPeriod.EndYear.AsFourDigitString
         </p>
     </div>
     

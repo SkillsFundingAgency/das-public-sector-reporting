@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void And_More_Than_One_Report_Then_Show_List()
         {
             // arrange
-           _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(_reportList);
+           _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList);
            // _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             // act
             var result = _controller.List();
@@ -36,7 +36,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             var reportList = listViewModel.SubmittedReports;
             Assert.IsNotEmpty(reportList);
             CollectionAssert.AllItemsAreInstancesOfType(reportList, typeof(Report));
-            CollectionAssert.AreEqual(reportList, _reportList);
+            CollectionAssert.AreEqual(reportList, ReportList);
       
        
         }
@@ -50,7 +50,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(_reportList.Take(1).ToList);
+            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList.Take(1).ToList);
             // act
             var result = _controller.List();
 

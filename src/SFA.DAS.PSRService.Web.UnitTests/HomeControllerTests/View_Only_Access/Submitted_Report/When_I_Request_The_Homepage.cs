@@ -58,7 +58,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.
         [Test]
         public void Then_Report_Period_Matches_Current()
         {
-            Assert.AreEqual(period, model.Period.PeriodString);
+            Assert.AreEqual(CurrentPeriod, model.Period);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.
                     =
                     HomePageWelcomeMessageProvider
                         .GetMesssage()
-                        .ForPeriod(new Period(period))
+                        .ForPeriod(CurrentPeriod)
                         .WhereUserCanOnlyView()
                         .AndReportIsAlreadySubmitted();
 
