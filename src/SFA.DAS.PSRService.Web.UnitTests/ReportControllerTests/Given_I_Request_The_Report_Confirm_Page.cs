@@ -14,7 +14,13 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_The_Report_Is_Valid_To_Submit_Then_Show_Confirm_View()
         {
             // arrange
-            var report = ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDEF");
+            var report =
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WithEmployerId("ABCDEF")
+                    .ForCurrentPeriod()
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build();
 
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
@@ -151,10 +157,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
 
-            var report = ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE");
-
-            report.Submitted = true;
-
+            var report =
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WithEmployerId("ABCDEF")
+                    .ForCurrentPeriod()
+                    .WhereReportIsAlreadySubmitted()
+                    .Build();
+                
             _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
             _controller.ObjectValidator = GetObjectValidator().Object;

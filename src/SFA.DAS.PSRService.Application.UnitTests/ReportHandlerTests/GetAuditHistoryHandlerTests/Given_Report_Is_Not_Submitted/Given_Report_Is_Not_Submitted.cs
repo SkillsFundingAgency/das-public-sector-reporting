@@ -71,7 +71,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHi
         {
             var requrestWithNonSubmittedReport =
                 new GetReportEditHistoryMostRecentFirst(
-                    period:new Period(DateTime.UtcNow), 
+                    period:Period.FromInstantInPeriod(DateTime.UtcNow), 
                     accountId:"SomeEmployerId");
 
             SUT.Handle(requrestWithNonSubmittedReport, new CancellationToken()).Wait();

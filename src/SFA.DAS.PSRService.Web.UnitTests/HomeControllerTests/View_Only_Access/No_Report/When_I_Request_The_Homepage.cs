@@ -74,7 +74,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.
                     =
                     HomePageWelcomeMessageProvider
                         .GetMesssage()
-                        .ForPeriod(new Period(period))
+                        .ForPeriod(CurrentPeriod)
                         .WhereUserCanOnlyView()
                         .AndReportDoesNotExist();
 

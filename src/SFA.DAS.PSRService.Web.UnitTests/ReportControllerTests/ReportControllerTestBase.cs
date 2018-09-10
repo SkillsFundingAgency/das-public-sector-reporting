@@ -24,19 +24,49 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         public Mock<IUserService> _userServiceMock;
         private Mock<IPeriodService> _periodServiceMock;
-        protected IList<Report> _reportList = ReportTestModelBuilder.ReportsWithValidSections();
+        protected IList<Report> ReportList;
         private EmployerIdentifier _employerIdentifier;
+
+        protected Report CurrentValidNotSubmittedReport;
 
         [SetUp]
         public void SetUp()
         {
+            CurrentValidNotSubmittedReport =
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WithEmployerId("VWZXYX")
+                    .ForCurrentPeriod()
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build();
+
+            ReportList = new List<Report>(3);
+
+            ReportList.Add(CurrentValidNotSubmittedReport);
+
+            ReportList.Add(
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WithEmployerId("ABCDEF")
+                    .ForCurrentPeriod()
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build());
+
+            ReportList.Add(
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WithEmployerId("ABCDEF")
+                    .ForPeriod(Period.FromInstantInPeriod(DateTime.UtcNow.AddYears(-1)))
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build());
+
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
-            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
+            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
             _controller = new ReportController(
                 _mockReportService.Object,

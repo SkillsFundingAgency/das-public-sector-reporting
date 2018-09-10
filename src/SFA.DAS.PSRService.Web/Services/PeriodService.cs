@@ -1,36 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using MediatR;
-using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
-using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.ViewModels;
-using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
     public class PeriodService : IPeriodService
     {
+        private readonly IDateTimeService _dateTimeService;
 
-        private IWebConfiguration _config;
-
-        public PeriodService(IWebConfiguration config)
+        public PeriodService(IDateTimeService dateTimeService)
         {
-            _config = config;
+            _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
         }
-
 
         public Period GetCurrentPeriod()
         {
-            return new Period(DateTime.UtcNow);
+            return Period.FromInstantInPeriod(_dateTimeService.UtcNow);
         }
 
-        public bool IsSubmissionsOpen()
+        public bool PeriodIsCurrent(Period comparisonPeriod)
         {
-            return DateTime.UtcNow < _config.SubmissionClose;
+            return comparisonPeriod.Equals(GetCurrentPeriod());
         }
     }
 }

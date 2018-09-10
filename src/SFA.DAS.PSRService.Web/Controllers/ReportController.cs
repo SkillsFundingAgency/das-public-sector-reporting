@@ -101,7 +101,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             foreach (var submittedReport in reportListViewmodel.SubmittedReports)
             {
                 if (reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod) == false)
-                    reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, new Period(submittedReport.ReportingPeriod));
+                    reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, Period.ParsePeriodString(submittedReport.ReportingPeriod));
             }
 
             return View("List", reportListViewmodel);

@@ -41,7 +41,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
             ConnectionString = config["ConnectionString"];
         }
 
-        public static Period CurrentPeriod => new Period(DateTime.UtcNow.Date);
+        public static Period CurrentPeriod => Period.FromInstantInPeriod(DateTime.UtcNow.Date);
 
         public static void CreateReport(ReportDto report)
         {
@@ -78,12 +78,12 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 {
                     _.AssemblyContainingType(typeof(Startup));
                     _.WithDefaultConventions();
+                    _.SingleImplementationsOfInterface();
                 });
 
                 config.For<IWebConfiguration>().Use(new WebConfiguration
                 {
                     SqlConnectionString = TestHelper.ConnectionString,
-                    SubmissionClose = DateTime.Today.AddDays(1)
                 });
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);

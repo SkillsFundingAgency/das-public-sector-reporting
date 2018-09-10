@@ -79,16 +79,11 @@ namespace SFA.DAS.PSRService.Web
                 {
                     _.AssemblyContainingType(typeof(Startup));
                     _.WithDefaultConventions();
+                    _.SingleImplementationsOfInterface();
                 });
 
-                //config.For<IHttpClient>().Use<StandardHttpClient>();
-                //config.For<ICache>().Use<SessionCache>();
-                //config.For<ITokenService>().Use<TokenService>();
                 config.For<IWebConfiguration>().Use(Configuration);
-                //config.For<IContactsApiClient>().Use<ContactsApiClient>().Ctor<string>().Is(Configuration.ClientApiAuthentication.ApiBaseAddress);
-                config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
-                config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
 
