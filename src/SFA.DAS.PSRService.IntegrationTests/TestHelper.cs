@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Moq;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
@@ -86,7 +88,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
                     SubmissionClose = DateTime.Today.AddDays(1)
                 });
                 config.For<IReportService>().Use<ReportService>();
-                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>();
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
@@ -109,6 +111,16 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
                 config.For<IEmployerAccountService>().Use(mockEmployerAccountService.Object);
                 
+                var connection = new SqlConnection(ConnectionString);
+
+                var mockUnitOfWorkContext = new Mock<IUnitOfWorkContext>();
+                mockUnitOfWorkContext
+                    .Setup(
+                        m => m.Get<DbConnection>())
+                    .Returns(connection);
+
+                config.For<IUnitOfWorkContext>().Use(mockUnitOfWorkContext.Object);
+
                 var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
                 var mapper = mapConfig.CreateMapper();
                 config.For<IMapper>().Use(mapper);
