@@ -6,14 +6,14 @@ using SFA.DAS.PSRService.Data;
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Existing_Reports_In_Database
 {
     [ExcludeFromCodeCoverage]
-    public class Given_No_Existing_Reports_In_Database : GivenWhenThen<IReportRepository>
+    public class Given_No_Existing_Reports_In_Database : Given_A_SQLReportRepository
     {
         protected override void Given()
         {
+            base.Given();
+
             RepositoryTestHelper
                 .ClearData();
-
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
         }
 
         [TearDown]

@@ -9,15 +9,15 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
 {
     [ExcludeFromCodeCoverage]
     public abstract class Given_I_Have_Created_A_Report
-        : GivenWhenThen<IReportRepository>
+        : Given_A_SQLReportRepository
     {
         protected ReportDto CreatedReport { get; set; }
 
         protected override void Given()
         {
-            RepositoryTestHelper.ClearData();
+            base.Given();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            RepositoryTestHelper.ClearData();
 
             CreatedReport = new ReportDto
             {
