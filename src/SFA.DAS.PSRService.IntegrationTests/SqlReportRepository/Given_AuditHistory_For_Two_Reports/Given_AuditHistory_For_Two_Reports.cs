@@ -8,13 +8,13 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
 {
     [ExcludeFromCodeCoverage]
     public abstract class Given_AuditHistory_For_Two_Reports
-        : GivenWhenThen<IReportRepository>
+        : Given_A_SQLReportRepository
     {
         protected override void Given()
         {
-            RepositoryTestHelper.ClearData();
+            base.Given();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            RepositoryTestHelper.ClearData();
 
             BuildAndSaveAuditHistoryForReportOne();
             BuildAndSaveAuditHistoryForReportTwo();

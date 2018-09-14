@@ -9,17 +9,17 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Subm
 {
     [ExcludeFromCodeCoverage]
     public abstract class Given_One_Submitted_Report
-    : GivenWhenThen<IReportRepository>
+    : Given_A_SQLReportRepository
     {
         protected ReportDto SubmittedReport;
         protected string EmployerId = "TestEmployerID";
 
         protected override void Given()
         {
+            base.Given();
+
             RepositoryTestHelper
                 .ClearData();
-
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
 
             SubmittedReport = new ReportDto
             {
