@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using Dapper;
-using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.PSRService.Data
 {

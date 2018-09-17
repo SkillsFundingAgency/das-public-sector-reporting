@@ -4,10 +4,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using Dapper;
 using MediatR;
@@ -17,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Moq;
-using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
@@ -28,8 +24,8 @@ using SFA.DAS.PSRService.Web;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
+using SFA.DAS.UnitOfWork;
 using StructureMap;
-using ILogger = NLog.ILogger;
 
 namespace SFA.DAS.PSRService.IntegrationTests
 {

@@ -3,9 +3,9 @@ using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Data;
+using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
 {
