@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Linq.Expressions;
 using System.Net;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using NServiceBus;
@@ -16,19 +13,19 @@ using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.EAS.Web.ViewModels;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.NServiceBus.AzureServiceBus;
-using SFA.DAS.NServiceBus.MsSqlServer;
+using SFA.DAS.NServiceBus.SqlServer;
+using SFA.DAS.NServiceBus.StructureMap;
+using SFA.DAS.NServiceBus.NewtonsoftJsonSerializer;
+using SFA.DAS.NServiceBus.NLog;
+using SFA.DAS.UnitOfWork.Mvc;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
+using SFA.DAS.UnitOfWork.NServiceBus;
 using StructureMap;
-using SFA.DAS.NServiceBus.Mvc;
-using SFA.DAS.NServiceBus.NewtonsoftSerializer;
-using SFA.DAS.NServiceBus.NLog;
-using SFA.DAS.NServiceBus.StructureMap;
 using ConfigurationService = SFA.DAS.PSRService.Web.Services.ConfigurationService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -82,16 +79,16 @@ namespace SFA.DAS.PSRService.Web
             var container = ConfigureIOC(services);
 
             var endpointConfiguration = new EndpointConfiguration(Configuration.NServiceBus.Endpoint)
-                .SetupAzureServiceBusTransport(true,() => Configuration.NServiceBus.ServiceBusConnectionString, r => { })
+                .UseAzureServiceBusTransport(true,() => Configuration.NServiceBus.ServiceBusConnectionString, r => { })
                 
-                .SetupLicense(Configuration.NServiceBus.LicenceText)
-                .SetupInstallers()
-                .SetupMsSqlServerPersistence(() => sp.GetService<DbConnection>())
-                .SetupStructureMapBuilder(container)
-                .SetupNewtonsoftSerializer()
-                .SetupNLogFactory()
-                .SetupOutbox()
-                .SetupUnitOfWork();
+                .UseLicense(Configuration.NServiceBus.LicenceText)
+                .UseInstallers()
+                .UseSqlServerPersistence(() => sp.GetService<DbConnection>())
+                .UseStructureMapBuilder(container)
+                .UseNewtonsoftJsonSerializer()
+                .UseNLogFactory()
+                .UseOutbox()
+                .UseUnitOfWork();
 
             services.AddNServiceBus(endpointConfiguration);
 
@@ -162,7 +159,7 @@ namespace SFA.DAS.PSRService.Web
                 .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()
-                .UseNserviceBusUnitOfWork()
+                .UseUnitOfWork()
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
