@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -29,14 +30,20 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _reportService = new Mock<IReportService>(MockBehavior.Strict);
-            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
-            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(new Period(DateTime.UtcNow));
-            _periodServiceMock.Setup(s => s.IsSubmissionsOpen()).Returns(true);
+            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
+            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
             _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
 
-            _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null,_periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
+            _controller =
+                new QuestionController(
+                        _reportService.Object,
+                        _employerAccountServiceMock.Object,
+                        null,
+                        _periodServiceMock.Object,
+                        _mockUserService.Object)
+                    {Url = _mockUrlHelper.Object};
             
             _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
@@ -76,7 +83,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             var url = "home/index";
             UrlActionContext actualContext = null;
 
-            var report = ReportTestModelBuilder.CurrentReportWithInvalidSections("ABCDE");
+            var report =
+                new ReportBuilder()
+                    .WithInvalidSections()
+                    .WithEmployerId("ABCDE")
+                    .ForCurrentPeriod()
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build();
+
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
             _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
             _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
@@ -102,8 +116,16 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE"));
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
+
+            var stubReport = new ReportBuilder()
+                .WithValidSections()
+                .WithEmployerId("ABCDE")
+                .WhereReportIsNotAlreadySubmitted()
+                .ForCurrentPeriod()
+                .Build();
+     
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
 
             // act
             var result = _controller.Index("YourEmployees");
@@ -121,7 +143,16 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(ReportTestModelBuilder.CurrentValidAndNotSubmittedReport("ABCDE"));
+
+            var stubReport =
+                new ReportBuilder()
+                    .WithValidSections()
+                    .WithEmployerId("ABCDE")
+                    .ForCurrentPeriod()
+                    .WhereReportIsNotAlreadySubmitted()
+                    .Build();
+
+            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
@@ -140,14 +171,18 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             var report = sectionViewModel.Report;
             Assert.IsNotNull(report);
 
-            var sectionOne = ReportTestModelBuilder.SectionOne;
             var questionSection = sectionViewModel.CurrentSection;
             Assert.IsNotNull(questionSection);
-            Assert.AreEqual(questionSection.Id, sectionOne.Id);
+            Assert.AreEqual(questionSection.Id, "SectionOne");
 
-            
+            var sectionOneQuestions =
+            stubReport
+                .Sections
+                .Where(s => s.Id == "SectionOne")
+                .Single()
+                .Questions;
 
-            CollectionAssert.AreEqual(questionSection.Questions, sectionOne.Questions);
+            CollectionAssert.AreEqual(questionSection.Questions, sectionOneQuestions);
         }
     }
 }
