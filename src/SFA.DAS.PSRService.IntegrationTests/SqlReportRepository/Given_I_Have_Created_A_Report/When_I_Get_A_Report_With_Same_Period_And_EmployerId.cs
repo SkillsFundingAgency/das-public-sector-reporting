@@ -13,6 +13,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
 
         protected override void When()
         {
+            base.When();
+
             retrievedReport
                 =
                 SUT

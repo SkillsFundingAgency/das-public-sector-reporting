@@ -12,26 +12,34 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
     [ExcludeFromCodeCoverage]
     public class Given_A_SQLReportRepository : GivenWhenThen<IReportRepository>
     {
+        private SqlConnection _connection;
+        private SqlTransaction _trans;
+
         protected override void Given()
         {
             RepositoryTestHelper
                 .ClearData();
 
-            var mockUnitOfWorkContext = new Mock<IUnitOfWorkContext>();
+            _connection = new SqlConnection(RepositoryTestHelper.ConnectionString);
 
-            var connection = new SqlConnection(RepositoryTestHelper.ConnectionString);
+            _connection.Open();
 
-            mockUnitOfWorkContext
-                .Setup(
-                    m => m.Get<DbConnection>())
-                .Returns(connection);
+            _trans = _connection.BeginTransaction();
 
-            SUT = new SQLReportRepository(mockUnitOfWorkContext.Object);
+
+            SUT = new SQLReportRepository(() => _connection, () => _trans);
+        }
+
+        protected override void When()
+        {
+            _trans.Commit();
         }
 
         [TearDown]
         public void ClearDatabase()
         {
+            _connection.Close();
+
             RepositoryTestHelper
                 .ClearData();
         }

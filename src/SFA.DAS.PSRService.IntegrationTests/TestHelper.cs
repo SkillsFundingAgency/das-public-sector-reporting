@@ -29,8 +29,10 @@ using StructureMap;
 
 namespace SFA.DAS.PSRService.IntegrationTests
 {
-    internal static class TestHelper
+    public class TestHelper
     {
+        private SqlConnection _connection;
+        private SqlTransaction _currentTran;
         public static string ConnectionString { get; }
 
         static TestHelper()
@@ -66,9 +68,9 @@ namespace SFA.DAS.PSRService.IntegrationTests
             {
                 connection.Execute("if exists(select 1 from Report) delete from Report");
             }
-
         }
-        public static Action<ConfigurationExpression> ConfigureIoc()
+
+        public Action<ConfigurationExpression> ConfigureIoc()
         {
             return config =>
             {
@@ -107,20 +109,28 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
                 config.For<IEmployerAccountService>().Use(mockEmployerAccountService.Object);
                 
-                var connection = new SqlConnection(ConnectionString);
+                _connection = new SqlConnection(ConnectionString);
 
-                var mockUnitOfWorkContext = new Mock<IUnitOfWorkContext>();
-                mockUnitOfWorkContext
-                    .Setup(
-                        m => m.Get<DbConnection>())
-                    .Returns(connection);
+                config
+                    .For<DbConnection>()
+                    .Use(_connection);
 
-                config.For<IUnitOfWorkContext>().Use(mockUnitOfWorkContext.Object);
+                _connection.Open();
+                _currentTran = _connection.BeginTransaction();
+
+                config
+                    .For<DbTransaction>()
+                    .Use(_currentTran);
 
                 var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
                 var mapper = mapConfig.CreateMapper();
                 config.For<IMapper>().Use(mapper);
             };
+        }
+
+        public void CommitTransaction()
+        {
+            _currentTran?.Commit();
         }
     }
 }

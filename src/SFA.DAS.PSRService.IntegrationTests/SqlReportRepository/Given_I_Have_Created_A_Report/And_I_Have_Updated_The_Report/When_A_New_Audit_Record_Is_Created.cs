@@ -22,6 +22,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
             };
 
             SUT.SaveAuditRecord(_auditRecordDto);
+
+            base.When();
         }
 
         [Test]
@@ -30,6 +32,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
             var list = SUT.GetAuditRecordsMostRecentFirst(_auditRecordDto.ReportId);
             Assert.AreEqual(1, list.Count);
             var actualRecord = list[0];
+
             Assert.AreEqual(_auditRecordDto.ReportId, actualRecord.ReportId);
             Assert.AreEqual(_auditRecordDto.ReportingData, actualRecord.ReportingData);
             Assert.AreEqual(_auditRecordDto.UpdatedBy, actualRecord.UpdatedBy);

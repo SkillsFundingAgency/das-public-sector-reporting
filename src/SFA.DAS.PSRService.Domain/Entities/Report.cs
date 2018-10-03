@@ -11,7 +11,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string OrganisationName { get; set; }
         public string EmployerId { get; set; }
         public IEnumerable<Section> Sections { get; set; }
-        public ReportStatus Status => GetReportStatus();
         public bool Submitted { get; set; }
         public string ReportingPeriod { get; set; }
         public Submitted SubmittedDetails { get; set; }
@@ -51,7 +50,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return sectionsList.SingleOrDefault(w => w.Id == sectionId);
         }
 
-        private ReportStatus GetReportStatus()
+        public ReportStatus GetReportStatus()
         {
             if (Submitted)
             {

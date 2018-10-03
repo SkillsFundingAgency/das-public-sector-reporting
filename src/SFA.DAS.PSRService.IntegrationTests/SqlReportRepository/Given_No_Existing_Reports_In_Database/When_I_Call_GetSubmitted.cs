@@ -13,6 +13,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
 
         protected override void When()
         {
+            base.When();
+
             _retrievedSubmittedReports
                 =
                 SUT

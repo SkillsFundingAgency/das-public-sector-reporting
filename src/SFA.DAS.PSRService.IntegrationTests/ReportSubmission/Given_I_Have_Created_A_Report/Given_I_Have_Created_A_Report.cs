@@ -18,10 +18,14 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
         private static Container _container;
         protected QuestionController QuestionController;
         protected Mock<IUrlHelper> MockUrlHelper;
+        protected TestHelper CurrentTestHelper;
+
         protected override void Given()
         {
+            CurrentTestHelper = new TestHelper();
+
             _container = new Container();
-            _container.Configure(TestHelper.ConfigureIoc());
+            _container.Configure(CurrentTestHelper.ConfigureIoc());
             MockUrlHelper = new Mock<IUrlHelper>();
             MockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
 

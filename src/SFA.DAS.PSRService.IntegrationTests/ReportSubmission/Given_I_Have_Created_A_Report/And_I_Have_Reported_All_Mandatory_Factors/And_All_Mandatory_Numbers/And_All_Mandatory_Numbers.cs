@@ -8,6 +8,7 @@
             base.Given();
 
             BuildAndSubmitAllMandatoryNumbers();
+            CurrentTestHelper.CommitTransaction();
         }
 
         private void BuildAndSubmitAllMandatoryNumbers()

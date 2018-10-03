@@ -29,6 +29,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
             SUT
                 .Create(
                     _reportCreatedViaRepository);
+
+            base.When();
         }
 
         [Test]

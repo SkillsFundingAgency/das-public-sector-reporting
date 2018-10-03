@@ -13,12 +13,15 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
 
         protected override void When()
         {
+            base.When();
+
             retrievedReport
                 =
                 SUT
                     .Get(
                         "SomeReportingPeriod"
                         , "SomeEmployerId");
+
         }
 
         [Test]

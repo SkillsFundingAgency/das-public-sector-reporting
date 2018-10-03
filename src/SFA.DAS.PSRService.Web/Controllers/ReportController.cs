@@ -80,7 +80,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 _reportService.CreateReport(EmployerAccount.AccountId, user);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return new BadRequestResult();

@@ -15,6 +15,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Subm
 
         protected override void When()
         {
+            base.When();
+
             submittedReports
                 =
                 SUT

@@ -2,29 +2,38 @@
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Net;
+using System.Reflection;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using NServiceBus;
+using NServiceBus.Persistence;
+using NServiceBus.Persistence.Sql;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.EAS.Web.ViewModels;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.NServiceBus.AzureServiceBus;
+using SFA.DAS.NServiceBus.ClientOutbox;
 using SFA.DAS.NServiceBus.SqlServer;
 using SFA.DAS.NServiceBus.StructureMap;
 using SFA.DAS.NServiceBus.NewtonsoftJsonSerializer;
 using SFA.DAS.NServiceBus.NLog;
+using SFA.DAS.NServiceBus.SqlServer.ClientOutbox;
 using SFA.DAS.UnitOfWork.Mvc;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
+using SFA.DAS.UnitOfWork;
 using SFA.DAS.UnitOfWork.NServiceBus;
+using SFA.DAS.UnitOfWork.NServiceBus.ClientOutbox;
 using StructureMap;
 using ConfigurationService = SFA.DAS.PSRService.Web.Services.ConfigurationService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
@@ -66,14 +75,14 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
-            // services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
-            services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
+            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter("HasEmployerAccount")) ).AddControllersAsServices().AddSessionStateTempDataProvider();
+            //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
             
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
 
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
-            services.AddAutoMapper();
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(ReportMappingProfile)));
 
 
             var container = ConfigureIOC(services);
@@ -127,9 +136,31 @@ namespace SFA.DAS.PSRService.Web
                 config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
                 config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
                 config.For<IMediator>().Use<Mediator>();
+
+                config.AddRegistry<NServiceBusClientUnitOfWorkRegistry>();
+                config.AddRegistry<UnitOfWorkRegistry>();
+
+                config
+                    .For<DbTransaction>()
+                    .Use(c => GetSqlSessionFromContext(c).Transaction);
             });
 
             return container;
+        }
+
+        private ISqlStorageSession GetSqlSessionFromContext(IContext iocContext)
+        {
+            var unitOfWorkContext = iocContext.GetInstance<IUnitOfWorkContext>();
+
+            var maybeClientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
+
+            if (maybeClientSession != null)
+                return maybeClientSession.GetSqlSession();
+
+            return
+                unitOfWorkContext
+                    .Get<SynchronizedStorageSession>()
+                    .GetSqlSession();
         }
 
         public void Configure(IApplicationBuilder app, IApplicationLifetime applicationLifetime, IHostingEnvironment env,IServiceProvider serviceProvider)
@@ -150,7 +181,8 @@ namespace SFA.DAS.PSRService.Web
 
 
 
-            app.UseStaticFiles()
+            app
+                .UseStaticFiles()
                 .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()

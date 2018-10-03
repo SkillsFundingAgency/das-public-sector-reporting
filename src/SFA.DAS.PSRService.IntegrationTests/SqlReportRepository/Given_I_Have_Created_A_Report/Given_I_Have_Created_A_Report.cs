@@ -17,8 +17,6 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
         {
             base.Given();
 
-            RepositoryTestHelper.ClearData();
-
             CreatedReport = new ReportDto
             {
                 Id = RepositoryTestHelper.ReportOneId,

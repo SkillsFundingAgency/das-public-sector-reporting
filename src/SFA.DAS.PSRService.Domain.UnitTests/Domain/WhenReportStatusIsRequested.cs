@@ -93,7 +93,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.Domain
             };
 
             // act
-            var result = report.Status;
+            var result = report.GetReportStatus();
 
 
             Assert.NotNull(result);
@@ -185,7 +185,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.Domain
             };
 
             // act
-            var result = report.Status;
+            var result = report.GetReportStatus();
 
 
             Assert.NotNull(result);
@@ -278,7 +278,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.Domain
             };
 
             // act
-            var result = report.Status;
+            var result = report.GetReportStatus();
 
 
             Assert.NotNull(result);
@@ -383,7 +383,7 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.Domain
             };
 
             // act
-            var result = report.Status;
+            var result = report.GetReportStatus();
 
 
             Assert.NotNull(result);

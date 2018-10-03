@@ -32,7 +32,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.Web
         public void OneTimeSetUp()
         {
             _container = new Container();
-            _container.Configure(TestHelper.ConfigureIoc());
+            _container.Configure(new TestHelper().ConfigureIoc());
 
             //Replace authorization service with one tailored to this test
             //TODO: Refactor test to Geiven-Then-When style and find a better way of onfiguring authorization

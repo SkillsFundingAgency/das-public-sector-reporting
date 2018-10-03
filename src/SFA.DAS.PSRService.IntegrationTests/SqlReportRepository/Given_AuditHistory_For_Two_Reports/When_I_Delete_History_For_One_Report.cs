@@ -14,6 +14,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
             SUT
                 .DeleteHistory(
                     RepositoryTestHelper.ReportTwoId);
+
+            base.When();
         }
 
 

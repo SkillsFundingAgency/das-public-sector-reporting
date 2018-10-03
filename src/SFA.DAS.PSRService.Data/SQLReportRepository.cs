@@ -5,58 +5,55 @@ using System.Linq;
 using Dapper;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
-using SFA.DAS.UnitOfWork;
 
 namespace SFA.DAS.PSRService.Data
 {
     public class SQLReportRepository : IReportRepository
     {
-        private readonly IUnitOfWorkContext _unitOfWork;
+        private readonly Func<DbConnection> _connectionFactory;
+        private readonly Func<DbTransaction> _transactionFactory;
 
-        public SQLReportRepository(IUnitOfWorkContext unitOfWork)
+        public SQLReportRepository(
+            Func<DbConnection> connectionFactory,
+            Func<DbTransaction> transactionFactory)
         {
-            _unitOfWork = unitOfWork;
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            _transactionFactory = transactionFactory ?? throw new ArgumentNullException(nameof(transactionFactory));
         }
 
         public ReportDto Get(string period, string employerId)
         {
-            var connection = _unitOfWork.Get<DbConnection>();
-            var report = connection.QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
-                         new {employerId, period});
+            var report = _connectionFactory().QuerySingleOrDefault<ReportDto>("select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
+                         new {employerId, period}, _transactionFactory());
 
             return report;
-            
         }
 
         public ReportDto Get(Guid id)
         {
-            var connection = _unitOfWork.Get<DbConnection>();
-            return connection.QuerySingleOrDefault<ReportDto>("select * from Report where Id = @id", new {id});
+            return _connectionFactory().QuerySingleOrDefault<ReportDto>("select * from Report where Id = @id", new {id}, _transactionFactory());
         }
 
         public IList<ReportDto> GetSubmitted(string employerId)
         {
-        var connection = _unitOfWork.Get<DbConnection>();
-        var reportData = connection.Query<ReportDto>("select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
-                         new {employerId});
-        return reportData.ToList();
+            var reportData = _connectionFactory().Query<ReportDto>(
+                "select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
+                new {employerId}, _transactionFactory());
+
+            return reportData.ToList();
         }
 
         public void Create(ReportDto report)
         {
-            var connection = _unitOfWork.Get<DbConnection>();
-            var transaction = _unitOfWork.Get<DbTransaction>();
-            connection.Execute(@"
+            _connectionFactory().Execute(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted],[AuditWindowStartUtc],[UpdatedUtc],[UpdatedBy])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @AuditWindowStartUtc, @UpdatedUtc, @UpdatedBy)",
-                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted, report.AuditWindowStartUtc, report.UpdatedUtc, report.UpdatedBy}, transaction);
+                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted, report.AuditWindowStartUtc, report.UpdatedUtc, report.UpdatedBy}, _transactionFactory());
         }
 
         public void Update(ReportDto reportDto)
         {
-        var connection = _unitOfWork.Get<DbConnection>();
-        var transaction = _unitOfWork.Get<DbTransaction>();
-            connection.Execute(@"
+            _connectionFactory().Execute(@"
                     UPDATE [dbo].[Report]
                        SET [ReportingData] = @ReportingData
                           ,[Submitted] = @Submitted
@@ -72,14 +69,12 @@ namespace SFA.DAS.PSRService.Data
                     reportDto.UpdatedUtc,
                     reportDto.UpdatedBy,
                     reportDto.Id
-                }, transaction);
+                }, _transactionFactory());
         }
 
         public void SaveAuditRecord(AuditRecordDto auditRecordDto)
         {
-            var connection = _unitOfWork.Get<DbConnection>();
-            var transaction = _unitOfWork.Get<DbTransaction>();
-            connection.Execute(@"
+            _connectionFactory().Execute(@"
                 INSERT INTO [dbo].[AuditHistory]
                     ([UpdatedUtc]
                     ,[ReportingData]
@@ -90,24 +85,20 @@ namespace SFA.DAS.PSRService.Data
                     ,@ReportingData
                     ,@UpdatedBy
                     ,@ReportId)",
-                    new {auditRecordDto.UpdatedUtc, auditRecordDto.ReportingData, auditRecordDto.UpdatedBy, auditRecordDto.ReportId}, transaction);
+                    new {auditRecordDto.UpdatedUtc, auditRecordDto.ReportingData, auditRecordDto.UpdatedBy, auditRecordDto.ReportId}, _transactionFactory());
         }
 
         public IReadOnlyList<AuditRecordDto> GetAuditRecordsMostRecentFirst(Guid reportId)
         {
-            var connection = _unitOfWork.Get<DbConnection>();
-            return connection.Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc", new {reportId}).ToList();
-                  
+            return _connectionFactory().Query<AuditRecordDto>("select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc", new {reportId}, _transactionFactory()).ToList();
         }
 
         public void DeleteHistory(Guid reportId)
         {
-            var connection = _unitOfWork.Get<DbConnection>();
-            var transaction = _unitOfWork.Get<DbTransaction>();
-            connection.Execute(@"
+            _connectionFactory().Execute(@"
                     DELETE [dbo].[AuditHistory]
                      WHERE ReportId = @ReportId",
-                    new {reportId}, transaction);
+                    new {reportId}, _transactionFactory());
         }
     }
 }
