@@ -68,6 +68,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddOpenIdConnect(options =>
                 {
+                    
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
                     options.AuthenticationMethod =

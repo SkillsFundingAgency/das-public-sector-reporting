@@ -17,7 +17,7 @@
     <div class="column-two-thirds">
         <p>Choose the report you wish to view</p>
     </div>
-    <div class="column-full">
+    <div id="submitted-report-list" class="column-full">
         <table>
             <thead>
                 <tr>
@@ -42,7 +42,7 @@
 
     @if (Model.SubmittedReports.Count() == 0)
     {
-    <div class="column-two-thirds">
+    <div  id="submitted-report-list-display-message" class="column-two-thirds">
         <p>There are currently no submitted reports to show</p>
     </div>
     }

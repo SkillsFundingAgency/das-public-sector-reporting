@@ -23,7 +23,7 @@
                 <h1 class="heading-xlarge">Review details</h1>
             </legend>
         }
-            <p>No reports have been created yet.</p>
+            <p id="report-summary-no-reports-message">No reports have been created yet.</p>
     }
     else
     {
@@ -95,17 +95,17 @@
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
             {
-                <a class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
+                <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
             }
             else if (Model.IsValidForSubmission && !Model.UserCanSubmitReports && !Model.IsReadOnly)
             { 
-                <a class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
+                <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
             }
             else
             {
                     if (Model.Report.Submitted)
                     {
-                        <a class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+                        <a id="report-summary-list" class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
                     }
              }
             </div>
