@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>SFA.DAS.PSRService.Messages</AssemblyName>
+    <RootNamespace>SFA.DAS.PSRService.Messages</RootNamespace>
   </PropertyGroup>
 
 </Project>
