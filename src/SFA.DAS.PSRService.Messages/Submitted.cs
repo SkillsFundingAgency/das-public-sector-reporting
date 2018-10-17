@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFA.DAS.PSRService.MessageTypes
+namespace SFA.DAS.PSRService.Messages
 {
     public class Submitted
     {

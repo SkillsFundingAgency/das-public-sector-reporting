@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.PSRService.MessageTypes
+﻿namespace SFA.DAS.PSRService.Messages.Events
 {
     public class ReportingPercentages 
     {

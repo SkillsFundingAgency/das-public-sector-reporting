@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using AutoMapper;
+﻿using AutoMapper;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Domain.Entities;

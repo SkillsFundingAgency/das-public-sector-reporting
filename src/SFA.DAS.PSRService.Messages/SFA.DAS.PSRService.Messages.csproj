@@ -1,9 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>SFA.DAS.PSRService.Messages</AssemblyName>
     <RootNamespace>SFA.DAS.PSRService.Messages</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sfa.das.NServiceBus" Version="3.0.1" />
+  </ItemGroup>
 
 </Project>

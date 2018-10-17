@@ -1,6 +1,7 @@
 ﻿using System;
+using SFA.DAS.PSRService.Messages.Events;
 
-namespace SFA.DAS.PSRService.MessageTypes
+namespace SFA.DAS.PSRService.Messages
 {
     public class ReportMessage
     {

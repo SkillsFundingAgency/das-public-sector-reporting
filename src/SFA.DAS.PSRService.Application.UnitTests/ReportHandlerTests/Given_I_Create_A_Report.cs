@@ -4,11 +4,13 @@ using AutoMapper;
 using Microsoft.Extensions.FileProviders;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Application.UnitTests.FileInfo;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Messages.Events;
 
 namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 {
@@ -26,10 +28,15 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         [SetUp]
         public void Setup()
         {
-            _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
+            _mapperMock = new Mock<IMapper>();
             _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
             _fileProviderMock = new Mock<IFileProvider>();
-            _createReportHandler = new CreateReportHandler(_reportRepositoryMock.Object, _mapperMock.Object, _fileProviderMock.Object);
+
+            _createReportHandler = new CreateReportHandler(
+                _reportRepositoryMock.Object, 
+                _mapperMock.Object, 
+                _fileProviderMock.Object,
+                Mock.Of<IEventPublisher>());
 
             _report = new Report
             {
@@ -42,6 +49,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
             _mapperMock.Setup(s => s.Map<Report>(It.IsAny<ReportDto>())).Returns(_report);
+            _mapperMock.Setup(m => m.Map<ReportCreated>(It.IsAny<Report>())).Returns(new ReportCreated());
         }
 
         [Test]

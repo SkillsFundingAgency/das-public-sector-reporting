@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.PSRService.Domain\SFA.DAS.PSRService.Domain.csproj" />
+    <ProjectReference Include="..\SFA.DAS.PSRService.Messages\SFA.DAS.PSRService.Messages.csproj" />
   </ItemGroup>
 
   <ItemGroup>
