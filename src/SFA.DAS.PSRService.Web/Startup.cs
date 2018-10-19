@@ -92,7 +92,7 @@ namespace SFA.DAS.PSRService.Web
                 
                 .UseLicense(Configuration.NServiceBus.LicenceText)
                 .UseInstallers()
-                .UseSqlServerPersistence(() => sp.GetService<DbConnection>())
+                .UseSqlServerPersistence(() => new SqlConnection(Configuration.SqlConnectionString))
                 .UseStructureMapBuilder(container)
                 .UseNewtonsoftJsonSerializer()
                 .UseNLogFactory()
