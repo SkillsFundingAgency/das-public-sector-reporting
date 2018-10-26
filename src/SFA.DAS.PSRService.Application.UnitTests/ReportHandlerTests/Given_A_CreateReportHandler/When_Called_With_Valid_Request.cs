@@ -68,7 +68,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
             _response
                 .ReportingPeriod
                 .Should()
-                .Be(_createReportRequest.Period);
+                .Be(_createReportRequest.Period.PeriodString);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
                 .Verify(
                     m => m.Create(
                         It.Is<ReportDto>(
-                            arg => arg.ReportingPeriod.Equals(_createReportRequest.Period))));
+                            arg => arg.ReportingPeriod.Equals(_createReportRequest.Period.PeriodString))));
         }
 
         [Test]

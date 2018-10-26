@@ -21,7 +21,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
         protected Mock<IReportRepository> ReportRepositoryMock;
         private Mock<IFileProvider> _fileProviderMock;
         protected string EmployerId = "ABCDE";
-        protected string ReportingPeriod = "1718";
+        protected Period ReportingPeriod = Period.ParsePeriodString("1718");
+
         protected internal Report MappedReport;
 
         protected override void Given()
@@ -39,7 +40,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
             MappedReport = new Report
             {
                 EmployerId = EmployerId,
-                ReportingPeriod = ReportingPeriod,
+                ReportingPeriod = ReportingPeriod.PeriodString,
                 Id = Guid.NewGuid(),
                 Submitted = false
             };

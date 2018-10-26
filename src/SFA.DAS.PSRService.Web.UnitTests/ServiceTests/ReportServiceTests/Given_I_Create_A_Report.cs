@@ -52,7 +52,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
             //Assert
             _mediatorMock.VerifyAll();
             Assert.AreEqual("ABCDE", actualRequest.EmployerId);
-            Assert.AreEqual(_period.PeriodString, actualRequest.Period);
+            Assert.AreEqual(_period, actualRequest.Period);
             Assert.AreEqual(_user.DisplayName, actualRequest.User.Name);
             Assert.AreEqual(_user.Id, actualRequest.User.Id);
         }

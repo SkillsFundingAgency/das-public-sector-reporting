@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
                 EmployerId = request.EmployerId,
                 Submitted = false,
                 Id = Guid.NewGuid(),
-                ReportingPeriod = request.Period,
+                ReportingPeriod = request.Period.PeriodString,
                 ReportingData = GetQuestionConfig().Result,
                 AuditWindowStartUtc = DateTime.UtcNow,
                 UpdatedUtc = DateTime.UtcNow,
