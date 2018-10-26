@@ -2,7 +2,7 @@
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
+namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_CreateReportHandler
 {
     public sealed class CreateReportRequestBuilder
     {
