@@ -2,50 +2,30 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "environmentName": {
+            "type": "string"
+        },
         "appServiceName": {
             "type": "string"
         },
-        "appServicePlanName": {
+        "keyvaultCertificateName": {
             "type": "string"
         },
-        "appServicePlanResourceGroup": {
+        "customHostname": {
+            "defaultValue": "",
             "type": "string"
         },
-        "appServiceVirtualApplications": {
-            "type": "array",
-            "defaultValue": [
-                {
-                    "virtualPath": "/",
-                    "physicalPath": "site\\wwwroot",
-                    "preloadEnabled": true,
-                    "virtualDirectories": null
-                }
-            ]
+        "sharedAppServicePlanName": {
+            "type": "string"
         },
-        "customHostName": {
-            "type": "string",
-            "defaultValue": ""
+        "sharedAppServicePlanResourceGroup": {
+            "type": "string"
         },
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
-        "configEnvironmentName": {
-            "type": "string"
-        },
         "loggingRedisConnectionString": {
             "type": "securestring"
-        },
-        "appInsightsName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the application insights resource"
-            }
-        },
-        "certificateResourceGroup": {
-            "type": "string"
-        },
-        "certificateName": {
-            "type": "string"
         }
     },
     "variables": {},
@@ -65,10 +45,10 @@
                         "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[parameters('sharedAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('appServicePlanResourceGroup')]"
+                        "value": "[parameters('sharedAppServicePlanResourceGroup')]"
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -82,7 +62,7 @@
                             },
                             {
                                 "name": "EnvironmentName",
-                                "value": "[toUpper(parameters('configEnvironmentName'))]"
+                                "value": "[toUpper(parameters('environmentName'))]"
                             }
                         ]
                     },
@@ -95,14 +75,11 @@
                             }
                         ]
                     },
-                    "appServiceVirtualApplications": {
-                        "value": "[parameters('appServiceVirtualApplications')]"
-                    },
                     "customHostName": {
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(resourceId(parameters('certificateResourceGroup'), 'Microsoft.Web/certificates', parameters('certificateName')), '2016-03-01').Thumbprint]"
+                        "value": "[reference(resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyvaultCertificateName')), '2016-03-01').Thumbprint]"
                     }
                 }
             },
@@ -120,7 +97,7 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[parameters('appInsightsName')]"
+                        "value": "[parameters('appServiceName')]"
                     },
                     "attachedService": {
                         "value": "[parameters('appServiceName')]"
