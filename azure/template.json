@@ -54,7 +54,7 @@
                         "value": [
                             {
                                 "name": "ApplicationInsights:InstrumentationKey",
-                                "value": "[reference(concat('microsoft.insights/components/', parameters('appServiceName'))).InstrumentationKey]"
+                                "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
                             },
                             {
                                 "name": "ConfigurationStorageConnectionString",
