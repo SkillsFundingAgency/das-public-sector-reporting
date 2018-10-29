@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "templateBaseUrl": {
-            "type": "string"
-        },
         "environmentName": {
             "type": "string"
         },
@@ -31,48 +28,83 @@
             "type": "securestring"
         }
     },
-    "variables": {
-        "appServiceTemplateUri": "[concat(parameters('templateBaseUrl'), '/deployments/app-service-resources.json')]",
-        "sharedAppServicePlanId": "[resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedAppServicePlanName'))]"
-    },
+    "variables": {},
     "resources": [
         {
-            "name": "[concat('AppService-', parameters('appServiceName'))]",
-            "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
+            "name": "app-service",
+            "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('appServiceTemplateUri')]",
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "appServiceName": {
                         "value": "[parameters('appServiceName')]"
                     },
-                    "appServicePlanId": {
-                        "value": "[variables('sharedAppServicePlanId')]"
+                    "appServicePlanName": {
+                        "value": "[parameters('sharedAppServicePlanName')]"
                     },
-                    "configurationStorageConnectionString": {
-                        "value": "[parameters('configurationStorageConnectionString')]"
-                    },
-                    "configEnvironmentName": {
-                        "value": "[parameters('environmentName')]"
-                    },
-                    "loggingRedisConnectionString": {
-                        "value": "[parameters('loggingRedisConnectionString')]"
-                    },
-                    "keyvaultCertificateName": {
-                        "value": "[parameters('keyvaultCertificateName')]"
-                    },
-                    "sharedAppServicePlanResourceGroup": {
+                    "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedAppServicePlanResourceGroup')]"
                     },
-                    "customHostname": {
-                        "value": "[parameters('customHostname')]"
+                    "appServiceAppSettings": {
+                        "value": [
+                            {
+                                "name": "ApplicationInsights:InstrumentationKey",
+                                "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
+                            },
+                            {
+                                "name": "ConfigurationStorageConnectionString",
+                                "value": "[parameters('configurationStorageConnectionString')]"
+                            },
+                            {
+                                "name": "EnvironmentName",
+                                "value": "[toUpper(parameters('environmentName'))]"
+                            }
+                        ]
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "Redis",
+                                "connectionString": "[parameters('loggingRedisConnectionString')]",
+                                "type": "Custom"
+                            }
+                        ]
+                    },
+                    "customHostName": {
+                        "value": "[parameters('customHostName')]"
+                    },
+                    "certificateThumbprint": {
+                        "value": "[reference(resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyvaultCertificateName')), '2016-03-01').Thumbprint]"
                     }
                 }
-            }
+            },
+            "dependsOn": []
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "application-insights",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[parameters('appServiceName')]"
+                    },
+                    "attachedService": {
+                        "value": "[parameters('appServiceName')]"
+                    }
+                }
+            },
+            "dependsOn": []
         }
     ],
     "outputs": {}
