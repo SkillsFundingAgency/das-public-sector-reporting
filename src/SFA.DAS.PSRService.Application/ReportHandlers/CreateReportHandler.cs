@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
@@ -17,18 +14,18 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
     {
         private readonly IReportRepository _reportRepository;
         private readonly IMapper _mapper;
-        private readonly IFileProvider _fileProvider;
+        private readonly QuestionConfigProvider _questionConfigProvider;
         private readonly IEventPublisher _eventPublisher;
 
         public CreateReportHandler(
             IReportRepository reportRepository, 
             IMapper mapper, 
-            IFileProvider fileProvider, 
+            QuestionConfigProvider questionConfigSource, 
             IEventPublisher eventPublisher)
         {
             _reportRepository = reportRepository ?? throw new ArgumentNullException(nameof(reportRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
+            _questionConfigProvider = questionConfigSource ?? throw new ArgumentNullException(nameof(questionConfigSource));
             _eventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
         }
 
@@ -40,7 +37,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
                 Submitted = false,
                 Id = Guid.NewGuid(),
                 ReportingPeriod = request.Period.PeriodString,
-                ReportingData = GetQuestionConfig().Result,
+                ReportingData = _questionConfigProvider.GetQuestionConfig(),
                 AuditWindowStartUtc = DateTime.UtcNow,
                 UpdatedUtc = DateTime.UtcNow,
                 UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name})
@@ -50,22 +47,14 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             var createdReport = _mapper.Map<Report>(reportDto);
 
+            var message = _mapper.Map<ReportCreated>(createdReport);
+
             _eventPublisher
                 .Publish(
-                    _mapper.Map<ReportCreated>(createdReport));
+                    message);
 
             return createdReport;
         }
 
-        private Task<string> GetQuestionConfig()
-        {
-            var questionsConfig = _fileProvider.GetFileInfo("/QuestionConfig.json");
-
-            using (var jsonContents = questionsConfig.CreateReadStream())
-            using (StreamReader sr = new StreamReader(jsonContents))
-            {
-                return Task.FromResult(sr.ReadToEnd());
-            }
-        }
     }
 }

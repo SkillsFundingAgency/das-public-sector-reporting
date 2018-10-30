@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Messages.Events;
 
 namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_CreateReportHandler
 {
@@ -36,12 +37,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
                 .Build();
 
             _response = SUT.Handle(_createReportRequest, new CancellationToken()).Result;
-        }
-
-        [Test]
-        public void Then_Mapper_Is_Called_With_Request_Employerid()
-        {
-            MapperMock.Verify(m => m.Map<Report>(It.Is<ReportDto>(arg => arg.EmployerId.Equals(_createReportRequest.EmployerId))));
         }
 
         [Test]
@@ -112,11 +107,32 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
         }
 
         [Test]
-        public void Then_Response_Is_Mapped_Report()
+        public void Then_A_Valid_ReportCreated_Message_Is_Published()
         {
-            _response
+            MockEventPublisher
+                .Verify(
+                    m => m.Publish(
+                        It.Is<ReportCreated>( message => validateReportCreatedMessage(message))));
+        }
+
+        private bool validateReportCreatedMessage(ReportCreated message)
+        {
+            message
+                .EmployerId
                 .Should()
-                .Be(MappedReport);
+                .Be(_createReportRequest.EmployerId, "Should have same EmployerId as create report request.");
+
+            message
+                .ReportingPeriod
+                .Should()
+                .Be(_createReportRequest.Period.PeriodString, "should have same reporting period as create report request.");
+
+            message
+                .Id
+                .Should()
+                .Be(_response.Id, "should have same id as created reported.");
+
+            return true;
         }
 
         [Test]

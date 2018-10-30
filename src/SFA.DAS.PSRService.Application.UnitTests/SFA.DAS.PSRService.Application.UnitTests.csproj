@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ReportHandlerTests\Given_A_CreateReportHandler\new_report_question_config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ReportHandlerTests\Given_A_CreateReportHandler\new_report_question_config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.4.1" /> 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="moq" Version="4.9.0" />

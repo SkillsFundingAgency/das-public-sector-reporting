@@ -124,7 +124,7 @@ namespace SFA.DAS.PSRService.Web
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
-
+                config.For<QuestionConfigProvider>().Use<QuestionConfigService>();
 
                 config.Scan(scanner =>
                 {
