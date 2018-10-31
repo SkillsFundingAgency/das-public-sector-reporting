@@ -2,12 +2,16 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using AutoMapper;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Messages.Events;
+using ReportingPercentages = SFA.DAS.PSRService.Messages.Events.ReportingPercentages;
 
 namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitReportHandlerTests.Given_Mapped_Dto_Is_Not_Null
 {
@@ -19,10 +23,13 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
         private Mock<IReportRepository> _mockRepository;
 
         private ReportDto _mappedDto;
+        private Mock<IEventPublisher> _mockEventPublisher;
+        private Report _reportToBeSubmitted;
 
         protected override void Given()
         {
             _mockRepository = new Mock<IReportRepository>();
+            _mockEventPublisher = new Mock<IEventPublisher>();
 
             var mockMapper = new Mock<IMapper>();
 
@@ -45,9 +52,10 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
 
         protected override void When()
         {
+            _reportToBeSubmitted = new Report();
             SUT
                 .Handle(
-                    new SubmitReportRequest(new Report()),
+                    new SubmitReportRequest(_reportToBeSubmitted),
                     new CancellationToken());
         }
 
@@ -85,6 +93,71 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
                 .Verify(
                     m => m.DeleteHistory(
                         It.Is<Guid>( g => g.Equals(_mappedDto.Id))));
+        }
+
+        [Test]
+        public void Then_A_Correct_ReportSubmitted_Event_Is_Published()
+        {
+            _mockEventPublisher
+                .Verify(
+                    m => m.Publish(
+                        It.Is<ReportSubmitted>(message =>
+                            reportSubmittedEventContainsCorrectDataForSubmitReportRequest(message)
+                        )));
+        }
+
+        private bool reportSubmittedEventContainsCorrectDataForSubmitReportRequest(ReportSubmitted message)
+        {
+            message
+                .Id
+                .Should()
+                .Be(_reportToBeSubmitted.Id);
+
+            message
+                .ReportingPeriod
+                .Should()
+                .Be(_reportToBeSubmitted.Period.PeriodString);
+
+            message
+                .EmployerId
+                .Should()
+                .Be(_reportToBeSubmitted.EmployerId);
+
+            verifyReportSubmitter(message.Submitter);
+
+            verifyAnswers(message.Answers);
+
+            verifyReportingPercentages(message.ReportingPercentages);
+
+            return true;
+        }
+
+        private void verifyReportingPercentages(ReportingPercentages messageReportingPercentages)
+        {
+            Assert.Fail("ReportSubmitted event reporting percentages not verified.");
+        }
+
+        private void verifyAnswers(Answers messageAnswers)
+        {
+            Assert.Fail("ReportSubmitted event answer not verified.");
+        }
+
+        private void verifyReportSubmitter(Submitter messageSubmitter)
+        {
+            messageSubmitter
+                .Email
+                .Should()
+                .Be(_reportToBeSubmitted.SubmittedDetails.SubmittedEmail);
+
+            messageSubmitter
+                .Name
+                .Should()
+                .Be(_reportToBeSubmitted.SubmittedDetails.SubmittedName);
+
+            messageSubmitter
+                .UserId
+                .Should()
+                .Be(_reportToBeSubmitted.SubmittedDetails.SubmttedBy);
         }
     }
 }
