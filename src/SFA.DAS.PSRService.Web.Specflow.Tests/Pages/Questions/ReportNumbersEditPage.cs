@@ -34,13 +34,11 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages.Questions
 
         public void EditAtEndValue(string value)
         {
-           
             FormCompletionHelper.EnterText(_atEnd, value);
         }
 
         public void EditAtNewThisPeriodValue(string value)
         {
-            
             FormCompletionHelper.EnterText(_newThisPeriod, value);
         }
 
