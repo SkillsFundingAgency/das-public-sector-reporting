@@ -8,6 +8,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
 {
     public class Report
     {
+        private readonly Lazy<AnswerFinder> _answers;
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
         public string EmployerId { get; set; }
@@ -20,11 +21,11 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public DateTime? AuditWindowStartUtc { get; set; }
         public DateTime? UpdatedUtc { get; set; }
         public User UpdatedBy { get; set; }
-        public AnswerFinder Answers { get; }
+        public AnswerFinder Answers => _answers.Value;
 
         public Report()
         {
-            Answers = new AnswerFinder(Sections);
+            _answers = new Lazy<AnswerFinder>(() => new AnswerFinder(Sections));
         }
 
         public bool IsValidForSubmission()

@@ -37,7 +37,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
                 Submitted = false,
                 Id = Guid.NewGuid(),
                 ReportingPeriod = request.Period.PeriodString,
-                ReportingData = _questionConfigProvider.GetQuestionConfig(),
+                ReportingData = _questionConfigProvider.GetNewlyCreatedReportQuestionConfig(),
                 AuditWindowStartUtc = DateTime.UtcNow,
                 UpdatedUtc = DateTime.UtcNow,
                 UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name})
