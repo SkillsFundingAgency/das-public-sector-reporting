@@ -130,7 +130,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
             message
                 .Id
                 .Should()
-                .Be(_response.Id, "should have same id as created reported.");
+                .Be(_response.Id, "should have same id as created report.");
 
             return true;
         }
