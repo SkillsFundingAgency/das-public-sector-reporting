@@ -36,7 +36,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
 
             SUT = new SubmitReportHandler(
                 mockMapper.Object,
-                _mockRepository.Object);
+                _mockRepository.Object,
+                _mockEventPublisher.Object);
         }
 
         protected override void When()

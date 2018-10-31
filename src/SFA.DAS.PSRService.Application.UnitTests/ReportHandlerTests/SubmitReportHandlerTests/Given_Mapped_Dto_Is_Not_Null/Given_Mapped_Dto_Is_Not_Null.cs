@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using AutoMapper;
 using FluentAssertions;
@@ -8,6 +9,7 @@ using NUnit.Framework;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Messages.Events;
@@ -22,7 +24,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
     {
         private Mock<IReportRepository> _mockRepository;
 
-        private ReportDto _mappedDto;
         private Mock<IEventPublisher> _mockEventPublisher;
         private Report _reportToBeSubmitted;
 
@@ -31,23 +32,17 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
             _mockRepository = new Mock<IReportRepository>();
             _mockEventPublisher = new Mock<IEventPublisher>();
 
-            var mockMapper = new Mock<IMapper>();
-
-            _mappedDto = new ReportDto();
-
-            _mappedDto.Submitted = false;
-
-            _mappedDto.Id = new Guid("33F2BAD1-F368-4467-A249-D2B936284458");
-
-            mockMapper
-                .Setup(
-                    m => m.Map<ReportDto>(It.IsAny<Report>())
-                )
-                .Returns(_mappedDto);
+            var config = new MapperConfiguration(
+                cfg =>
+                {
+                    cfg.AddProfile<ReportMappingProfile>();
+                    cfg.AddProfile<ReportSubmittedProfile>();
+                });
 
             SUT = new SubmitReportHandler(
-                mockMapper.Object,
-                _mockRepository.Object);
+                config.CreateMapper(),
+                _mockRepository.Object,
+                _mockEventPublisher.Object);
         }
 
         protected override void When()
@@ -60,16 +55,16 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
         }
 
         [Test]
-        public void Then_RepositoryUpdate_Is_Called_With_Mapped_Dto()
+        public void Then_RepositoryUpdate_Is_Called_With_Submitted_Report_Id()
         {
             _mockRepository
                 .Verify(
                     m => m.Update(
-                        It.Is<ReportDto>( r => ReferenceEquals(r, _mappedDto))));
+                        It.Is<ReportDto>( r => r.Id.Equals(_reportToBeSubmitted.Id))));
         }
 
         [Test]
-        public void Then_Dto_Passed_To_RepositoryUpdate_Has_Submitted_Status()
+        public void Then_RepositoryUpdate_Is_Called_With_Correct_Submitted_Status()
         {
            _mockRepository
                .Verify(
@@ -87,12 +82,12 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
         }
 
         [Test]
-        public void Then_RepositoryDeleteHistory_Is_Called_With_Id_Of_Mapped_Dto()
+        public void Then_RepositoryDeleteHistory_Is_Called_With_Id_Of_Submitted_Report()
         {
             _mockRepository
                 .Verify(
                     m => m.DeleteHistory(
-                        It.Is<Guid>( g => g.Equals(_mappedDto.Id))));
+                        It.Is<Guid>( g => g.Equals(_reportToBeSubmitted.Id))));
         }
 
         [Test]
@@ -132,14 +127,146 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
             return true;
         }
 
-        private void verifyReportingPercentages(ReportingPercentages messageReportingPercentages)
-        {
-            Assert.Fail("ReportSubmitted event reporting percentages not verified.");
-        }
-
         private void verifyAnswers(Answers messageAnswers)
         {
+            verifyReportNumbersAnswers(messageAnswers);
+            verifyFactorsAnswers(messageAnswers);
+
             Assert.Fail("ReportSubmitted event answer not verified.");
+        }
+
+        private void verifyFactorsAnswers(Answers messageAnswers)
+        {
+            messageAnswers
+                .OutlineActions
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .OutlineActions);
+
+            messageAnswers
+                .Challenges
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .Challenges);
+
+            messageAnswers
+                .TargetPlans
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .TargetPlans);
+
+            messageAnswers
+                .AnythingElse
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .AnythingElse);
+        }
+
+        private void verifyReportingPercentages(ReportingPercentages messageReportingPercentages)
+        {
+            messageReportingPercentages
+                .EmploymentStarts
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .ReportingPercentages
+                        .EmploymentStarts);
+
+            messageReportingPercentages
+                .NewThisPeriod
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .ReportingPercentages
+                        .NewThisPeriod);
+
+            messageReportingPercentages
+                .TotalHeadCount
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .ReportingPercentages
+                        .TotalHeadCount);
+        }
+
+        private void verifyReportNumbersAnswers(Answers messageAnswers)
+        {
+            verifyYourEmployeesAnswers(messageAnswers.YourEmployees);
+            verifyYourApprenticesAnswers(messageAnswers.YourApprentices);
+
+            messageAnswers
+                .FullTimeEquivalents
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .FullTimeEquivalents);
+        }
+
+        private void verifyYourApprenticesAnswers(YourApprentices yourApprenticesAnswers)
+        {
+            yourApprenticesAnswers
+                .AtStart
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .YourApprentices
+                        .AtStart);
+            yourApprenticesAnswers
+                .AtEnd
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .YourApprentices
+                        .AtEnd);
+            yourApprenticesAnswers
+                .NewThisPeriod
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .YourApprentices
+                        .NewThisPeriod);
+        }
+
+        private void verifyYourEmployeesAnswers(YourEmployees yourEmployeesAnswers)
+        {
+            yourEmployeesAnswers
+                .AtStart
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .YourEmployees
+                        .AtStart);
+
+            yourEmployeesAnswers
+                .AtEnd
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .YourEmployees
+                        .AtEnd);
+
+            yourEmployeesAnswers
+                .NewThisPeriod
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .Answers
+                        .YourEmployees
+                        .NewThisPeriod);
         }
 
         private void verifyReportSubmitter(Submitter messageSubmitter)

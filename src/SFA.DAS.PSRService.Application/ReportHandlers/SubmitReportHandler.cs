@@ -1,7 +1,10 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using MediatR;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Messages.Events;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
@@ -9,11 +12,16 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
     {
         private IMapper _mapper;
         private IReportRepository _reportRepository;
+        private readonly IEventPublisher _eventPublisher;
 
-        public SubmitReportHandler(IMapper mapper, IReportRepository reportRepository)
+        public SubmitReportHandler(
+            IMapper mapper, 
+            IReportRepository reportRepository, 
+            IEventPublisher eventPublisher)
         {
-            _mapper = mapper;
-            _reportRepository = reportRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _reportRepository = reportRepository ?? throw new ArgumentNullException(nameof(reportRepository));
+            _eventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
         }
         protected override void HandleCore(SubmitReportRequest request)
         {
@@ -27,6 +35,8 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             _reportRepository.Update(reportDto);
 
             _reportRepository.DeleteHistory(reportDto.Id);
+
+            _eventPublisher.Publish(new ReportSubmitted());
         }
     }
 }

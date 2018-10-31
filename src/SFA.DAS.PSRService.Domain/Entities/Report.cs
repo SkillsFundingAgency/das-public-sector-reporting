@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SFA.DAS.PSRService.Domain.Entities.QuestionHelpers;
 using SFA.DAS.PSRService.Domain.Enums;
 
 namespace SFA.DAS.PSRService.Domain.Entities
@@ -19,6 +20,12 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public DateTime? AuditWindowStartUtc { get; set; }
         public DateTime? UpdatedUtc { get; set; }
         public User UpdatedBy { get; set; }
+        public AnswerFinder Answers { get; }
+
+        public Report()
+        {
+            Answers = new AnswerFinder(Sections);
+        }
 
         public bool IsValidForSubmission()
         {
