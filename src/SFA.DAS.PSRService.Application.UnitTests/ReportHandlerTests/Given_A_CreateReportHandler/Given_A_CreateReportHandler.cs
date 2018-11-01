@@ -37,7 +37,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.Given_A_Cr
             SUT = new CreateReportHandler(
                 ReportRepositoryMock.Object,
                 config.CreateMapper(),
-                new TestQuestionConfigProvider(), 
+                new NewReportQuestionConfigProvider(), 
                 MockEventPublisher.Object);
         }
     }

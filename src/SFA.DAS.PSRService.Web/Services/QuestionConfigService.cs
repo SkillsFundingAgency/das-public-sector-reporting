@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.Services
             _questionConfig = new Lazy<string>(readConfigFromFile);
         }
 
-        public string GetNewlyCreatedReportQuestionConfig()
+        public string GetQuestionConfig()
         {
             return _questionConfig.Value;
         }

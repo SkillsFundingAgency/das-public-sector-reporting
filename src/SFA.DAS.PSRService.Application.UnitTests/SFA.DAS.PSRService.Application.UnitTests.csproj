@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="ReportHandlerTests\new_report_question_config.json" />
+    <EmbeddedResource Include="ReportHandlerTests\Given_A_CreateReportHandler\new_report_question_config.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,6 +2,6 @@
 {
     public interface QuestionConfigProvider
     {
-        string GetNewlyCreatedReportQuestionConfig();
+        string GetQuestionConfig();
     }
 }
