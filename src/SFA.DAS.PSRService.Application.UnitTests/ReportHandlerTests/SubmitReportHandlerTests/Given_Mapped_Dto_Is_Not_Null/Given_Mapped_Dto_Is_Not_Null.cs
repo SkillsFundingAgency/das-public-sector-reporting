@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading;
 using AutoMapper;
 using FluentAssertions;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
@@ -47,7 +47,19 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
 
         protected override void When()
         {
-            _reportToBeSubmitted = new Report();
+            _reportToBeSubmitted = ReportBuilder.BuildValidSubmittedReport();
+//            _reportToBeSubmitted = new Report();
+            var reportingData = 
+                JsonConvert
+                    .DeserializeObject<ReportingData>(
+                        new QuestionConfigWithValidAnswersProvider()
+                            .GetQuestionConfig());
+
+
+            _reportToBeSubmitted.Sections = reportingData.Questions;
+            _reportToBeSubmitted.OrganisationName = reportingData.OrganisationName;
+            _reportToBeSubmitted.ReportingPercentages = reportingData.ReportingPercentages;
+
             SUT
                 .Handle(
                     new SubmitReportRequest(_reportToBeSubmitted),
@@ -131,8 +143,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
         {
             verifyReportNumbersAnswers(messageAnswers);
             verifyFactorsAnswers(messageAnswers);
-
-            Assert.Fail("ReportSubmitted event answer not verified.");
         }
 
         private void verifyFactorsAnswers(Answers messageAnswers)

@@ -36,7 +36,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             _reportRepository.DeleteHistory(reportDto.Id);
 
-            _eventPublisher.Publish(new ReportSubmitted());
+            _eventPublisher.Publish(_mapper.Map<ReportSubmitted>(request.Report));
         }
     }
 }
