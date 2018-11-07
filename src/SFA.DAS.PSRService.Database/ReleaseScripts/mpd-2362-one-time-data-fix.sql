@@ -1,11 +1,11 @@
-﻿-- https://skillsfundingagency.atlassian.net/browse/MPD-1405
+-- https://skillsfundingagency.atlassian.net/browse/MPD-1405
 
 MERGE [dbo].[Report] AS target
 USING (
     SELECT ab.Employerid,
         ab.ReportingPeriod,
         ab.newReportingData
-    FROM (
+    FROM ( 
         SELECT a.Employerid,
             a.ReportingPeriod,
             a.FigureA,
@@ -18,7 +18,7 @@ USING (
             a.FigureH,
             FORMAT(ROUND(((a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureH, 0))), 4), '######0.00%') AS FigureI,
             a.SubmittedAt,
-			JSON_MODIFY([ReportingData], '$.ReportingPercentages', JSON_QUERY(N'{"EmploymentStarts":"' + FORMAT(ISNULL(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureA, 0))), 4), 0), '######0.00') + '","TotalHeadCount":"' + FORMAT(ISNULL(ROUND(((100 * a.FigureD) / CONVERT(DECIMAL, nullif(a.FigureC, 0))), 4), 0), '######0.00') + '","NewThisPeriod":"' + FORMAT(ISNULL(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureH, 0))), 4), 0), '######0.00') + '"}')) 
+			JSON_MODIFY(newData, '$.ReportingPercentages', JSON_QUERY(N'{"EmploymentStarts":"' + FORMAT(ISNULL(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureA, 0))), 4), 0), '######0.00') + '","TotalHeadCount":"' + FORMAT(ISNULL(ROUND(((100 * a.FigureD) / CONVERT(DECIMAL, nullif(a.FigureC, 0))), 4), 0), '######0.00') + '","NewThisPeriod":"' + FORMAT(ISNULL(ROUND(((100 * a.FigureB) / CONVERT(DECIMAL, nullif(a.FigureH, 0))), 4), 0), '######0.00') + '"}')) 
 			 newReportingData
         FROM (
             SELECT [OrganisationName] AS Organisation_Name,
@@ -34,6 +34,9 @@ USING (
 					SELECT [Employerid],
 						[ReportingPeriod],
 						[ReportingData],
+						CASE WHEN CHARINDEX('"reportingPercentages":[',ReportingData) = 0 THEN [ReportingData] ELSE
+						json_modify(SUBSTRING(ReportingData, 1, CHARINDEX('"reportingPercentages":[',ReportingData)+20)+'2'+
+                                    SUBSTRING(ReportingData, CHARINDEX('"reportingPercentages":[',ReportingData)+21,LEN(ReportingData)),'$.reportingPercentages2',NULL) END newData,
 						'1 April 20' + SUBSTRING([ReportingPeriod], 1, 2) + ' to 31 March 20' + SUBSTRING([ReportingPeriod], 3, 2) AS ReportingPeriodLabel,
 						JSON_VALUE([ReportingData], '$.OrganisationName') AS OrganisationName,
 						JSON_VALUE([ReportingData], '$.Questions[0].SubSections[0].Id') AS Question1,
@@ -54,10 +57,11 @@ USING (
 						JSON_VALUE([ReportingData], '$.Submitted.SubmittedEmail') AS SubmittedEmail,
 						Submitted
 					FROM [dbo].[Report]
-					WHERE JSON_VALUE([ReportingData], '$.OrganisationName') IS NOT NULL
+					WHERE JSON_VALUE([ReportingData], '$.OrganisationName') IS NOT NULL --and Employerid = 'VWR89N'
                 ) AS base
-            ) AS a
+            ) AS a 
         ) AS ab
+		
     WHERE ab.newReportingData <> ''
     ) AS source(Employerid, ReportingPeriod, newReportingData)
     ON (
@@ -68,3 +72,4 @@ WHEN MATCHED
     THEN
         UPDATE
         SET [ReportingData] = source.newReportingData;
+		
