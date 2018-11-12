@@ -45,7 +45,6 @@ namespace SFA.DAS.PSRService.Web
         private const string ServiceName = "SFA.DAS.PSRService";
         private const string Version = "1.0";
         private IHostingEnvironment _hostingEnvironment;
-        private EndpointConfiguration nservicebusEndpointConfig;
 
 
         public Startup(IConfiguration config, IHostingEnvironment env)
@@ -87,9 +86,11 @@ namespace SFA.DAS.PSRService.Web
 
             var container = ConfigureIOC(services);
 
+            var useLearningTransport = _hostingEnvironment.IsDevelopment()
+                                       && Configuration.NServiceBus.ServiceBusConnectionString == "";
+
             var endpointConfiguration = new EndpointConfiguration(Configuration.NServiceBus.Endpoint)
-                .UseAzureServiceBusTransport(true,() => Configuration.NServiceBus.ServiceBusConnectionString, r => { })
-                
+                .UseAzureServiceBusTransport(useLearningTransport, () => Configuration.NServiceBus.ServiceBusConnectionString, r => { })
                 .UseLicense(Configuration.NServiceBus.LicenceText)
                 .UseInstallers()
                 .UseSqlServerPersistence(() => new SqlConnection(Configuration.SqlConnectionString))
