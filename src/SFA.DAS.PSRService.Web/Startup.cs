@@ -153,7 +153,7 @@ namespace SFA.DAS.PSRService.Web
         {
             var unitOfWorkContext = iocContext.GetInstance<IUnitOfWorkContext>();
 
-            var maybeClientSession = unitOfWorkContext.TryGet<IClientOutboxTransaction>();
+            var maybeClientSession = unitOfWorkContext.Find<IClientOutboxTransaction>();
 
             if (maybeClientSession != null)
                 return maybeClientSession.GetSqlSession();

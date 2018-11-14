@@ -45,10 +45,11 @@
     <PackageReference Include="SFA.DAS.Configuration.FileStorage" Version="1.0.0.53229" />
     <PackageReference Include="SFA.DAS.EmployerUsers.WebClientComponents" Version="1.0.0.52781" />
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-    <PackageReference Include="sfa.das.NServiceBus" Version="3.0.1" />
-    <PackageReference Include="sfa.das.NServiceBus.SqlServer" Version="2.0.12" />
-    <PackageReference Include="Sfa.das.UnitOfWork.Mvc" Version="2.1.1" />
-    <PackageReference Include="sfa.das.UnitOfWork.NServiceBus" Version="2.1.1" />
+    <PackageReference Include="sfa.das.NServiceBus" Version="5.0.1" />
+    <PackageReference Include="sfa.das.NServiceBus.SqlServer" Version="5.0.1" />
+    <PackageReference Include="SFA.DAS.UnitOfWork" Version="3.2.2" />
+    <PackageReference Include="Sfa.das.UnitOfWork.Mvc" Version="3.2.2" />
+    <PackageReference Include="sfa.das.UnitOfWork.NServiceBus" Version="3.2.2" />
     <PackageReference Include="StructureMap" Version="4.6.1" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.4" />
