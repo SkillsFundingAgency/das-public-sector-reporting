@@ -96,13 +96,10 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
-        public async Task<IActionResult> Logout()
+        public async Task Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-
-            var disco = await DiscoveryClient.GetAsync(_webConfiguration.Identity.Authority);
-            return Redirect(disco.EndSessionEndpoint);
         }
 
         private bool UserIsAuthorizedForReportEdit()
