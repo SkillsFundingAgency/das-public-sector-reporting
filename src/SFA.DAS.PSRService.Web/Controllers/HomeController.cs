@@ -102,6 +102,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
+        [Route("SignOutCleanup")]
+        public async Task SignOutCleanup()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
         private bool UserIsAuthorizedForReportEdit()
         {
             return
