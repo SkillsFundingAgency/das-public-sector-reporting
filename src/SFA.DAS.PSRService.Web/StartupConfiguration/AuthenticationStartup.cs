@@ -61,6 +61,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
 
             services.AddAuthentication(sharedOptions =>
                 {
+                    sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     sharedOptions.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;

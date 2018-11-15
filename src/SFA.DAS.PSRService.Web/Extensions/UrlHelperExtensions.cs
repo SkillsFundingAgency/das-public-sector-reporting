@@ -28,32 +28,6 @@ namespace Microsoft.AspNetCore.Mvc
                   return $"{EasBaseUrl}/accounts/{hashedAccountId}/{path}";
         }
         
-        //private static string GetEmpCommitBaseUrl()
-        //{
-        //    return GetBaseUrl("EmpCommitBaseUrl");
-        //}
-        //private static string GetEasBaseUrl()
-        //{
-        //    return GetBaseUrl("EasBaseUrl");
-        //}
-        //private static string GetBaseUrl(string configKey)
-        //{
-        //    var baseUrl = CloudConfigurationManager.GetSetting(configKey);
-
-        //    return baseUrl.EndsWith("/")
-        //        ? baseUrl
-        //        : baseUrl + "/";
-        //}
-        //public static string ExternalEmpCommitUrlAction(this IUrlHelper helper, string controllerName, string actionName = "", bool ignoreAccountId = false)
-        //{
-        //    var baseUrl = GetEmpCommitBaseUrl();
-        //    return ExternalUrlAction(helper, baseUrl, controllerName, actionName, ignoreAccountId);
-        //}
-        //public static string ExternalEasUrlAction(this IUrlHelper helper, string controllerName, string actionName = "", bool ignoreAccountId = false)
-        //{
-        //    var baseUrl = GetEasBaseUrl();
-        //    return ExternalUrlAction(helper, baseUrl, controllerName, actionName, ignoreAccountId);
-        //}
         public static string ExternalUrlAction(this IUrlHelper helper, string baseUrl, string controllerName, string actionName = "", bool ignoreAccountId = false)
         {
             var accountId = helper.ActionContext.RouteData.Values["employerAccountId"];
