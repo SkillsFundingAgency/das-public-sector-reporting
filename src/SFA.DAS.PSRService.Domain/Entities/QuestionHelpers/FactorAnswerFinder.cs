@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SFA.DAS.PSRService.Domain.Entities.QuestionHelpers
 {
-    public abstract class FactorAnswerFinder
+    public abstract class FactorAnswerFinder : IFactorAnswerFinder
     {
         private readonly Section _factorSection;
         private readonly string _subsectionAndQuestionId;

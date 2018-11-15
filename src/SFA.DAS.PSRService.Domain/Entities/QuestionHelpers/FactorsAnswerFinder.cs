@@ -4,24 +4,32 @@ namespace SFA.DAS.PSRService.Domain.Entities.QuestionHelpers
 {
     public class FactorsAnswerFinder
     {
-        private Lazy<FactorAnswerFinder> outlineActions;
-        private Lazy<FactorAnswerFinder> challenges;
-        private Lazy<FactorAnswerFinder> targetPlans;
-        private Lazy<FactorAnswerFinder> anythingElse;
+        private Lazy<IFactorAnswerFinder> outlineActions;
+        private Lazy<IFactorAnswerFinder> challenges;
+        private Lazy<IFactorAnswerFinder> targetPlans;
+        private Lazy<IFactorAnswerFinder> anythingElse;
 
         public FactorsAnswerFinder(Section factorsSection)
         {
-            if (factorsSection == null) throw new ArgumentNullException(nameof(factorsSection));
-
-            outlineActions = new Lazy<FactorAnswerFinder>(() => new OutlineActionsAnswerFinder(factorsSection));
-            challenges = new Lazy<FactorAnswerFinder>(() => new ChallengesAnswerFinder(factorsSection));
-            targetPlans = new Lazy<FactorAnswerFinder>(() => new TargetPlansAnswerFinder(factorsSection));
-            anythingElse = new Lazy<FactorAnswerFinder>(() => new AnythingElseAnswerFinder(factorsSection));
+            if (factorsSection != null)
+            {
+                outlineActions = new Lazy<IFactorAnswerFinder>(() => new OutlineActionsAnswerFinder(factorsSection));
+                challenges = new Lazy<IFactorAnswerFinder>(() => new ChallengesAnswerFinder(factorsSection));
+                targetPlans = new Lazy<IFactorAnswerFinder>(() => new TargetPlansAnswerFinder(factorsSection));
+                anythingElse = new Lazy<IFactorAnswerFinder>(() => new AnythingElseAnswerFinder(factorsSection));
+            }
+            else
+            {
+                outlineActions = new Lazy<IFactorAnswerFinder>(() => new AlwaysEmptyStringFactorAnswerFinder());
+                challenges = new Lazy<IFactorAnswerFinder>(() => new AlwaysEmptyStringFactorAnswerFinder());
+                targetPlans = new Lazy<IFactorAnswerFinder>(() => new AlwaysEmptyStringFactorAnswerFinder());
+                anythingElse = new Lazy<IFactorAnswerFinder>(() => new AlwaysEmptyStringFactorAnswerFinder());
+            }
         }
 
-        public FactorAnswerFinder OutlineActions => outlineActions.Value;
-        public FactorAnswerFinder Challenges => challenges.Value;
-        public FactorAnswerFinder TargetPlans => targetPlans.Value;
-        public FactorAnswerFinder AnythingElse => anythingElse.Value;
+        public IFactorAnswerFinder OutlineActions => outlineActions.Value;
+        public IFactorAnswerFinder Challenges => challenges.Value;
+        public IFactorAnswerFinder TargetPlans => targetPlans.Value;
+        public IFactorAnswerFinder AnythingElse => anythingElse.Value;
     }
 }

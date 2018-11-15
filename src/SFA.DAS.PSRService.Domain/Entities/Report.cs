@@ -8,11 +8,11 @@ namespace SFA.DAS.PSRService.Domain.Entities
 {
     public class Report
     {
-        private readonly Lazy<AnswerFinder> _answers;
+        private Lazy<AnswerFinder> _answers;
+        private IEnumerable<Section> _sections;
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
         public string EmployerId { get; set; }
-        public IEnumerable<Section> Sections { get; set; }
         public bool Submitted { get; set; }
         public string ReportingPeriod { get; set; }
         public Submitted SubmittedDetails { get; set; }
@@ -23,9 +23,20 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public User UpdatedBy { get; set; }
         public AnswerFinder Answers => _answers.Value;
 
+        public IEnumerable<Section> Sections
+        {
+            get => _sections;
+            set
+            {
+                _sections = value == null ? new List<Section>(0).AsReadOnly() : value;
+                _answers = new Lazy<AnswerFinder>(() => new AnswerFinder(_sections));
+            }
+        }
+
         public Report()
         {
-            _answers = new Lazy<AnswerFinder>(() => new AnswerFinder(Sections));
+            _sections = new List<Section>(0).AsReadOnly();
+            _answers = new Lazy<AnswerFinder>(() => new AnswerFinder(_sections));
         }
 
         public bool IsValidForSubmission()

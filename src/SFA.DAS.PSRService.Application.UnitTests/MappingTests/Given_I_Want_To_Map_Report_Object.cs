@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Azure.Amqp.Serialization;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Mapping;
@@ -112,14 +114,50 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
 
             var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
 
-            var expectedSerializedReportingData =
-                "{\"OrganisationName\":\"Organisation 1\",\"Questions\":null,\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":\"11.00\",\"TotalHeadCount\":\"22.00\",\"NewThisPeriod\":\"33.00\"}}";
+            var mappedReportingData = JsonConvert.DeserializeObject<ReportingData>(mappedReportDto.ReportingData);
 
-            Assert.AreEqual(expectedSerializedReportingData, mappedReportDto.ReportingData);
+            Assert.AreEqual(report.OrganisationName, mappedReportingData.OrganisationName);
+            Assert.AreEqual((report.Sections ?? Enumerable.Empty<Section>()), (mappedReportingData.Questions ?? Enumerable.Empty<Section>()));
+            Assert.That(mappedReportingData.ReportingPercentages, Is.EqualTo(report.ReportingPercentages).Using(new ReportingPercentagesEqualityComparer()));
+            Assert.That(mappedReportingData.Submitted, Is.EqualTo(report.SubmittedDetails).Using(new SubmittedEqualityComparer()));
+
             Assert.AreEqual(report.Submitted, mappedReportDto.Submitted );
             Assert.AreEqual(report.EmployerId, mappedReportDto.EmployerId);
             Assert.AreEqual(report.Id, mappedReportDto.Id);
             Assert.AreEqual(report.ReportingPeriod, mappedReportDto.ReportingPeriod);
+        }
+
+        private string serializeReportingDataFromReport(Report report)
+        {
+            return
+                JsonConvert.SerializeObject(
+                    new ReportingData
+                    {
+                        OrganisationName = report.OrganisationName,
+                        Questions = report.Sections,
+                        ReportingPercentages = report.ReportingPercentages,
+                        Submitted = report.SubmittedDetails
+                    }
+                );
+        }
+
+        private void AssertSerializedReportingDataAreEquivalent(string leftSerialization, string rightSerialization)
+        {
+            var leftData = JsonConvert.DeserializeObject<ReportingData>(leftSerialization);
+            var rightData = JsonConvert.DeserializeObject<ReportingData>(rightSerialization);
+
+            AssertReportingDataAreEquivalent(leftData, rightData);
+        }
+
+        private void AssertReportingDataAreEquivalent(ReportingData leftData, ReportingData rightData)
+        {
+            Assert.AreEqual(leftData.OrganisationName, rightData.OrganisationName);
+
+            Assert.AreEqual((leftData.Questions ?? Enumerable.Empty<Section>()), (rightData.Questions ?? Enumerable.Empty<Section>()));
+
+            Assert.AreEqual(leftData.Submitted, rightData.Submitted);
+
+            Assert.AreEqual(leftData.ReportingPercentages, rightData.ReportingPercentages);
         }
     }
 }

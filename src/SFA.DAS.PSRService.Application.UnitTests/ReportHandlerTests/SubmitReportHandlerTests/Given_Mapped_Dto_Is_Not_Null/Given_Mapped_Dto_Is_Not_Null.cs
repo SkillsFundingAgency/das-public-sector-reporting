@@ -180,7 +180,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
                         .AnythingElse);
         }
 
-        private void verifyReportingPercentages(ReportingPercentages messageReportingPercentages)
+        private void verifyReportingPercentages(Messages.Events.ReportingPercentages messageReportingPercentages)
         {
             messageReportingPercentages
                 .EmploymentStarts

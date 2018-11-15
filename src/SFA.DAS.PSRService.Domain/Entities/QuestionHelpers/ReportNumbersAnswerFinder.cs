@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SFA.DAS.PSRService.Domain.Entities.QuestionHelpers
 {
-    public abstract class ReportNumbersAnswerFinder
+    public class ReportNumbersAnswerFinder : IReportNumbersAnswerFinder
     {
         private readonly IEnumerable<Question> _questions;
 
