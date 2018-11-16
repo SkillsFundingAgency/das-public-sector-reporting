@@ -6,7 +6,7 @@ namespace SFA.DAS.PSRService.Domain.Entities.QuestionHelpers
 {
     public class AnswerFinder
     {
-c        private readonly IEnumerable<Section> _sections;
+        private readonly IEnumerable<Section> _sections;
         private Lazy<string> _fullTimeEquivalents;
         private Lazy<IReportNumbersAnswerFinder> yourEmployeesAnswers;
         private Lazy<IReportNumbersAnswerFinder> yourApprenticesAnswers;
