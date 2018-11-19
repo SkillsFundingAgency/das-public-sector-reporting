@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using SFA.DAS.PSRService.Application.Interfaces;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitReportHandlerTests.Given_Mapped_Dto_Is_Not_Null
+namespace SFA.DAS.PSRService.Application.UnitTests
 {
     public sealed class QuestionConfigWithValidAnswersProvider
         :QuestionConfigProvider
@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
 
             string readData;
 
-            using (var stream = assembly.GetManifestResourceStream(@"SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitReportHandlerTests.Given_Mapped_Dto_Is_Not_Null.question_config_with_valid_answers.json"))
+            using (var stream = assembly.GetManifestResourceStream(@"SFA.DAS.PSRService.Application.UnitTests.question_config_with_valid_answers.json"))
             {
                 using (var reader = new StreamReader(stream))
                 {

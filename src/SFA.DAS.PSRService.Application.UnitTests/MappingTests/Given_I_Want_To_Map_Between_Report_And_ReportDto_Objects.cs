@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using Microsoft.Azure.Amqp.Serialization;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 
 namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
 {
     [TestFixture]
-    public class Given_I_Want_To_Map_Report_Object
+    public class Given_I_Want_To_Map_Between_Report_And_ReportDto_Objects
     {
         private IMapper _mapper;
 

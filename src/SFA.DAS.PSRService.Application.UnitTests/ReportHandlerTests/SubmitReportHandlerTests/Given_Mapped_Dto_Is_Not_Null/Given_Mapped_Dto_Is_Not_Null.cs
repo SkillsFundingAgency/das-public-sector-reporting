@@ -48,7 +48,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
         protected override void When()
         {
             _reportToBeSubmitted = ReportBuilder.BuildValidSubmittedReport();
-//            _reportToBeSubmitted = new Report();
             var reportingData = 
                 JsonConvert
                     .DeserializeObject<ReportingData>(
