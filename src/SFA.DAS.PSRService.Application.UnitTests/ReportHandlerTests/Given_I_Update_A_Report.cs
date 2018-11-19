@@ -8,7 +8,6 @@ using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
-using SFA.DAS.PSRService.Application.UnitTests.FileInfo;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Messages.Events;
 
@@ -19,7 +18,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
     {
         private Mock<IMapper> _mapperMock;
         private Mock<IReportRepository> _reportRepositoryMock;
-        private Mock<IFileProvider> _fileProviderMock;
         private UpdateReportHandler _updateReportHandler;
         private Mock<IEventPublisher> _mockEventPublisher;
         private ReportUpdated _mockMappedReportUpdatedEvent;
@@ -29,12 +27,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         {
             _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
             _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
-            _fileProviderMock = new Mock<IFileProvider>();
+            new Mock<IFileProvider>();
             _mockEventPublisher = new Mock<IEventPublisher>();
             _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object, _mockEventPublisher.Object);
-
-            var fileInfo = new StringFileInfo("", "QuestionConfig.json");
-            _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
 
             _mockMappedReportUpdatedEvent = new ReportUpdated();
             _mapperMock.Setup(s => s.Map<ReportUpdated>(It.IsAny<Report>())).Returns(_mockMappedReportUpdatedEvent);
