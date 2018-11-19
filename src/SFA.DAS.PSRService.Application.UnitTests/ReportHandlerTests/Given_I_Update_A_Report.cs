@@ -4,11 +4,13 @@ using AutoMapper;
 using Microsoft.Extensions.FileProviders;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Application.UnitTests.FileInfo;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Messages.Events;
 
 namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 {
@@ -19,6 +21,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         private Mock<IReportRepository> _reportRepositoryMock;
         private Mock<IFileProvider> _fileProviderMock;
         private UpdateReportHandler _updateReportHandler;
+        private Mock<IEventPublisher> _mockEventPublisher;
+        private ReportUpdated _mockMappedReportUpdatedEvent;
 
         [SetUp]
         public void Setup()
@@ -26,39 +30,44 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
             _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
             _fileProviderMock = new Mock<IFileProvider>();
-            _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object);
+            _mockEventPublisher = new Mock<IEventPublisher>();
+            _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object, _mockEventPublisher.Object);
 
             var fileInfo = new StringFileInfo("", "QuestionConfig.json");
             _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
+
+            _mockMappedReportUpdatedEvent = new ReportUpdated();
+            _mapperMock.Setup(s => s.Map<ReportUpdated>(It.IsAny<Report>())).Returns(_mockMappedReportUpdatedEvent);
         }
 
         [Test]
-        public void When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Not_Created()
+        public void When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Not_Created_And_ReportUpdated_Event_Is_Published()
         {
-            // arrange
-            var justNow = DateTime.UtcNow;
+// arrange
+            var dateTimeNow = DateTime.UtcNow;
             ReportDto actualReportDto = null;
             var reportId = Guid.NewGuid();
             var updateUser = new User {Id = Guid.NewGuid(), Name = "Homer"};
             var oldVersion = new ReportDto
             {
                 Id = reportId,
-                AuditWindowStartUtc = justNow,
-                UpdatedUtc = justNow,
+                AuditWindowStartUtc = dateTimeNow,
+                UpdatedUtc = dateTimeNow,
                 UpdatedBy = $"{{ Id: '{updateUser.Id}', Name: '{updateUser.Name}' }}"
             };
             var newVersion = new ReportDto
             {
                 Id = reportId,
-                AuditWindowStartUtc = justNow,
-                UpdatedUtc = justNow,
+                AuditWindowStartUtc = dateTimeNow,
+                UpdatedUtc = dateTimeNow,
                 UpdatedBy = $"{{ Id: '{updateUser.Id}', Name: '{updateUser.Name}' }}"
             };
 
             _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns(oldVersion).Verifiable();
-            _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Callback<ReportDto>(d => actualReportDto = d).Verifiable();
+            _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Callback<ReportDto>(d => actualReportDto = d)
+                .Verifiable();
             _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
-
+            
             var updateReportRequest =
                 new UpdateReportRequestBuilder()
                     .WithUserName(updateUser.Name)
@@ -68,8 +77,8 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
                         new Report
                         {
                             Id = reportId,
-                            AuditWindowStartUtc = justNow,
-                            UpdatedUtc = justNow,
+                            AuditWindowStartUtc = dateTimeNow,
+                            UpdatedUtc = dateTimeNow,
                             UpdatedBy = new User {Id = Guid.Empty, Name = "Homer"}
                         })
                     .Build();
@@ -77,17 +86,22 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             // act
             _updateReportHandler.Handle(updateReportRequest, default(CancellationToken));
 
-            // assert
             _reportRepositoryMock.VerifyAll();
             Assert.IsNotNull(actualReportDto);
-            Assert.AreEqual(justNow, actualReportDto.AuditWindowStartUtc);
-            Assert.AreNotEqual(justNow, actualReportDto.UpdatedUtc);
+            Assert.AreEqual(dateTimeNow, actualReportDto.AuditWindowStartUtc);
+            Assert.AreNotEqual(dateTimeNow, actualReportDto.UpdatedUtc);
             Assert.IsNotNull(actualReportDto.UpdatedBy);
             Assert.IsTrue(actualReportDto.UpdatedBy.Contains(updateUser.Name));
+
+            _mockEventPublisher
+                .Verify(
+                    m =>
+                        m.Publish(It.Is<ReportUpdated>(message =>
+                            ReferenceEquals(message, _mockMappedReportUpdatedEvent))));
         }
 
         [Test]
-        public void When_Report_Is_Updated_More_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Created()
+        public void When_Report_Is_Updated_More_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Created_And_ReportUpdated_Event_Is_Published()
         {
             // arrange
             var longAgo = DateTime.UtcNow.AddMinutes(-6);
@@ -153,10 +167,15 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             Assert.AreEqual(longAgo, actualAuditRecordDto.UpdatedUtc);
             Assert.IsTrue(actualAuditRecordDto.UpdatedBy.Contains(updateUser.Name));
             Assert.AreEqual(oldVersion.ReportingData, actualAuditRecordDto.ReportingData);
+            _mockEventPublisher
+                .Verify(
+                    m =>
+                        m.Publish(It.Is<ReportUpdated>(message =>
+                            ReferenceEquals(message, _mockMappedReportUpdatedEvent))));
         }
 
         [Test]
-        public void When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_But_By_Different_User_Then_Audit_Record_Is_Created()
+        public void When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_But_By_Different_User_Then_Audit_Record_Is_Created_And_ReportUpdated_Event_Is_Published()
         {
             // arrange
             var justNow = DateTime.UtcNow;
@@ -222,10 +241,15 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             Assert.AreEqual(justNow, actualAuditRecordDto.UpdatedUtc);
             Assert.IsTrue(actualAuditRecordDto.UpdatedBy.Contains(oldUser.Name));
             Assert.AreEqual(oldVersion.ReportingData, actualAuditRecordDto.ReportingData);
+            _mockEventPublisher
+                .Verify(
+                    m =>
+                        m.Publish(It.Is<ReportUpdated>(message =>
+                            ReferenceEquals(message, _mockMappedReportUpdatedEvent))));
         }
 
         [Test]
-        public void When_Old_Version_Cannot_Be_Found_Then_Throw_Error()
+        public void When_Old_Version_Cannot_Be_Found_Then_Throw_Error_And_ReportUpdated_Event_Is_Not_Updated()
         {
             // arrange
             var reportId = Guid.NewGuid();
@@ -241,10 +265,16 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             // act
             // assert
             Assert.Throws<Exception>(() => _updateReportHandler.Handle(updateReportRequest, new CancellationToken()));
+
+            _mockEventPublisher
+                .Verify(
+                    m =>
+                        m.Publish(It.IsAny<ReportUpdated>),
+                    Times.Never);
         }
 
         [Test]
-        public void When_Old_Version_Does_Not_Have_New_Values_They_Are_Recorded_And_No_Audit_Created()
+        public void When_Old_Version_Does_Not_Have_New_Values_They_Are_Recorded_And_No_Audit_Created_And_ReportUpdated_Event_Is_Published()
         {
             // arrange
             var justNow = DateTime.UtcNow.AddSeconds(-1);
@@ -301,6 +331,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             Assert.IsNotNull(actualReportDto.UpdatedBy);
             Assert.IsTrue(actualReportDto.UpdatedBy.Contains(updateUser.Name));
             Assert.AreEqual(newVersion.ReportingData, actualReportDto.ReportingData);
+            
         }
     }
 }   

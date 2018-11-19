@@ -2,9 +2,11 @@
 using AutoMapper;
 using MediatR;
 using Newtonsoft.Json;
+using SFA.DAS.NServiceBus;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
+using SFA.DAS.PSRService.Messages.Events;
 
 namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
@@ -12,11 +14,16 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
     {
         private readonly IMapper _mapper;
         private readonly IReportRepository _reportRepository;
+        private readonly IEventPublisher _eventPublisher;
 
-        public UpdateReportHandler(IMapper mapper, IReportRepository reportRepository)
+        public UpdateReportHandler(
+            IMapper mapper, 
+            IReportRepository reportRepository, 
+            IEventPublisher eventPublisher)
         {
-            _mapper = mapper;
-            _reportRepository = reportRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _reportRepository = reportRepository ?? throw new ArgumentNullException(nameof(reportRepository));
+            _eventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
         }
 
         protected override void HandleCore(UpdateReportRequest request)
@@ -28,6 +35,11 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             request.Report.UpdatePercentages();
 
+            var updatedEvent = _mapper.Map<ReportUpdated>(request.Report);
+            
+            if(updatedEvent == null)
+                throw new InvalidOperationException("Cannot create update event for request report.");
+            
             var reportDto = _mapper.Map<ReportDto>(request.Report);
             reportDto.UpdatedUtc = DateTime.UtcNow;
             reportDto.UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name});
@@ -50,6 +62,8 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             }
 
             _reportRepository.Update(reportDto);
+
+            _eventPublisher.Publish(updatedEvent);
         }
 
         private static bool RequiresAuditRecord(ReportDto oldVersion, ReportDto newVersion, TimeSpan requestAuditWindowSize)
