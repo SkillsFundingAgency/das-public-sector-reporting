@@ -47,6 +47,13 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests.Given_A_Report_T
 
         private void verifyAnswers(Answers messageAnswers)
         {
+            messageAnswers
+                .OrganisationName
+                .Should()
+                .Be(
+                    SourceReport
+                        .OrganisationName);
+            
             verifyReportNumbersAnswers(messageAnswers);
             verifyFactorsAnswers(messageAnswers);
         }

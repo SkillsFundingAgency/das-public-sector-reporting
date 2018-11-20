@@ -142,6 +142,13 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.SubmitRepo
         {
             verifyReportNumbersAnswers(messageAnswers);
             verifyFactorsAnswers(messageAnswers);
+
+            messageAnswers
+                .OrganisationName
+                .Should()
+                .Be(
+                    _reportToBeSubmitted
+                        .OrganisationName);
         }
 
         private void verifyFactorsAnswers(Answers messageAnswers)

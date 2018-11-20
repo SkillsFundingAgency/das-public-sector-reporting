@@ -16,6 +16,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                     ReportingPeriod = report.Period.PeriodString,
                     Answers = new Answers
                     {
+                        OrganisationName = report.OrganisationName,
                         YourEmployees = new YourEmployees
                         {
                             AtStart = report.Answers.YourEmployees.AtStart,

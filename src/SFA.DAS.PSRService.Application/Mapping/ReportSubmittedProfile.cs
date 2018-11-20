@@ -28,6 +28,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                     },
                     Answers = new Answers
                     {
+                        OrganisationName = report.OrganisationName,
                         YourEmployees = new YourEmployees
                         {
                             AtStart = report.Answers.YourEmployees.AtStart,
