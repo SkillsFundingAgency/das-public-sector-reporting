@@ -296,6 +296,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
 
+        [HttpGet]
+        [Route("ConfirmAmend")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult ConfirmAmend()
+        {
+            ViewBag.ReportPeriod = _currentPeriod;
+            
+            return View("ConfirmAmend");
+        }
+
         private bool UserIsAuthorizedForReportSubmission()
         {
             return
