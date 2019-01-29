@@ -34,6 +34,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
         }
 
         [Test]
+        public void Then_ViewModel_UserCanEditReports_Is_False()
+        {
+            model
+                .UserCanEditReports
+                .Should()
+                .BeFalse();
+        }
+        [Test]
         public void Then_Result_Is_ViewResult()
         {
             Assert
