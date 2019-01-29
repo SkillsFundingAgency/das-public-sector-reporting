@@ -98,16 +98,23 @@
                 <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
             }
             else if (Model.IsValidForSubmission && !Model.UserCanSubmitReports && !Model.IsReadOnly)
-            { 
+            {
                 <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
             }
             else
             {
-                    if (Model.Report.Submitted)
+                if (Model.Report.Submitted)
+                {
+                    if (Model.UserCanEditReports)
+                    {
+                        <a id="report-summary-amend" class="button" asp-controller="Report" asp-action="Amend">Amend report</a>
+                    }
+                    else
                     {
                         <a id="report-summary-list" class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
                     }
-             }
+                }
+            }
             </div>
     }
 </div>
