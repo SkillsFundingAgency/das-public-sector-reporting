@@ -282,6 +282,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
 
+
+        [Route("Amend")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult Amend()
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            _mediatr.Send(
+                new UnSubmitReportRequest(report));        
+              
+            return new RedirectResult(Url.Action("Edit", "Report"));
+        }
+
         private bool UserIsAuthorizedForReportSubmission()
         {
             return
@@ -325,16 +338,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return
                 firstStep
                     .ForViewOnlyUser();
-        }
-
-        public IActionResult Amend()
-        {
-              var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
-
-              _mediatr.Send(
-                  new UnSubmitReportRequest(report));        
-              
-              return new RedirectResult(Url.Action("Edit", "Report"));
         }
     }
 }
