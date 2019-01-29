@@ -14,13 +14,12 @@ namespace SFA.DAS.PSRService.Web.ViewModels
 
         public PercentagesViewModel Percentages { get; set; }
 
-        public Period Period { get; set; }
-
         public bool CanBeEdited { get; set; }
         public bool UserCanSubmitReports { get; set; }
         public string Subtitle { get; set; }
         public bool IsReadOnly { get; set; }
         public bool UserCanEditReports { get; set; }
+        public Period CurrentPeriod { get; set; }
 
         public ReportViewModel()
         {

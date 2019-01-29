@@ -81,7 +81,7 @@
                         <tbody>
                             <tr>
                                 <td>Reporting period</td>
-                                <td class="bold">@Model.Period.FullString</td>
+                                <td class="bold">@Model.Report.Period.FullString</td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,7 +105,7 @@
             {
                 if (Model.Report.Submitted)
                 {
-                    if (Model.UserCanEditReports)
+                    if (Model.UserCanEditReports && Model.Report.Period.Equals(Model.CurrentPeriod))
                     {
                         <a id="report-summary-amend" class="button" asp-controller="Report" asp-action="ConfirmAmend">Amend report</a>
                     }

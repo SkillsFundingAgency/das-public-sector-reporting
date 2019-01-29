@@ -143,7 +143,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 var reportViewModel = new ReportViewModel
                 {
                     Report = report,
-                    Period = _currentPeriod,
+                    CurrentPeriod = _currentPeriod,
                     CanBeEdited = _reportService.CanBeEdited(report) && UserIsAuthorizedForReportEdit(),
                     UserCanEditReports = UserIsAuthorizedForReportEdit(),
                     UserCanSubmitReports = UserIsAuthorizedForReportSubmission(),
@@ -152,9 +152,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 reportViewModel.IsValidForSubmission = reportViewModel.Report?.IsValidForSubmission() ?? false;
                 reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
-                reportViewModel.Period = reportViewModel.Report?.Period;
 
-                ViewBag.CurrentPeriod = reportViewModel.Period;
+                ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
 
                 TryValidateModel(reportViewModel);
 
