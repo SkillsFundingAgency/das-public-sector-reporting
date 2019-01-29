@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Moq;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization
 
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-            SUT = new ReportController(null,null,null,null,_periodServiceMock.Object,_authorizationServiceMock.Object);
+            SUT = new ReportController(null,null,null,null,_periodServiceMock.Object,_authorizationServiceMock.Object, Mock.Of<IMediator>());
         }
 
       

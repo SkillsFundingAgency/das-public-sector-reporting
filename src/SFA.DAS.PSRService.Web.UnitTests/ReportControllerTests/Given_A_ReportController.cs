@@ -1,4 +1,5 @@
 ﻿using System;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,22 +17,25 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
     {
         protected ReportController _controller;
         protected Mock<IReportService> _mockReportService;
-        protected Mock<IUrlHelper> _mockUrlHelper;
+        protected Mock<IUrlHelper> MockUrlHelper;
         private Mock<IEmployerAccountService> _employeeAccountServiceMock;
         public Mock<IUserService> _userServiceMock;
         private Mock<IPeriodService> _periodServiceMock;
         private EmployerIdentifier _employerIdentifier;
         protected Mock<IAuthorizationService> MockAuthorizationService;
+        protected Mock<IMediator> MockMediatr;
 
         public Given_A_ReportController()
         {
-            _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
+            MockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
             _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
             _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
             _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
             MockAuthorizationService = new Mock<IAuthorizationService>();
+            
+            MockMediatr = new Mock<IMediator>();
 
             _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
@@ -41,9 +45,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 _userServiceMock.Object, 
                 null, 
                 _periodServiceMock.Object,
-                MockAuthorizationService.Object)
+                MockAuthorizationService.Object,
+                MockMediatr.Object)
             {
-                Url = _mockUrlHelper.Object
+                Url = MockUrlHelper.Object
             };
 
             _employerIdentifier = new EmployerIdentifier() {AccountId = "ABCDE", EmployerName = "EmployerName"};

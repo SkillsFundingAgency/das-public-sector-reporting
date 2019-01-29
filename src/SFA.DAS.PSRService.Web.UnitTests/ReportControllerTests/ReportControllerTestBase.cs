@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -74,7 +75,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                 _userServiceMock.Object, 
                 null, 
                 _periodServiceMock.Object,
-                BuildAlwaysSucessMockAuthorizationService()
+                BuildAlwaysSucessMockAuthorizationService(),
+                Mock.Of<IMediator>()
                 )
             {
                 Url = _mockUrlHelper.Object

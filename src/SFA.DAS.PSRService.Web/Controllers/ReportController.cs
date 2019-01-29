@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
@@ -18,20 +20,22 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IReportService _reportService;
         private readonly IUserService _userService;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IMediator _mediatr;
         private readonly Period _currentPeriod;
 
-        public ReportController(
-            IReportService reportService,
-            IEmployerAccountService employerAccountService, 
+        public ReportController(IReportService reportService,
+            IEmployerAccountService employerAccountService,
             IUserService userService,
-            IWebConfiguration webConfiguration, 
+            IWebConfiguration webConfiguration,
             IPeriodService periodService,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService, 
+            IMediator mediatr)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
             _userService = userService;
             _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
+            _mediatr = mediatr ?? throw new ArgumentNullException(nameof(mediatr));
             _currentPeriod = periodService.GetCurrentPeriod();
         }
 
@@ -321,6 +325,16 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return
                 firstStep
                     .ForViewOnlyUser();
+        }
+
+        public IActionResult Amend()
+        {
+              var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+              _mediatr.Send(
+                  new UnSubmitReportRequest(report));        
+              
+              return new RedirectResult(Url.Action("Edit", "Report"));
         }
     }
 }
