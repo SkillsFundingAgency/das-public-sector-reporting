@@ -26,15 +26,12 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         protected override Report HandleCore(CreateReportRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Period))
-                throw new Exception("Period must be supplied");
-
             var reportDto = new ReportDto
             {
                 EmployerId = request.EmployerId,
                 Submitted = false,
                 Id = Guid.NewGuid(),
-                ReportingPeriod = request.Period,
+                ReportingPeriod = request.Period.PeriodString,
                 ReportingData = GetQuestionConfig().Result,
                 AuditWindowStartUtc = DateTime.UtcNow,
                 UpdatedUtc = DateTime.UtcNow,

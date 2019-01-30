@@ -9,7 +9,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         private string _userName = "SomeUser";
         private Guid _userId = new Guid("FCCD9CDE-5E50-4AA2-8722-90EBB8E1E7F4");
         private string _employerId;
-        private string _period = "1718";
+        private Period _period = Period.ParsePeriodString("1718");
 
 
         public CreateReportRequestBuilder WithUserName(string userName)
@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
         public CreateReportRequestBuilder ForPeriod(string period)
         {
-            _period = period;
+            _period = Period.ParsePeriodString(period);
 
             return this;
         }
