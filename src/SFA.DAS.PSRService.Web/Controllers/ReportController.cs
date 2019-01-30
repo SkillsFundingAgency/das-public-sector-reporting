@@ -95,14 +95,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             var reportListViewmodel = new ReportListViewModel
             {
                 SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId),
-                Periods = new Dictionary<string, Period>()
             };
-
-            foreach (var submittedReport in reportListViewmodel.SubmittedReports)
-            {
-                if (reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod) == false)
-                    reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, Period.ParsePeriodString(submittedReport.ReportingPeriod));
-            }
 
             return View("List", reportListViewmodel);
         }

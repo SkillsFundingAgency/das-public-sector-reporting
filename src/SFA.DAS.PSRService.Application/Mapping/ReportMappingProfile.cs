@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                 });
 
             CreateMap<Report, ReportDto>()
-                .ForMember(dest => dest.ReportingPeriod, opts => opts.MapFrom(src => Period.ParsePeriodString(src.ReportingPeriod).PeriodString))
+                .ForMember(dest => dest.ReportingPeriod, opts => opts.MapFrom(src => src.Period.PeriodString))
                 .ForMember(dest => dest.ReportingData, opts => opts.MapFrom(src => SerializeData(src)))
                 .ForMember(dest => dest.UpdatedBy, opts => opts.MapFrom(src => JsonConvert.SerializeObject(src.UpdatedBy)));
         }

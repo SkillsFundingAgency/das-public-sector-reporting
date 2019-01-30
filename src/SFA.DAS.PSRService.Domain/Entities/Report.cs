@@ -11,7 +11,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string EmployerId { get; set; }
         public IEnumerable<Section> Sections { get; set; }
         public bool Submitted { get; set; }
-        public string ReportingPeriod { get; set; }
         public Submitted SubmittedDetails { get; set; }
         public ReportingPercentages ReportingPercentages {get; set; }
         public Period Period { get; set; }

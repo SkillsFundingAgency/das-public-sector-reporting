@@ -20,7 +20,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests
             return
                 new Report
                 {
-                    ReportingPeriod = "1718",
                     Sections = _sections,
                     Period = _reportingPeriod,
                     SubmittedDetails = new Submitted(),

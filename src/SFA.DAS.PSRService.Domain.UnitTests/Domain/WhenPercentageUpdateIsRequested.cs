@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             // Arrange
             _report = new Report
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 SubmittedDetails = new Submitted(),
                 Submitted = true,
                 Sections = new[]
@@ -92,7 +92,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             // Arrange
             _report = new Report
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 SubmittedDetails = new Submitted(),
                 Submitted = true,
                 Sections = new[]
@@ -251,7 +251,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             sections.Add(yourApprentices);
             _report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true
@@ -365,7 +365,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             sections.Add(yourApprentices);
             _report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true
@@ -479,7 +479,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             sections.Add(yourApprentices);
             _report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true
@@ -592,7 +592,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             sections.Add(yourApprentices);
             _report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true
@@ -705,7 +705,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             sections.Add(yourApprentices);
             _report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true
@@ -820,7 +820,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.Domain
             sections.Add(yourApprentices);
             _report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true

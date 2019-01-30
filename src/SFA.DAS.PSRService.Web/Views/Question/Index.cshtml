@@ -8,7 +8,7 @@
     <div class="column-two-thirds">
         <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
         <form class="questionForm" method="post" asp-action="@Model.CurrentSection.Id">
-            <input type="hidden" name="section.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
+            <input type="hidden" name="section.ReportingPeriod" value="@Model.Report.Period.PeriodString" />
             <input type="hidden" name="section.Id" value="@Model.CurrentSection.Id" />
 
             <!-- Validation summary-->

@@ -34,7 +34,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             _report = new Report
             {
                 EmployerId = _employerId,
-                ReportingPeriod = _reportingPeriod,
+                Period = Period.ParsePeriodString(_reportingPeriod),
                 Id = Guid.NewGuid(),
                 Submitted = false
             };
@@ -69,9 +69,9 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             _reportRepositoryMock.VerifyAll();
             Assert.AreEqual(_report.EmployerId, result.EmployerId);
             Assert.AreEqual(_report.Submitted, result.Submitted);
-            Assert.AreEqual(_report.ReportingPeriod, result.ReportingPeriod);
+            Assert.AreEqual(_report.Period, result.Period);
             Assert.AreEqual(_report.EmployerId, reportDto.EmployerId);
-            Assert.AreEqual(_report.ReportingPeriod, reportDto.ReportingPeriod);
+            Assert.AreEqual(_report.Period.PeriodString, reportDto.ReportingPeriod);
             Assert.IsTrue(reportDto.UpdatedBy.Contains(userId.ToString()));
             Assert.IsNotNull(reportDto.AuditWindowStartUtc);
             Assert.IsNotNull(reportDto.UpdatedUtc);

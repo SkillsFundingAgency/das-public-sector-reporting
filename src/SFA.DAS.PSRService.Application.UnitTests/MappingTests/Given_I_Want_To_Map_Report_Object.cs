@@ -36,7 +36,6 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
                 EmployerId = "11",
                 OrganisationName = "12",
                 Id = Guid.NewGuid(),
-                ReportingPeriod = period.PeriodString,
                 Period = period ,
                 Submitted = true,
                 SubmittedDetails = new Submitted
@@ -116,7 +115,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             Assert.AreEqual(report.EmployerId, newReport.EmployerId);
             Assert.AreEqual(report.OrganisationName, newReport.OrganisationName);
             Assert.AreEqual(report.Id, newReport.Id);
-            Assert.AreEqual(report.ReportingPeriod, newReport.ReportingPeriod);
+            Assert.AreEqual(report.Period, newReport.Period);
             Assert.AreEqual(report.Submitted, newReport.Submitted);
 
             Assert.AreEqual(report.SubmittedDetails.SubmittedAt, newReport.SubmittedDetails.SubmittedAt);
@@ -158,7 +157,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             Assert.AreEqual(mappedReport.Submitted, reportDto.Submitted);
             Assert.AreEqual(mappedReport.EmployerId, reportDto.EmployerId);
             Assert.AreEqual(mappedReport.Id, reportDto.Id);
-            Assert.AreEqual(mappedReport.ReportingPeriod, reportDto.ReportingPeriod);
+            Assert.AreEqual(mappedReport.Period, Period.ParsePeriodString(reportDto.ReportingPeriod));
             Assert.IsNotNull(mappedReport.ReportingPercentages);
             Assert.AreEqual("11", mappedReport.ReportingPercentages.EmploymentStarts);
             Assert.AreEqual("22", mappedReport.ReportingPercentages.NewThisPeriod);
@@ -175,7 +174,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             {
                 EmployerId = "ABCDE",
                 OrganisationName = "Organisation 1",
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Submitted = true,
                 ReportingPercentages = new ReportingPercentages
@@ -195,7 +194,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             Assert.AreEqual(report.Submitted, mappedReportDto.Submitted );
             Assert.AreEqual(report.EmployerId, mappedReportDto.EmployerId);
             Assert.AreEqual(report.Id, mappedReportDto.Id);
-            Assert.AreEqual(report.ReportingPeriod, mappedReportDto.ReportingPeriod);
+            Assert.AreEqual(report.Period.PeriodString, mappedReportDto.ReportingPeriod);
         }
     }
 }

@@ -99,7 +99,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
             sections.Add(YourApprentices);
             var report = new Report()
             {
-                ReportingPeriod = "1617",
+                Period = Period.ParsePeriodString("1617"),
                 Sections = sections,
                 SubmittedDetails = new Submitted(),
                 Submitted = true

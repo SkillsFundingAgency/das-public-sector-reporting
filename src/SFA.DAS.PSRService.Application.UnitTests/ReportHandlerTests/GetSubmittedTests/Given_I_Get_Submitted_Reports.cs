@@ -38,28 +38,28 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmitt
                 new Report()
                 {
                     Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
+                    Period = Period.ParsePeriodString("1718"),
                     EmployerId = "ABCDE",
                     Submitted = false
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
-                    ReportingPeriod = "1617",
+                    Period = Period.ParsePeriodString("1617"),
                     EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
-                    ReportingPeriod = "1516",
+                    Period = Period.ParsePeriodString("1516"),
                     EmployerId = "ABCDE",
                     Submitted = true
                 },
                 new Report()
                 {
                     Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
+                    Period = Period.ParsePeriodString("1718"),
                     EmployerId = "VWXYZ",
                     Submitted = false
                 }
