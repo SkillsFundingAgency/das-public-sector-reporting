@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using AutoMapper;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
@@ -9,11 +8,11 @@ using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.UnSubmitReportHandlerTests.Given_Mapped_Dto_Is_Null
+namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.UnSubmitReportHandlerTests.Given_No_Report_Exists_For_Request
 {
     [ExcludeFromCodeCoverage]
     [TestFixture]
-    public class Given_Mapped_Dto_Is_Null
+    public class Given_No_Report_Exists_For_Request
     :GivenWhenThen<UnSubmitReportHandler>
     {
         private Mock<IReportRepository> _mockRepository;
@@ -22,24 +21,19 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.UnSubmitRe
         {
             _mockRepository = new Mock<IReportRepository>();
 
-            var mockMapper = new Mock<IMapper>();
-
-            mockMapper
+            _mockRepository
                 .Setup(
-                    m => m.Map<ReportDto>(It.IsAny<Report>())
-                )
-                .Returns((ReportDto)null);
+                    m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns((ReportDto) null);
 
-            SUT = new UnSubmitReportHandler(
-                mockMapper.Object,
-                _mockRepository.Object);
+            SUT = new UnSubmitReportHandler(_mockRepository.Object);
         }
 
         protected override void When()
         {
             SUT
                 .Handle(
-                    new UnSubmitReportRequest(new Report()),
+                    new UnSubmitReportRequest("123456", Period.FromInstantInPeriod(DateTime.Now)),
                     new CancellationToken());
         }
 

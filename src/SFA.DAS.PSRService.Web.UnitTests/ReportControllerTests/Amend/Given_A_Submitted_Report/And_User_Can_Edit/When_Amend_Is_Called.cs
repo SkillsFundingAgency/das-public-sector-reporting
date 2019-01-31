@@ -49,7 +49,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Amend.Given_A_S
             MockMediatr
                 .Verify(
                     m =>
-                        m.Send(It.Is<UnSubmitReportRequest>(r => r.Report.Id == CurrentReport.Id),
+                        m.Send(It.IsAny<UnSubmitReportRequest>(),
                             It.IsAny<CancellationToken>())
                 );
         }

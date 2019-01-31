@@ -287,10 +287,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Amend()
         {
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
-
             _mediatr.Send(
-                new UnSubmitReportRequest(report));        
+                new UnSubmitReportRequest(EmployerAccount.AccountId, _currentPeriod));        
               
             return new RedirectResult(Url.Action("Edit", "Report"));
         }

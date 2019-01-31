@@ -7,24 +7,22 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
     public class UnSubmitReportHandler : RequestHandler<UnSubmitReportRequest>
     {
-        private IMapper _mapper;
         private IReportRepository _reportRepository;
 
-        public UnSubmitReportHandler(IMapper mapper, IReportRepository reportRepository)
+        public UnSubmitReportHandler(IReportRepository reportRepository)
         {
-            _mapper = mapper;
             _reportRepository = reportRepository;
         }
         protected override void HandleCore(UnSubmitReportRequest request)
         {
-            var reportDto = _mapper.Map<ReportDto>(request.Report);
+            var report = _reportRepository.Get(request.ReportingPeriod.PeriodString, request.EmployerAccountId);
 
-            if (reportDto == null)
+            if (report == null)
                 return;
 
-            reportDto.Submitted = false;
+            report.Submitted = false;
 
-            _reportRepository.Update(reportDto);
+            _reportRepository.Update(report);
         }
     }
 }

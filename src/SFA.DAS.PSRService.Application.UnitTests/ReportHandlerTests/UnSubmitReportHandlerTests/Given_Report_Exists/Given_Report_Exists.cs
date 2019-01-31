@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.UnSubmitRe
 {
     [ExcludeFromCodeCoverage]
     [TestFixture]
-    public class Given_Mapped_Dto_Is_Not_Null
+    public class Given_Report_Exists
         : GivenWhenThen<UnSubmitReportHandler>
     {
         private Mock<IReportRepository> _mockRepository;
@@ -24,40 +24,20 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.UnSubmitRe
         {
             _mockRepository = new Mock<IReportRepository>();
 
-            var mockMapper = new Mock<IMapper>();
-
-            _mappedDto = new ReportDto();
-
-            _mappedDto.Submitted = false;
-
-            _mappedDto.Id = new Guid("33F2BAD1-F368-4467-A249-D2B936284458");
-
-            mockMapper
+            _mockRepository
                 .Setup(
-                    m => m.Map<ReportDto>(It.IsAny<Report>())
-                )
-                .Returns(_mappedDto);
+                    m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ReportDto());
 
-            SUT = new UnSubmitReportHandler(
-                mockMapper.Object,
-                _mockRepository.Object);
+            SUT = new UnSubmitReportHandler(_mockRepository.Object);
         }
 
         protected override void When()
         {
             SUT
                 .Handle(
-                    new UnSubmitReportRequest(new Report()),
+                    new UnSubmitReportRequest("123456", Period.ParsePeriodString("1617")),
                     new CancellationToken());
-        }
-
-        [Test]
-        public void Then_RepositoryUpdate_Is_Called_With_Mapped_Dto()
-        {
-            _mockRepository
-                .Verify(
-                    m => m.Update(
-                        It.Is<ReportDto>( r => ReferenceEquals(r, _mappedDto))));
         }
 
         [Test]
