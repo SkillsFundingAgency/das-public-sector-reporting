@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_ReportService_Throws_An_Exception
 {
@@ -18,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_R
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception("get report Error"));
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Throws(new Exception("get report Error"));
         }
     }
     [ExcludeFromCodeCoverage]

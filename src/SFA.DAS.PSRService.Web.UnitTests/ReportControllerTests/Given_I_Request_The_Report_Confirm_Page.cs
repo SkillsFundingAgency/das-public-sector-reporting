@@ -22,7 +22,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                     .WhereReportIsNotAlreadySubmitted()
                     .Build();
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(report).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
             _controller.ObjectValidator = GetObjectValidator().Object;
 
@@ -41,7 +41,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             // arrange
             var report = new Report(); // not submitted and empty sections, should be valid for submission
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(report).Verifiable();
             _mockReportService.Setup(s => s.SubmitReport(report)).Verifiable();
             _controller.ObjectValidator = GetObjectValidator().Object;
 
@@ -68,7 +68,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_Unconfirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
         {
             // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
             _controller.ObjectValidator = GetFailingObjectValidator().Object;
 
             const string url = "report/create";
@@ -100,7 +100,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_Confirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
         {
             // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
 
             _controller.ObjectValidator = GetFailingObjectValidator().Object;
 
@@ -123,7 +123,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_Unconfirmed_Report_Is_Not_Found_Then_Return_404()
         {
             // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns((Report) null).Verifiable();
 
             // act
             var result = _controller.Confirm();
@@ -137,7 +137,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_Confirmed_Report_Is_Not_Found_Then_Return_404()
         {
             // arrange
-            _mockReportService.Setup(s => s.GetReport("1718", "ABCDE")).Returns((Report) null).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(Period.ParsePeriodString("1718"), "ABCDE")).Returns((Report) null).Verifiable();
 
             // act
             var result = _controller.SubmitPost();
@@ -165,7 +165,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                     .WhereReportIsAlreadySubmitted()
                     .Build();
                 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(report).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
             _controller.ObjectValidator = GetObjectValidator().Object;
 

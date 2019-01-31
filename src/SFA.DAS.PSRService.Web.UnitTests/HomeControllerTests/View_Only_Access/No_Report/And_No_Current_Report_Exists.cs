@@ -10,7 +10,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.
         {
             base.Given();
 
-            _mockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(CurrentPeriod, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
 
         }
     }

@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Ed
             base.Given();
 
             var report = new Report { Submitted = true };
-            _mockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
+            _mockReportService.Setup(r => r.GetReport(CurrentPeriod, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
         }
     }
 }

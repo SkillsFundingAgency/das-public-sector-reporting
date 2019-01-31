@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void The_Report_Exists_And_Is_Editable_Then_Show_Edit_Report()
         {
             // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(true).Verifiable();
 
             // act
@@ -41,7 +41,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         {
             // arrange
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns("report/create");
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns((Report)null).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
             // act
@@ -60,7 +60,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             const string url = "report/create";
             UrlActionContext actualContext = null;
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
             _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(false).Verifiable();
 
             // act

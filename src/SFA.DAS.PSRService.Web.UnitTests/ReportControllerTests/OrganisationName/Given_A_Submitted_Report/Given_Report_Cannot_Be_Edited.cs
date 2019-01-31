@@ -42,7 +42,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.OrganisationNam
                 .Setup(
                     m =>
                         m.GetReport(
-                            It.IsAny<string>(),
+                            It.IsAny<Period>(),
                             It.IsAny<string>()))
                 .Returns(
                     new Report

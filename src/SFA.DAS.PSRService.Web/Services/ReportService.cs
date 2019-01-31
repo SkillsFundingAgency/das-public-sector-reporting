@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Web.Services
             }
         }
 
-        public Report GetReport(string period, string employerId)
+        public Report GetReport(Period period, string employerId)
         {
             var request = new GetReportRequest { Period = period, EmployerId = employerId };
             var report = _mediator.Send(request).Result;

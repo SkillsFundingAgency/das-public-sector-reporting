@@ -12,7 +12,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_R
     {
         protected override void Given()
         {
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns((Report)null);
         }
     }
     [ExcludeFromCodeCoverage]

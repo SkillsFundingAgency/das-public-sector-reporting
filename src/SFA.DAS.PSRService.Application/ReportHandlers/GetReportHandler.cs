@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         protected override Report HandleCore(GetReportRequest request)
         {
-            var reportDto = _reportRepository.Get(request.Period,request.EmployerId);
+            var reportDto = _reportRepository.Get(request.Period.PeriodString,request.EmployerId);
 
             return _mapper.Map<Report>(reportDto);
         }

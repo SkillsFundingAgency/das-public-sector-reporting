@@ -60,7 +60,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns((Report)null);
             _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
             // act
@@ -92,7 +92,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
                     .Build();
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(report);
             _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
             // act
@@ -125,7 +125,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
                 .ForCurrentPeriod()
                 .Build();
      
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(stubReport);
 
             // act
             var result = _controller.Index("YourEmployees");
@@ -152,7 +152,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
                     .WhereReportIsNotAlreadySubmitted()
                     .Build();
 
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
+            _reportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(stubReport);
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act

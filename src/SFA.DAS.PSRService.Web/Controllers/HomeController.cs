@@ -63,7 +63,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             model.Period = _currentPeriod;
 
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(_currentPeriod, EmployerAccount.AccountId);
 
             PopulateModelBasedOnReportStateAndUserAuthorization(model, report);
 

@@ -111,7 +111,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
                 It.IsAny<Object>()));
             _controller.ObjectValidator = objectValidator.Object;
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<Period>(), It.IsAny<string>())).Returns(report);
             _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
         }
     }

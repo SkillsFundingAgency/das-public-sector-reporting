@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
@@ -31,7 +32,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Index(string id)
         {
             var currentPeriod = _periodService.GetCurrentPeriod();
-            var report = _reportService.GetReport(currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(currentPeriod, EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -61,7 +62,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Submit(SectionModel section)
         {
-            var report = _reportService.GetReport(section.ReportingPeriod, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(Period.ParsePeriodString(section.ReportingPeriod), EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));

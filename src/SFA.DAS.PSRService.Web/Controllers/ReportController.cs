@@ -46,7 +46,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult Edit()
         {
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(_currentPeriod, EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -123,11 +123,18 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
+                Period requestPeriod;
 
-                if (period == null)
-                    period = _currentPeriod.PeriodString;
+                if (String.IsNullOrWhiteSpace(period))
+                {
+                    requestPeriod = _currentPeriod;
+                }
+                else
+                {
+                    requestPeriod = Period.ParsePeriodString(period);
+                }
 
-                var report = _reportService.GetReport(period, EmployerAccount.AccountId);
+                var report = _reportService.GetReport(requestPeriod, EmployerAccount.AccountId);
 
                 var reportViewModel = new ReportViewModel
                 {
@@ -161,7 +168,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanSubmitReport)]
         public IActionResult Confirm()
         {
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(_currentPeriod, EmployerAccount.AccountId);
 
             if (report == null)
                 return new NotFoundResult();
@@ -206,7 +213,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanSubmitReport)]
         public IActionResult SubmitPost()
         {
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(_currentPeriod, EmployerAccount.AccountId);
 
             if (report == null)
                 return new NotFoundResult();
@@ -236,7 +243,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult OrganisationName(string post)
         {
-            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = _reportService.GetReport(_currentPeriod, EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -261,7 +268,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var reportViewModel = new ReportViewModel
             {
-                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
+                Report = _reportService.GetReport(_currentPeriod, EmployerAccount.AccountId)
             };
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
