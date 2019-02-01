@@ -76,7 +76,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
             // act
-            var result = _controller.Submit(new SectionModel{ReportingPeriod = "111"});
+            var result = _controller.Submit(new SectionModel{ReportingPeriod = _currentPeriod.PeriodString});
 
             // assert
             _mockUrlHelper.VerifyAll();
@@ -103,7 +103,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
             // act
-            var result = _controller.Submit(new SectionModel{ReportingPeriod = "111"});
+            var result = _controller.Submit(new SectionModel{ReportingPeriod = _currentPeriod.PeriodString});
 
             // assert
             _mockUrlHelper.VerifyAll();
@@ -124,7 +124,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
             // act
-            var result = _controller.Submit(new SectionModel{ReportingPeriod = "111", Id = "No such section"});
+            var result = _controller.Submit(new SectionModel{ReportingPeriod = _currentPeriod.PeriodString, Id = "No such section"});
 
             // assert
             _reportService.VerifyAll();
@@ -148,7 +148,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             var sectionModel = new SectionModel
             {
                 Id = "SubSectionOne",
-                ReportingPeriod = "222",
+                ReportingPeriod = _currentPeriod.PeriodString,
                 Questions = new []
                 {
                     new QuestionViewModel
