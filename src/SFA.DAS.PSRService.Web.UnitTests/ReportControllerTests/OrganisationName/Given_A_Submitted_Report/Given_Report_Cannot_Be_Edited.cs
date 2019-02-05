@@ -1,4 +1,5 @@
 ﻿using System;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +78,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.OrganisationNam
                 _userServiceMock.Object,
                 null,
                 _periodServiceMock.Object,
-                MockAuthorizationService.Object)
+                MockAuthorizationService.Object,
+                Mock.Of<IMediator>())
             {
                 Url = _mockUrlHelper.Object
             };

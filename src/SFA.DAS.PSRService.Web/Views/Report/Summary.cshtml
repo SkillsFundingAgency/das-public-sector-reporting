@@ -81,7 +81,7 @@
                         <tbody>
                             <tr>
                                 <td>Reporting period</td>
-                                <td class="bold">@Model.Period.FullString</td>
+                                <td class="bold">@Model.Report.Period.FullString</td>
                             </tr>
                         </tbody>
                     </table>
@@ -98,16 +98,23 @@
                 <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
             }
             else if (Model.IsValidForSubmission && !Model.UserCanSubmitReports && !Model.IsReadOnly)
-            { 
+            {
                 <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
             }
             else
             {
-                    if (Model.Report.Submitted)
+                if (Model.Report.Submitted)
+                {
+                    if (Model.UserCanEditReports && Model.Report.Period.Equals(Model.CurrentPeriod))
+                    {
+                        <a id="report-summary-amend" class="button" asp-controller="Report" asp-action="ConfirmAmend">Amend report</a>
+                    }
+                    else
                     {
                         <a id="report-summary-list" class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
                     }
-             }
+                }
+            }
             </div>
     }
 </div>
