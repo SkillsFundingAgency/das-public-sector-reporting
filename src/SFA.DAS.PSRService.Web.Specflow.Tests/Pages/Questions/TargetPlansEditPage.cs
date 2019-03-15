@@ -5,7 +5,7 @@ namespace SFA.DAS.PSRService.Web.Specflow.Tests.Pages.Questions
 {
     public class TargetPlansEditPage : FactorsQuestionEditPage
     {
-        protected override string PAGE_TITLE => "How are you planning to ensure you meet the target in future?";
+        protected override string PAGE_TITLE => "How are you planning to meet the target in future-what will you continue to do/or what will you do differently?";
 
         protected override string PageUrl => QuestionPageUrls.TargetPlans;
 
