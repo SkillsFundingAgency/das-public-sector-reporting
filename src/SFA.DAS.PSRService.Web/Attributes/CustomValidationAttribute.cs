@@ -68,9 +68,9 @@ namespace SFA.DAS.PSRService.Web.Attributes
                         MergeAttribute(context.Attributes, "data-val-maxwords-wordcount", "100");
                         break;
                     case QuestionType.LongText:
-                        MergeAttribute(context.Attributes, "data-word-limit", "250");
+                        MergeAttribute(context.Attributes, "data-word-limit", "500");
                         MergeAttribute(context.Attributes, "data-val-maxwords", GetErrorMessage(questionType));
-                        MergeAttribute(context.Attributes, "data-val-maxwords-wordcount", "250");
+                        MergeAttribute(context.Attributes, "data-val-maxwords-wordcount", "500");
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -110,7 +110,7 @@ namespace SFA.DAS.PSRService.Web.Attributes
                     return "Text cannot be longer than 100 words";
                     
                 case QuestionType.LongText:
-                    return "Text cannot be longer than 250 words";
+                    return "Text cannot be longer than 500 words";
                     
                 default:
                     throw new ArgumentOutOfRangeException();
