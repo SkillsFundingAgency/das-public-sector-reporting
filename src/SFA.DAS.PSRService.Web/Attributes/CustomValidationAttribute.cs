@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Web.Attributes
                         break;
 
                     case QuestionType.LongText:
-                        if (CountWords(value.ToString()) > 250)
+                        if (CountWords(value.ToString()) > 500)
                             return new ValidationResult(GetErrorMessage(questionType));
                         break;
 
