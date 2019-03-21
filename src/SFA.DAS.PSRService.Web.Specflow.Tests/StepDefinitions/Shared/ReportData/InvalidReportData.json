@@ -88,8 +88,8 @@
                         }
                     ],
                     "Id": "OutlineActions",
-                    "Title": "What actions have you taken this year to meet the target? How do these compare to the challenges experienced in the previous year?",
-                    "SummaryText": "What actions have you taken this year to meet the target? How do these compare to the challenges experienced in the previous year?"
+                    "Title": "Outline any actions you have taken to help you progress towards meeting the public sector target",
+                    "SummaryText": "Outline any actions you have taken to help you progress towards meeting the public sector target"
                 },
               {
                 "SubSections": null,
@@ -102,23 +102,23 @@
                   }
                 ],
                 "Id": "Challenges",
-                "Title": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?",
-                "SummaryText": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?"
+                "Title": "Tell us about any challenges you have faced in your efforts to meet the target",
+                "SummaryText": "Tell us about any challenges you have faced in your efforts to meet the target"
               },
-              {
-                "SubSections": null,
-                "Questions": [
-                  {
+                {
+                    "SubSections": null,
+                    "Questions": [
+                        {
+                            "Id": "TargetPlans",
+                            "Answer": "dsadsadas",
+                            "Optional": false,
+                            "Type": 2
+                        }
+                    ],
                     "Id": "TargetPlans",
-                    "Answer": "dsadsadas",
-                    "Optional": false,
-                    "Type": 2
-                  }
-                ],
-                "Id": "TargetPlans",
-                "Title": "How are you planning to meet the target in future? What will you continue to do or do differently?",
-                "SummaryText": "How are you planning to meet the target in future? What will you continue to do or do differently?"
-              },
+                    "Title": "How are you planning to ensure you meet the target in future?",
+                    "SummaryText": "How are you planning to ensure you meet the target in future?"
+                },
                 {
                     "SubSections": null,
                     "Questions": [
