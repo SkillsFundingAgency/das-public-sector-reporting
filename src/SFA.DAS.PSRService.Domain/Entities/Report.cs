@@ -125,7 +125,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
             {
                 foreach (var reportSection in section.SubSections)
                 {
-
                     sectionList.AddRange(GetSections(reportSection));
                 }
             }
