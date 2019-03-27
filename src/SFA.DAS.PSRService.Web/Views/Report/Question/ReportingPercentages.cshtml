@@ -15,8 +15,7 @@
             <td id="reportingpercentages-totalheadcount" class="numeric bold">@Model.TotalHeadCount</td>
         </tr>
         <tr>
-            @* 31 March 2017 has been hardcoded until refactor *@
-            <td>Percentage of apprenticeship starts (both new hires and existing employees who started an apprenticeship) between @ViewBag.CurrentPeriod.FullString as a proportion of total headcount on 31 March 2017</td>
+            <td>Percentage of apprenticeship starts (both new hires and existing employees who started an apprenticeship) between @ViewBag.CurrentPeriod.FullString as a proportion of total headcount on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
             <td id="reportingpercentages-newthisperiod" class="numeric bold">@Model.NewThisPeriod</td>
         </tr>
         </tbody>
