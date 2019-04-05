@@ -137,7 +137,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         public void When_Confirmed_Report_Is_Not_Found_Then_Return_404()
         {
             // arrange
-            _mockReportService.Setup(s => s.GetReport("1718", "ABCDE")).Returns((Report) null).Verifiable();
+            _mockReportService.Setup(s => s.GetReport("1819", "ABCDE")).Returns((Report) null).Verifiable();
 
             // act
             var result = _controller.SubmitPost();
