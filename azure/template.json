@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "environmentName": {
@@ -26,9 +26,15 @@
         },
         "loggingRedisConnectionString": {
             "type": "securestring"
+        },
+        "appServiceAllowedIps": {
+            "type": "array",
+            "defaultValue": [
+            ]
         }
     },
-    "variables": {},
+    "variables": {
+    },
     "resources": [
         {
             "apiVersion": "2017-05-10",
@@ -80,10 +86,14 @@
                     },
                     "certificateThumbprint": {
                         "value": "[reference(resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyvaultCertificateName')), '2016-03-01').Thumbprint]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('appServiceAllowedIps')]"
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         },
         {
             "apiVersion": "2017-05-10",
@@ -104,8 +114,10 @@
                     }
                 }
             },
-            "dependsOn": []
+            "dependsOn": [
+            ]
         }
     ],
-    "outputs": {}
+    "outputs": {
+    }
 }
