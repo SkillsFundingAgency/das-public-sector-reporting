@@ -8,14 +8,20 @@
         "appServiceName": {
             "type": "string"
         },
-        "keyvaultCertificateName": {
+        "certificateName": {
+            "type": "string"
+        },
+        "sharedKeyVaultName": {
+            "type": "string"
+        },
+        "sharedKeyVaultResourceGroup": {
             "type": "string"
         },
         "customHostname": {
             "defaultValue": "",
             "type": "string"
         },
-        "sharedAppServicePlanName": {
+        "sharedFrontendAppServicePlanName": {
             "type": "string"
         },
         "sharedAppServicePlanResourceGroup": {
@@ -37,6 +43,34 @@
     },
     "resources": [
         {
+            "condition": "[greater(length(parameters('customHostname')), 0)]",
+            "apiVersion": "2017-05-10",
+            "name": "app-service-certificate",
+            "resourceGroup": "[parameters('sharedAppServicePlanResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service-certificate.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultCertificateName": {
+                        "value": "[parameters('certificateName')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('sharedKeyVaultName')]"
+                    },
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('sharedKeyVaultResourceGroup')]"
+                    },
+                    "serverFarmId": {
+                        "value": "[resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontendAppServicePlanName'))]"
+                    }
+                }
+            }
+        },
+        {
             "apiVersion": "2017-05-10",
             "name": "app-service",
             "type": "Microsoft.Resources/deployments",
@@ -51,7 +85,7 @@
                         "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('sharedAppServicePlanName')]"
+                        "value": "[parameters('sharedFrontendAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedAppServicePlanResourceGroup')]"
@@ -85,7 +119,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/certificates', parameters('keyvaultCertificateName')), '2016-03-01').Thumbprint]"
+                        "value": "[if(greater(length(parameters('customHostname')), 0), reference('app-service-certificate', '2018-11-01').outputs.certificateThumbprint.value, '')]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIps')]"
@@ -93,6 +127,7 @@
                 }
             },
             "dependsOn": [
+                "app-service-certificate"
             ]
         },
         {
