@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Logging;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.EAS.Web.ViewModels;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -48,6 +49,7 @@ namespace SFA.DAS.PSRService.Web
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             services.AddTransient<IEmployerAccountService, EmployerAccountService>();
             services.AddTransient<IAccountApiClient, AccountApiClient>();
             services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();

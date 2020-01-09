@@ -10,7 +10,8 @@
       "wwwroot/js/shim-links-with-button-role.js",
       "wwwroot/js/show-hide-content.js",
       "wwwroot/js/site-nav.js",
-      "wwwroot/js/site.js"
+      "wwwroot/js/site.js",
+      "wwwroot/js/cookiebanner.js"
     ],
     "minify": {
       "renameLocals": true

@@ -12,6 +12,7 @@ using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.DisplayText;
+using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.SubmitActions;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -106,6 +107,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public async Task SignOutCleanup()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        [Route("{HashedAccountId}/cookieConsent", Order = 0)]
+        [Route("cookieConsent", Order = 1)]
+        public ActionResult CookieConsent()
+        {
+            return Redirect(Url.AccountsAction("cookieConsent", "settings"));
         }
 
         private bool UserIsAuthorizedForReportEdit()
