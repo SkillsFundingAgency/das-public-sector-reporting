@@ -43,6 +43,7 @@ The configuration is loaded from azure table storage.
 * Clone the [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config) repository
 * Clone the [das-employer-config-updater](https://github.com/SkillsFundingAgency/das-employer-config-updater) repository
 * Run the das-employer-config-updater console application and follow the instructions to import the config from the das-employer-config directory
+* Populate the employer account api config section of the config in table storage. Values will need to be obtained from devops for the environment of the account you wish to login with. Otherwise the account api could be run locally from das-employerapprenticeshipservice repository.
 
 > The two repos above are private. If the links appear to be dead make sure you are logged into github with an account that has access to these (i.e. that you are part of the Skills Funding Agency Team organization).
 
