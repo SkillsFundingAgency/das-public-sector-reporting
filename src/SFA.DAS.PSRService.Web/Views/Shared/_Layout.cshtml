@@ -72,9 +72,7 @@
         </div>
     </div>
 
-    <div id="global-cookie-message">
-        <p>GOV.UK uses cookies to make the site simpler. <a href="https://www.gov.uk/help/cookies">Find out more about cookies</a></p>
-    </div>
+    @Html.Partial("_CookieBanner")
 
     <header role="banner" id="global-header" class="with-proposition">
         <div class="header-wrapper">
@@ -133,10 +131,10 @@
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="/assets/javascripts/govuk-template.js?0.23.0"></script>
         <script src="~/js/details.polyfill.js" asp-append-version="true"></script>
         <script src="~/js/shim-links-with-button-role.js" asp-append-version="true"></script>
         <script src="~/js/show-hide-content.js" asp-append-version="true"></script>
+        <script src="~/js/cookies.js" asp-append-version="true"></script>
         <script src="~/js/site-nav.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
