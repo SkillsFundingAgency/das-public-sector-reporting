@@ -28,14 +28,14 @@ namespace Microsoft.AspNetCore.Mvc
                   return $"{EasBaseUrl}/accounts/{hashedAccountId}/{path}";
         }
         
-        public static string ExternalUrlAction(this IUrlHelper helper, string baseUrl, string controllerName, string actionName = "", bool ignoreAccountId = false)
+        public static string ExternalUrlAction(this IUrlHelper helper, string baseUrl, string controllerName, string actionName = "", bool ignoreAccountId = false, string urlRoot = "accounts")
         {
             var accountId = helper.ActionContext.RouteData.Values["employerAccountId"];
             
             baseUrl = baseUrl.EndsWith("/") ? baseUrl : baseUrl + "/";
 
             return ignoreAccountId ? $"{baseUrl}{controllerName}/{actionName}"
-                : $"{baseUrl}accounts/{accountId}/{controllerName}/{actionName}";
+                : $"{baseUrl}{urlRoot}/{accountId}/{controllerName}/{actionName}";
         }
     }
 }
