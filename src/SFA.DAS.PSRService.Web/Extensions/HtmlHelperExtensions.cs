@@ -25,10 +25,10 @@ namespace Microsoft.AspNetCore.Mvc
                 ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl,
                 AuthenticationAuthorityUrl = configuration.Identity.Authority,
                 ClientId = configuration.Identity.ClientId,
-                EmployerRecruitBaseUrl = configuration.RootDomainUrl,
+                EmployerRecruitBaseUrl = configuration.EmployerRecruitBaseUrl,
                 SignOutUrl = new System.Uri(configuration.ApplicationUrl + urlHelper.Action("Logout", "Home")),
                 ChangeEmailReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changeEmail"),
-                ChangePasswordReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changePassword")
+                ChangePasswordReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changePassword"),                
             },
             new UserContext
             {
