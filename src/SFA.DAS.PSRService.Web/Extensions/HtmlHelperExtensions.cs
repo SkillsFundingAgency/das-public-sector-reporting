@@ -1,7 +1,6 @@
 ﻿using SFA.DAS.MA.Shared.UI.Models;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.MA.Shared.UI.Configuration;
-using SFA.DAS.Authorization.Services;
 using SFA.DAS.MA.Shared.UI.Models.Links;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -16,7 +15,6 @@ namespace Microsoft.AspNetCore.Mvc
         public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html, bool hideMenu = false)
         {
             var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
-            var authorizationService = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorizationService)) as IAuthorizationService;
             var urlHelperFactory = (IUrlHelperFactory)html.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory));
             var urlHelper = urlHelperFactory.GetUrlHelper(html.ViewContext);
 
@@ -28,7 +26,6 @@ namespace Microsoft.AspNetCore.Mvc
                 AuthenticationAuthorityUrl = configuration.Identity.Authority,
                 ClientId = configuration.Identity.ClientId,
                 EmployerRecruitBaseUrl = configuration.RootDomainUrl,
-                AuthorizationService = authorizationService,
                 SignOutUrl = new System.Uri(configuration.ApplicationUrl + urlHelper.Action("Logout", "Home")),
                 ChangeEmailReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changeEmail"),
                 ChangePasswordReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changePassword")
