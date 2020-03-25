@@ -1,17 +1,20 @@
 ﻿@model SFA.DAS.PSRService.Domain.Entities.Section
+@{
+    ViewBag.Vpv = "report/question/page-challenges";
+}
 
 <div class="column-full">
     <h1 class="heading-large">
-       @Model.SummaryText
+        @Model.SummaryText
     </h1>
 
     <fieldset>
-        
+
         <div class="form-group">
-            
+
             <textarea class="form-control form-control-3-4" name="textarea" id="textarea" rows="8"></textarea>
         </div>
-        
+
     </fieldset>
 
 

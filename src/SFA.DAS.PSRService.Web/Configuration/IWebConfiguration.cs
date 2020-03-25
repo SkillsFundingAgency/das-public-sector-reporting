@@ -15,5 +15,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         string HomeUrl { get; set; }
         SessionStoreConfiguration SessionStore { get; set; }
         TimeSpan? AuditWindowSize { get; set; }
+        string ZenDeskSnippetKey { get; set; }
+        string ZenDeskSectionId { get; set; }
     }
 }

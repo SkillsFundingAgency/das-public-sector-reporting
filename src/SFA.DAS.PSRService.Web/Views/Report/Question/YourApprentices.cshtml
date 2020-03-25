@@ -3,6 +3,7 @@
 @{
     var questionList = Model.Questions.ToDictionary(k => k.Id);
     var canBeEdited = ViewBag.CanBeEdited;
+    ViewBag.Vpv = "report/question/page-your-apprentices";
 }
 
 <div class="form-group">
