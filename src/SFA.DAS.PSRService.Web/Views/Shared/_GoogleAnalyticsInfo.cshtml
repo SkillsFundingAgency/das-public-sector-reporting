@@ -5,15 +5,16 @@
     }*@
     window.dataLayer = window.dataLayer || [];
     dataLayer.push({
-        'event': '@ViewBag.GaData.DataLoaded',
-        @*'loggedIn': '@HttpContext.Current.User.Identity.IsAuthenticated',*@
+        'vpv': '@ViewBag.Vpv'
+        @*'event': '@ViewBag.GaData.DataLoaded',
+        'loggedIn': '@HttpContext.Current.User.Identity.IsAuthenticated',
         'userID': '@ViewBag.GaData.UserId',
-        'vpv': '@ViewBag.Vpv',
+        
         'acc': '@ViewBag.GaData.Acc',
         'org': '',
         'Account': '@ViewBag.GaData.Acc',
         'Agreement': '@ViewBag.GaData.AgreementId',
-        'LevyFlag': '@ViewBag.GaData.LevyFlag'
+        'LevyFlag': '@ViewBag.GaData.LevyFlag'*@
 
         @*@if (ViewBag.GaData.Extras.Count>0)
         {
