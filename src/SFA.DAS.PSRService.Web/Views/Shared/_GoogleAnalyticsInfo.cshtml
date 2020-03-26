@@ -1,40 +1,14 @@
-﻿<script>
-    @*@if (ViewBag.GaData == null)
+﻿@using SFA.DAS.PSRService.Web.Filters
+<script>
+    @if (ViewBag.GaData == null)
     {
         ViewBag.GaData = new GoogleAnalyticsFilter.GaData();
-    }*@
+    }
     window.dataLayer = window.dataLayer || [];
     dataLayer.push({
-        'vpv': '@ViewBag.Vpv'
-        @*'event': '@ViewBag.GaData.DataLoaded',
-        'loggedIn': '@HttpContext.Current.User.Identity.IsAuthenticated',
+        'vpv': '@ViewBag.GaData.Vpv',
         'userID': '@ViewBag.GaData.UserId',
-        
-        'acc': '@ViewBag.GaData.Acc',
-        'org': '',
-        'Account': '@ViewBag.GaData.Acc',
-        'Agreement': '@ViewBag.GaData.AgreementId',
-        'LevyFlag': '@ViewBag.GaData.LevyFlag'*@
-
-        @*@if (ViewBag.GaData.Extras.Count>0)
-        {
-            @Html.Raw(",")
-        }
-
-        @{
-            var count = 0;
-            foreach (var extra in ViewBag.GaData.Extras)
-            {
-                count++;
-                
-                @Html.Raw($"'{extra.Key}' : '{extra.Value}'");
-
-                if (count < ViewBag.GaData.Extras.Count)
-                {
-                    @Html.Raw("," + Environment.NewLine);
-                }
-            }
-        }*@
+        'acc': '@ViewBag.GaData.Acc'
     });
 
 </script>
