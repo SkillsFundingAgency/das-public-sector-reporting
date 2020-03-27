@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Filters
 {
@@ -13,16 +16,27 @@ namespace SFA.DAS.PSRService.Web.Filters
             if (controller != null)
             {
                 var user = controller.User;
-                string accountIdFromUrl = string.Empty;
+                EmployerIdentifier account = null;
                 if (user.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
-                    accountIdFromUrl =
-                        filterContext.RouteData.Values[RouteValues.EmployerAccountId].ToString().ToUpper();
+                    var accountIdFromUrl =
+                        filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper();
+                    var employerAccountClaim =
+                        user.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
+                    var employerAccounts =
+                        JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(
+                            employerAccountClaim
+                                ?.Value);
+
+                    if (accountIdFromUrl != null) account = employerAccounts[accountIdFromUrl];
                 }
                 controller.ViewBag.ZendeskApiData = new ZendeskApiData
                 {
                     UserId = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value,
-                    Acc = accountIdFromUrl
+                    Name = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier)).Value,
+                    Email = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier)).Value,
+                    Acc = account?.AccountId,
+                    Organization = account?.EmployerName
                 };
             }
 
@@ -33,6 +47,9 @@ namespace SFA.DAS.PSRService.Web.Filters
         {
             public string UserId { get; set; }
             public string Acc { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string Organization { get; set; }
         }
     }
 }

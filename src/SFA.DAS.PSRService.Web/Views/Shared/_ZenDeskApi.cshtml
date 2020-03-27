@@ -1,8 +1,9 @@
 ﻿<script nws-csp-add-nonce="true" type="text/javascript">
     zE(function () {
         zE.identify({
-            userid: '@ViewBag.ZendeskApiData?.UserId',
-            Acc: '@ViewBag.ZendeskApiData?.Acc'
+            name: '@ViewBag.ZendeskApiData?.Name',
+            email: '@ViewBag.ZendeskApiData?.Email',
+            organization: '@ViewBag.ZendeskApiData?.Organization'
         });
     });
 </script>

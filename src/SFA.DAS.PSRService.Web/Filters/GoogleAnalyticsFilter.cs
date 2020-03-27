@@ -17,7 +17,7 @@ namespace SFA.DAS.PSRService.Web.Filters
                 if (user.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
                     accountIdFromUrl =
-                        filterContext.RouteData.Values[RouteValues.EmployerAccountId].ToString().ToUpper();
+                        filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper();
                 }
                 controller.ViewBag.GaData = new GaData
                 {
@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Web.Filters
 
             base.OnActionExecuting(filterContext);
         }
-        
+
         public class GaData
         {
             public string UserId { get; set; }
