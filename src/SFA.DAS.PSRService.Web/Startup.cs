@@ -51,6 +51,7 @@ namespace SFA.DAS.PSRService.Web
                 {
                     opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
                     opts.Filters.AddService<GoogleAnalyticsFilter>();
+                    opts.Filters.AddService<ZendeskApiFilter>();
                 })
                 .AddControllersAsServices().AddSessionStateTempDataProvider();
             //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
@@ -111,6 +112,76 @@ namespace SFA.DAS.PSRService.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            //// Add Content Security Policy           
+            //app.UseCsp(options => options
+            //    .DefaultSources(s =>
+            //    {
+            //        s.Self()
+            //            .CustomSources(
+            //            "https://*.zdassets.com",
+            //            "https://*.zendesk.com",
+            //            "wss://*.zendesk.com",
+            //            "wss://*.zopim.com"
+            //          );
+            //    })
+            //    .StyleSources(s =>
+            //    {
+            //        s.Self()
+            //        .CustomSources("https://www.googletagmanager.com/",
+            //                        "https://www.tagmanager.google.com/",
+            //                        "https://tagmanager.google.com/",
+            //                        "https://fonts.googleapis.com/",
+            //                        "https://*.zdassets.com",
+            //                        "https://*.zendesk.com",
+            //                        "wss://*.zendesk.com",
+            //                        "wss://*.zopim.com"
+            //                        );
+
+            //        //Google tag manager uses inline styles when administering tags. This is done on PREPROD only
+            //        //TinyMCE uses inline styles
+            //        s.UnsafeInline();
+            //    }
+            //    )
+            //    .ScriptSources(s =>
+            //    {
+            //        s.Self()
+            //            .CustomSources("*.google-analytics.com",
+            //                        "*.googleapis.com",
+            //                        "*.googletagmanager.com/",
+            //                       "https://www.tagmanager.google.com/",
+            //                        "https://*.zdassets.com",
+            //                        "https://*.zendesk.com",
+            //                        "wss://*.zendesk.com",
+            //                        "wss://*.zopim.com"
+            //                        );
+            //    })
+            //    .FontSources(s =>
+            //        s.Self()
+            //        .CustomSources("data:",
+            //                        "https://fonts.googleapis.com/")
+            //    )
+            //    .ConnectSources(s =>
+            //        s.Self()
+            //        .CustomSources(
+            //            "https://*.zendesk.com",
+            //            "https://*.zdassets.com",
+            //            "wss://*.zendesk.com",
+            //            "wss://*.zopim.com"
+            //)
+            //    )
+            //    .ImageSources(s =>
+            //        s.Self()
+            //        .CustomSources(
+            //                        "*.google-analytics.com",
+            //                        "https://*.zopim.io",
+            //                        "https://*.zdassets.com",
+            //                        "https://*.zendesk.com",
+            //                        "wss://*.zendesk.com",
+            //                        "wss://*.zopim.com",
+            //                        "data:")
+            //    )
+            //    .ReportUris(r => r.Uris("/ContentPolicyReport/Report")));
 
             app.UseStaticFiles()
                 .UseErrorLoggingMiddleware()
