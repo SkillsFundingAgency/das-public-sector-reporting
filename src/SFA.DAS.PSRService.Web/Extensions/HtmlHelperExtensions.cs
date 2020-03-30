@@ -72,13 +72,13 @@ namespace SFA.DAS.PSRService.Web.Extensions
         public static string GetZenDeskSnippetKey(this IHtmlHelper html)
         {
             var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
-            return configuration.ZenDeskSnippetKey;
+            return configuration.ZendeskConfig.SnippetKey;
         }
 
         public static string GetZenDeskSnippetSectionId(this IHtmlHelper html)
         {
             var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
-            return configuration.ZenDeskSectionId;
+            return configuration.ZendeskConfig.SectionId;
         }
 
         public static HtmlString SetZenDeskLabels(this IHtmlHelper html, params string[] labels)
