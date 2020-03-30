@@ -118,12 +118,12 @@ namespace SFA.DAS.PSRService.Web
                 .DefaultSources(s =>
                 {
                     s.Self()
-                        .CustomSources(
-                        "https://*.zdassets.com",
-                        "https://*.zendesk.com",
-                        "wss://*.zendesk.com",
-                        "wss://*.zopim.com"
-                      );
+                    .CustomSources(
+                    "https://*.zdassets.com",
+                    "https://*.zendesk.com",
+                    "wss://*.zendesk.com",
+                    "wss://*.zopim.com"
+                  );
                 })
                 .StyleSources(s =>
                 {
@@ -155,6 +155,7 @@ namespace SFA.DAS.PSRService.Web
                                     "wss://*.zendesk.com",
                                     "wss://*.zopim.com"
                                     );
+                    s.UnsafeInline();
                 })
                 .FontSources(s =>
                     s.Self()
