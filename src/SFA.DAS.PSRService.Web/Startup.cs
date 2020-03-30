@@ -118,12 +118,14 @@ namespace SFA.DAS.PSRService.Web
                 .DefaultSources(s =>
                 {
                     s.Self()
-                    .CustomSources(
-                    "https://*.zdassets.com",
-                    "https://*.zendesk.com",
-                    "wss://*.zendesk.com",
-                    "wss://*.zopim.com"
-                  );
+                        .CustomSources(
+                        "https://*.zdassets.com",
+                        "https://*.zendesk.com",
+                        "wss://*.zendesk.com",
+                        "wss://*.zopim.com",
+                        "https://embed-euw1.rcrsv.io/"
+                        );
+                    //s.UnsafeInline();
                 })
                 .StyleSources(s =>
                 {
@@ -146,16 +148,24 @@ namespace SFA.DAS.PSRService.Web
                 .ScriptSources(s =>
                 {
                     s.Self()
-                        .CustomSources("*.google-analytics.com",
+                        .CustomSources("https://az416426.vo.msecnd.net/scripts/a/ai.0.js",
+                                    "*.google-analytics.com",
                                     "*.googleapis.com",
                                     "*.googletagmanager.com/",
-                                   "https://www.tagmanager.google.com/",
+                                    "*.postcodeanywhere.co.uk/",
+                                    "https://www.tagmanager.google.com/",
                                     "https://*.zdassets.com",
                                     "https://*.zendesk.com",
                                     "wss://*.zendesk.com",
-                                    "wss://*.zopim.com"
-                                    );
-                    s.UnsafeInline();
+                                    "wss://*.zopim.com",
+                                    "https://embed-euw1.rcrsv.io");
+
+                    ////Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
+                    //if (env.IsEnvironment(EnvironmentNames.PREPROD))
+                    //{
+                    //    s.UnsafeInline();
+                    //    s.UnsafeEval();
+                    //}
                 })
                 .FontSources(s =>
                     s.Self()
@@ -167,14 +177,17 @@ namespace SFA.DAS.PSRService.Web
                     .CustomSources(
                         "https://*.zendesk.com",
                         "https://*.zdassets.com",
+                        "https://dc.services.visualstudio.com",
                         "wss://*.zendesk.com",
-                        "wss://*.zopim.com"
-            )
+                        "wss://*.zopim.com",
+                        "https://embed-euw1.rcrsv.io")
                 )
                 .ImageSources(s =>
                     s.Self()
-                    .CustomSources(
+                    .CustomSources("https://maps.googleapis.com",
                                     "*.google-analytics.com",
+                                    "https://ssl.gstatic.com",
+                                    "https://www.gstatic.com/",
                                     "https://*.zopim.io",
                                     "https://*.zdassets.com",
                                     "https://*.zendesk.com",
@@ -183,6 +196,7 @@ namespace SFA.DAS.PSRService.Web
                                     "data:")
                 )
                 .ReportUris(r => r.Uris("/ContentPolicyReport/Report")));
+
 
             app.UseStaticFiles()
                 .UseErrorLoggingMiddleware()
