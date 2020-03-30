@@ -32,7 +32,6 @@ namespace SFA.DAS.PSRService.Web.Filters
         public class GaData
         {
             public string UserId { get; set; }
-            public string UserName { get; set; }
             public string Vpv { get; set; }
             public string Acc { get; set; }
         }

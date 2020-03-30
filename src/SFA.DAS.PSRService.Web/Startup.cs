@@ -149,7 +149,7 @@ namespace SFA.DAS.PSRService.Web
                     s.Self()
                         .CustomSources("https://az416426.vo.msecnd.net/scripts/a/ai.0.js",
                                     "*.google-analytics.com",
-                                   // "*.googleapis.com",
+                                    // "*.googleapis.com",
                                     "*.googletagmanager.com/",
                                    "https://www.tagmanager.google.com/",
                                     "https://*.zdassets.com",
@@ -187,7 +187,8 @@ namespace SFA.DAS.PSRService.Web
                                 "https://*.zendesk.com",
                                 "wss://*.zendesk.com",
                                 "wss://*.zopim.com",
-                                "data:");
+                                "data:"
+                                );
                     }
                 )
                 .ReportUris(r => r.Uris("/ContentPolicyReport/Report")));
