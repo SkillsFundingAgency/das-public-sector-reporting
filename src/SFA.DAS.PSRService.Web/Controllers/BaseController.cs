@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            ViewData["HomeUrl"] = string.Format(_webConfiguration.HomeUrl, EmployerAccount.AccountId);
+            ViewData["HomeUrl"] = string.Format(_webConfiguration.HomeUrl, EmployerAccount?.AccountId);
             ViewData["RootUrl"] = _webConfiguration.RootDomainUrl;
             base.OnActionExecuting(context);
         }
