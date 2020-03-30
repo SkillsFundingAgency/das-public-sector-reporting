@@ -19,7 +19,8 @@
         }
     };
 </script>
-<script nws-csp-add-nonce="true" id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=@Html.GetZenDeskSnippetKey()"></script>
-@Html.SetZenDeskLabels(new string[] { ViewBag.ZenDeskLabel })
-
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=@Html.GetZenDeskSnippetKey()"></script>
+<script type="text/javascript" nws-csp-add-nonce="true">
+    @Html.SetZenDeskLabels(new string[] { ViewBag.ZenDeskLabel })
+</script>
 
