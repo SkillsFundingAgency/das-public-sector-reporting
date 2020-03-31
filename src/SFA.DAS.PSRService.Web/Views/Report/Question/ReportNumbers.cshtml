@@ -1,6 +1,6 @@
 ﻿@model SFA.DAS.PSRService.Domain.Entities.Section
 @{
-    ViewBag.GaData.Vpv = "report/question/page-report-numbers";
+    ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-report-numbers";
 }
 
 @Html.Partial("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="YourEmployees"))

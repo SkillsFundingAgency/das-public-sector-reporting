@@ -3,7 +3,7 @@
 @{
     var questionList = Model.SubSections.SelectMany(w => w.Questions).ToDictionary(k => k.Id);
     var canBeEdited = ViewBag.CanBeEdited;
-    ViewBag.GaData.Vpv = "report/question/page-factors";
+    ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-factors";
 }
 
 <div class="form-group">
