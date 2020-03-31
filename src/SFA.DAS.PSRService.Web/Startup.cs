@@ -123,7 +123,8 @@ namespace SFA.DAS.PSRService.Web
                         "https://*.zendesk.com",
                         "wss://*.zendesk.com",
                         "wss://*.zopim.com",
-                        "https://embed-euw1.rcrsv.io/"
+                        "https://embed-euw1.rcrsv.io/",
+                        "https://assets.publishing.service.gov.uk"
                         );
                 })
                 .StyleSources(s =>
@@ -193,7 +194,8 @@ namespace SFA.DAS.PSRService.Web
                                 "https://*.zendesk.com",
                                 "wss://*.zendesk.com",
                                 "wss://*.zopim.com",
-                                "data:"
+                                "data:",
+                                "https://assets.publishing.service.gov.uk"
                                 );
                     }
                 )
