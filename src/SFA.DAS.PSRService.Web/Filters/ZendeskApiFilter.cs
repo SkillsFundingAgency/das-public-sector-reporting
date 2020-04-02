@@ -17,17 +17,16 @@ namespace SFA.DAS.PSRService.Web.Filters
             {
                 var user = controller.User;
                 EmployerIdentifier account = null;
+                var accountIdFromUrl =
+                    filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper();
                 if (user.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
-                    var accountIdFromUrl =
-                        filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper();
                     var employerAccountClaim =
                         user.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
                     var employerAccounts =
                         JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(
                             employerAccountClaim
                                 ?.Value);
-
                     if (accountIdFromUrl != null) account = employerAccounts[accountIdFromUrl];
                 }
                 controller.ViewBag.ZendeskApiData = new ZendeskApiData
