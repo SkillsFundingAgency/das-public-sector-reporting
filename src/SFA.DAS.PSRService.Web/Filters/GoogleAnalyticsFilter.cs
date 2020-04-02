@@ -12,7 +12,7 @@ namespace SFA.DAS.PSRService.Web.Filters
             var controller = filterContext.Controller as Controller;
             if (controller != null)
             {
-                var user = controller.User;
+                var user = filterContext.HttpContext.User;
                 string accountIdFromUrl = filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper(); ;
                 controller.ViewBag.GaData = new GaData
                 {
