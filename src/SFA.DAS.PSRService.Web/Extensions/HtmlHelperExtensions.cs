@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc;
+﻿using SFA.DAS.MA.Shared.UI.Models;
+using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.MA.Shared.UI.Configuration;
+using SFA.DAS.MA.Shared.UI.Models.Links;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
-using SFA.DAS.MA.Shared.UI.Configuration;
-using SFA.DAS.MA.Shared.UI.Models;
-using SFA.DAS.MA.Shared.UI.Models.Links;
-using SFA.DAS.PSRService.Web.Configuration;
 
-namespace SFA.DAS.PSRService.Web.Extensions
+namespace Microsoft.AspNetCore.Mvc
 {
     /// <summary>
     /// <see cref="IHtmlHelper"/> extension methods.
@@ -67,37 +64,6 @@ namespace SFA.DAS.PSRService.Web.Extensions
                 User = html.ViewContext.HttpContext.User,
                 HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
             });
-        }
-
-        public static string GetZenDeskSnippetKey(this IHtmlHelper html)
-        {
-            var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
-            return configuration.ZendeskConfig.SnippetKey;
-        }
-
-        public static string GetZenDeskSnippetSectionId(this IHtmlHelper html)
-        {
-            var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
-            return configuration.ZendeskConfig.SectionId;
-        }
-
-        public static HtmlString SetZenDeskLabels(this IHtmlHelper html, params string[] labels)
-        {
-            var keywords = string.Join(",", labels
-                .Where(label => !string.IsNullOrEmpty(label))
-                .Select(label => $"'{EscapeApostrophes(label)}'"));
-
-            // when there are no keywords default to empty string to prevent zen desk matching articles from the url
-            var apiCallString = "zE('webWidget', 'helpCenter:setSuggestions', { labels: ["
-                                + (!string.IsNullOrEmpty(keywords) ? keywords : "''")
-                                + "] });";
-
-            return new HtmlString(apiCallString);
-        }
-
-        private static string EscapeApostrophes(string input)
-        {
-            return input.Replace("'", @"\'");
         }
     }
 }

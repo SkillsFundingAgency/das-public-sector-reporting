@@ -11,8 +11,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
     public abstract class BaseController : Controller
     {
         private readonly IEmployerAccountService _employerAccountService;
+
         protected readonly IWebConfiguration _webConfiguration;
-        public EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
+
+        protected EmployerIdentifier EmployerAccount => _employerAccountService.GetCurrentEmployerAccountId(HttpContext);
+
+        
         protected BaseController(IWebConfiguration webConfiguration, IEmployerAccountService employerAccountService)
         {
             _webConfiguration = webConfiguration;
@@ -21,7 +25,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            ViewData["HomeUrl"] = string.Format(_webConfiguration.HomeUrl, EmployerAccount?.AccountId);
+            ViewData["HomeUrl"] = string.Format(_webConfiguration.HomeUrl, EmployerAccount.AccountId);
             ViewData["RootUrl"] = _webConfiguration.RootDomainUrl;
             base.OnActionExecuting(context);
         }

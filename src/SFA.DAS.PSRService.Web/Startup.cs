@@ -12,7 +12,6 @@ using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
-using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
@@ -47,21 +46,15 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
-            services.AddMvc(opts =>
-                {
-                    opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
-                    opts.Filters.AddService<GoogleAnalyticsFilter>();
-                    opts.Filters.AddService<ZendeskApiFilter>();
-                })
-                .AddControllersAsServices().AddSessionStateTempDataProvider();
+            services.AddMvc(opts=>opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount)) ).AddControllersAsServices().AddSessionStateTempDataProvider();
             //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
-
+            
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
 
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
-
+            
             return ConfigureIOC(services);
         }
 
@@ -105,102 +98,13 @@ namespace SFA.DAS.PSRService.Web
         {
             if (env.IsDevelopment())
             {
-                //app.UseBrowserLink();
+                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            // Add Content Security Policy           
-            app.UseCsp(options => options
-                .DefaultSources(s =>
-                {
-                    s.Self()
-                        .CustomSources(
-                        "https://*.zdassets.com",
-                        "https://*.zendesk.com",
-                        "wss://*.zendesk.com",
-                        "wss://*.zopim.com",
-                        "https://embed-euw1.rcrsv.io/",
-                        "https://assets.publishing.service.gov.uk"
-                        );
-                })
-                .StyleSources(s =>
-                {
-                    s.Self()
-                    .CustomSources("https://www.googletagmanager.com/",
-                                    "https://www.tagmanager.google.com/",
-                                    "https://tagmanager.google.com/",
-                                    "https://fonts.googleapis.com/",
-                                    "https://*.zdassets.com",
-                                    "https://*.zendesk.com",
-                                    "wss://*.zendesk.com",
-                                    "wss://*.zopim.com"
-                                    );
-
-                    //Google tag manager uses inline styles when administering tags. This is done on PREPROD only
-                    //TinyMCE uses inline styles
-                    s.UnsafeInline();
-                }
-                )
-                .ScriptSources(s =>
-                {
-                    s.Self()
-                        .CustomSources("https://az416426.vo.msecnd.net/scripts/a/ai.0.js",
-                                    "*.google-analytics.com",
-                                     "*.googleapis.com",
-                                    "*.googletagmanager.com/",
-                                   "https://www.tagmanager.google.com/",
-                                    "https://*.zdassets.com",
-                                    "https://*.zendesk.com",
-                                    "wss://*.zendesk.com",
-                                    "wss://*.zopim.com",
-                                    "https://embed-euw1.rcrsv.io");
-                    //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
-                    if (env.IsEnvironment(EnvironmentNames.PREPROD))
-                    {
-                        s.UnsafeInline();
-                        s.UnsafeEval();
-                    }
-                    //s.UnsafeInline();
-                    //s.UnsafeEval();
-                })
-                .FontSources(s =>
-                    s.Self()
-                    .CustomSources("data:",
-                                    "https://fonts.googleapis.com/")
-                )
-                .ConnectSources(s =>
-                    s.Self()
-                    .CustomSources(
-                        "https://*.zendesk.com",
-                        "https://*.zdassets.com",
-                        "https://dc.services.visualstudio.com",
-                        "wss://*.zendesk.com",
-                        "wss://*.zopim.com",
-                        "https://embed-euw1.rcrsv.io")
-                )
-                .ImageSources(s =>
-                    {
-                        s.Self()
-                            .CustomSources(
-                                "*.google-analytics.com",
-                                "https://ssl.gstatic.com",
-                                "https://www.gstatic.com/",
-                                "https://*.zopim.io",
-                                "https://*.zdassets.com",
-                                "https://*.zendesk.com",
-                                "wss://*.zendesk.com",
-                                "wss://*.zopim.com",
-                                "data:",
-                                "https://assets.publishing.service.gov.uk"
-                                );
-                    }
-                )
-                .ReportUris(r => r.Uris("/ContentPolicyReport/Report")));
-
 
             app.UseStaticFiles()
                 .UseErrorLoggingMiddleware()
@@ -213,8 +117,8 @@ namespace SFA.DAS.PSRService.Web
                         template: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
                     routes.MapRoute(
                         name: "Service-Controller",
-                        template: "Service/{action}",
-                    defaults: new { controller = "Service" });
+                        template: "Service/{action}", 
+                    defaults: new {controller = "Service"});
 
                 });
         }
@@ -227,10 +131,10 @@ namespace SFA.DAS.PSRService.Web
             {
                 _configuration = configuration;
             }
-
+            
             public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
             public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
-
+            
         }
     }
 }
