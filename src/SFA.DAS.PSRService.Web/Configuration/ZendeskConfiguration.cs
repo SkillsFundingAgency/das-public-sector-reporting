@@ -8,5 +8,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public string SnippetKey { get; set; }
         [JsonRequired]
         public string SectionId { get; set; }
+        [JsonRequired]
+        public string ZenDeskCobrowsingSnippetKey { get; set; }
     }
 }
