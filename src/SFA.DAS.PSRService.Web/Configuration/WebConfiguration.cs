@@ -26,6 +26,5 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public SessionStoreConfiguration SessionStore { get; set; }
         public TimeSpan? AuditWindowSize { get; set; }
         public ZendeskConfiguration ZendeskConfig { get; set; }
-        public GoogleTagManagerConfiguration GoogleAnalytics { get; set; }
     }
 }
