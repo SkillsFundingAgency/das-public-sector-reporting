@@ -9,6 +9,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         [JsonRequired]
         public string SectionId { get; set; }
         [JsonRequired]
-        public string ZenDeskCobrowsingSnippetKey { get; set; }
+        public string CobrowsingSnippetKey { get; set; }
     }
 }

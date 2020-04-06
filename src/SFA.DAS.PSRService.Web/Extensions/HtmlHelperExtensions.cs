@@ -84,7 +84,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
         public static string GetZenDeskCobrowsingSnippetKey(this IHtmlHelper html)
         {
             var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
-            return configuration.ZendeskConfig.SectionId;
+            return configuration.ZendeskConfig.CobrowsingSnippetKey;
         }
 
         public static HtmlString SetZenDeskLabels(this IHtmlHelper html, params string[] labels)
