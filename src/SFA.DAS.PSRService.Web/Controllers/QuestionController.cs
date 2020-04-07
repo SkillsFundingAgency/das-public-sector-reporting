@@ -50,10 +50,31 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             if (sectionViewModel.CurrentSection.Questions != null)
                 sectionViewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel { Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type }).ToList();
-
+            sectionViewModel.CurrentSection.ZenDeskLabel = GetZendeskLabel_ByQuestionId(id);
             return View("Index", sectionViewModel);
         }
 
+        private string GetZendeskLabel_ByQuestionId(string id)
+        {
+            switch (id)
+            {
+                case "OutlineActions":
+                    return "reporting-what-actions-have you-taken";
+                case "Challenges":
+                    return "reporting-what-challenges-have-you-faced";
+                case "TargetPlans":
+                    return "reporting-planning-to-meet-the-target";
+                case "AnythingElse":
+                    return "reporting-anything-else-you-want-to-tell";
+                case "YourApprentices":
+                    return "reporting-your-apprentices";
+                case "YourEmployees":
+                    return "reporting-your-employees";
+                case "FullTimeEquivalent":
+                    return "reporting-full-time-equivalents";
+            }
+            return string.Empty;
+        }
 
 
         [Route("accounts/{employerAccountId}/[controller]/{id}")]

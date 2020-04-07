@@ -12,6 +12,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string Id { get; set; }
         public string Title { get; set; }
         public string SummaryText { get; set; }
+        public string ZenDeskLabel { get; set; }
 
         public bool IsComplete()
         {
