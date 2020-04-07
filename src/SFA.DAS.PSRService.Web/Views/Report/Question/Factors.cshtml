@@ -4,6 +4,7 @@
     var questionList = Model.SubSections.SelectMany(w => w.Questions).ToDictionary(k => k.Id);
     var canBeEdited = ViewBag.CanBeEdited;
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-factors";
+    ViewBag.ZenDeskLabel = "reporting-planning-to-meet-the-target";
 }
 
 <div class="form-group">

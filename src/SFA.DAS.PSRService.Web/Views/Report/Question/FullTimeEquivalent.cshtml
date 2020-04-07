@@ -4,6 +4,7 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-fulltime-equivalent";
     var questionList = Model.Questions.ToDictionary(k => k.Id);
     var canBeEdited = ViewBag.CanBeEdited;
+    ViewBag.ZenDeskLabel = "reporting-full-time-equivalents";
 }
 
 <div class="form-group">
