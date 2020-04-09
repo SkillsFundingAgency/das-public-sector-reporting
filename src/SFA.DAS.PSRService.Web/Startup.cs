@@ -156,7 +156,7 @@ namespace SFA.DAS.PSRService.Web
                                     "wss://*.zopim.com",
                                     "https://embed-euw1.rcrsv.io");
                     //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
-                    if (env.IsStaging())
+                    if (env.IsEnvironment(EnvironmentNames.PREPROD))
                     {
                         s.UnsafeInline();
                         s.UnsafeEval();
