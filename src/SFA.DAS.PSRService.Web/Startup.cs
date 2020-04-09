@@ -51,13 +51,10 @@ namespace SFA.DAS.PSRService.Web
                 {
                     opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
                     opts.Filters.AddService<GoogleAnalyticsFilter>();
-                    opts.Filters.AddService<ZendeskApiFilter>();
+                    opts.Filters.AddService<ZenDeskApiFilter>();
                 })
                 .AddControllersAsServices().AddSessionStateTempDataProvider();
-            //services.AddMvc().AddControllersAsServices().AddSessionStateTempDataProvider();
-
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
-
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
@@ -105,7 +102,7 @@ namespace SFA.DAS.PSRService.Web
         {
             if (env.IsDevelopment())
             {
-                //app.UseBrowserLink();
+                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -159,13 +156,11 @@ namespace SFA.DAS.PSRService.Web
                                     "wss://*.zopim.com",
                                     "https://embed-euw1.rcrsv.io");
                     //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
-                    if (env.IsEnvironment(EnvironmentNames.PREPROD))
+                    if (env.IsStaging())
                     {
                         s.UnsafeInline();
                         s.UnsafeEval();
                     }
-                    //s.UnsafeInline();
-                    //s.UnsafeEval();
                 })
                 .FontSources(s =>
                     s.Self()

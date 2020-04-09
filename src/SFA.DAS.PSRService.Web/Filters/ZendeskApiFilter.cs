@@ -8,7 +8,7 @@ using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Filters
 {
-    public class ZendeskApiFilter : ActionFilterAttribute
+    public class ZenDeskApiFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -29,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.Filters
                                 ?.Value);
                     if (accountIdFromUrl != null) account = employerAccounts[accountIdFromUrl];
                 }
-                controller.ViewBag.ZendeskApiData = new ZendeskApiData
+                controller.ViewBag.ZendeskApiData = new ZenDeskApiData
                 {
                     Name = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier)).Value,
                     Email = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier)).Value,
@@ -40,7 +40,7 @@ namespace SFA.DAS.PSRService.Web.Filters
             base.OnActionExecuting(filterContext);
         }
         
-        public class ZendeskApiData
+        public class ZenDeskApiData
         {
             public string Name { get; set; }
             public string Email { get; set; }

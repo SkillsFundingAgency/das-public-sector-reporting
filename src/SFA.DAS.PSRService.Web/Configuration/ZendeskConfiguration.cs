@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.PSRService.Web.Configuration
 {
-    public class ZendeskConfiguration
+    public class ZenDeskConfiguration
     {
         [JsonRequired]
         public string SnippetKey { get; set; }

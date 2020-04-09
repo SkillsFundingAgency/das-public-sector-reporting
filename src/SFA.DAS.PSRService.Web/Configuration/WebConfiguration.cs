@@ -25,6 +25,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         [JsonRequired]
         public SessionStoreConfiguration SessionStore { get; set; }
         public TimeSpan? AuditWindowSize { get; set; }
-        public ZendeskConfiguration ZendeskConfig { get; set; }
+        public ZenDeskConfiguration ZenDeskConfig { get; set; }
     }
 }

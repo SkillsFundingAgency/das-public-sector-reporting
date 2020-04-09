@@ -19,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IPeriodService _periodService;
         private readonly IUserService _userService;
 
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService, IUserService userService) 
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService, IUserService userService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
@@ -50,32 +50,11 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             if (sectionViewModel.CurrentSection.Questions != null)
                 sectionViewModel.Questions = currentSection.Questions.Select(s => new QuestionViewModel { Answer = s.Answer, Id = s.Id, Optional = s.Optional, Type = s.Type }).ToList();
+
             sectionViewModel.CurrentSection.ZenDeskLabel = GetZendeskLabel_ByQuestionId(id);
+
             return View("Index", sectionViewModel);
         }
-
-        private string GetZendeskLabel_ByQuestionId(string id)
-        {
-            switch (id)
-            {
-                case "OutlineActions":
-                    return "reporting-what-actions-have you-taken";
-                case "Challenges":
-                    return "reporting-what-challenges-have-you-faced";
-                case "TargetPlans":
-                    return "reporting-planning-to-meet-the-target";
-                case "AnythingElse":
-                    return "reporting-anything-else-you-want-to-tell";
-                case "YourApprentices":
-                    return "reporting-your-apprentices";
-                case "YourEmployees":
-                    return "reporting-your-employees";
-                case "FullTimeEquivalent":
-                    return "reporting-full-time-equivalents";
-            }
-            return string.Empty;
-        }
-
 
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         [HttpPost]
@@ -110,24 +89,40 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         question.Answer = answeredQuestion.Answer;
                     }
                 }
-                
+
                 _reportService.SaveReport(report, _userService.GetUserModel(User));
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
-
-
             var viewModel = new SectionViewModel
             {
                 CurrentPeriod = report.Period,
                 CurrentSection = currentSection,
                 Report = report,
                 Questions = section.Questions
-        };
-
-          
-
-
+            };
             return View("Index", viewModel);
+        }
+
+        private string GetZendeskLabel_ByQuestionId(string id)
+        {
+            switch (id)
+            {
+                case "OutlineActions":
+                    return "reporting-what-actions-have you-taken";
+                case "Challenges":
+                    return "reporting-what-challenges-have-you-faced";
+                case "TargetPlans":
+                    return "reporting-planning-to-meet-the-target";
+                case "AnythingElse":
+                    return "reporting-anything-else-you-want-to-tell";
+                case "YourApprentices":
+                    return "reporting-your-apprentices";
+                case "YourEmployees":
+                    return "reporting-your-employees";
+                case "FullTimeEquivalent":
+                    return "reporting-full-time-equivalents";
+            }
+            return string.Empty;
         }
     }
 }
