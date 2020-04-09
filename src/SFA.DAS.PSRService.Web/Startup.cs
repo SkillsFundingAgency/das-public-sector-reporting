@@ -136,9 +136,6 @@ namespace SFA.DAS.PSRService.Web
                                     "wss://*.zendesk.com",
                                     "wss://*.zopim.com"
                                     );
-
-                    //Google tag manager uses inline styles when administering tags. This is done on PREPROD only
-                    //TinyMCE uses inline styles
                     s.UnsafeInline();
                 }
                 )
