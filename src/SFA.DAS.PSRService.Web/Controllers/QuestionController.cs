@@ -19,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         private readonly IPeriodService _periodService;
         private readonly IUserService _userService;
 
-        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService, IUserService userService) 
+        public QuestionController(IReportService reportService, IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration, IPeriodService periodService, IUserService userService)
             : base(webConfiguration, employerAccountService)
         {
             _reportService = reportService;
@@ -54,8 +54,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Index", sectionViewModel);
         }
 
-
-
         [Route("accounts/{employerAccountId}/[controller]/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -89,23 +87,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
                         question.Answer = answeredQuestion.Answer;
                     }
                 }
-                
+
                 _reportService.SaveReport(report, _userService.GetUserModel(User));
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
-
-
             var viewModel = new SectionViewModel
             {
                 CurrentPeriod = report.Period,
                 CurrentSection = currentSection,
                 Report = report,
                 Questions = section.Questions
-        };
-
-          
-
-
+            };
             return View("Index", viewModel);
         }
     }
