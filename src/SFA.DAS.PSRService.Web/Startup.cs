@@ -47,6 +47,7 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
+            services.AddHealthChecks();
             services.AddMvc(opts =>
                 {
                     opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
@@ -198,6 +199,7 @@ namespace SFA.DAS.PSRService.Web
                 .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()
+                .UseHealthChecks("/ping")
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
