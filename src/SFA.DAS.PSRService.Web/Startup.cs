@@ -121,7 +121,7 @@ namespace SFA.DAS.PSRService.Web
                         "https://*.zendesk.com",
                         "wss://*.zendesk.com",
                         "wss://*.zopim.com",
-                        "https://embed-euw1.rcrsv.io/",
+                        "https://*.rcrsv.io",
                         "https://assets.publishing.service.gov.uk"
                         );
                 })
@@ -135,7 +135,8 @@ namespace SFA.DAS.PSRService.Web
                                     "https://*.zdassets.com",
                                     "https://*.zendesk.com",
                                     "wss://*.zendesk.com",
-                                    "wss://*.zopim.com"
+                                    "wss://*.zopim.com",
+                                    "https://*.rcrsv.io"
                                     );
                     s.UnsafeInline();
                 }
@@ -147,12 +148,12 @@ namespace SFA.DAS.PSRService.Web
                                     "*.google-analytics.com",
                                      "*.googleapis.com",
                                     "*.googletagmanager.com/",
-                                   "https://www.tagmanager.google.com/",
+                                    "https://www.tagmanager.google.com/",
                                     "https://*.zdassets.com",
                                     "https://*.zendesk.com",
                                     "wss://*.zendesk.com",
                                     "wss://*.zopim.com",
-                                    "https://embed-euw1.rcrsv.io");
+                                    "https://*.rcrsv.io");
                     //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
                     if (env.IsEnvironment(EnvironmentNames.PREPROD))
                     {
@@ -163,7 +164,8 @@ namespace SFA.DAS.PSRService.Web
                 .FontSources(s =>
                     s.Self()
                     .CustomSources("data:",
-                                    "https://fonts.googleapis.com/")
+                                    "https://fonts.googleapis.com/",
+                                    "https://assets-ukdoe.rcrsv.io/")
                 )
                 .ConnectSources(s =>
                     s.Self()
@@ -173,7 +175,7 @@ namespace SFA.DAS.PSRService.Web
                         "https://dc.services.visualstudio.com",
                         "wss://*.zendesk.com",
                         "wss://*.zopim.com",
-                        "https://embed-euw1.rcrsv.io")
+                        "https://*.rcrsv.io")
                 )
                 .ImageSources(s =>
                     {
