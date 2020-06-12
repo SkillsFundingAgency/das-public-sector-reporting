@@ -813,13 +813,118 @@ aside.related > h2 {
 /* Cookie Banner */
 
 
+.govuk-heading-m {
+  font-family: "nta", Arial, sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  font-size: 18px;
+  line-height: 1.2;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+@media (min-width: 641px) {
+  .govuk-heading-m {
+      margin-top: 1.875em;
+      margin-bottom: 0.83333em;
+      font-size: 24px;
+      line-height: 1.25;
+  }
+}
+
+.govuk-width-container {
+  max-width: 960px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-width-container {
+      margin-right: 30px;
+      margin-left: 30px;
+  }
+}
+
+@media (min-width: 48.0625em) {
+  .govuk-width-container {
+      margin-right: auto;
+      margin-left: auto;
+  }
+}
+
+.govuk-grid-row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.govuk-grid-row:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.govuk-grid-column-two-thirds {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .govuk-grid-column-two-thirds {
+      width: 66.6666%;
+      float: left;
+  }
+}
+
+.govuk-button {
+    background-color: #00823b;
+    position: relative;
+    display: -moz-inline-stack;
+    display: inline-block;
+    padding: .526315em .789473em .263157em;
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 2px 0 #003618;
+    -moz-box-shadow: 0 2px 0 #003618;
+    box-shadow: 0 2px 0 #003618;
+    font-size: 1em;
+    line-height: 1.25;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.govuk-button:hover, .govuk-button:focus {
+  background-color: #00692f;
+}
+
+a.govuk-button,
+a.govuk-button:link, 
+a.govuk-button:visited {
+  text-align: center;
+  color: #fff;
+  font-family: "nta", Arial, sans-serif;
+}
+
+a.govuk-button:active {
+  background-color: #00692f;
+}
+
 .das-cookie-banner {
   display: none;
   font-family: "GDS Transport", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
-  font-size: 0.875rem;
   line-height: 1.14286;
   padding: 15px 0;
   box-sizing: border-box;
@@ -834,7 +939,6 @@ aside.related > h2 {
   @media (min-width: 40.0625em) {
     .das-cookie-banner {
       font-size: 16px;
-      font-size: 1rem;
       line-height: 1.25; } }
   @media print {
     .das-cookie-banner {
@@ -844,6 +948,12 @@ aside.related > h2 {
     .das-cookie-banner {
       padding: 20px 0; } }
 
+
+      @media (min-width: 48em) {
+        .das-cookie-banner {
+          font-size: 19px;
+          line-height: 1.25; } }
+
 .das-cookie-banner__header {
   margin-top: 0;
   margin-bottom: 20px;
@@ -851,15 +961,19 @@ aside.related > h2 {
   color: #0b0c0c; }
 
 .das-cookie-banner__message {
+  font-family: "nta", Arial, sans-serif;
   display: inline-block;
   margin-top: 0;
   margin-bottom: 5px;
   padding-right: 20px;
   padding-bottom: 10px;
-  color: #0b0c0c; }
+  color: #0b0c0c; 
+  font-size: inherit;
+}
   @media (min-width: 48.0625em) {
     .das-cookie-banner__message {
-      margin: 0; } }
+      margin: 0;
+ } }
 
 .das-cookie-banner__service-name {
   display: inline-block; }
@@ -902,14 +1016,14 @@ aside.related > h2 {
   display: none; }
 
 .das-cookie-banner__confirmation-message {
+  font-family: "nta", Arial, sans-serif;
   margin: 0; }
 
 .das-cookie-banner__hide-button {
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: "nta", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
-  font-size: 1rem;
   line-height: 1.25;
   outline: 0;
   border: 0;
@@ -925,7 +1039,6 @@ aside.related > h2 {
   @media (min-width: 40.0625em) {
     .das-cookie-banner__hide-button {
       font-size: 19px;
-      font-size: 1.1875rem;
       line-height: 1.31579; } }
   @media print {
     .das-cookie-banner__hide-button {
