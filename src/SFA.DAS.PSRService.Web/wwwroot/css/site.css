@@ -845,7 +845,7 @@ aside.related > h2 {
   }
 }
 
-@media (min-width: 48.0625em) {
+@media (min-width: 1020px) {
   .govuk-width-container {
       margin-right: auto;
       margin-left: auto;
