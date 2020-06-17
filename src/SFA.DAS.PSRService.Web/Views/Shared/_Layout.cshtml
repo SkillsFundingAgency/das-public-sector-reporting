@@ -75,13 +75,13 @@
 
 @Html.Partial("_CookieBanner")
 
-@Html.Partial("_Header", Html.GetHeaderViewModel())
+@Html.Partial("_Header", Html.GetHeaderViewModel(useLegacyStyles: true))
 
 <main id="content" role="main">
     @RenderBody()
 </main>
 
-@Html.Partial("_Footer", Html.GetFooterViewModel())
+@Html.Partial("_Footer", Html.GetFooterViewModel(useLegacyStyles: true))
 
 <div id="global-app-error" class="app-error hidden"></div>
 
