@@ -66,7 +66,7 @@
 <body>
     @Html.Partial("_GoogleTagManagerNoScript")
     <script nws-csp-add-nonce="true" type="text/javascript">
-    document.body.className =
+        document.body.className =
             ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 
     <div id="skiplink-container">
@@ -74,6 +74,8 @@
             <a href="#content" class="skiplink">Skip to main content</a>
         </div>
     </div>
+
+    @Html.Partial("_CookieBanner", Html.GetCookieBannerViewModel())
 
     @Html.Partial("_Header", Html.GetHeaderViewModel(useLegacyStyles: true))
 
@@ -87,7 +89,7 @@
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/js/details.polyfill.js" asp-append-version="true"></script>
+        <script src="~/js/details.polyfill.js" asp-append-version="true"></script>()
         <script src="~/js/shim-links-with-button-role.js" asp-append-version="true"></script>
         <script src="~/js/show-hide-content.js" asp-append-version="true"></script>
         <script src="~/js/cookies.js" asp-append-version="true"></script>
@@ -102,7 +104,7 @@
 
     @RenderSection("Scripts", required: false)
     <script nws-csp-add-nonce="true">
-    if (
+        if (
             typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
 </body>
 </html>
