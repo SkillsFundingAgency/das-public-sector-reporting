@@ -62,7 +62,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
 
             return new FooterViewModel(new FooterConfiguration
             {
-                ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
             },
             new UserContext
             {
@@ -78,7 +78,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
 
             return new CookieBannerViewModel(new CookieBannerConfiguration
             {
-                ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
             },
             new UserContext
             {
