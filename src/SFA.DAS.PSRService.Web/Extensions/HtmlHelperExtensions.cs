@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
     /// </summary>
     public static class HtmlHelperExtensions
     {
-        public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html, bool hideMenu = false)
+        public static IHeaderViewModel GetHeaderViewModel(this IHtmlHelper html, bool hideMenu = false, bool useLegacyStyles = false)
         {
             var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
             var urlHelperFactory = (IUrlHelperFactory)html.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory));
@@ -37,7 +37,9 @@ namespace SFA.DAS.PSRService.Web.Extensions
             {
                 User = html.ViewContext.HttpContext.User,
                 HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
-            });
+            },
+            useLegacyStyles : useLegacyStyles
+            );
 
             headerModel.SelectMenu(html.ViewBag.Section);
 
@@ -54,19 +56,36 @@ namespace SFA.DAS.PSRService.Web.Extensions
             return headerModel;
         }
 
-        public static IFooterViewModel GetFooterViewModel(this IHtmlHelper html)
+        public static IFooterViewModel GetFooterViewModel(this IHtmlHelper html, bool useLegacyStyles = false)
         {
             var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
 
             return new FooterViewModel(new FooterConfiguration
             {
-                ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
             },
             new UserContext
             {
                 User = html.ViewContext.HttpContext.User,
                 HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
-            });
+            },
+            useLegacyStyles : useLegacyStyles);
+        }
+
+        public static ICookieBannerViewModel GetCookieBannerViewModel(this IHtmlHelper html)
+        {
+            var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
+
+            return new CookieBannerViewModel(new CookieBannerConfiguration
+            {
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
+            },
+            new UserContext
+            {
+                User = html.ViewContext.HttpContext.User,
+                HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
+            }                       
+            );
         }
 
         public static string GetZenDeskSnippetKey(this IHtmlHelper html)
