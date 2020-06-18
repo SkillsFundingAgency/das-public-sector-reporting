@@ -19,6 +19,10 @@ namespace SFA.DAS.PSRService.Web.Configuration
         [JsonRequired]
         public string RootDomainUrl { get; set; }
         [JsonRequired]
+        public string EmployerAccountsBaseUrl { get; set; }
+        [JsonRequired]
+        public string EmployerFinanceBaseUrl { get; set; }
+        [JsonRequired]
         public string EmployerRecruitBaseUrl { get; set; }
         [JsonRequired]
         public string HomeUrl { get; set; }

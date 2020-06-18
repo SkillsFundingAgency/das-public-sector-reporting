@@ -11,6 +11,8 @@ namespace SFA.DAS.PSRService.Web.Configuration
         DateTime SubmissionClose { get; set; }
         string ApplicationUrl { get; set; }
         string RootDomainUrl { get; set; }
+        string EmployerAccountsBaseUrl { get; set; }
+        string EmployerFinanceBaseUrl { get; set; }
         string EmployerRecruitBaseUrl { get; set; }
         string HomeUrl { get; set; }
         SessionStoreConfiguration SessionStore { get; set; }

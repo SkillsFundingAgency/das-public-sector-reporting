@@ -62,7 +62,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
 
             return new FooterViewModel(new FooterConfiguration
             {
-                ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
             },
             new UserContext
             {
@@ -70,6 +70,22 @@ namespace SFA.DAS.PSRService.Web.Extensions
                 HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
             },
             useLegacyStyles : useLegacyStyles);
+        }
+
+        public static ICookieBannerViewModel GetCookieBannerViewModel(this IHtmlHelper html)
+        {
+            var configuration = html.ViewContext.HttpContext.RequestServices.GetService(typeof(IWebConfiguration)) as IWebConfiguration;
+
+            return new CookieBannerViewModel(new CookieBannerConfiguration
+            {
+                ManageApprenticeshipsBaseUrl = configuration.EmployerAccountsBaseUrl
+            },
+            new UserContext
+            {
+                User = html.ViewContext.HttpContext.User,
+                HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
+            }                       
+            );
         }
 
         public static string GetZenDeskSnippetKey(this IHtmlHelper html)
