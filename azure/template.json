@@ -21,7 +21,10 @@
             "defaultValue": "",
             "type": "string"
         },
-        "sharedFrontendAppServicePlanName": {
+        "sharedFrontEndAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedFrontEndSubnetResourceId": {
             "type": "string"
         },
         "sharedAppServicePlanResourceGroup": {
@@ -65,7 +68,7 @@
                         "value": "[parameters('sharedKeyVaultResourceGroup')]"
                     },
                     "serverFarmId": {
-                        "value": "[resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontendAppServicePlanName'))]"
+                        "value": "[resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontEndAppServicePlanName'))]"
                     }
                 }
             }
@@ -85,10 +88,13 @@
                         "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('sharedFrontendAppServicePlanName')]"
+                        "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedAppServicePlanResourceGroup')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
                     },
                     "appServiceAppSettings": {
                         "value": [
