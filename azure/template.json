@@ -40,6 +40,7 @@
         }
     },
     "variables": {
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/"
     },
     "resources": [
         {
@@ -51,7 +52,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service-certificate.json",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'app-service-certificate.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -77,7 +78,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/app-service.json",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'app-service-v2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -91,29 +92,33 @@
                         "value": "[parameters('sharedAppServicePlanResourceGroup')]"
                     },
                     "appServiceAppSettings": {
-                        "value": [
-                            {
-                                "name": "ApplicationInsights:InstrumentationKey",
-                                "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
-                            },
-                            {
-                                "name": "ConfigurationStorageConnectionString",
-                                "value": "[parameters('configurationStorageConnectionString')]"
-                            },
-                            {
-                                "name": "EnvironmentName",
-                                "value": "[toUpper(parameters('environmentName'))]"
-                            }
-                        ]
+                        "value": {
+                            "array": [
+                                {
+                                    "name": "ApplicationInsights:InstrumentationKey",
+                                    "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
+                                },
+                                {
+                                    "name": "ConfigurationStorageConnectionString",
+                                    "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "EnvironmentName",
+                                    "value": "[toUpper(parameters('environmentName'))]"
+                                }
+                            ]
+                        }
                     },
                     "appServiceConnectionStrings": {
-                        "value": [
-                            {
-                                "name": "Redis",
-                                "connectionString": "[parameters('loggingRedisConnectionString')]",
-                                "type": "Custom"
-                            }
-                        ]
+                        "value": {
+                            "array": [
+                                {
+                                    "name": "Redis",
+                                    "connectionString": "[parameters('loggingRedisConnectionString')]",
+                                    "type": "Custom"
+                                }
+                            ]
+                        }
                     },
                     "customHostName": {
                         "value": "[parameters('customHostName')]"
@@ -137,7 +142,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/application-insights.json",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
