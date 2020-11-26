@@ -1,11 +1,20 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "environmentName": {
+        "serviceName": {
             "type": "string"
         },
-        "appServiceName": {
+        "tags": {
+            "type": "object"
+        },
+        "resourceGroupLocation": {
+            "type": "string"
+        },
+        "resourceEnvironmentName": {
+            "type": "string"
+        },
+        "environmentName": {
             "type": "string"
         },
         "certificateName": {
@@ -43,12 +52,24 @@
         }
     },
     "variables": {
-        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/"
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
+        "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]"
     },
     "resources": [
         {
+            "apiVersion": "2020-06-01",
+            "name": "[variables('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "[parameters('resourceGroupLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+            }
+        },
+        {
             "condition": "[greater(length(parameters('customHostname')), 0)]",
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
             "name": "app-service-certificate",
             "resourceGroup": "[parameters('sharedAppServicePlanResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
@@ -75,8 +96,9 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
             "name": "app-service",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -86,7 +108,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedFrontEndAppServicePlanName')]"
@@ -142,8 +164,9 @@
             ]
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
             "name": "application-insights",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -153,10 +176,10 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     }
                 }
             },
@@ -165,5 +188,9 @@
         }
     ],
     "outputs": {
+        "AppServiceName": {
+            "type": "string",
+            "value": "[variables('appServiceName')]"
+        }
     }
 }
