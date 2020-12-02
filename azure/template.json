@@ -23,7 +23,7 @@
         "sharedKeyVaultName": {
             "type": "string"
         },
-        "sharedKeyVaultResourceGroup": {
+        "sharedManagementResourceGroup": {
             "type": "string"
         },
         "customHostname": {
@@ -68,6 +68,7 @@
             }
         },
         {
+            "condition": "[greater(length(parameters('customHostname')), 0)]",
             "apiVersion": "2020-06-01",
             "name": "app-service-certificate",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
@@ -86,7 +87,7 @@
                         "value": "[parameters('sharedKeyVaultName')]"
                     },
                     "keyVaultResourceGroup": {
-                        "value": "[parameters('sharedKeyVaultResourceGroup')]"
+                        "value": "[parameters('sharedManagementResourceGroup')]"
                     }
                 }
             }
