@@ -36,7 +36,7 @@
         "sharedFrontEndSubnetResourceId": {
             "type": "string"
         },
-        "sharedAppServicePlanResourceGroup": {
+        "sharedEnvResourceGroup": {
             "type": "string"
         },
         "configurationStorageConnectionString": {
@@ -71,7 +71,7 @@
             "condition": "[greater(length(parameters('customHostname')), 0)]",
             "apiVersion": "2020-06-01",
             "name": "app-service-certificate",
-            "resourceGroup": "[parameters('sharedAppServicePlanResourceGroup')]",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -90,7 +90,7 @@
                         "value": "[parameters('sharedKeyVaultResourceGroup')]"
                     },
                     "serverFarmId": {
-                        "value": "[resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontEndAppServicePlanName'))]"
+                        "value": "[resourceId(parameters('sharedEnvResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedFrontEndAppServicePlanName'))]"
                     }
                 }
             }
@@ -114,7 +114,7 @@
                         "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
-                        "value": "[parameters('sharedAppServicePlanResourceGroup')]"
+                        "value": "[parameters('sharedEnvResourceGroup')]"
                     },
                     "subnetResourceId": {
                         "value": "[parameters('sharedFrontEndSubnetResourceId')]"
