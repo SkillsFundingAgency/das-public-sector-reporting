@@ -1,5 +1,4 @@
-﻿extern alias signed;
-using System;
+﻿using System;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +17,6 @@ using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
-using signed::StackExchange.Redis;
 using StructureMap;
 using ConfigurationService = SFA.DAS.PSRService.Web.Services.ConfigurationService;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
@@ -51,6 +49,7 @@ namespace SFA.DAS.PSRService.Web
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
             services.AddHealthChecks();
+            services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
             services.AddMvc(opts =>
                 {
                     opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
@@ -63,7 +62,7 @@ namespace SFA.DAS.PSRService.Web
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
 
-           return  ConfigureIOC(services);
+           return ConfigureIOC(services);
         }
 
         private IServiceProvider ConfigureIOC(IServiceCollection services)
@@ -96,28 +95,10 @@ namespace SFA.DAS.PSRService.Web
                 config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
                 config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
                 config.For<IMediator>().Use<Mediator>();
-
-                AddDataProtectionSettings(services);
             });
 
             return container.GetInstance<IServiceProvider>();
         }
-
-        private void AddDataProtectionSettings(IServiceCollection services)
-        {
-            if (_hostingEnvironment.IsDevelopment() || Configuration == null) return;
-
-            var redisConnectionString = Configuration.SessionStore.Connectionstring;
-            var dataProtectionKeysDatabase = Configuration.DataProtectionKeysDatabase;
-
-            var redis = StackExchange.Redis.ConnectionMultiplexer
-                .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
-
-            services.AddDataProtection()
-                .SetApplicationName("das-public-sector-reporting-web")
-                .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
-        }
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
