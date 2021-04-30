@@ -27,6 +27,8 @@ namespace SFA.DAS.PSRService.Web.Configuration
         [JsonRequired]
         public string HomeUrl { get; set; }
         [JsonRequired]
+        public string DataProtectionKeysDatabase { get; set; }
+        [JsonRequired]
         public SessionStoreConfiguration SessionStore { get; set; }
         public TimeSpan? AuditWindowSize { get; set; }
         public ZenDeskConfiguration ZenDeskConfig { get; set; }

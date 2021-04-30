@@ -2,6 +2,7 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
+using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
@@ -42,12 +44,12 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IAccountApiClient, AccountApiClient>();
             services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
             services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
-
+            
             var sp = services.BuildServiceProvider();
-
             services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
             services.AddAuthorizationService();
             services.AddHealthChecks();
+            services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
             services.AddMvc(opts =>
                 {
                     opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
@@ -60,7 +62,7 @@ namespace SFA.DAS.PSRService.Web
             //Simply create a profile in code and this will register it
             services.AddAutoMapper();
 
-            return ConfigureIOC(services);
+           return ConfigureIOC(services);
         }
 
         private IServiceProvider ConfigureIOC(IServiceCollection services)
@@ -83,7 +85,6 @@ namespace SFA.DAS.PSRService.Web
 
                 config.Populate(services);
 
-
                 config.Scan(scanner =>
                 {
                     scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
@@ -98,7 +99,6 @@ namespace SFA.DAS.PSRService.Web
 
             return container.GetInstance<IServiceProvider>();
         }
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
