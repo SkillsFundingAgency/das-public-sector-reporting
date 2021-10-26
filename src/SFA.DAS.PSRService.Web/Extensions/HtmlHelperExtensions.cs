@@ -23,12 +23,12 @@ namespace SFA.DAS.PSRService.Web.Extensions
 
             var headerModel = new HeaderViewModel(new HeaderConfiguration
             {
-                EmployerCommitmentsBaseUrl = new System.Uri(configuration.HomeUrl).AbsoluteUri.Replace(new System.Uri(configuration.HomeUrl).AbsolutePath, ""),
+                EmployerCommitmentsV2BaseUrl = configuration.EmployerCommitmentsV2BaseUrl,
                 EmployerFinanceBaseUrl = configuration.RootDomainUrl,
                 ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl,
                 AuthenticationAuthorityUrl = configuration.Identity.Authority,
                 ClientId = configuration.Identity.ClientId,
-                EmployerRecruitBaseUrl = configuration.EmployerRecruitBaseUrl,
+                EmployerRecruitBaseUrl = configuration.EmployerRecruitBaseUrl,                
                 SignOutUrl = new System.Uri(configuration.ApplicationUrl + urlHelper.Action("Logout", "Home")),
                 ChangeEmailReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changeEmail"),
                 ChangePasswordReturnUrl = new System.Uri(configuration.ApplicationUrl + "/service/changePassword"),                

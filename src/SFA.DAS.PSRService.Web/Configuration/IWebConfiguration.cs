@@ -14,6 +14,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         string EmployerAccountsBaseUrl { get; set; }
         string EmployerFinanceBaseUrl { get; set; }
         string EmployerRecruitBaseUrl { get; set; }
+        string EmployerCommitmentsV2BaseUrl { get; set; }
         string HomeUrl { get; set; }
         string DataProtectionKeysDatabase { get; set; }
 
