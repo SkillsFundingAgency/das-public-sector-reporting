@@ -23,7 +23,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
 
             var headerModel = new HeaderViewModel(new HeaderConfiguration
             {
-                EmployerCommitmentsBaseUrl = new System.Uri(configuration.HomeUrl).AbsoluteUri.Replace(new System.Uri(configuration.HomeUrl).AbsolutePath, ""),
+                EmployerCommitmentsV2BaseUrl = configuration.EmployerCommitmentsV2BaseUrl,
                 EmployerFinanceBaseUrl = configuration.RootDomainUrl,
                 ManageApprenticeshipsBaseUrl = configuration.RootDomainUrl,
                 AuthenticationAuthorityUrl = configuration.Identity.Authority,
