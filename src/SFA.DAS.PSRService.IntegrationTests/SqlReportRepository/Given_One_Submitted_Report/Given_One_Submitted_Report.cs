@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
@@ -19,7 +20,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Subm
             RepositoryTestHelper
                 .ClearData();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
             SubmittedReport = new ReportDto
             {

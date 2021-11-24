@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SFA.DAS.EAS.Account.Api.Client;
@@ -78,8 +80,10 @@ namespace SFA.DAS.PSRService.Web
                     _.SingleImplementationsOfInterface();
                 });
 
+                config.AddDatabaseRegistration(_hostingEnvironment.IsDevelopment(), Configuration.SqlConnectionString);
+
                 config.For<IWebConfiguration>().Use(Configuration);
-                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
 
