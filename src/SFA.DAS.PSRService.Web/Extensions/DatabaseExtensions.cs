@@ -11,8 +11,6 @@ namespace SFA.DAS.PSRService.Web.Extensions
 
         public static void AddDatabaseRegistration(this ConfigurationExpression config, bool isDevelopment, string sqlConnectionString)
         {
-            isDevelopment = true;
-
             config.For<IDbConnection>().Use($"Build IDbConnection", c => {
                 var azureServiceTokenProvider = new AzureServiceTokenProvider();
                 return isDevelopment
