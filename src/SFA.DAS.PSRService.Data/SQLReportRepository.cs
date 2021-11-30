@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using SFA.DAS.PSRService.Application.Domain;
@@ -13,10 +12,9 @@ namespace SFA.DAS.PSRService.Data
     {
         private readonly IDbConnection _connection;
 
-        public SQLReportRepository(string sqlConnectionString)
+        public SQLReportRepository(IDbConnection connection)
         {
-
-            _connection = new SqlConnection(sqlConnectionString);
+            _connection = connection;
         }
 
         public ReportDto Get(string period, string employerId)
