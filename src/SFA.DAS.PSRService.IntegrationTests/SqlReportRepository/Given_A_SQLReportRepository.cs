@@ -14,7 +14,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
             RepositoryTestHelper
                 .ClearData();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
         }
 
         [TearDown]

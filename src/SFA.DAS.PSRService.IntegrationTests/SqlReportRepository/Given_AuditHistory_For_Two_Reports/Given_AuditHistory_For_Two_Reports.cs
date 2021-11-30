@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
         {
             RepositoryTestHelper.ClearData();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
             BuildAndSaveAuditHistoryForReportOne();
             BuildAndSaveAuditHistoryForReportTwo();

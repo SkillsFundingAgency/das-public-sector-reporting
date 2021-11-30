@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_C
         {
             RepositoryTestHelper.ClearData();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
             CreatedReport = new ReportDto
             {
