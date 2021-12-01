@@ -67,11 +67,10 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
-                    options.AuthenticationMethod =
-                        (OpenIdConnectRedirectBehavior) _configuration.Identity.AuthenticationMethod;
                     options.Authority = _configuration.Identity.Authority;
-                    options.ResponseType = _configuration.Identity.ResponseType;
-                    options.SaveTokens = _configuration.Identity.SaveTokens;
+                    options.ResponseType = "code";
+                    options.MetadataAddress = _configuration.Identity.MetadataAddress;
+                    options.RequireHttpsMetadata = false;
 
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
@@ -79,14 +78,31 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                         options.Scope.Add(scope);
                     }
 
+                    options.Events.OnRemoteFailure = c =>
+                    {
+                        if (c.Failure.Message.Contains("Correlation failed"))
+                        {
+                            c.Response.Redirect("/");
+                            c.HandleResponse();
+                        }
+
+                        return Task.CompletedTask;
+                    };
+
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
-
                 })
                 .AddCookie(options =>
                 {
+                    options.Cookie.Name = "public-sector-reporting";
+                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                    options.SlidingExpiration = true;
                     options.AccessDeniedPath = new PathString("/Service/AccessDenied");
+                    
+                    /*
                     options.ExpireTimeSpan = TimeSpan.FromHours(1);
                     switch (configuration.SessionStore.Type)
                     {
@@ -96,9 +112,8 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                         case "Default":
                             break;
                     }
-                 
+                    */
                     options.Events.OnRedirectToAccessDenied = RedirectToAccessDenied;
-
                 });
         }
 

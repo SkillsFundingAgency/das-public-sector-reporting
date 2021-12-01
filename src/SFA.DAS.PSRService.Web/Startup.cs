@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -58,13 +57,16 @@ namespace SFA.DAS.PSRService.Web
                     opts.Filters.AddService<GoogleAnalyticsFilter>();
                     opts.Filters.AddService<ZenDeskApiFilter>();
                 })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices().AddSessionStateTempDataProvider();
+
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
+
             //This makes sure all automapper profiles are automatically configured for use
             //Simply create a profile in code and this will register it
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
 
-           return ConfigureIOC(services);
+            return ConfigureIOC(services);
         }
 
         private IServiceProvider ConfigureIOC(IServiceCollection services)
@@ -107,12 +109,12 @@ namespace SFA.DAS.PSRService.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
             // Add Content Security Policy           
@@ -204,6 +206,7 @@ namespace SFA.DAS.PSRService.Web
             app.UseStaticFiles()
                 .UseErrorLoggingMiddleware()
                 .UseSession()
+                .UseHttpsRedirection()
                 .UseAuthentication()
                 .UseHealthChecks("/ping")
                 .UseMvc(routes =>
