@@ -67,11 +67,8 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
-                    options.AuthenticationMethod =
-                        (OpenIdConnectRedirectBehavior) _configuration.Identity.AuthenticationMethod;
                     options.Authority = _configuration.Identity.Authority;
-                    options.ResponseType = _configuration.Identity.ResponseType;
-                    options.SaveTokens = _configuration.Identity.SaveTokens;
+                    options.ResponseType = "code";
 
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
