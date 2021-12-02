@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -56,10 +57,9 @@ namespace SFA.DAS.PSRService.Web
                     opts.Filters.AddService<ZenDeskApiFilter>();
                 })
                 .AddControllersAsServices().AddSessionStateTempDataProvider();
+
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
-            //This makes sure all automapper profiles are automatically configured for use
-            //Simply create a profile in code and this will register it
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
 
            return ConfigureIOC(services);
         }
@@ -102,7 +102,6 @@ namespace SFA.DAS.PSRService.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -209,7 +208,7 @@ namespace SFA.DAS.PSRService.Web
                     routes.MapRoute(
                         name: "Service-Controller",
                         template: "Service/{action}",
-                    defaults: new { controller = "Service" });
+                        defaults: new {controller = "Service"});
 
                 });
         }
