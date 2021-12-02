@@ -27,11 +27,4 @@
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
-      <HintPath>..\..\..\..\.nuget\packages\microsoft.aspnetcore.hosting.abstractions\2.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

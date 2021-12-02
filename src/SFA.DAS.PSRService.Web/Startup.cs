@@ -3,6 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -197,6 +198,7 @@ namespace SFA.DAS.PSRService.Web
 
 
             app.UseStaticFiles()
+                .UseHttpsRedirection()
                 .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()

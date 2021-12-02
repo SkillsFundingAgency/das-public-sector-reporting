@@ -4,16 +4,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
-using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.Utils
 {
     public class RedisCacheTicketStore : ITicketStore
     {
         private readonly IDistributedCache _cache;
-        private IWebConfiguration _webConfiguration;
         private const string KeyPrefix = "AuthSessionStore-";
-        //TODO : Need to Configure this
         public static int RedisPort = 6379; // override default so that do not interfere with anyone else's server
 
         public RedisCacheTicketStore(string redisConnectionString)
