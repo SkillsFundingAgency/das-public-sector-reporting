@@ -39,6 +39,7 @@ namespace SFA.DAS.PSRService.Web
                             .First();
                     })
                 .UseKestrel(c => c.AddServerHeader = false)
+                .UseUrls("http://localhost:5015")
                 .UseStartup<Startup>()
                 .UseNLog()
                 .Build();

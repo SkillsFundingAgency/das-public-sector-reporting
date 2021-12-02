@@ -106,6 +106,7 @@ namespace SFA.DAS.PSRService.Web
             }
             else
             {
+                app.UseHsts();
                 app.UseExceptionHandler("/Home/Error");
             }
 
