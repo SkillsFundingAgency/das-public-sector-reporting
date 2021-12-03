@@ -79,7 +79,8 @@ namespace SFA.DAS.PSRService.Web
                 });
 
                 config.For<IWebConfiguration>().Use(Configuration);
-                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(Configuration.SqlConnectionString);
+                config.AddDatabaseRegistration(_hostingEnvironment.IsDevelopment(), Configuration.SqlConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
 
