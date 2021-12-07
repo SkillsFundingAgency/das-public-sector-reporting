@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:59121/",
-      "sslPort": 0
+      "sslPort": 59122
     }
   },
   "profiles": {
@@ -18,7 +18,7 @@
     "SFA.DAS.PSRService.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5015/accounts/ML76YY",
+      "launchUrl": "http://localhost:5015/accounts/VRLBPG",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

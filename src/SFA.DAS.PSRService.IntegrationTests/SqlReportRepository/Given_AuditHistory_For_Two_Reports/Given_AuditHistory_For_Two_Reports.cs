@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -14,7 +15,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_AuditHis
         {
             RepositoryTestHelper.ClearData();
 
-            SUT = new SQLReportRepository(RepositoryTestHelper.ConnectionString);
+            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
             BuildAndSaveAuditHistoryForReportOne();
             BuildAndSaveAuditHistoryForReportTwo();

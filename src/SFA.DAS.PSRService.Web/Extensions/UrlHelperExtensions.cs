@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure;
-using Microsoft.AspNetCore.Mvc.Routing;
-
-namespace Microsoft.AspNetCore.Mvc
+﻿namespace Microsoft.AspNetCore.Mvc
 {
     /// <summary>
     /// <see cref="IUrlHelper"/> extension methods.
@@ -19,13 +14,10 @@ namespace Microsoft.AspNetCore.Mvc
         /// <param name="controllerName">The name of the controller.</param>
         /// <param name="routeValues">The route values.</param>
         /// <returns>The absolute URL.</returns>
-        public static string EasAction(
-            this IUrlHelper url
-            , string path, string EasBaseUrl)
+        public static string EasAction(this IUrlHelper url, string path, string EasBaseUrl)
         {
             var hashedAccountId = url.ActionContext.RouteData.Values["employerAccountId"];
-
-                  return $"{EasBaseUrl}/accounts/{hashedAccountId}/{path}";
+            return $"{EasBaseUrl}/accounts/{hashedAccountId}/{path}";
         }
 
         public static string ExternalUrlAction(this IUrlHelper helper, string baseUrl, string controllerName, string actionName = "", bool ignoreAccountId = false)

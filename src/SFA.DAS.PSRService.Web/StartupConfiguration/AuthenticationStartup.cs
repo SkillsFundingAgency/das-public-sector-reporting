@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -67,11 +66,8 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
-                    options.AuthenticationMethod =
-                        (OpenIdConnectRedirectBehavior) _configuration.Identity.AuthenticationMethod;
                     options.Authority = _configuration.Identity.Authority;
-                    options.ResponseType = _configuration.Identity.ResponseType;
-                    options.SaveTokens = _configuration.Identity.SaveTokens;
+                    options.ResponseType = "code";
 
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
@@ -130,23 +126,6 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
         private static List<string> GetMapUniqueJsonKey()
         {
             return _configuration.Identity.MapUniqueJsonKey.Split(' ').ToList();
-        }
-
-        private static Task OnTokenValidated(SecurityTokenValidatedContext context)
-        {
-            //var ukprn = (context.Principal.FindFirst("http://schemas.portal.com/ukprn"))?.Value;
-
-            //var jwt = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
-            //    .WithSecret(_configuration.Api.TokenEncodingKey)
-            //    .Issuer("SFA.DAS.PSRService")
-            //    .Audience("SFA.DAS.PSRService.api")
-            //    .ExpirationTime(DateTime.Now.AddMinutes(5))
-            //    .AddClaim("ukprn", ukprn)
-            //    .Build();
-
-            //context.HttpContext.Session.SetString(ukprn, jwt);
-
-            return Task.FromResult(0);
         }
 
         private static async Task PopulateAccountsClaim(TokenValidatedContext ctx, IEmployerAccountService accountsSvc)

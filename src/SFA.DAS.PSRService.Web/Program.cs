@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NLog.Web;
@@ -39,19 +38,6 @@ namespace SFA.DAS.PSRService.Web
                             .Select(x => (IHostingEnvironment) x.ImplementationInstance)
                             .First();
                     })
-                
-                .UseKestrel(options =>
-                {
-                    options.AddServerHeader = false;
-                    if (hostingEnvironment.IsDevelopment())
-                    {
-                        options.Listen(IPAddress.Loopback, 5015);
-                        //options.Listen(IPAddress.Loopback, 5015, listenOptions =>
-                        //{
-                        //    //listenOptions.UseHttps("SFA.DAS.PSRService.pfx", "C0ventry18");
-                        //});
-                    }
-                })
                 .UseStartup<Startup>()
                 .UseNLog()
                 .Build();
