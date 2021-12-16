@@ -70,6 +70,6 @@
     <RefactorLog Include="SFA.DAS.PSRService.Database.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="ReleaseScripts\2018-05.sql" />
+    <None Include="ReleaseScripts\2018-05.sql" />
   </ItemGroup>
 </Project>
