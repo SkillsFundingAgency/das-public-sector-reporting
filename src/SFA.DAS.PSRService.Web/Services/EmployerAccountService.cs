@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.EAS.Account.Api.Client;
-using SFA.DAS.PSRService.Web.Models;
-using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
-using SFA.DAS.PSRService.Application.Handler.EmployerAccountHandler.GetUserAccountRole;
+using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Services
 {
