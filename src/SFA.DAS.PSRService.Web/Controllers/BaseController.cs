@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -7,7 +7,6 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-
     public abstract class BaseController : Controller
     {
         private readonly IEmployerAccountService _employerAccountService;
@@ -21,8 +20,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            ViewData["HomeUrl"] = string.Format(_webConfiguration.HomeUrl, EmployerAccount?.AccountId);
-            ViewData["RootUrl"] = _webConfiguration.RootDomainUrl;
+            var urlBaseUri = new Uri(_webConfiguration.EmployerCommitmentsV2BaseUrl);
+            ViewData["HomeUrl"] = new Uri(urlBaseUri, EmployerAccount?.AccountId).ToString();
             base.OnActionExecuting(context);
         }
     }
