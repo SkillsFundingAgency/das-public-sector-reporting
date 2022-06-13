@@ -53,6 +53,7 @@ namespace SFA.DAS.PSRService.Web
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
             services.AddMvc(opts =>
                 {
+                    opts.EnableEndpointRouting = false;
                     opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
                     opts.Filters.AddService<GoogleAnalyticsFilter>();
                     opts.Filters.AddService<ZenDeskApiFilter>();
