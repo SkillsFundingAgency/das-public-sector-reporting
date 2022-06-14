@@ -63,11 +63,12 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    
+    
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
                     options.Authority = _configuration.Identity.Authority;
                     options.ResponseType = "code";
+                    options.UsePkce = false;
 
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
