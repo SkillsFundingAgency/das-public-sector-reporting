@@ -79,6 +79,17 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
 
+                    options.Events.OnRemoteFailure = c =>
+                    {
+                        if (c.Failure.Message.Contains("Correlation failed"))
+                        {
+                            c.Response.Redirect("/");
+                            c.HandleResponse();
+                        }
+
+                        return Task.CompletedTask;
+                    };
+
                 })
                 .AddCookie(options =>
                 {
