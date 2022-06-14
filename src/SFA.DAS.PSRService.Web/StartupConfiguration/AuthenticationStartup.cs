@@ -63,7 +63,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.MetadataAddress = $"{_configuration.Identity.Authority}.well-known/openid-configuration";
+                    options.MetadataAddress = $"{_configuration.Identity.Authority}/.well-known/openid-configuration";
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
                     options.Authority = _configuration.Identity.Authority;
