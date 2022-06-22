@@ -63,11 +63,11 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    
                     options.ClientId = _configuration.Identity.ClientId;
                     options.ClientSecret = _configuration.Identity.ClientSecret;
                     options.Authority = _configuration.Identity.Authority;
                     options.ResponseType = "code";
+                    options.UsePkce = false;
 
                     var scopes = GetScopes();
                     foreach (var scope in scopes)
@@ -78,6 +78,17 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
                     options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
+
+                    options.Events.OnRemoteFailure = c =>
+                    {
+                        if (c.Failure.Message.Contains("Correlation failed"))
+                        {
+                            c.Response.Redirect("/");
+                            c.HandleResponse();
+                        }
+
+                        return Task.CompletedTask;
+                    };
 
                 })
                 .AddCookie(options =>

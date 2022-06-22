@@ -27,8 +27,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         [JsonRequired]
         public string EmployerCommitmentsV2BaseUrl { get; set; }
         [JsonRequired]
-        public string HomeUrl { get; set; }
-        [JsonRequired]
         public string DataProtectionKeysDatabase { get; set; }
         [JsonRequired]
         public SessionStoreConfiguration SessionStore { get; set; }

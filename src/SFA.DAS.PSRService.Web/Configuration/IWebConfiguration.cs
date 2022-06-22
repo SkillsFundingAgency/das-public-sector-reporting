@@ -15,9 +15,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         string EmployerFinanceBaseUrl { get; set; }
         string EmployerRecruitBaseUrl { get; set; }
         string EmployerCommitmentsV2BaseUrl { get; set; }
-        string HomeUrl { get; set; }
         string DataProtectionKeysDatabase { get; set; }
-
         SessionStoreConfiguration SessionStore { get; set; }
         TimeSpan? AuditWindowSize { get; set; }
         ZenDeskConfiguration ZenDeskConfig { get; set; }
