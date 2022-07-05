@@ -49,6 +49,10 @@
             "type": "array",
             "defaultValue": [
             ]
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
         }
     },
     "variables": {
@@ -70,7 +74,7 @@
         {
             "condition": "[greater(length(parameters('customHostname')), 0)]",
             "apiVersion": "2020-06-01",
-            "name": "app-service-certificate",
+            "name": "[concat('app-service-certificate-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -94,7 +98,7 @@
         },
         {
             "apiVersion": "2020-06-01",
-            "name": "app-service",
+            "name": "[concat('app-service-', parameters('utcValue'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -121,7 +125,7 @@
                             "array": [
                                 {
                                     "name": "ApplicationInsights:InstrumentationKey",
-                                    "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "ConfigurationStorageConnectionString",
@@ -149,7 +153,7 @@
                         "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[if(greater(length(parameters('customHostname')), 0), reference('app-service-certificate', '2018-11-01').outputs.certificateThumbprint.value, '')]"
+                        "value": "[if(greater(length(parameters('customHostname')), 0), reference(concat('app-service-certificate-', parameters('utcValue')), '2018-11-01').outputs.certificateThumbprint.value, '')]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('appServiceAllowedIps')]"
@@ -157,12 +161,12 @@
                 }
             },
             "dependsOn": [
-                "app-service-certificate"
+                "[concat('app-service-certificate-', parameters('utcValue'))]"
             ]
         },
         {
             "apiVersion": "2020-06-01",
-            "name": "application-insights",
+            "name": "[concat('application-insights-', parameters('utcValue'))]",
             "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
