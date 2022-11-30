@@ -5,10 +5,16 @@ namespace SFA.DAS.PSRService.Application.EmployerUserAccounts.Responses
 {
     public class GetUserAccountsResponse
     {
-        [JsonProperty("UserAccounts")]
+        [JsonProperty] 
+        public string EmployerUserId { get; set; }
+        [JsonProperty] 
+        public string FirstName { get; set; }
+        [JsonProperty] 
+        public string LastName { get; set; }
+        [JsonProperty("UserAccounts")] 
         public List<EmployerIdentifier> UserAccounts { get; set; }
     }
-    
+
     public class EmployerIdentifier
     {
         [JsonProperty("EncodedAccountId")]

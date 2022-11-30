@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.OuterApi;
@@ -49,6 +50,7 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddSingleton(Configuration.OuterApiConfiguration);
             services.AddHttpClient<IOuterApiClient, OuterApiClient>();
+            services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
             
             services.AddAndConfigureAuthentication(Configuration);
             services.AddAuthorizationService();
