@@ -10,6 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
+using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -45,9 +46,11 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IAccountApiClient, AccountApiClient>();
             services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
             services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
+
+            services.AddSingleton(Configuration.OuterApiConfiguration);
+            services.AddHttpClient<IOuterApiClient, OuterApiClient>();
             
-            var sp = services.BuildServiceProvider();
-            services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
+            services.AddAndConfigureAuthentication(Configuration);
             services.AddAuthorizationService();
             services.AddHealthChecks();
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);

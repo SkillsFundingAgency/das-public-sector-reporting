@@ -49,7 +49,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             services.AddSingleton<IAuthorizationHandler, CanEditReportHandler>();
         }
 
-        public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IEmployerAccountService accountsSvc)
+        public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration)
         {
             _configuration = configuration;
 
@@ -77,8 +77,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
 
                     var mapUniqueJsonKeys = GetMapUniqueJsonKey();
                     options.ClaimActions.MapUniqueJsonKey(mapUniqueJsonKeys[0], mapUniqueJsonKeys[1]);
-                    options.Events.OnTokenValidated = async (ctx) => await PopulateAccountsClaim(ctx, accountsSvc);
-
+                    
                     options.Events.OnRemoteFailure = c =>
                     {
                         if (c.Failure.Message.Contains("Correlation failed"))
@@ -106,6 +105,15 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                  
                     options.Events.OnRedirectToAccessDenied = RedirectToAccessDenied;
 
+                });
+            services
+                .AddOptions<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme)
+                .Configure<IEmployerAccountService>((options, accountsService) =>
+                {
+                    options.Events.OnTokenValidated = async (ctx) =>
+                    {
+                        await PopulateAccountsClaim(ctx, accountsService);
+                    };
                 });
         }
 
