@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.PSRService.Application.OuterApi;
 
 namespace SFA.DAS.PSRService.Web.Configuration
 {
@@ -31,6 +32,8 @@ namespace SFA.DAS.PSRService.Web.Configuration
         [JsonRequired]
         public SessionStoreConfiguration SessionStore { get; set; }
         public TimeSpan? AuditWindowSize { get; set; }
-        public ZenDeskConfiguration ZenDeskConfig { get; set; }        
+        public ZenDeskConfiguration ZenDeskConfig { get; set; }      
+        [JsonRequired]
+        public OuterApiConfiguration OuterApiConfiguration { get; set; }
     }
 }
