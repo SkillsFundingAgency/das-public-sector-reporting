@@ -21,5 +21,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
         TimeSpan? AuditWindowSize { get; set; }
         ZenDeskConfiguration ZenDeskConfig { get; set; }
         OuterApiConfiguration OuterApiConfiguration { get; set; }
+        bool UseGovSignIn { get; set; }
     }
 }

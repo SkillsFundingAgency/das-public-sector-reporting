@@ -35,5 +35,7 @@ namespace SFA.DAS.PSRService.Web.Configuration
         public ZenDeskConfiguration ZenDeskConfig { get; set; }      
         [JsonRequired]
         public OuterApiConfiguration OuterApiConfiguration { get; set; }
+
+        public bool UseGovSignIn { get; set; }
     }
 }

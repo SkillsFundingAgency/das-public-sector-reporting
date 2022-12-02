@@ -66,7 +66,7 @@ namespace SFA.DAS.PSRService.Web
             services.AddHttpClient<IOuterApiClient, OuterApiClient>();
             services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
             
-            services.AddAndConfigureAuthentication(Configuration);
+            services.AddAndConfigureAuthentication(Configuration, _config);
             services.AddAuthorizationService();
             services.AddHealthChecks();
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);

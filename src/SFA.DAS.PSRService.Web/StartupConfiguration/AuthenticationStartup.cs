@@ -8,7 +8,11 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.GovUK.Auth.Configuration;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
@@ -49,11 +53,19 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             services.AddSingleton<IAuthorizationHandler, CanEditReportHandler>();
         }
 
-        public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration)
+        public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IConfiguration config)
         {
             _configuration = configuration;
 
-            services.AddAuthentication(sharedOptions =>
+            if (configuration.UseGovSignIn)
+            {
+                services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
+                services.Configure<GovUkOidcConfiguration>(config.GetSection("GovUkOidcConfiguration"));
+                services.AddAndConfigureGovUkAuthentication(config, $"{typeof(AuthenticationStartup).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));    
+            }
+            else
+            {
+                services.AddAuthentication(sharedOptions =>
                 {
                     sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -115,6 +127,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                         await PopulateAccountsClaim(ctx, accountsService);
                     };
                 });
+            }
         }
 
         private static Task RedirectToAccessDenied(RedirectContext<CookieAuthenticationOptions> context)
