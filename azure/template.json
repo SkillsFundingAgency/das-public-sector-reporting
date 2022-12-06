@@ -20,6 +20,9 @@
         "certificateName": {
             "type": "string"
         },
+        "frontEndAccessRestrictions": {
+            "type": "array"
+        },
         "sharedKeyVaultName": {
             "type": "string"
         },
@@ -53,11 +56,6 @@
         },
         "loggingRedisKey": {
             "type": "string"
-        },
-        "appServiceAllowedIps": {
-            "type": "array",
-            "defaultValue": [
-            ]
         },
         "sharedSQLServerName": {
             "type": "string"
@@ -197,7 +195,7 @@
                         "value": "[if(greater(length(parameters('customHostname')), 0), reference(concat('app-service-certificate-', parameters('utcValue')), '2018-11-01').outputs.certificateThumbprint.value, '')]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[parameters('appServiceAllowedIps')]"
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             },
