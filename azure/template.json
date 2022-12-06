@@ -51,6 +51,9 @@
         "loggingRedisConnectionString": {
             "type": "securestring"
         },
+        "loggingRedisKey": {
+            "type": "string"
+        },
         "appServiceAllowedIps": {
             "type": "array",
             "defaultValue": [
@@ -162,8 +165,16 @@
                                     "value": "[variables('configNames')]"
                                 },
                                 {
+                                    "name": "Version",
+                                    "value": "1.0"
+                                },
+                                {
                                     "name": "EnvironmentName",
                                     "value": "[toUpper(parameters('environmentName'))]"
+                                },
+                                {
+                                    "name": "LoggingRedisKey",
+                                    "value": "[parameters('loggingRedisKey')]"
                                 }
                             ]
                         }
