@@ -84,7 +84,8 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]"
+        "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]",
+        "configNames": "SFA.DAS.PSRService.Web"
     },
     "resources": [
         {
@@ -155,6 +156,10 @@
                                 {
                                     "name": "ConfigurationStorageConnectionString",
                                     "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNames')]"
                                 },
                                 {
                                     "name": "EnvironmentName",
