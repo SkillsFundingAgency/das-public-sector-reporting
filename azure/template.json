@@ -86,7 +86,7 @@
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
         "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]",
-        "configNames": "SFA.DAS.PSRService.Web"
+        "configNames": "SFA.DAS.PSRService"
     },
     "resources": [
         {
