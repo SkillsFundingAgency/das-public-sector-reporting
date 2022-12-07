@@ -17,7 +17,7 @@
         "environmentName": {
             "type": "string"
         },
-        "certificateName": {
+        "keyVaultCertificateName": {
             "type": "string"
         },
         "frontEndAccessRestrictions": {
@@ -112,7 +112,7 @@
                 },
                 "parameters": {
                     "keyVaultCertificateName": {
-                        "value": "[parameters('certificateName')]"
+                        "value": "[parameters('keyVaultCertificateName')]"
                     },
                     "keyVaultName": {
                         "value": "[parameters('sharedKeyVaultName')]"
