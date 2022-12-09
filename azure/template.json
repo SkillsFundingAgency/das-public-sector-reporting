@@ -17,8 +17,11 @@
         "environmentName": {
             "type": "string"
         },
-        "certificateName": {
+        "keyVaultCertificateName": {
             "type": "string"
+        },
+        "frontEndAccessRestrictions": {
+            "type": "array"
         },
         "sharedKeyVaultName": {
             "type": "string"
@@ -28,6 +31,12 @@
         },
         "customHostname": {
             "defaultValue": "",
+            "type": "string"
+        },
+        "sharedApimName": {
+            "type": "string"
+        },
+        "sharedApimResourceGroup": {
             "type": "string"
         },
         "sharedFrontEndAppServicePlanName": {
@@ -45,10 +54,8 @@
         "loggingRedisConnectionString": {
             "type": "securestring"
         },
-        "appServiceAllowedIps": {
-            "type": "array",
-            "defaultValue": [
-            ]
+        "loggingRedisKey": {
+            "type": "string"
         },
         "sharedSQLServerName": {
             "type": "string"
@@ -78,7 +85,8 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]"
+        "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]",
+        "configNames": "SFA.DAS.PSRService:WebConfiguration,SFA.DAS.Employer.GovSignIn"
     },
     "resources": [
         {
@@ -104,7 +112,7 @@
                 },
                 "parameters": {
                     "keyVaultCertificateName": {
-                        "value": "[parameters('certificateName')]"
+                        "value": "[parameters('keyVaultCertificateName')]"
                     },
                     "keyVaultName": {
                         "value": "[parameters('sharedKeyVaultName')]"
@@ -151,8 +159,20 @@
                                     "value": "[parameters('configurationStorageConnectionString')]"
                                 },
                                 {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNames')]"
+                                },
+                                {
+                                    "name": "Version",
+                                    "value": "1.0"
+                                },
+                                {
                                     "name": "EnvironmentName",
                                     "value": "[toUpper(parameters('environmentName'))]"
+                                },
+                                {
+                                    "name": "LoggingRedisKey",
+                                    "value": "[parameters('loggingRedisKey')]"
                                 }
                             ]
                         }
@@ -175,7 +195,7 @@
                         "value": "[if(greater(length(parameters('customHostname')), 0), reference(concat('app-service-certificate-', parameters('utcValue')), '2018-11-01').outputs.certificateThumbprint.value, '')]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[parameters('appServiceAllowedIps')]"
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             },
@@ -205,6 +225,30 @@
             },
             "dependsOn": [
             ]
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "[concat('apim-product-subscription-', parameters('utcValue'))]",
+            "resourceGroup": "[parameters('sharedApimResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'apim/apim-subscription.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimName": {
+                        "value": "[parameters('sharedApimName')]"
+                    },
+                    "subscriptionName": {
+                        "value": "[variables('appServiceName')]"
+                    },
+                    "subscriptionScope": {
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/PublicSectorReportingOuterApi')]"
+                    }
+                }
+            }
         },
         {
             "apiVersion": "2021-04-01",

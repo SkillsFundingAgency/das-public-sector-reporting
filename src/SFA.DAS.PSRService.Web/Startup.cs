@@ -1,15 +1,20 @@
-﻿using System;
+using System;
+using System.IO;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
+using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -19,25 +24,36 @@ using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
-using ConfigurationService = SFA.DAS.PSRService.Web.Services.ConfigurationService;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace SFA.DAS.PSRService.Web
 {
     public class Startup
     {
-        private const string ServiceName = "SFA.DAS.PSRService";
-        private const string Version = "1.0";
-        private IHostingEnvironment _hostingEnvironment;
-
-        public Startup(IConfiguration config, IHostingEnvironment env)
+        private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private IWebConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            Configuration = ConfigurationService.GetConfig(config["EnvironmentName"], config["ConfigurationStorageConnectionString"], Version, ServiceName).Result;
-
             _hostingEnvironment = env;
+            var config = new ConfigurationBuilder()
+                .AddConfiguration(configuration)
+                .SetBasePath(Directory.GetCurrentDirectory());
+            
+            config.AddEnvironmentVariables();
+            config.AddAzureTableStorage(options =>
+                {
+                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                    options.EnvironmentName = configuration["EnvironmentName"];
+                    options.PreFixConfigurationKeys = false;
+                }
+            );
+        
+            _config = config.Build();
+            Configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
         }
 
-        public IWebConfiguration Configuration { get; }
+        
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -45,9 +61,12 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IAccountApiClient, AccountApiClient>();
             services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
             services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
+
+            services.AddSingleton(Configuration.OuterApiConfiguration);
+            services.AddHttpClient<IOuterApiClient, OuterApiClient>();
+            services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
             
-            var sp = services.BuildServiceProvider();
-            services.AddAndConfigureAuthentication(Configuration, sp.GetService<IEmployerAccountService>());
+            services.AddAndConfigureAuthentication(Configuration, _config);
             services.AddAuthorizationService();
             services.AddHealthChecks();
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
@@ -80,7 +99,7 @@ namespace SFA.DAS.PSRService.Web
                 });
 
                 config.For<IWebConfiguration>().Use(Configuration);
-                config.AddDatabaseRegistration(_hostingEnvironment.IsDevelopment(), Configuration.SqlConnectionString);
+                config.AddDatabaseRegistration(_hostingEnvironment, Configuration.SqlConnectionString);
                 config.For<IReportRepository>().Use<SQLReportRepository>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);
