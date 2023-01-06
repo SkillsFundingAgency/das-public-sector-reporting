@@ -1,0 +1,30 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - "main"
+
+variables:
+- name: SolutionBaseName
+  value: SFA.DAS.PSRService.Web
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: any cpu
+
+resources:
+  repositories:
+  - repository: self
+  - repository: das-platform-building-blocks
+    type: github
+    name: SkillsFundingAgency/das-platform-building-blocks
+    ref: refs/tags/2.1.2
+    endpoint: SkillsFundingAgency
+
+stages:
+- stage: Build
+  jobs:
+  - template: pipeline-templates/job/code-build.yml
+    parameters:
+      SolutionBaseName: $(SolutionBaseName)
+      BuildConfiguration: $(BuildConfiguration)
