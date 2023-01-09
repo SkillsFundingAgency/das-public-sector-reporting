@@ -65,5 +65,5 @@ jobs:
         - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
-            AppServiceName: $(ApiAppServiceName)
+            AppServiceName: $(AppServiceName)
             DeploymentPackagePath: $(Pipeline.Workspace)/SFA.DAS.PSRService.Web/SFA.DAS.PSRService.Web.zip
