@@ -6,7 +6,7 @@ trigger:
 
 variables:
 - name: SolutionBaseName
-  value: SFA.DAS.PSRService.Web
+  value: SFA.DAS.PSRService
 - name: BuildConfiguration
   value: release
 - name: BuildPlatform
@@ -28,3 +28,8 @@ stages:
     parameters:
       SolutionBaseName: $(SolutionBaseName)
       BuildConfiguration: $(BuildConfiguration)
+  - template: azure-pipelines-templates/build/job/dacpac-template.yml@das-platform-building-blocks
+    parameters:
+      SolutionBaseName: $(SolutionBaseName).Database
+      SqlProjectPath: src/$(SolutionBaseName).Database/$(SolutionBaseName).Database.sqlproj
+- template: azure-pipelines-templates/deploy/stage/nuget-publish.yml@das-platform-building-blocks
