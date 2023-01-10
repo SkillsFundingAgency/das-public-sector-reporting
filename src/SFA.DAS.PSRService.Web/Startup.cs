@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.Forecasting.Web.Extensions;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
@@ -29,16 +32,25 @@ namespace SFA.DAS.PSRService.Web
 {
     public class Startup
     {
-        private readonly IConfiguration _config;
+        private readonly IConfigurationRoot _config;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private IWebConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             _hostingEnvironment = env;
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .SetBasePath(Directory.GetCurrentDirectory());
-            
+
+#if DEBUG
+            if (!configuration.IsDev())
+            {
+                config.AddJsonFile("appsettings.json", false)
+                    .AddJsonFile("appsettings.Development.json", true);
+            }
+#endif
+
             config.AddEnvironmentVariables();
             config.AddAzureTableStorage(options =>
                 {
@@ -48,12 +60,12 @@ namespace SFA.DAS.PSRService.Web
                     options.PreFixConfigurationKeys = false;
                 }
             );
-        
+
             _config = config.Build();
             Configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
         }
 
-        
+
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -65,7 +77,7 @@ namespace SFA.DAS.PSRService.Web
             services.AddSingleton(Configuration.OuterApiConfiguration);
             services.AddHttpClient<IOuterApiClient, OuterApiClient>();
             services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
-            
+
             services.AddAndConfigureAuthentication(Configuration, _config);
             services.AddAuthorizationService();
             services.AddHealthChecks();
@@ -82,7 +94,7 @@ namespace SFA.DAS.PSRService.Web
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
             services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
 
-           return ConfigureIOC(services);
+            return ConfigureIOC(services);
         }
 
         private IServiceProvider ConfigureIOC(IServiceCollection services)
@@ -120,11 +132,12 @@ namespace SFA.DAS.PSRService.Web
 
             return container.GetInstance<IServiceProvider>();
         }
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
             else
             {
@@ -227,18 +240,22 @@ namespace SFA.DAS.PSRService.Web
                 .UseErrorLoggingMiddleware()
                 .UseSession()
                 .UseAuthentication()
-                .UseHealthChecks("/ping")
-                .UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
-                    routes.MapRoute(
-                        name: "Service-Controller",
-                        template: "Service/{action}",
-                        defaults: new {controller = "Service"});
+                .UseHealthChecks("/ping");
 
-                });
+            app.UseRouting();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                        name: "Service-Controller",
+                        pattern: "Service/{action}",
+                        defaults: new { controller = "Service" });
+            });
         }
 
         public class Constants
