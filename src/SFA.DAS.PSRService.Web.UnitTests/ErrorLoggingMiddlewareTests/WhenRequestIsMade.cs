@@ -1,11 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Middleware;
-using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 {
@@ -14,7 +12,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
     {
         private ErrorLoggingMiddleware _errorLoggingMiddleware;
         private ErrorLoggingMiddleware _errorLoggingMiddlewareException;
-        private Mock<RequestDelegate> _requestDelegateMock;
         private Mock<ILogger<ErrorLoggingMiddleware>> _loggingMock;
 
         [SetUp]
@@ -50,21 +47,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
 
         [Test]
-        [ExpectedException(typeof(Exception), "No Error Logging Middleware Exception Raised")]
         public void ErrorIsRaisedThenExceptionReturned()
         {
             // arrange
 
             // act
-            var result = _errorLoggingMiddlewareException.InvokeAsync(new DefaultHttpContext());
+            var result = Assert.ThrowsAsync<AggregateException>(() => _errorLoggingMiddlewareException.InvokeAsync(new DefaultHttpContext()));
 
             // assert
             _loggingMock.VerifyAll();
-            
-
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.IsCompleted);
-            Assert.IsTrue(result.IsFaulted);
         }
 
     }
