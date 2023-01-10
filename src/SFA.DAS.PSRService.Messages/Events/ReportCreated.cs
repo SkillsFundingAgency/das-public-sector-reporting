@@ -1,10 +1,8 @@
 ﻿using System;
-using SFA.DAS.NServiceBus;
 
 namespace SFA.DAS.PSRService.Messages.Events
 {
-    public class ReportCreated
-    : Event
+    public class ReportCreatedEvent
     {
         public Guid Id { get; set; }
         public string EmployerId { get; set; }
