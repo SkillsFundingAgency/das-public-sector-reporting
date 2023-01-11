@@ -61,6 +61,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
+  - group: AT das-public-sector-reporting
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -74,23 +75,11 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
+  - group: TEST das-public-sector-reporting
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
       Environment: TEST
-      ServiceConnection: SFA-DAS-DevTest-ARM
-      OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
-
-- stage: Deploy_TEST2
-  dependsOn: Build
-  displayName: Deploy to TEST2
-  variables:
-  - group: DevTest Management Resources
-  - group: TEST2 DevTest Shared Resources
-  jobs:
-  - template: pipeline-templates/job/deploy.yml
-    parameters:
-      Environment: TEST2
       ServiceConnection: SFA-DAS-DevTest-ARM
       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
 
@@ -100,6 +89,7 @@ stages:
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
+  - group: PREPROD das-public-sector-reporting
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -113,7 +103,7 @@ stages:
   variables:
   - group: Prod Management Resources
   - group: Prod Shared Resources
-  - group: PROD das-levy-transfer-matching-api
+  - group: PROD das-public-sector-reporting
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -127,6 +117,7 @@ stages:
   variables:
   - group: MO Management Resources
   - group: MO Shared Resources
+  - group: MO das-public-sector-reporting
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -140,6 +131,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: DEMO DevTest Shared Resources
+  - group: DEMO das-public-sector-reporting
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
