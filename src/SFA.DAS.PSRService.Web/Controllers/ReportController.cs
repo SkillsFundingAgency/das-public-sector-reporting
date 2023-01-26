@@ -48,6 +48,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Authorize(Policy = PolicyNames.CanEditReport)]
+        [Route("Edit")]
         public IActionResult Edit()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
