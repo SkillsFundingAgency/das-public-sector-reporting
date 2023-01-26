@@ -16,10 +16,10 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
 
             if (context.Resource is AuthorizationFilterContext mvcContext && mvcContext.RouteData.Values.ContainsKey(RouteValues.HashedEmployerAccountId))
             {
-                if (context.User.HasClaim(c=>c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
+                if (context.User.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
                     var accountIdFromUrl = mvcContext.RouteData.Values[RouteValues.HashedEmployerAccountId].ToString().ToUpper();
-                    var employerAccountClaim = context.User.FindFirst(c=>c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
+                    var employerAccountClaim = context.User.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
                     var employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(employerAccountClaim?.Value);
 
                     if (employerAccountClaim != null && employerAccounts.ContainsKey(accountIdFromUrl))
@@ -28,7 +28,7 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
                         context.Succeed(requirement);
                     }
                 }
-                
+
             }
             return Task.CompletedTask;
         }
