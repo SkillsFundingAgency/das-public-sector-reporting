@@ -72,8 +72,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Submit(string action)
         {
             if (submitLookup.ContainsKey(action))
-                return
-                    BuildRedirectResultForSubmitAction(
+                    return BuildRedirectResultForSubmitAction(
                         submitLookup[action]);
 
             return
@@ -81,13 +80,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
 
-        private RedirectResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
+        private IActionResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
         {
-            return
-                new RedirectResult(
-                    Url.Action(
-                        submitAction.ActionName,
-                        submitAction.ControllerName));
+            return RedirectToAction(submitAction.ActionName, submitAction.ControllerName);
         }
 
         public IActionResult Error()
