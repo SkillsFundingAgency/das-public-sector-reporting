@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
@@ -18,10 +20,11 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
             AuthorizationHandlerContext context,
             TypeOfRequirement requirement)
         {
-            if (ContextResourceIsNotATypeWithRoutData(context))
+            var routeData = (context.Resource as ActionContext)?.RouteData ?? (context.Resource as DefaultHttpContext)?.GetRouteData();
+            if (routeData == null)
                 return Task.CompletedTask;
 
-            if (RouteDataDoesNotContainAccountId(context))
+            if (RouteDataDoesNotContainAccountId(routeData))
                 return Task.CompletedTask;
 
             if (UserDoesNotHaveAccountsClaim(context))
@@ -33,17 +36,15 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
                     requirement,
                     GetAccountsClaimsForUrlAccountId(
                         context.User,
-                        GetAccountIdFromUrl(context)));
+                        GetAccountIdFromUrl(routeData)));
         }
 
         protected abstract Task AuthorizeRequirementAgainstCurrentAccountIdEmployerIdentifierInformation(AuthorizationHandlerContext context, TypeOfRequirement requirement, EmployerIdentifier employerIdentifier);
 
-        private static string GetAccountIdFromUrl(AuthorizationHandlerContext context)
+        private static string GetAccountIdFromUrl(RouteData routeData)
         {
-            return ((ActionContext)context.Resource)
-                .RouteData
-                .Values
-                    [RouteValues.HashedEmployerAccountId]
+            return routeData
+                .Values[RouteValues.HashedEmployerAccountId]
                 .ToString()
                 .ToUpper();
         }
@@ -65,41 +66,21 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
             {
                 return new EmployerIdentifier
                 {
-                    AccountId = String.Empty,
-                    EmployerName = String.Empty,
-                    Role = String.Empty
+                    AccountId = string.Empty,
+                    EmployerName = string.Empty,
+                    Role = string.Empty
                 };
             }
         }
 
         private bool UserDoesNotHaveAccountsClaim(AuthorizationHandlerContext context)
         {
-            return
-                context
-                    .User
-                    .HasClaim(
-                        claim
-                            =>
-                                claim
-                                    .Type
-                                    .Equals(
-                                        EmployerPsrsClaims.AccountsClaimsTypeIdentifier
-                                        , StringComparison.OrdinalIgnoreCase))
-                == false;
+            return context.User.HasClaim(claim => claim.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, StringComparison.OrdinalIgnoreCase)) == false;
         }
 
-        private static bool RouteDataDoesNotContainAccountId(AuthorizationHandlerContext context)
+        private static bool RouteDataDoesNotContainAccountId(RouteData routeData)
         {
-            return ((ActionContext)context.Resource)
-                            .RouteData
-                            .Values
-                            .ContainsKey(
-                                RouteValues.HashedEmployerAccountId) == false;
-        }
-
-        private static bool ContextResourceIsNotATypeWithRoutData(AuthorizationHandlerContext context)
-        {
-            return (context.Resource is ActionContext) == false;
+            return routeData.Values.ContainsKey(RouteValues.HashedEmployerAccountId) == false;
         }
     }
 }
