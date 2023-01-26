@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         }
         protected override void HandleCore(UnSubmitReportRequest request)
         {
-            var report = _reportRepository.Get(request.ReportingPeriod.PeriodString, request.EmployerAccountId);
+            var report = _reportRepository.Get(request.ReportingPeriod.PeriodString, request.HashedEmployerAccountId);
 
             if (report == null)
                 return;

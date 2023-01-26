@@ -44,7 +44,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit
                 new RouteData();
 
             routeData
-                .Values[RouteValues.EmployerAccountId] = AccountId;
+                .Values[RouteValues.HashedEmployerAccountId] = AccountId;
 
             resourceContext
                     .RouteData

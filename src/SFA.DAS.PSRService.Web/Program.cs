@@ -26,7 +26,7 @@ namespace SFA.DAS.PSRService.Web
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            IHostingEnvironment hostingEnvironment = null;
+            IWebHostEnvironment hostingEnvironment = null;
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
@@ -34,8 +34,8 @@ namespace SFA.DAS.PSRService.Web
                     services =>
                     {
                         hostingEnvironment = services
-                            .Where(x => x.ServiceType == typeof(IHostingEnvironment))
-                            .Select(x => (IHostingEnvironment) x.ImplementationInstance)
+                            .Where(x => x.ServiceType == typeof(IWebHostEnvironment))
+                            .Select(x => (IWebHostEnvironment) x.ImplementationInstance)
                             .First();
                     })
                 .UseStartup<Startup>()

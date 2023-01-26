@@ -23,6 +23,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="nunit" Version="3.13.3" />
     <PackageReference Include="nunit3testadapter" Version="4.3.1" />
+    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
   </ItemGroup>
 
   <ItemGroup>

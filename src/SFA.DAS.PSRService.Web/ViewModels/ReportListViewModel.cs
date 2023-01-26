@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.ViewModels
 {
@@ -11,5 +7,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     {
         public IEnumerable<Report>SubmittedReports { get; set; }
         public Dictionary<string,Period> Periods { get; set; }
+        public string HashedEmployerAccountId { get; set; }
     }
 }

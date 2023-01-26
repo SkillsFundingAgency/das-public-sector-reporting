@@ -6,17 +6,17 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
     public class UnSubmitReportRequest : IRequest
     {
-        public UnSubmitReportRequest(string employerAccountId, Period reportingPeriod)
+        public UnSubmitReportRequest(string hashedEmployerAccountId, Period reportingPeriod)
         {
-            if (string.IsNullOrWhiteSpace(employerAccountId))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(employerAccountId));
+            if (string.IsNullOrWhiteSpace(hashedEmployerAccountId))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(hashedEmployerAccountId));
 
-            EmployerAccountId = employerAccountId;
+            HashedEmployerAccountId = hashedEmployerAccountId;
             ReportingPeriod = reportingPeriod ?? throw new ArgumentNullException(nameof(reportingPeriod));
         }
 
         public Period ReportingPeriod { get; }
 
-        public string EmployerAccountId { get; }
+        public string HashedEmployerAccountId { get; }
     }
 }

@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Public sector reporting";
-    var employerId = Context.GetRouteData().Values["employerAccountId"];
+    var employerId = Context.GetRouteData().Values["hashedEmployerAccountId"];
     ViewBag.GaData.Vpv = "/public-sector-reporting/sections/page-report-numbers";
 }
 

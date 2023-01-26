@@ -249,7 +249,7 @@ namespace SFA.DAS.PSRService.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "accounts/{employerAccountId}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "accounts/{hashedEmployerAccountId}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                         name: "Service-Controller",

@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             _userService = userService;
         }
 
-        [Route("accounts/{employerAccountId}/[controller]/{id}")]
+        [Route("accounts/{hashedEmployerAccountId}/[controller]/{id}")]
         public IActionResult Index(string id)
         {
             var currentPeriod = _periodService.GetCurrentPeriod();
@@ -54,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("Index", sectionViewModel);
         }
 
-        [Route("accounts/{employerAccountId}/[controller]/{id}")]
+        [Route("accounts/{hashedEmployerAccountId}/[controller]/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Submit(SectionModel section)

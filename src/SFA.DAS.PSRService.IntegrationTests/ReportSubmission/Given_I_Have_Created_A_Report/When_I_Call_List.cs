@@ -11,7 +11,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
         protected override void When()
         {
-            response = SUT.List();
+            var hashedAccountId = "ABC123";
+            response = SUT.List(hashedAccountId);
         }
 
         [Test]

@@ -14,11 +14,11 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerAccountRequirement requirement)
         {
 
-            if (context.Resource is AuthorizationFilterContext mvcContext && mvcContext.RouteData.Values.ContainsKey(RouteValues.EmployerAccountId))
+            if (context.Resource is AuthorizationFilterContext mvcContext && mvcContext.RouteData.Values.ContainsKey(RouteValues.HashedEmployerAccountId))
             {
                 if (context.User.HasClaim(c=>c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
-                    var accountIdFromUrl = mvcContext.RouteData.Values[RouteValues.EmployerAccountId].ToString().ToUpper();
+                    var accountIdFromUrl = mvcContext.RouteData.Values[RouteValues.HashedEmployerAccountId].ToString().ToUpper();
                     var employerAccountClaim = context.User.FindFirst(c=>c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
                     var employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(employerAccountClaim?.Value);
 
