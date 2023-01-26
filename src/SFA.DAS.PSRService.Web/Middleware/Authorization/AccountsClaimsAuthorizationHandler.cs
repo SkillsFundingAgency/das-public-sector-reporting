@@ -43,7 +43,7 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
             return ((ActionContext)context.Resource)
                 .RouteData
                 .Values
-                    [RouteValues.EmployerAccountId]
+                    [RouteValues.HashedEmployerAccountId]
                 .ToString()
                 .ToUpper();
         }
@@ -94,7 +94,7 @@ namespace SFA.DAS.PSRService.Web.Middleware.Authorization
                             .RouteData
                             .Values
                             .ContainsKey(
-                                RouteValues.EmployerAccountId) == false;
+                                RouteValues.HashedEmployerAccountId) == false;
         }
 
         private static bool ContextResourceIsNotATypeWithRoutData(AuthorizationHandlerContext context)
