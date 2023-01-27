@@ -14,7 +14,7 @@ using SFA.DAS.PSRService.Web.ViewModels;
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
-    [Route("accounts/{hashedEmployerAccountId}/Report")]
+    [Route("accounts/{hashedEmployerAccountId}/[controller]")]
     public class ReportController : BaseController
     {
         private readonly IReportService _reportService;
