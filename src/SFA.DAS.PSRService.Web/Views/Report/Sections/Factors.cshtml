@@ -15,7 +15,7 @@
             foreach (var subSection in Model.SubSections)
             {
                 <li class="task-list-item">
-                    <a class="task-name" href="./Question/@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
+                    <a class="task-name" asp-controller="Question" asp-action="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
                     @if (subSection.IsComplete())
                     {
                         <span id="@($"{subSection.Id}-task-completed")" class="task-completed">COMPLETE</span>
