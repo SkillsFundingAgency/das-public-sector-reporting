@@ -20,7 +20,13 @@
             {
                     // @Html.Partial("Question/" + @subSection.Id, Model)
                     <li class="task-list-item">
-                    <a class="task-name" asp-controller="Question" asp-action="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
+                    <a class="task-name" 
+                    asp-controller="Question" 
+                    asp-action="Index" 
+                    asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" 
+                    asp-route-id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">
+                        @subSection.SummaryText
+                    </a>
                         @if (subSection.IsComplete())
                         {
                             <span id="@($"{subSection.Id}-task-completed")" class="task-completed">COMPLETE</span>

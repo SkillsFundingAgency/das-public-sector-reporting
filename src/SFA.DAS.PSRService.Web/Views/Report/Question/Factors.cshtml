@@ -17,7 +17,7 @@
                     @if (canBeEdited)
                     {
                     <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["OutlineActions"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["OutlineActions"].Id">Change</a>
                     </td>
                     }
             </tr>
@@ -27,7 +27,7 @@
                     @if (canBeEdited)
                     {
                     <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["Challenges"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["Challenges"].Id">Change</a>
                     </td>
                     }
             </tr>
@@ -37,7 +37,7 @@
                     @if (canBeEdited)
                     {
                     <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["TargetPlans"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["TargetPlans"].Id">Change</a>
                     </td>
                     }
             </tr>
@@ -47,7 +47,7 @@
                     @if (canBeEdited)
                     {
                     <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-id="@questionList["AnythingElse"].Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["AnythingElse"].Id">Change</a>
                     </td>
                     }
             </tr>
