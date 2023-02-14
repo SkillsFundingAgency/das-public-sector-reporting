@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Web.Filters
                 var user = controller.User;
                 EmployerIdentifier account = null;
                 var accountIdFromUrl =
-                    filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper();
+                    filterContext.RouteData.Values[RouteValues.HashedEmployerAccountId]?.ToString().ToUpper();
                 if (user.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
                 {
                     var employerAccountClaim =

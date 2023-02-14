@@ -16,7 +16,7 @@
                     @if (canBeEdited)
                     {
                     <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-id="@Model.Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
                     </td>
                     }
             </tr>

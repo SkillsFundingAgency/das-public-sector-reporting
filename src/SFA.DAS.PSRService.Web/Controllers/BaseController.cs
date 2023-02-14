@@ -22,6 +22,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var urlBaseUri = new Uri(_webConfiguration.EmployerCommitmentsV2BaseUrl);
             ViewData["HomeUrl"] = new Uri(urlBaseUri, EmployerAccount?.AccountId).ToString();
+            ViewData[RouteValues.HashedEmployerAccountId] = EmployerAccount?.AccountId;
             base.OnActionExecuting(context);
         }
     }

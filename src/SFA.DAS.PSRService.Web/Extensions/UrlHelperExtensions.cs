@@ -16,13 +16,13 @@
         /// <returns>The absolute URL.</returns>
         public static string EasAction(this IUrlHelper url, string path, string EasBaseUrl)
         {
-            var hashedAccountId = url.ActionContext.RouteData.Values["employerAccountId"];
+            var hashedAccountId = url.ActionContext.RouteData.Values["hashedEmployerAccountId"];
             return $"{EasBaseUrl}/accounts/{hashedAccountId}/{path}";
         }
 
         public static string ExternalUrlAction(this IUrlHelper helper, string baseUrl, string controllerName, string actionName = "", bool ignoreAccountId = false)
         {
-            var accountId = helper.ActionContext.RouteData.Values["employerAccountId"];
+            var accountId = helper.ActionContext.RouteData.Values["hashedEmployerAccountId"];
             
             baseUrl = baseUrl.EndsWith("/") ? baseUrl : baseUrl + "/";
 

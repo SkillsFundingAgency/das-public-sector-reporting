@@ -36,7 +36,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
             new UserContext
             {
                 User = html.ViewContext.HttpContext.User,
-                HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
+                HashedAccountId = html.ViewContext.RouteData.Values["hashedEmployerAccountId"]?.ToString()
             },
             useLegacyStyles : useLegacyStyles
             );
@@ -67,7 +67,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
             new UserContext
             {
                 User = html.ViewContext.HttpContext.User,
-                HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
+                HashedAccountId = html.ViewContext.RouteData.Values["hashedEmployerAccountId"]?.ToString()
             },
             useLegacyStyles : useLegacyStyles);
         }
@@ -83,7 +83,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
             new UserContext
             {
                 User = html.ViewContext.HttpContext.User,
-                HashedAccountId = html.ViewContext.RouteData.Values["employerAccountId"]?.ToString()
+                HashedAccountId = html.ViewContext.RouteData.Values["hashedEmployerAccountId"]?.ToString()
             }                       
             );
         }

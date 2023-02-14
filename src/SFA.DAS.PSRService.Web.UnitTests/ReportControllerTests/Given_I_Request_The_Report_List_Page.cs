@@ -6,6 +6,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.ViewModels;
+using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 {
@@ -14,14 +15,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
     {
  
 
-        [Test]
-        public void And_More_Than_One_Report_Then_Show_List()
+        [Test, MoqAutoData]
+        public void And_More_Than_One_Report_Then_Show_List(string hashedAccountId)
         {
             // arrange
            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList);
            // _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
             // act
-            var result = _controller.List();
+            var result = _controller.List(hashedAccountId);
 
             // assert
             Assert.AreEqual(typeof(ViewResult), result.GetType());
@@ -40,9 +41,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
       
        
         }
-        [Test]
+        [Test, MoqAutoData]
         [Ignore("No longer a requirement")]
-        public void And_Only_One_Report_Then_Redirect_To_Edit()
+        public void And_Only_One_Report_Then_Redirect_To_Edit(string hashedAccountId)
         {
             // arrange
             var url = "report/edit";
@@ -52,7 +53,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList.Take(1).ToList);
             // act
-            var result = _controller.List();
+            var result = _controller.List(hashedAccountId);
 
             // assert
             _mockUrlHelper.VerifyAll();
@@ -64,9 +65,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             Assert.AreEqual("Edit", actualContext.Action);
             Assert.Null(actualContext.Controller);
         }
-        [Test]
+        [Test, MoqAutoData]
         [Ignore("No longer a requirement")]
-        public void And_No_Report_Then_Redirect_To_Start()
+        public void And_No_Report_Then_Redirect_To_Start(string hashedAccountId)
         {
             var url = "home/index";
             UrlActionContext actualContext = null;
@@ -75,7 +76,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(new List<Report>());
             // act
-            var result = _controller.List();
+            var result = _controller.List(hashedAccountId);
 
             // assert
             Assert.AreEqual(typeof(RedirectResult), result.GetType());
