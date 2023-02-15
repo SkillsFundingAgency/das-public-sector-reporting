@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Web.Filters
             if (controller != null)
             {
                 var user = filterContext.HttpContext.User;
-                string accountIdFromUrl = filterContext.RouteData.Values[RouteValues.EmployerAccountId]?.ToString().ToUpper(); ;
+                string accountIdFromUrl = filterContext.RouteData.Values[RouteValues.HashedEmployerAccountId]?.ToString().ToUpper(); ;
                 controller.ViewBag.GaData = new GaData
                 {
                     UserId = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value,

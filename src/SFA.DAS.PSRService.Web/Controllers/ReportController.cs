@@ -14,7 +14,7 @@ using SFA.DAS.PSRService.Web.ViewModels;
 namespace SFA.DAS.PSRService.Web.Controllers
 {
     [Authorize]
-    [Route("accounts/{employerAccountId}/Report")]
+    [Route("accounts/{hashedEmployerAccountId}/[controller]")]
     public class ReportController : BaseController
     {
         private readonly IReportService _reportService;
@@ -48,6 +48,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Authorize(Policy = PolicyNames.CanEditReport)]
+        [Route("Edit")]
         public IActionResult Edit()
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
@@ -92,12 +93,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Route("List")]
-        public IActionResult List()
+        public IActionResult List([FromRoute] string hashedEmployerAccountId)
         {
             //need to get employee id, this needs to be moves somewhere
 
             var reportListViewmodel = new ReportListViewModel
             {
+                HashedEmployerAccountId = hashedEmployerAccountId,
                 SubmittedReports = _reportService.GetSubmittedReports(EmployerAccount.AccountId),
                 Periods = new Dictionary<string, Period>()
             };
@@ -130,7 +132,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         [Route("Summary/{period}")]
         [Route("Summary")]
-        public IActionResult Summary(string period)
+        public IActionResult Summary([FromRoute] string hashedEmployerAccountId, string period)
         {
             try
             {
@@ -158,6 +160,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 TryValidateModel(reportViewModel);
 
                 reportViewModel.Subtitle = GetSubtitleForUserAccessLevel();
+                reportViewModel.HashedEmployerAccountId = hashedEmployerAccountId;
 
                 return View("Summary",reportViewModel);
             }
@@ -296,7 +299,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [HttpGet]
         [Route("ConfirmAmend")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult ConfirmAmend()
+        public IActionResult ConfirmAmend([FromRoute] string hashedEmployerAccountId)
         {
             ViewBag.ReportPeriod = _currentPeriod;
             

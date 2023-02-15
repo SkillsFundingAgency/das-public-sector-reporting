@@ -18,7 +18,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
 
         protected override void When()
         {
-            result = _controller.Summary("1718");
+            var hashedAccountId = "ABC123";
+            result = _controller.Summary(hashedAccountId, "1718");
 
             var viewResult = result as ViewResult;
 

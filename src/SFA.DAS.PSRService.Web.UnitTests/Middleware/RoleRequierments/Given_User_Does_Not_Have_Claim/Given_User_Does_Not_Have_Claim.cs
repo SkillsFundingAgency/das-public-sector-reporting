@@ -26,7 +26,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.Given_Use
 
             validResourceType
                 .RouteData
-                .Values[RouteValues.EmployerAccountId] = "ACCOUNTID";
+                .Values[RouteValues.HashedEmployerAccountId] = "ACCOUNTID";
 
             HandlerContext =
                 new AuthorizationHandlerContext(

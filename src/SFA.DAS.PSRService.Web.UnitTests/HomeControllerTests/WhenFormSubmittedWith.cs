@@ -32,88 +32,61 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
         public void CreateThenItShouldRedirectToCreateReport()
         {
             // arrange
-            var url = "report/create";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             // act
             var result = _controller.Submit(SubmitActions.Home.Create.SubmitValue);
 
             // assert
-            _mockUrlHelper.VerifyAll();
-
-            var redirectResult = result as RedirectResult;
+            var redirectResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual(SubmitActions.Home.Create.ActionName, actualContext.Action);
-            Assert.AreEqual(SubmitActions.Home.Create.ControllerName, actualContext.Controller);
+            Assert.AreEqual(SubmitActions.Home.Create.ActionName, redirectResult.ActionName);
+            Assert.AreEqual(SubmitActions.Home.Create.ControllerName, redirectResult.ControllerName);
         }
 
         [Test]
         public void ListThenItShouldRedirectToReportList()
         {
             // arrange
-            var url = "report/list";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             // act
             var result = _controller.Submit(SubmitActions.Home.List.SubmitValue);
 
             // assert
-            _mockUrlHelper.VerifyAll();
 
-            var redirectResult = result as RedirectResult;
+            var redirectResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual(SubmitActions.Home.List.ActionName, actualContext.Action);
-            Assert.AreEqual(SubmitActions.Home.List.ControllerName, actualContext.Controller);
+            Assert.AreEqual(SubmitActions.Home.List.ActionName, redirectResult.ActionName);
+            Assert.AreEqual(SubmitActions.Home.List.ControllerName, redirectResult.ControllerName);
         }
 
         [Test]
         public void EditThenItShouldRedirectToReportEdit()
         {
             // arrange
-            var url = "report/edit";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             // act
             var result = _controller.Submit(SubmitActions.Home.Edit.SubmitValue);
 
             // assert
-            _mockUrlHelper.VerifyAll();
-
-            var redirectResult = result as RedirectResult;
+            var redirectResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual(SubmitActions.Home.Edit.ActionName, actualContext.Action);
-            Assert.AreEqual(SubmitActions.Home.Edit.ControllerName, actualContext.Controller);
+            Assert.AreEqual(SubmitActions.Home.Edit.ActionName, redirectResult.ActionName);
+            Assert.AreEqual(SubmitActions.Home.Edit.ControllerName, redirectResult.ControllerName);
         }
 
         [Test]
         public void ViewThenItShouldRedirectToReportEdit()
         {
             // arrange
-            var url = "report/summary";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             // act
             var result = _controller.Submit(SubmitActions.Home.View.SubmitValue);
 
             // assert
-            _mockUrlHelper.VerifyAll();
-
-            var redirectResult = result as RedirectResult;
+            var redirectResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual(SubmitActions.Home.View.ActionName, actualContext.Action);
-            Assert.AreEqual(SubmitActions.Home.View.ControllerName, actualContext.Controller);
+            Assert.AreEqual(SubmitActions.Home.View.ActionName, redirectResult.ActionName);
+            Assert.AreEqual(SubmitActions.Home.View.ControllerName, redirectResult.ControllerName);
         }
 
         [Test]

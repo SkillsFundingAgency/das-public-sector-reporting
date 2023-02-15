@@ -136,7 +136,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             var path = context.Request.Path.Value;
              path = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
 
-            if (path.Contains("Home/Index") || path.Equals($"/Accounts/{routeData.Values["employerAccountId"]}"))
+            if (path.Contains("Home/Index") || path.Equals($"/Accounts/{routeData.Values["hashedEmployerAccountId"]}"))
             {
                 //default path
                 context.Response.Redirect(context.RedirectUri);
@@ -144,7 +144,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             else
             { 
                 //custom
-                context.Response.Redirect(context.Request.PathBase + $"/Accounts/{routeData.Values["employerAccountId"]}/Home/Index");
+                context.Response.Redirect(context.Request.PathBase + $"/Accounts/{routeData.Values["hashedEmployerAccountId"]}/Home/Index");
             }
 
             return Task.CompletedTask;

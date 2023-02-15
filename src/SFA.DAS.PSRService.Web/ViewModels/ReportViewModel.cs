@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.ViewModels
@@ -20,6 +19,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public bool IsReadOnly { get; set; }
         public bool UserCanEditReports { get; set; }
         public Period CurrentPeriod { get; set; }
+        public string HashedEmployerAccountId { get; set; }
 
         public ReportViewModel()
         {

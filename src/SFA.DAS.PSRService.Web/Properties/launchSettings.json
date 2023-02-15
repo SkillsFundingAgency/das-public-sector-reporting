@@ -18,11 +18,11 @@
     "SFA.DAS.PSRService.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5015/accounts/M9KKPP",
+      "launchUrl": "https://localhost:5015/accounts/M9KKPP",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5015/"
+      "applicationUrl": "https://localhost:5015/;http://localhost:5016/"
     }
   }
 }

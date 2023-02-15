@@ -30,7 +30,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_R
 
         protected override void When()
         {
-            result = _controller.Summary("ReportError");
+            var hashedAccountId = "ABC123";
+            result = _controller.Summary(hashedAccountId, "ReportError");
         }
 
         [Test]
