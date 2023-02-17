@@ -16,7 +16,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public static Period FromInstantInPeriod(DateTime instantInPeriod)
         {
             var endYear =
-                instantInPeriod.Month < 4
+                instantInPeriod.Month < 1
                     ? instantInPeriod.Year - 1
                     : instantInPeriod.Year;
 
