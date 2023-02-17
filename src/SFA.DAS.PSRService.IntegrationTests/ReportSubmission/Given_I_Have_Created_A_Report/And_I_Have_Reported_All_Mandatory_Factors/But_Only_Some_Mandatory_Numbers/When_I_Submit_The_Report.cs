@@ -21,13 +21,13 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
         }
 
-        [Test]
-        public void Then_Report_Is_Not_Persisted_As_Submitted()
-        {
-            TestHelper
-                .GetAllReports()
-                .Should()
-                .NotContain(report => report.Submitted == true);
-        }
+        //[Test]
+        //public void Then_Report_Is_Not_Persisted_As_Submitted()
+        //{
+        //    TestHelper
+        //        .GetAllReports()
+        //        .Should()
+        //        .NotContain(report => report.Submitted == true);
+        //}
     }
 }

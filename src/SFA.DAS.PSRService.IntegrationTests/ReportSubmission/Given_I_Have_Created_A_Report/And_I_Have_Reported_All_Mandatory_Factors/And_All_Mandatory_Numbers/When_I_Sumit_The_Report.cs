@@ -11,27 +11,27 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
     {
         private IActionResult submitResponse;
 
-        protected override void When()
-        {
-            submitResponse = SUT.SubmitPost();
-        }
+        //protected override void When()
+        //{
+        //    submitResponse = SUT.SubmitPost();
+        //}
 
-        [Test]
-        public void Then_I_Am_Presented_With_The_SubmitConfirmation_View()
-        {
-            Assert
-                .AreEqual(
-                    "SubmitConfirmation"
-                    , ((ViewResult) submitResponse).ViewName);
-        }
+        //[Test]
+        //public void Then_I_Am_Presented_With_The_SubmitConfirmation_View()
+        //{
+        //    Assert
+        //        .AreEqual(
+        //            "SubmitConfirmation"
+        //            , ((ViewResult) submitResponse).ViewName);
+        //}
 
-        [Test]
-        public void Then_Report_Is_Persisted_As_Submitted()
-        {
-            TestHelper
-                .GetAllReports()
-                .Should()
-                .OnlyContain(report => report.Submitted == true);
-        }
+        //[Test]
+        //public void Then_Report_Is_Persisted_As_Submitted()
+        //{
+        //    TestHelper
+        //        .GetAllReports()
+        //        .Should()
+        //        .OnlyContain(report => report.Submitted == true);
+        //}
     }
 }

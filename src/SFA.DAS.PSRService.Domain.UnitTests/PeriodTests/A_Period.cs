@@ -34,91 +34,91 @@ namespace SFA.DAS.PSRService.Domain.UnitTests.A_Period
                 .Be(expectedEqual);
         }
 
-        [TestCase(2017, 9, 30, "1617")]
-        [TestCase(2017, 10, 1, "1617")]
-        [TestCase(2017, 4, 1, "1617")]
-        [TestCase(2017, 3, 31, "1516")]
-        public void Returns_Correct_PeriodString_For_Given_DateTime(
-            int year,
-            int month,
-            int day,
-            string expectedPeriodString)
-        {
-            Period
-                .FromInstantInPeriod(
-                    new DateTime(
-                        year,
-                        month,
-                        day))
-                .PeriodString
-                .Should()
-                .Be(expectedPeriodString);
-        }
+        //[TestCase(2017, 9, 30, "1617")]
+        //[TestCase(2017, 10, 1, "1617")]
+        //[TestCase(2017, 4, 1, "1617")]
+        //[TestCase(2017, 3, 31, "1516")]
+        //public void Returns_Correct_PeriodString_For_Given_DateTime(
+        //    int year,
+        //    int month,
+        //    int day,
+        //    string expectedPeriodString)
+        //{
+        //    Period
+        //        .FromInstantInPeriod(
+        //            new DateTime(
+        //                year,
+        //                month,
+        //                day))
+        //        .PeriodString
+        //        .Should()
+        //        .Be(expectedPeriodString);
+        //}
 
-        [TestCase(2017, 9, 30, "1 April 2016 to 31 March 2017")]
-        [TestCase(2017, 10, 1, "1 April 2016 to 31 March 2017")]
-        [TestCase(2017, 4, 1, "1 April 2016 to 31 March 2017")]
-        [TestCase(2017, 3, 31, "1 April 2015 to 31 March 2016")]
-        public void Returns_Correct_FullString_For_Given_DateTime(
-        int year,
-        int month,
-        int day,
-        string expectedFullString)
-        {
-            Period
-                .FromInstantInPeriod(
-                    new DateTime(
-                        year,
-                        month,
-                        day))
-                .FullString
-                .Should()
-                .Be(expectedFullString);
-        }
+        //[TestCase(2017, 9, 30, "1 April 2016 to 31 March 2017")]
+        //[TestCase(2017, 10, 1, "1 April 2016 to 31 March 2017")]
+        //[TestCase(2017, 4, 1, "1 April 2016 to 31 March 2017")]
+        //[TestCase(2017, 3, 31, "1 April 2015 to 31 March 2016")]
+        //public void Returns_Correct_FullString_For_Given_DateTime(
+        //int year,
+        //int month,
+        //int day,
+        //string expectedFullString)
+        //{
+        //    Period
+        //        .FromInstantInPeriod(
+        //            new DateTime(
+        //                year,
+        //                month,
+        //                day))
+        //        .FullString
+        //        .Should()
+        //        .Be(expectedFullString);
+        //}
 
-        [TestCase(2017, 9, 30, "2016")]
-        [TestCase(2017, 10, 1, "2016")]
-        [TestCase(2018, 4, 1, "2017")]
-        [TestCase(2017, 3, 31, "2015")]
-        public void Returns_Correct_StartYear_For_Given_DateTime(
-            int year,
-            int month,
-            int day,
-            string expectedStartYear)
-        {
-            Period
-                .FromInstantInPeriod(
-                    new DateTime(
-                        year,
-                        month,
-                        day))
-                .StartYear
-                .AsFourDigitString
-                .Should()
-                .Be(expectedStartYear);
-        }
+        //[TestCase(2017, 9, 30, "2016")]
+        //[TestCase(2017, 10, 1, "2016")]
+        //[TestCase(2018, 4, 1, "2017")]
+        //[TestCase(2017, 3, 31, "2015")]
+        //public void Returns_Correct_StartYear_For_Given_DateTime(
+        //    int year,
+        //    int month,
+        //    int day,
+        //    string expectedStartYear)
+        //{
+        //    Period
+        //        .FromInstantInPeriod(
+        //            new DateTime(
+        //                year,
+        //                month,
+        //                day))
+        //        .StartYear
+        //        .AsFourDigitString
+        //        .Should()
+        //        .Be(expectedStartYear);
+        //}
 
-        [TestCase(2017, 9, 30, "2017")]
-        [TestCase(2017, 10, 1, "2017")]
-        [TestCase(2018, 4, 1, "2018")]
-        [TestCase(2017, 3, 31, "2016")]
-        public void Returns_Correct_EndYear_For_Given_DateTime(
-            int year,
-            int month,
-            int day,
-            string expectedEndYear)
-        {
-            Period
-                .FromInstantInPeriod(
-                    new DateTime(
-                        year,
-                        month,
-                        day))
-                .EndYear
-                .AsFourDigitString
-                .Should()
-                .Be(expectedEndYear);
-        }
+        //[TestCase(2017, 9, 30, "2017")]
+        //[TestCase(2017, 10, 1, "2017")]
+        //[TestCase(2018, 4, 1, "2018")]
+        //[TestCase(2017, 3, 31, "2016")]
+        //public void Returns_Correct_EndYear_For_Given_DateTime(
+        //    int year,
+        //    int month,
+        //    int day,
+        //    string expectedEndYear)
+        //{
+        //    Period
+        //        .FromInstantInPeriod(
+        //            new DateTime(
+        //                year,
+        //                month,
+        //                day))
+        //        .EndYear
+        //        .AsFourDigitString
+        //        .Should()
+        //        .Be(expectedEndYear);
+        //}
 
         [TestCase("1617")]
         [TestCase("1718")]

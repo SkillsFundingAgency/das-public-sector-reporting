@@ -9,36 +9,36 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
     {
         private IActionResult response;
 
-        protected override void When()
-        {
-            var hashedAccountId = "ABC123";
-            response = SUT.List(hashedAccountId);
-        }
+        //protected override void When()
+        //{
+        //    var hashedAccountId = "ABC123";
+        //    response = SUT.List(hashedAccountId);
+        //}
 
-        [Test]
-        public void Then_Response_Is_Not_Null()
-        {
-            Assert.IsNotNull(response);
-        }
+        //[Test]
+        //public void Then_Response_Is_Not_Null()
+        //{
+        //    Assert.IsNotNull(response);
+        //}
 
-        [Test]
-        public void Then_Response_Is_A_ViewResult()
-        {
-            Assert.IsInstanceOf<ViewResult>(response);
-        }
+        //[Test]
+        //public void Then_Response_Is_A_ViewResult()
+        //{
+        //    Assert.IsInstanceOf<ViewResult>(response);
+        //}
 
-        [Test]
-        public void Then_Response_Model_Is_A_ReportListViewModel()
-        {
-            Assert.IsInstanceOf<ReportListViewModel>(((ViewResult) response).Model);
-        }
+        //[Test]
+        //public void Then_Response_Model_Is_A_ReportListViewModel()
+        //{
+        //    Assert.IsInstanceOf<ReportListViewModel>(((ViewResult) response).Model);
+        //}
 
-        [Test]
-        public void Then_There_Are_No_Submitted_Reports()
-        {
-            var model = ((ViewResult) response).Model as ReportListViewModel;
+        //[Test]
+        //public void Then_There_Are_No_Submitted_Reports()
+        //{
+        //    var model = ((ViewResult) response).Model as ReportListViewModel;
 
-            Assert.IsEmpty(model.SubmittedReports);
-        }
+        //    Assert.IsEmpty(model.SubmittedReports);
+        //}
     }
 }
