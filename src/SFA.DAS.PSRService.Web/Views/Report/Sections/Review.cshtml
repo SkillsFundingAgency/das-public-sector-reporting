@@ -4,9 +4,18 @@
 }
 
 <li>
-    <h2 class="task-list-section">
-        <span class="task-list-section-number">4. </span> Review answers
-    </h2>
+    @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
+    {
+        <h2 class="task-list-section">
+            <span class="task-list-section-number">4. </span> Review answers
+        </h2>
+    }
+    else
+    {
+        <h2 class="task-list-section">
+            <span class="task-list-section-number">3. </span> Review answers
+        </h2>
+    }
     <ul class="task-list-items">
         <li class="task-list-item">
             <a class="task-name" asp-controller="Report" asp-action="Summary" aria-describedby="eligibility-completed">
