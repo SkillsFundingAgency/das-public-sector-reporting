@@ -4,6 +4,8 @@
     public abstract class And_I_Have_Reportd_Some_Mandatory_Numbers
         : Given_I_Have_Created_A_Report
     {
+        public And_I_Have_Reportd_Some_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority){}
+
         protected override void Given()
         {
             base.Given();

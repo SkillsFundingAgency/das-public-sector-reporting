@@ -13,8 +13,13 @@ namespace SFA.DAS.PSRService.Application.Mapping
             CreateMap<ReportDto, Report>()
                 .ForMember(dest => dest.SubmittedDetails, opts => opts.Ignore())
                 .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
+                .ForMember(dest => dest.HasTotalEmployeesMeetMinimum, opts => opts.Ignore())
+                .ForMember(dest => dest.TotalEmployees, opts => opts.Ignore())
+                .ForMember(dest => dest.IsLocalAuthority, opts => opts.Ignore())
                 .ForMember(dest => dest.Sections, opts => opts.Ignore())
+                .ForMember(dest => dest.SerialNo, opts => opts.Ignore())
                 .ForMember(dest => dest.ReportingPercentages, opts => opts.Ignore())
+                .ForMember(dest => dest.ReportingPercentagesSchools, opts => opts.Ignore())
                 .ForMember(dest => dest.Period, opts => opts.MapFrom(s => Period.ParsePeriodString(s.ReportingPeriod)))
                 .ForMember(dest => dest.UpdatedBy, opts => opts.MapFrom(s => s == null ? null : JsonConvert.DeserializeObject<User>(s.UpdatedBy)))
                 .AfterMap((src, dest) =>
@@ -22,8 +27,13 @@ namespace SFA.DAS.PSRService.Application.Mapping
                     var dataObject = JsonConvert.DeserializeObject<ReportingData>(src.ReportingData);
 
                     dest.OrganisationName = dataObject.OrganisationName;
+                    dest.HasTotalEmployeesMeetMinimum = dataObject.HasTotalEmployeesMeetMinimum;
+                    dest.TotalEmployees = dataObject.TotalEmployees;
+                    dest.IsLocalAuthority = dataObject.IsLocalAuthority;
                     dest.Sections = dataObject.Questions;
+                    dest.SerialNo = dataObject.SerialNo;
                     dest.ReportingPercentages = dataObject.ReportingPercentages;
+                    dest.ReportingPercentagesSchools = dataObject.ReportingPercentagesSchools;
                     dest.SubmittedDetails = dataObject.Submitted;
                 });
 
@@ -37,10 +47,15 @@ namespace SFA.DAS.PSRService.Application.Mapping
         {
             var serilizationObj = new
             {
-                report.OrganisationName, 
-                Questions = report.Sections, 
+                report.OrganisationName,
+                report.HasTotalEmployeesMeetMinimum,
+                report.TotalEmployees,
+                report.IsLocalAuthority,
+                Questions = report.Sections,
+                SerialNo = report.SerialNo,
                 Submitted = report.SubmittedDetails,
-                report.ReportingPercentages
+                report.ReportingPercentages,
+                report.ReportingPercentagesSchools
             };
 
             return JsonConvert.SerializeObject(serilizationObj);

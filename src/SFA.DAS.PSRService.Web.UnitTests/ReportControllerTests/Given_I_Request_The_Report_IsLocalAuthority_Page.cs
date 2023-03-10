@@ -9,14 +9,14 @@ using SFA.DAS.PSRService.Web.Models;
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 {
     [TestFixture]
-    public class Given_I_Request_The_Report_Create_Page : ReportControllerTestBase
+    public class Given_I_Request_The_Report_IsLocalAuthority_Page : ReportControllerTestBase
     {
         [TestCase(true)]
         [TestCase(false)]
-        public void And_The_Report_Creation_Is_Successful_Then_Redirect_To_IsLocalAuthority(bool isLocalAuthority)
+        public void And_The_Report_IsLocalAuthority_Is_Successful_Then_Redirect_To_Edit(bool isLocalAuthority)
         {
             // arrange
-            var url = "report/IsLocalAuthority";
+            var url = "report/Edit";
             UrlActionContext actualContext = null;
 
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
 
             // act
-            var result = _controller.PostCreate();
+            var result = _controller.PostIsLocalAuthority(isLocalAuthority);
 
 
             // assert
@@ -33,7 +33,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             var redirectResult = result as RedirectResult;
             Assert.IsNotNull(redirectResult);
             Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("IsLocalAuthority", actualContext.Action);
+            Assert.AreEqual("Edit", actualContext.Action);
             Assert.AreEqual("Report", actualContext.Controller);
         }
 
@@ -41,13 +41,13 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         [TestCase(false)]
         public void And_The_Report_Creation_Fails_Then_Throw_Error(bool isLocalAuthority)
         {
-
+         
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority))
                 .Throws(new Exception("Unable to create Report"));
-
+        
             // act
-            var result = _controller.PostCreate();
-
+            var result = _controller.PostIsLocalAuthority(isLocalAuthority);
+            
             // assert
             Assert.IsInstanceOf<BadRequestResult>(result);
         }

@@ -1,0 +1,202 @@
+﻿{
+  "OrganisationName": "Test",
+  "IsLocalAuthority": true,
+  "HasTotalEmployeesMeetMinimum": true,
+  "TotalEmployees": 300,
+  "Questions": [
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "YourEmployees",
+          "Title": "Your employees - excluding maintained schools",
+          "SummaryText": "Number of employees who work in England - excluding maintained schools"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "YourApprentices",
+          "Title": "Your apprentices - excluding maintained schools",
+          "SummaryText": "Number of apprentices who work in England - excluding maintained schools"
+        }
+      ],
+      "Questions": null,
+      "Id": "ReportNumbers",
+      "Title": "Report numbers in the following categories for local authority only",
+      "SummaryText": null,
+      "SerialNo": "2"
+    },
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "SchoolsEmployees",
+          "Title": "Your employees - maintained schools only",
+          "SummaryText": "Number of employees who work in England - maintained schools only"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "SchoolsApprentices",
+          "Title": "Your apprentices - maintained schools only",
+          "SummaryText": "Number of apprentices who work in England - maintained schools only"
+        }
+      ],
+      "Questions": null,
+      "Id": "ReportNumbersSchools",
+      "Title": "Report numbers in the following categories for maintained schools only",
+      "SummaryText": null,
+      "SerialNo": "3"
+    },
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "OutlineActions",
+              "Answer": "",
+              "Optional": false,
+              "Type": 2
+            }
+          ],
+          "Id": "OutlineActions",
+          "Title": "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?",
+          "SummaryText": "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "Challenges",
+              "Answer": "",
+              "Optional": false,
+              "Type": 2
+            }
+          ],
+          "Id": "Challenges",
+          "Title": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?",
+          "SummaryText": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "TargetPlans",
+              "Answer": "",
+              "Optional": false,
+              "Type": 2
+            }
+          ],
+          "Id": "TargetPlans",
+          "Title": "How are you planning to meet the target in future? What will you continue to do or do differently?",
+          "SummaryText": "How are you planning to meet the target in future? What will you continue to do or do differently?"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "AnythingElse",
+              "Answer": "",
+              "Optional": true,
+              "Type": 2
+            }
+          ],
+          "Id": "AnythingElse",
+          "Title": "Do you have anything else you want to tell us? (optional)",
+          "SummaryText": "Do you have anything else you want to tell us? (optional)"
+        }
+      ],
+      "Questions": null,
+      "Id": "Factors",
+      "Title": "Factors that impacted your ability to meet the target",
+      "SummaryText": null
+    }
+  ],
+  "Submitted": null,
+  "SerialNo": "4",
+  "ReportingPercentages": {
+    "Title": "ReportingPercentage - excluding maintained schools"
+  },
+  "ReportingPercentagesSchools": {
+    "Title": "ReportingPercentage - maintained schools only"
+  }
+}

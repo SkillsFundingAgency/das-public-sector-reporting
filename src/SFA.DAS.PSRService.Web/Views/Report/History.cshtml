@@ -19,10 +19,10 @@
             <table>
                 @*<caption class="heading-medium">Reporting period</caption>*@
                 <tbody>
-                <tr>
-                    <td>Reporting period</td>
-                    <td class="bold">@Model.Period.FullString</td>
-                </tr>
+                    <tr>
+                        <td>Reporting period</td>
+                        <td class="bold">@Model.Period.FullString</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -34,12 +34,23 @@
                     <span class="summary">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
                 </summary>
                 <div>
-                    @Html.Partial("Question/Organisation", edit.OrganisationName)
+
+                    @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", edit.OrganisationName }, { "TotalEmployees",edit.TotalEmployees}})
+
                     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
+                    @if (edit.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
+                    {
+                        @Html.Partial("Question/ReportNumbersSchools", edit.Sections.Single(w => w.Id == "ReportNumbersSchools"))
+                    }
+
                     @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
+                    @if (edit.ReportingPercentagesSchools != null)
+                    {
+                        @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentagesSchools))
+                    }
                     @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
                 </div>
-            </details>    
+            </details>
         }
     </div>
 

@@ -7,7 +7,7 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public interface IReportService
     {
-        void CreateReport(string employerId, UserModel user);
+        void CreateReport(string employerId, UserModel user, bool? IsLocalAuthority);
         Report GetReport(string period,string employerId);
         void SubmitReport(Report report);
         IEnumerable<Report> GetSubmittedReports(string employerId);

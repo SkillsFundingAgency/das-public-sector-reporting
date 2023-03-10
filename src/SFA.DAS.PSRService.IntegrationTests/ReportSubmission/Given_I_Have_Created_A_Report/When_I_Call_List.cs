@@ -9,6 +9,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
     {
         private IActionResult response;
 
+        public When_I_Call_List() : base(false){}
+
         protected override void When()
         {
             var hashedAccountId = "ABC123";

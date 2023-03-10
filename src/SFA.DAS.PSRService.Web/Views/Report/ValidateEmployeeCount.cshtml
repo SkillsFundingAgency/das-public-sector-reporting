@@ -1,0 +1,14 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
+@{
+    ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-organisation-validateemployeeCount";
+}
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        <h1 class="heading-large">
+            You dont have to submit a report if you have less than 250 employees
+        </h1>
+        <a href="@ViewData["HomeUrl"]">Go back to Manage apprenticeships homepage</a>
+    </div>
+</div>

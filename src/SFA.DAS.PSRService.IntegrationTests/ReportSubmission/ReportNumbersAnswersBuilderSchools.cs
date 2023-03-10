@@ -5,35 +5,35 @@ using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
 {
-    public  class ReportNumbersAnswersBuilder
+    public  class ReportNumbersAnswersBuilderSchools
     {
         private List<QuestionViewModel> validAnswers;
         private string _currentSectionId;
 
-        public ReportNumbersAnswersBuilder()
+        public ReportNumbersAnswersBuilderSchools()
         {
             validAnswers = new List<QuestionViewModel>
             {
                 new QuestionViewModel {Id = "atStart", Answer = "1"},
-                new QuestionViewModel {Id = "atEnd", Answer = "300"},
+                new QuestionViewModel {Id = "atEnd", Answer = "1"},
                 new QuestionViewModel {Id = "newThisPeriod", Answer = "1"}
             };
         }
-        public ReportNumbersAnswersBuilder BuildValidYourEmployeesAnswers()
+        public ReportNumbersAnswersBuilderSchools BuildValidSchoolsEmployeesAnswers()
         {
-            _currentSectionId = "YourEmployees";
+            _currentSectionId = "SchoolsEmployees";
 
             return this;
         }
 
-        public ReportNumbersAnswersBuilder BuildValidYourApprenticesAnswers()
+        public ReportNumbersAnswersBuilderSchools BuildValidSchoolsApprenticesAnswers()
         {
-            _currentSectionId = "YourApprentices";
+            _currentSectionId = "SchoolsApprentices";
 
             return this;
         }
 
-        public SectionModel ForReportingPeriod(Period reportingPeriod)
+        public SectionModel ForReportingPeriodSchools(Period reportingPeriod)
         {
             return new SectionModel
             {

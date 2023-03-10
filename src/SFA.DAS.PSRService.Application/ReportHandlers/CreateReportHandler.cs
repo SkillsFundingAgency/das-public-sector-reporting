@@ -35,7 +35,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
                 Submitted = false,
                 Id = Guid.NewGuid(),
                 ReportingPeriod = request.Period,
-                ReportingData = GetQuestionConfig().Result,
+                ReportingData = GetQuestionConfig(request.IsLocalAuthority).Result,
                 AuditWindowStartUtc = DateTime.UtcNow,
                 UpdatedUtc = DateTime.UtcNow,
                 UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name})
@@ -46,14 +46,25 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             return _mapper.Map<Report>(reportDto);
         }
 
-        private Task<string> GetQuestionConfig()
+        private Task<string> GetQuestionConfig(bool? IsLocalAuthority)
         {
-            var questionsConfig = _fileProvider.GetFileInfo("/QuestionConfig.json");
-
-            using (var jsonContents = questionsConfig.CreateReadStream())
-            using (StreamReader sr = new StreamReader(jsonContents))
+            if (IsLocalAuthority==true)
             {
-                return Task.FromResult(sr.ReadToEnd());
+                var questionsConfig = _fileProvider.GetFileInfo("/LocalAuthorityQuestionConfig.json");
+                using (var jsonContents = questionsConfig.CreateReadStream())
+                using (StreamReader sr = new StreamReader(jsonContents))
+                {
+                    return Task.FromResult(sr.ReadToEnd());
+                }
+            }
+            else
+            {
+                var questionsConfig = _fileProvider.GetFileInfo("/QuestionConfig.json");
+                using (var jsonContents = questionsConfig.CreateReadStream())
+                using (StreamReader sr = new StreamReader(jsonContents))
+                {
+                    return Task.FromResult(sr.ReadToEnd());
+                }
             }
         }
     }

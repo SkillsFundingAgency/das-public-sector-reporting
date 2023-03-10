@@ -1,0 +1,35 @@
+﻿@model object
+
+@{
+    ViewData["Title"] = "Public sector reporting";
+    ViewBag.GaData.Vpv = "/public-sector-reporting/page-islocalauthority";
+    ViewBag.ZenDeskLabel = "reporting-islocalauthority";
+}
+
+<a class="link-back" asp-controller="Report" asp-action="Create">Back</a>
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <form method="post">
+            <div class="form-group">
+                <fieldset class="inline">
+                    <legend>
+                        <h1 class="heading-medium">
+                            Are you a local authority?
+                        </h1>
+                    </legend>
+                    <div class="multiple-choice">
+                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True">
+                        <label for="islocalauthority-action-yes">Yes</label>
+                    </div>
+                    <div class="multiple-choice">
+                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False">
+                        <label for="islocalauthority-action-no">No</label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="form-group">
+                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+            </div>
+        </form>
+    </div>
+</div>

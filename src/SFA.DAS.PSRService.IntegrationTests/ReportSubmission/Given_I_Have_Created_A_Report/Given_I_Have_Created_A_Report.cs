@@ -18,6 +18,11 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
         private static Container _container;
         protected QuestionController QuestionController;
         protected Mock<IUrlHelper> MockUrlHelper;
+        private bool _IsLocalAuthority;
+        public Given_I_Have_Created_A_Report(bool isLocalAuthority)
+        {
+            this._IsLocalAuthority = isLocalAuthority;
+        }
         protected override void Given()
         {
             _container = new Container();
@@ -41,7 +46,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
             TestHelper.ClearData();
 
-            SUT.PostCreate();
+            SUT.PostIsLocalAuthority(_IsLocalAuthority);
         }
 
         [TearDown]

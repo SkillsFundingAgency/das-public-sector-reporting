@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.Web.Services
             _config = config;
         }
 
-        public void CreateReport(string employerId, UserModel user)
+        public void CreateReport(string employerId, UserModel user, bool? IsLocalAuthority)
         {
             var currentPeriod = _periodService.GetCurrentPeriod();
 
@@ -34,7 +34,8 @@ namespace SFA.DAS.PSRService.Web.Services
             var request = new CreateReportRequest(
                 requestUser,
                 employerId,
-                currentPeriod.PeriodString);
+                currentPeriod.PeriodString,
+                IsLocalAuthority);
 
             var report = _mediator.Send(request).Result;
 
@@ -53,7 +54,7 @@ namespace SFA.DAS.PSRService.Web.Services
         }
 
         public void SubmitReport(Report report)
-        {            
+        {
             if (!CanBeEdited(report) || !report.IsValidForSubmission())
                 throw new InvalidOperationException("Report is invalid for submission.");
 
@@ -93,7 +94,7 @@ namespace SFA.DAS.PSRService.Web.Services
         }
 
         public IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(
-            Period period, 
+            Period period,
             string employerId)
         {
             var request = new GetReportEditHistoryMostRecentFirst(period, employerId);

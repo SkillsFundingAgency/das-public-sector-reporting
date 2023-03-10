@@ -10,11 +10,18 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         private Guid _userId = new Guid("FCCD9CDE-5E50-4AA2-8722-90EBB8E1E7F4");
         private string _employerId;
         private string _period = "1718";
+        private bool? _isLocalAuthority = null;
 
 
         public CreateReportRequestBuilder WithUserName(string userName)
         {
             _userName = userName;
+
+            return this;
+        }
+        public CreateReportRequestBuilder WithIsLocalAuthority(bool isLocalAuthority)
+        {
+            _isLocalAuthority = isLocalAuthority;
 
             return this;
         }
@@ -52,7 +59,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             var request = new CreateReportRequest(
                 user, 
                 _employerId,
-                _period);
+                _period, _isLocalAuthority);
 
             return request;
         }

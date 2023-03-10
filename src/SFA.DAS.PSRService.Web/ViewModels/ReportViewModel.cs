@@ -12,6 +12,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
         public bool IsValidForSubmission { get; set; }
 
         public PercentagesViewModel Percentages { get; set; }
+        public PercentagesViewModel PercentagesSchools { get; set; }
 
         public bool CanBeEdited { get; set; }
         public bool UserCanSubmitReports { get; set; }
@@ -44,6 +45,11 @@ namespace SFA.DAS.PSRService.Web.ViewModels
                 validationResults.Add(new ValidationResult($"{summaryText} questions are mandatory"));
             }
 
+            foreach (var summaryText in Report.GetNamesOfFailedValidations())
+            {
+                validationResults.Add(new ValidationResult($"{summaryText}"));
+            }
+            
             return validationResults;
         }
     }

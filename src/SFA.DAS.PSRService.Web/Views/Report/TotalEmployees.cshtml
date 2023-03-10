@@ -1,0 +1,34 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.TotalEmployees
+
+@{
+    ViewData["Title"] = "Your organisation";
+    ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-your-totalemployees";
+    ViewBag.ZenDeskLabel = "reporting-your-totalemployees";
+}
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+        <h1 class="heading-large">
+            Total Number Of Employees
+        </h1>
+
+        <form id="myFormId" asp-action="PostTotalEmployees">
+            <fieldset class="inline">
+                <div class="form-group">
+                    <p>Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString ?</p>
+                    <div class="multiple-choice">
+                        <input id="totalemployees-action-yes" type="radio" name="HasTotalEmployeesMeetMinimum" value="true" @(Model.HasTotalEmployeesMeetMinimum == true ? "checked" : "")>
+                        <label for="totalemployees-action-yes">Yes</label>
+                    </div>
+                    <div class="multiple-choice">
+                        <input id="totalemployees-action-no" type="radio" name="HasTotalEmployeesMeetMinimum" value="false" @(Model.HasTotalEmployeesMeetMinimum == false ? "checked" : "")>
+                        <label for="totalemployees-action-no">No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

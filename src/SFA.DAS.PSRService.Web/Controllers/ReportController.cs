@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
+using StructureMap.Query;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
@@ -28,7 +30,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             IUserService userService,
             IWebConfiguration webConfiguration,
             IPeriodService periodService,
-            IAuthorizationService authorizationService, 
+            IAuthorizationService authorizationService,
             IMediator mediatr)
             : base(webConfiguration, employerAccountService)
         {
@@ -81,8 +83,33 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
+                return new RedirectResult(Url.Action("IsLocalAuthority", "Report"));
+            }
+            catch (Exception)
+            {
+
+                return new BadRequestResult();
+            }
+        }
+
+        [HttpGet]
+        [Route("IsLocalAuthority")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult IsLocalAuthority()
+        {
+            ViewBag.CurrentPeriod = _currentPeriod;
+            return View("IsLocalAuthority");
+        }
+
+        [HttpPost]
+        [Route("IsLocalAuthority")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult PostIsLocalAuthority(bool? isLocalAuthority)
+        {
+            try
+            {
                 var user = _userService.GetUserModel(User);
-                _reportService.CreateReport(EmployerAccount.AccountId, user);
+               _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthority); 
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception)
@@ -154,6 +181,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
                 reportViewModel.IsValidForSubmission = reportViewModel.Report?.IsValidForSubmission() ?? false;
                 reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
+                if (reportViewModel.Report.ReportingPercentagesSchools != null) reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentagesSchools);
 
                 ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
 
@@ -162,7 +190,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 reportViewModel.Subtitle = GetSubtitleForUserAccessLevel();
                 reportViewModel.HashedEmployerAccountId = hashedEmployerAccountId;
 
-                return View("Summary",reportViewModel);
+                return View("Summary", reportViewModel);
             }
             catch
             {
@@ -182,7 +210,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             if (report.Submitted)
             {
-                return new RedirectResult(Url.Action("Index","Home"));
+                return new RedirectResult(Url.Action("Index", "Home"));
             }
 
             if (report.IsValidForSubmission() == false)
@@ -192,7 +220,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var viewModel = new ReportViewModel { Report = report };
 
-            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) )
+            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Summary", "Report"));
 
             ViewBag.CurrentPeriod = _currentPeriod;
@@ -267,6 +295,53 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("OrganisationName", organisationVm);
         }
 
+        [Route("TotalEmployees")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult TotalEmployees()
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!_reportService.CanBeEdited(report))
+                return new RedirectResult(Url.Action("Index", "Home"));
+
+            var totalEmployeesVm = new TotalEmployees
+            {
+                HasTotalEmployeesMeetMinimum = report.HasTotalEmployeesMeetMinimum,
+                Report = report
+            };
+
+            ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+
+            return View("TotalEmployees", totalEmployeesVm);
+        }
+
+        [Route("PostTotalEmployees")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult PostTotalEmployees(TotalEmployees totalEmployeesVm)
+        {
+            var totalEmployeesViewModel = new TotalEmployees
+            {
+                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
+            };
+
+            totalEmployeesViewModel.Report.HasTotalEmployeesMeetMinimum =  totalEmployeesVm.HasTotalEmployeesMeetMinimum;
+
+            _reportService.SaveReport(totalEmployeesViewModel.Report, _userService.GetUserModel(User));
+
+            if (totalEmployeesVm.HasTotalEmployeesMeetMinimum == true)
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            else 
+                return new RedirectResult(Url.Action("ValidateEmployeeCount"));
+        }
+
+        [Route("ValidateEmployeeCount")]
+        public IActionResult ValidateEmployeeCount()
+        {
+            return View("ValidateEmployeeCount");
+        }
+
         [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -291,8 +366,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Amend()
         {
             _mediatr.Send(
-                new UnSubmitReportRequest(EmployerAccount.AccountId, _currentPeriod));        
-              
+                new UnSubmitReportRequest(EmployerAccount.AccountId, _currentPeriod));
+
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
 
@@ -302,7 +377,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult ConfirmAmend([FromRoute] string hashedEmployerAccountId)
         {
             ViewBag.ReportPeriod = _currentPeriod;
-            
+
             return View("ConfirmAmend");
         }
 

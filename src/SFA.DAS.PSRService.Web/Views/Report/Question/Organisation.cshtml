@@ -1,26 +1,42 @@
-﻿@model string
+﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
     ViewData["Title"] = "Your organisation";
     var canBeEdited = ViewBag.CanBeEdited;
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-your-organisation";
     ViewBag.ZenDeskLabel = "reporting-your-organsation";
+    var organisationName = ViewData["OrganisationName"] != null ? this.ViewData["OrganisationName"].ToString() : string.Empty;
+    var totalEmployees = ViewData["TotalEmployees"] != null ? this.ViewData["TotalEmployees"].ToString() : string.Empty;
 }
 
 <div class="form-group">
     <table>
         <caption class="heading-medium">Organisation</caption>
         <tbody>
+        <tr>
+            <td>Organisation Name</td>
+                <td class="bold">@organisationName</td>
+            @if (canBeEdited)
+            {
+                <td class="link-right">
+                    <a asp-controller="Report" asp-action="OrganisationName">Change</a>
+                </td>
+            }
+        </tr>
+            @if (!string.IsNullOrWhiteSpace(totalEmployees))
+        {
             <tr>
-                <td>Organisation Name</td>
-                <td class="bold">@Model</td>
-                    @if (canBeEdited)
-                    {
+                <td>Total number of employees</td>
+                    <td class="bold">@totalEmployees</td>
+                @if (canBeEdited)
+                {
                     <td class="link-right">
-                        <a asp-controller="Report" asp-action="OrganisationName">Change</a>
+                        <a asp-controller="Report" asp-action="TotalEmployees">Change</a>
                     </td>
-                    }
+                }
             </tr>
+        }
         </tbody>
     </table>
 </div>
+
