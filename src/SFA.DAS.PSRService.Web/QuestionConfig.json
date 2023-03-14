@@ -1,5 +1,8 @@
 ﻿{
   "OrganisationName": null,
+  "IsLocalAuthority": true,
+  "HasTotalEmployeesMeetMinimum": null,
+  "TotalEmployees": null,
   "Questions": [
     {
       "SubSections": [
@@ -54,26 +57,13 @@
           "Id": "YourApprentices",
           "Title": "Your apprentices",
           "SummaryText": "Number of apprentices who work in England"
-        },
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "atStart",
-              "Answer": "",
-              "Optional": true,
-              "Type": 0
-            }
-          ],
-          "Id": "FullTimeEquivalent",
-          "Title": "Full time equivalents",
-          "SummaryText": "Number of full-time equivalents who work in England (optional)"
         }
       ],
       "Questions": null,
       "Id": "ReportNumbers",
       "Title": "Report numbers in the following categories",
-      "SummaryText": null
+      "SummaryText": null,
+      "SerialNo": "2"
     },
     {
       "SubSections": [
@@ -88,10 +78,8 @@
             }
           ],
           "Id": "OutlineActions",
-          "Title":
-            "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?",
-          "SummaryText":
-            "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?"
+          "Title": "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?",
+          "SummaryText": "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?"
         },
         {
           "SubSections": null,
@@ -105,8 +93,7 @@
           ],
           "Id": "Challenges",
           "Title": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?",
-          "SummaryText":
-            "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?"
+          "SummaryText": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?"
         },
         {
           "SubSections": null,
@@ -143,5 +130,9 @@
       "SummaryText": null
     }
   ],
-  "Submitted": null
+  "Submitted": null,
+  "SerialNo": "4",
+  "ReportingPercentages": {
+    "Title": "ReportingPercentage"
+  }
 }
