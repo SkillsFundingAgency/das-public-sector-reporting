@@ -108,7 +108,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             try
             {
                 var user = _userService.GetUserModel(User);
-               _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthority); 
+                _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthority);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception)
@@ -325,14 +325,23 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
             };
 
-            totalEmployeesViewModel.Report.HasTotalEmployeesMeetMinimum =  totalEmployeesVm.HasTotalEmployeesMeetMinimum;
+            totalEmployeesViewModel.Report.HasTotalEmployeesMeetMinimum = totalEmployeesVm.HasTotalEmployeesMeetMinimum;
 
             _reportService.SaveReport(totalEmployeesViewModel.Report, _userService.GetUserModel(User));
 
+            if (!totalEmployeesVm.HasTotalEmployeesMeetMinimum.HasValue)
+                return new RedirectResult(Url.Action("TotalEmployeesConfirmationRequired", "Report"));
+
             if (totalEmployeesVm.HasTotalEmployeesMeetMinimum == true)
                 return new RedirectResult(Url.Action("Edit", "Report"));
-            else 
+            else
                 return new RedirectResult(Url.Action("ReportNotRequired"));
+        }
+
+        [Route("TotalEmployeesConfirmationRequired")]
+        public IActionResult TotalEmployeesConfirmationRequired()
+        {
+            return View();
         }
 
         [Route("ReportNotRequired")]
