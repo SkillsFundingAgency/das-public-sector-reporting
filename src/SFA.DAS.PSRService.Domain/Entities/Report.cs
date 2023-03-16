@@ -74,23 +74,27 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public void UpdatePercentages()
         {
-            ReportingPercentages = GetPercentages();
-            ReportingPercentagesSchools = GetPercentagesSchools();
+            //ReportingPercentages = GetPercentages();
+            //ReportingPercentagesSchools = GetPercentagesSchools();
+
+            TotalEmployees = 0;
+            ReportingPercentages = GetPercentages("YourEmployees", "YourApprentices");
+            ReportingPercentagesSchools = GetPercentages("SchoolsEmployees", "SchoolsApprentices");
         }
 
-        private ReportingPercentages GetPercentages()
+        private ReportingPercentages GetPercentages(string employeesSection, string apprenticesSection)
         {
             var percentages = new ReportingPercentages();
 
             if (Sections == null)
                 return null;
 
-            var employeeQuestions = GetQuestionSection("YourEmployees");
+            var employeeQuestions = GetQuestionSection(employeesSection);
 
             if (employeeQuestions == null)
                 return null;
 
-            var apprenticeQuestions = GetQuestionSection("YourApprentices");
+            var apprenticeQuestions = GetQuestionSection(apprenticesSection);
 
             if (apprenticeQuestions == null)
                 return null;
@@ -122,63 +126,118 @@ namespace SFA.DAS.PSRService.Domain.Entities
                 percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
 
             if (IsLocalAuthority.HasValue)
-                TotalEmployees = Convert.ToInt32(employmentPeriod + employmentEnd);
+                TotalEmployees += Convert.ToInt32(employmentEnd);
 
-            if (ReportingPercentages != null)
+            if (ReportingPercentages != null && employeesSection== "YourEmployees" && apprenticesSection== "YourApprentices")
                 percentages.Title = ReportingPercentages.Title;
 
-            return percentages;
-
-        }
-
-        private ReportingPercentages GetPercentagesSchools()
-        {
-            var percentages = new ReportingPercentages();
-
-            if (Sections == null)
-                return null;
-
-            var employeeQuestions = GetQuestionSection("SchoolsEmployees");
-
-            if (employeeQuestions == null)
-                return null;
-
-            var apprenticeQuestions = GetQuestionSection("SchoolsApprentices");
-
-            if (apprenticeQuestions == null)
-                return null;
-
-
-            decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
-                employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
-            if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
-                apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
-                employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-            if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
-                apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer) == false)
-                employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
-
-
-            if (apprenticePeriod != 0 & employmentPeriod != 0)
-                percentages.EmploymentStarts = ((apprenticePeriod / employmentPeriod) * 100).ToString("F2");
-
-            if (apprenticeEnd != 0 & employmentEnd != 0)
-                percentages.TotalHeadCount = ((apprenticeEnd / employmentEnd) * 100).ToString("F2");
-
-            if (apprenticePeriod != 0 & employmentStart != 0)
-                percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
-
-            percentages.Title = ReportingPercentagesSchools.Title;
+            if (ReportingPercentagesSchools != null && employeesSection == "SchoolsEmployees" && apprenticesSection == "SchoolsApprentices")
+                percentages.Title = ReportingPercentagesSchools.Title;
 
             return percentages;
 
         }
+        //private ReportingPercentages GetPercentages()
+        //{
+        //    var percentages = new ReportingPercentages();
+
+        //    if (Sections == null)
+        //        return null;
+
+        //    var employeeQuestions = GetQuestionSection("YourEmployees");
+
+        //    if (employeeQuestions == null)
+        //        return null;
+
+        //    var apprenticeQuestions = GetQuestionSection("YourApprentices");
+
+        //    if (apprenticeQuestions == null)
+        //        return null;
+
+
+        //    decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
+
+        //    if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
+        //        employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+        //    if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
+        //        apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+
+        //    if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
+        //        employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+        //    if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
+        //        apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+
+        //    if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer) == false)
+        //        employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
+
+
+        //    if (apprenticePeriod != 0 & employmentPeriod != 0)
+        //        percentages.EmploymentStarts = ((apprenticePeriod / employmentPeriod) * 100).ToString("F2");
+
+        //    if (apprenticeEnd != 0 & employmentEnd != 0)
+        //        percentages.TotalHeadCount = ((apprenticeEnd / employmentEnd) * 100).ToString("F2");
+
+        //    if (apprenticePeriod != 0 & employmentStart != 0)
+        //        percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
+
+        //    if (IsLocalAuthority.HasValue)
+        //        TotalEmployees = Convert.ToInt32(employmentPeriod + employmentEnd);
+
+        //    if (ReportingPercentages != null)
+        //        percentages.Title = ReportingPercentages.Title;
+
+        //    return percentages;
+
+        //}
+
+        //private ReportingPercentages GetPercentagesSchools()
+        //{
+        //    var percentages = new ReportingPercentages();
+
+        //    if (Sections == null)
+        //        return null;
+
+        //    var employeeQuestions = GetQuestionSection("SchoolsEmployees");
+
+        //    if (employeeQuestions == null)
+        //        return null;
+
+        //    var apprenticeQuestions = GetQuestionSection("SchoolsApprentices");
+
+        //    if (apprenticeQuestions == null)
+        //        return null;
+
+
+        //    decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
+
+        //    if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
+        //        employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+        //    if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
+        //        apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+
+        //    if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
+        //        employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+        //    if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
+        //        apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+
+        //    if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer) == false)
+        //        employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
+
+
+        //    if (apprenticePeriod != 0 & employmentPeriod != 0)
+        //        percentages.EmploymentStarts = ((apprenticePeriod / employmentPeriod) * 100).ToString("F2");
+
+        //    if (apprenticeEnd != 0 & employmentEnd != 0)
+        //        percentages.TotalHeadCount = ((apprenticeEnd / employmentEnd) * 100).ToString("F2");
+
+        //    if (apprenticePeriod != 0 & employmentStart != 0)
+        //        percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
+
+        //    percentages.Title = ReportingPercentagesSchools.Title;
+
+        //    return percentages;
+
+        //}
 
         private IEnumerable<Section> GetSections()
         {
