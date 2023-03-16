@@ -102,8 +102,10 @@
             {
                 @Html.Partial("Question/ReportingPercentages", Model.PercentagesSchools)
             }
-            @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
-
+            @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
+            {
+                @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
+            }
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
             {
