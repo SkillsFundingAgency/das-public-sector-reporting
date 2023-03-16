@@ -303,39 +303,30 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
 
-            var totalEmployeesVm = new TotalEmployees
-            {
-                HasMinimumEmployeeHeadcount = report.HasMinimumEmployeeHeadcount,
-                Report = report
-            };
-
             ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
 
-            return View("TotalEmployees", totalEmployeesVm);
+            return View("TotalEmployees", report.HasMinimumEmployeeHeadcount);
         }
 
         [Route("PostTotalEmployees")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult PostTotalEmployees(TotalEmployees totalEmployeesVm)
+        public IActionResult PostTotalEmployees(bool? hasMinimumEmployeeHeadcount)
         {
-            var totalEmployeesViewModel = new TotalEmployees
-            {
-                Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
-            };
-
-            totalEmployeesViewModel.Report.HasMinimumEmployeeHeadcount = totalEmployeesVm.HasMinimumEmployeeHeadcount;
-
-            _reportService.SaveReport(totalEmployeesViewModel.Report, _userService.GetUserModel(User));
-
-            if (!totalEmployeesVm.HasMinimumEmployeeHeadcount.HasValue)
+            if (!hasMinimumEmployeeHeadcount.HasValue)
                 return new RedirectResult(Url.Action("TotalEmployeesConfirmationRequired", "Report"));
 
-            if (totalEmployeesVm.HasMinimumEmployeeHeadcount == true)
-                return new RedirectResult(Url.Action("Edit", "Report"));
-            else
+            if (hasMinimumEmployeeHeadcount == false)
                 return new RedirectResult(Url.Action("ReportNotRequired"));
+
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
+
+            _reportService.SaveReport(report, _userService.GetUserModel(User));
+
+            return new RedirectResult(Url.Action("Edit", "Report"));
         }
 
         [Route("TotalEmployeesConfirmationRequired")]

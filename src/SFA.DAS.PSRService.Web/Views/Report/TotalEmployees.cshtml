@@ -1,4 +1,4 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.TotalEmployees
+﻿@model bool?
 
 @{
     ViewData["Title"] = "Your organisation";
@@ -17,11 +17,11 @@
                 <div class="form-group">
                     <p>Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString ?</p>
                     <div class="multiple-choice">
-                        <input id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model.HasMinimumEmployeeHeadcount == true ? "checked" : "")>
+                        <input id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
                         <label for="totalemployees-action-yes">Yes</label>
                     </div>
                     <div class="multiple-choice">
-                        <input id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model.HasMinimumEmployeeHeadcount == false ? "checked" : "")>
+                        <input id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model == false ? "checked" : "")>
                         <label for="totalemployees-action-no">No</label>
                     </div>
                 </div>
