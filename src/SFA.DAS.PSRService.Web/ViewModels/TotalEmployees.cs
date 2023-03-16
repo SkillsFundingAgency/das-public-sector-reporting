@@ -6,6 +6,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     public class TotalEmployees
     {
         public Report Report { get; set; }
-        public bool? HasTotalEmployeesMeetMinimum { get; set; }
+        public bool? HasMinimumEmployeeHeadcount { get; set; }
     }
 }

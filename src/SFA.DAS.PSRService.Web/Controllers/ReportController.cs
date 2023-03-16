@@ -305,7 +305,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var totalEmployeesVm = new TotalEmployees
             {
-                HasTotalEmployeesMeetMinimum = report.HasTotalEmployeesMeetMinimum,
+                HasMinimumEmployeeHeadcount = report.HasMinimumEmployeeHeadcount,
                 Report = report
             };
 
@@ -325,14 +325,14 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 Report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId)
             };
 
-            totalEmployeesViewModel.Report.HasTotalEmployeesMeetMinimum = totalEmployeesVm.HasTotalEmployeesMeetMinimum;
+            totalEmployeesViewModel.Report.HasMinimumEmployeeHeadcount = totalEmployeesVm.HasMinimumEmployeeHeadcount;
 
             _reportService.SaveReport(totalEmployeesViewModel.Report, _userService.GetUserModel(User));
 
-            if (!totalEmployeesVm.HasTotalEmployeesMeetMinimum.HasValue)
+            if (!totalEmployeesVm.HasMinimumEmployeeHeadcount.HasValue)
                 return new RedirectResult(Url.Action("TotalEmployeesConfirmationRequired", "Report"));
 
-            if (totalEmployeesVm.HasTotalEmployeesMeetMinimum == true)
+            if (totalEmployeesVm.HasMinimumEmployeeHeadcount == true)
                 return new RedirectResult(Url.Action("Edit", "Report"));
             else
                 return new RedirectResult(Url.Action("ReportNotRequired"));

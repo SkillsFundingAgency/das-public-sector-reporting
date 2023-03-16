@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
             CreateMap<ReportDto, Report>()
                 .ForMember(dest => dest.SubmittedDetails, opts => opts.Ignore())
                 .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
-                .ForMember(dest => dest.HasTotalEmployeesMeetMinimum, opts => opts.Ignore())
+                .ForMember(dest => dest.HasMinimumEmployeeHeadcount, opts => opts.Ignore())
                 .ForMember(dest => dest.TotalEmployees, opts => opts.Ignore())
                 .ForMember(dest => dest.IsLocalAuthority, opts => opts.Ignore())
                 .ForMember(dest => dest.Sections, opts => opts.Ignore())
@@ -27,7 +27,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                     var dataObject = JsonConvert.DeserializeObject<ReportingData>(src.ReportingData);
 
                     dest.OrganisationName = dataObject.OrganisationName;
-                    dest.HasTotalEmployeesMeetMinimum = dataObject.HasTotalEmployeesMeetMinimum;
+                    dest.HasMinimumEmployeeHeadcount = dataObject.HasMinimumEmployeeHeadcount;
                     dest.TotalEmployees = dataObject.TotalEmployees;
                     dest.IsLocalAuthority = dataObject.IsLocalAuthority;
                     dest.Sections = dataObject.Questions;
@@ -48,7 +48,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
             var serilizationObj = new
             {
                 report.OrganisationName,
-                report.HasTotalEmployeesMeetMinimum,
+                report.HasMinimumEmployeeHeadcount,
                 report.TotalEmployees,
                 report.IsLocalAuthority,
                 Questions = report.Sections,

@@ -35,7 +35,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             {
                 EmployerId = "11",
                 OrganisationName = "12",
-                HasTotalEmployeesMeetMinimum = true,
+                HasMinimumEmployeeHeadcount = true,
                 TotalEmployees = 10,
                 IsLocalAuthority = true,
                 SerialNo="1",
@@ -119,7 +119,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             // Assert
             Assert.AreEqual(report.EmployerId, newReport.EmployerId);
             Assert.AreEqual(report.OrganisationName, newReport.OrganisationName);
-            Assert.AreEqual(report.HasTotalEmployeesMeetMinimum, newReport.HasTotalEmployeesMeetMinimum);
+            Assert.AreEqual(report.HasMinimumEmployeeHeadcount, newReport.HasMinimumEmployeeHeadcount);
             Assert.AreEqual(report.TotalEmployees, newReport.TotalEmployees);
             Assert.AreEqual(report.IsLocalAuthority, newReport.IsLocalAuthority);
             Assert.AreEqual(report.SerialNo, newReport.SerialNo);
@@ -154,7 +154,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             var reportDto = new ReportDto()
             {
                 EmployerId = "ABCDE",
-                ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"HasTotalEmployeesMeetMinimum\":true,\"TotalEmployees\":\"100\",\"IsLocalAuthority\":true,\"SerialNo\":\"2\",\"Questions\":\"\",\"Submitted\":null,ReportingPercentages:{EmploymentStarts: 11, NewThisPeriod: 22, TotalHeadCount: 33}}",
+                ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"HasMinimumEmployeeHeadcount\":true,\"TotalEmployees\":\"100\",\"IsLocalAuthority\":true,\"SerialNo\":\"2\",\"Questions\":\"\",\"Submitted\":null,ReportingPercentages:{EmploymentStarts: 11, NewThisPeriod: 22, TotalHeadCount: 33}}",
                 ReportingPeriod = "1617",
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Submitted = true
@@ -163,7 +163,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             var mappedReport = _mapper.Map<ReportDto, Report>(reportDto);
 
             Assert.AreEqual(mappedReport.OrganisationName, "Organisation 1");
-            Assert.AreEqual(mappedReport.HasTotalEmployeesMeetMinimum, true);
+            Assert.AreEqual(mappedReport.HasMinimumEmployeeHeadcount, true);
             Assert.AreEqual(mappedReport.TotalEmployees, 100);
             Assert.AreEqual(mappedReport.IsLocalAuthority, true);
             Assert.AreEqual(mappedReport.SerialNo, "2");
@@ -191,7 +191,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
                 ReportingPeriod = "1617",
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Submitted = true,
-                HasTotalEmployeesMeetMinimum = true,
+                HasMinimumEmployeeHeadcount = true,
                 TotalEmployees = 100,
                 IsLocalAuthority = true,
                 SerialNo = "2",
@@ -207,7 +207,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
             var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
 
             var expectedSerializedReportingData =
-                "{\"OrganisationName\":\"Organisation 1\",\"HasTotalEmployeesMeetMinimum\":true,\"TotalEmployees\":100,\"IsLocalAuthority\":true,\"Questions\":null,\"SerialNo\":\"2\",\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":\"11.00\",\"TotalHeadCount\":\"22.00\",\"NewThisPeriod\":\"33.00\",\"Title\":\"ReportingPercentages\"},\"ReportingPercentagesSchools\":null}";
+                "{\"OrganisationName\":\"Organisation 1\",\"HasMinimumEmployeeHeadcount\":true,\"TotalEmployees\":100,\"IsLocalAuthority\":true,\"Questions\":null,\"SerialNo\":\"2\",\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":\"11.00\",\"TotalHeadCount\":\"22.00\",\"NewThisPeriod\":\"33.00\",\"Title\":\"ReportingPercentages\"},\"ReportingPercentagesSchools\":null}";
 
             Assert.AreEqual(expectedSerializedReportingData, mappedReportDto.ReportingData);
             Assert.AreEqual(report.Submitted, mappedReportDto.Submitted);

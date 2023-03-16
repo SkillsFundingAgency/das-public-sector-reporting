@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.Application.Mapping
                     dest.ReportingPercentagesSchools = dataObject.ReportingPercentagesSchools;
                     dest.OrganisationName = dataObject.OrganisationName;
                     dest.SerialNo = dataObject.SerialNo;
-                    dest.HasTotalEmployeesMeetMinimum = dataObject.HasTotalEmployeesMeetMinimum;
+                    dest.HasMinimumEmployeeHeadcount = dataObject.HasMinimumEmployeeHeadcount;
                     dest.TotalEmployees = dataObject.TotalEmployees;
                     dest.IsLocalAuthority = dataObject.IsLocalAuthority;
                 });

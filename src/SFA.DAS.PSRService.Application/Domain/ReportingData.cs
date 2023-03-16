@@ -7,7 +7,7 @@ namespace SFA.DAS.PSRService.Application.Domain
     {
         public IEnumerable<Section> Questions { get; set; }
         public string OrganisationName { get; set; }
-        public bool? HasTotalEmployeesMeetMinimum { get; set; }
+        public bool? HasMinimumEmployeeHeadcount { get; set; }
         public int TotalEmployees { get; set; }
         public bool? IsLocalAuthority { get; set; }
         public string SerialNo { get; set; }

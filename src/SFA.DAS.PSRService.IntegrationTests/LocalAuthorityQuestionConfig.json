@@ -1,7 +1,7 @@
 ﻿{
   "OrganisationName": "Test",
   "IsLocalAuthority": true,
-  "HasTotalEmployeesMeetMinimum": true,
+  "HasMinimumEmployeeHeadcount": true,
   "TotalEmployees": 300,
   "Questions": [
     {

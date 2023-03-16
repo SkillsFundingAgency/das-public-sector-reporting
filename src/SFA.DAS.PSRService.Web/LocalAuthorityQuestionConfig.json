@@ -1,7 +1,7 @@
 ﻿{
   "OrganisationName": null,
   "IsLocalAuthority": true,
-  "HasTotalEmployeesMeetMinimum": null,
+  "HasMinimumEmployeeHeadcount": null,
   "TotalEmployees": 0,
   "Questions": [
     {

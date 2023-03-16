@@ -8,7 +8,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
     {
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
-        public bool? HasTotalEmployeesMeetMinimum { get; set; }
+        public bool? HasMinimumEmployeeHeadcount { get; set; }
         public int TotalEmployees { get; set; }
         public bool? IsLocalAuthority { get; set; }
         public string EmployerId { get; set; }
@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
                 ReportIsNotYetSubmitted()
                 && AllSectionsAreValid()
             && OrganisationNameIsValid()
-            && HasTotalEmployeesMeetMinimumIsValid()
+            && HasMinimumEmployeeHeadcountIsValid()
             && HasMinimumTotalEmployees();
         }
 
@@ -47,12 +47,12 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return TotalEmployees < 250 == false;
         }
 
-        private bool HasTotalEmployeesMeetMinimumIsValid()
+        private bool HasMinimumEmployeeHeadcountIsValid()
         {
             if (!IsLocalAuthority.HasValue)
                 return true;
 
-            return HasTotalEmployeesMeetMinimum.HasValue;
+            return HasMinimumEmployeeHeadcount.HasValue;
         }
 
         private bool ReportIsNotYetSubmitted()
@@ -173,7 +173,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
             if (IsLocalAuthority.HasValue)
             {
-                if (HasTotalEmployeesMeetMinimumIsValid() == false)
+                if (HasMinimumEmployeeHeadcountIsValid() == false)
                     yield return @"TotalEmployees";
             }
 
