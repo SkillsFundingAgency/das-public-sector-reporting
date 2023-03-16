@@ -21,7 +21,7 @@ namespace SFA.DAS.PSRService.Web.Services
             _config = config;
         }
 
-        public void CreateReport(string employerId, UserModel user, bool? IsLocalAuthority)
+        public void CreateReport(string employerId, UserModel user, bool IsLocalAuthority)
         {
             var currentPeriod = _periodService.GetCurrentPeriod();
 

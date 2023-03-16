@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ using Dapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -84,6 +86,12 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 config.For<IWebConfiguration>().Use(new WebConfiguration
                 {
                     SqlConnectionString = TestHelper.ConnectionString,
+                });
+
+                config.For<IDbConnection>().Use($"Build IDbConnection", c => {
+
+                        return new SqlConnection(TestHelper.ConnectionString);
+
                 });
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);

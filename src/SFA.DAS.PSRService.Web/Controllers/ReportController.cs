@@ -97,14 +97,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult IsLocalAuthority()
         {
-            ViewBag.CurrentPeriod = _currentPeriod;
-            return View("IsLocalAuthority");
+            return View();
         }
 
         [HttpPost]
         [Route("IsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult PostIsLocalAuthority(bool? isLocalAuthority)
+        public IActionResult PostIsLocalAuthority(bool isLocalAuthority)
         {
             try
             {
@@ -333,13 +332,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
             if (totalEmployeesVm.HasTotalEmployeesMeetMinimum == true)
                 return new RedirectResult(Url.Action("Edit", "Report"));
             else 
-                return new RedirectResult(Url.Action("ValidateEmployeeCount"));
+                return new RedirectResult(Url.Action("ReportNotRequired"));
         }
 
-        [Route("ValidateEmployeeCount")]
-        public IActionResult ValidateEmployeeCount()
+        [Route("ReportNotRequired")]
+        public IActionResult ReportNotRequired()
         {
-            return View("ValidateEmployeeCount");
+            return View();
         }
 
         [Route("Change")]
@@ -378,7 +377,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             ViewBag.ReportPeriod = _currentPeriod;
 
-            return View("ConfirmAmend");
+            return View();
         }
 
         private bool UserIsAuthorizedForReportSubmission()

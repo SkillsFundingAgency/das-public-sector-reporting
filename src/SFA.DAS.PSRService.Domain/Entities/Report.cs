@@ -9,7 +9,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
         public bool? HasTotalEmployeesMeetMinimum { get; set; }
-        public string TotalEmployees { get; set; }
+        public int TotalEmployees { get; set; }
         public bool? IsLocalAuthority { get; set; }
         public string EmployerId { get; set; }
         public IEnumerable<Section> Sections { get; set; }
@@ -44,7 +44,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
             if (!IsLocalAuthority.HasValue)
                 return true;
 
-            return string.IsNullOrEmpty(TotalEmployees) ? false : int.Parse(TotalEmployees) < 250 == false;
+            return TotalEmployees < 250 == false;
         }
 
         private bool HasTotalEmployeesMeetMinimumIsValid()
@@ -122,7 +122,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
                 percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
 
             if (IsLocalAuthority.HasValue)
-                TotalEmployees = (employmentPeriod + employmentEnd).ToString("F0");
+                TotalEmployees = Convert.ToInt32(employmentPeriod + employmentEnd);
 
             if (ReportingPercentages != null)
                 percentages.Title = ReportingPercentages.Title;
@@ -130,6 +130,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return percentages;
 
         }
+
         private ReportingPercentages GetPercentagesSchools()
         {
             var percentages = new ReportingPercentages();
