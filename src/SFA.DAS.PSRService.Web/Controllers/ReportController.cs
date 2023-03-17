@@ -81,7 +81,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostCreate()
         {
-                return  RedirectToAction("IsLocalAuthority", "Report");
+            return RedirectToAction("IsLocalAuthority", "Report");
         }
 
         [HttpGet]
@@ -154,7 +154,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-
                 if (period == null)
                     period = _currentPeriod.PeriodString;
 
@@ -170,11 +169,21 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     IsReadOnly = (UserIsAuthorizedForReportEdit() == false)
                 };
 
-                reportViewModel.IsValidForSubmission = reportViewModel.Report?.IsValidForSubmission() ?? false;
-                reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
-                if (reportViewModel.Report.ReportingPercentagesSchools != null) reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentagesSchools);
+                if (reportViewModel.Report != null)
+                {
+                    reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
+                    reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report.ReportingPercentages);
+                    reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
+                    ViewBag.CurrentPeriod = reportViewModel.Report.Period ?? _currentPeriod;
 
-                ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+                }
+                else
+                {
+                    reportViewModel.IsValidForSubmission = false;
+                    reportViewModel.Percentages = new PercentagesViewModel(null);
+                    reportViewModel.PercentagesSchools = new PercentagesViewModel(null);
+                    ViewBag.CurrentPeriod = _currentPeriod;
+                }
 
                 TryValidateModel(reportViewModel);
 

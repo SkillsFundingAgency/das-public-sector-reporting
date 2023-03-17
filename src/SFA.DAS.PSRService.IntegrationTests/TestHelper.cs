@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -88,11 +87,6 @@ namespace SFA.DAS.PSRService.IntegrationTests
                     SqlConnectionString = TestHelper.ConnectionString,
                 });
 
-                config.For<IDbConnection>().Use($"Build IDbConnection", c => {
-
-                        return new SqlConnection(TestHelper.ConnectionString);
-
-                });
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
