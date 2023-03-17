@@ -1,8 +1,8 @@
 ﻿{
   "OrganisationName": null,
   "IsLocalAuthority": true,
-  "HasTotalEmployeesMeetMinimum": null,
-  "TotalEmployees": null,
+  "HasMinimumEmployeeHeadcount": null,
+  "TotalEmployees": 0,
   "Questions": [
     {
       "SubSections": [
