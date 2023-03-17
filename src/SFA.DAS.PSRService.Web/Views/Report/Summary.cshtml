@@ -89,7 +89,7 @@
                 </table>
             </div>
 
-            @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", Model.Report.OrganisationName }, { "TotalEmployees", Model.Report.TotalEmployees}})
+            @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", Model.Report.OrganisationName }, { "TotalEmployees", Model.Report.TotalEmployees},{ "IsLocalAuthority", Model.Report.IsLocalAuthority}})
             @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
             {

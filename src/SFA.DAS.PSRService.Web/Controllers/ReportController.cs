@@ -175,7 +175,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report.ReportingPercentages);
                     reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
                     ViewBag.CurrentPeriod = reportViewModel.Report.Period ?? _currentPeriod;
-
                 }
                 else
                 {
