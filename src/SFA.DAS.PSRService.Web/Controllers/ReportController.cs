@@ -81,15 +81,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostCreate()
         {
-            try
-            {
-                return new RedirectResult(Url.Action("IsLocalAuthority", "Report"));
-            }
-            catch (Exception)
-            {
-
-                return new BadRequestResult();
-            }
+                return  RedirectToAction("IsLocalAuthority", "Report");
         }
 
         [HttpGet]

@@ -48,7 +48,10 @@
                     {
                         @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentagesSchools))
                     }
-                    @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                    @if (edit.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
+                    {
+                        @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                    }
                 </div>
             </details>
         }
