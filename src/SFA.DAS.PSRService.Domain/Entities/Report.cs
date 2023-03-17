@@ -44,7 +44,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
             if (!IsLocalAuthority.HasValue)
                 return true;
 
-            return TotalEmployees < 250 == false;
+            return TotalEmployees >= 250;
         }
 
         private bool HasMinimumEmployeeHeadcountIsValid()
@@ -76,8 +76,17 @@ namespace SFA.DAS.PSRService.Domain.Entities
         {
             TotalEmployees = 0;
 
-            ReportingPercentages = GetPercentages("YourEmployees", "YourApprentices");
-            ReportingPercentagesSchools = GetPercentages("SchoolsEmployees", "SchoolsApprentices");
+            var reportingPercentages = GetPercentages("YourEmployees", "YourApprentices");
+            var reportingPercentagesSchools = GetPercentages("SchoolsEmployees", "SchoolsApprentices");
+
+            if (reportingPercentages != null && ReportingPercentages != null)
+                reportingPercentages.Title = ReportingPercentages.Title;
+
+            if (reportingPercentagesSchools != null && ReportingPercentagesSchools != null)
+                reportingPercentagesSchools.Title = ReportingPercentagesSchools.Title;
+
+            ReportingPercentages = reportingPercentages;
+            ReportingPercentagesSchools = reportingPercentagesSchools;
         }
 
         private ReportingPercentages GetPercentages(string employeesSection, string apprenticesSection)
@@ -125,12 +134,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
             if (IsLocalAuthority.HasValue)
                 TotalEmployees += Convert.ToInt32(employmentEnd);
-
-            if (ReportingPercentages != null && employeesSection == "YourEmployees" && apprenticesSection == "YourApprentices")
-                percentages.Title = ReportingPercentages.Title;
-
-            if (ReportingPercentagesSchools != null && employeesSection == "SchoolsEmployees" && apprenticesSection == "SchoolsApprentices")
-                percentages.Title = ReportingPercentagesSchools.Title;
 
             return percentages;
         }

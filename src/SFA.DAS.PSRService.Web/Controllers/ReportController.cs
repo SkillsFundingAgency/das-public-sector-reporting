@@ -95,7 +95,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [HttpPost]
         [Route("IsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult PostIsLocalAuthority(bool isLocalAuthority)
+        public IActionResult PostIsLocalAuthority(bool? isLocalAuthority)
         {
             try
             {
@@ -173,14 +173,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 {
                     reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
                     reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report.ReportingPercentages);
-                    reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
+                    if (reportViewModel.Report.ReportingPercentagesSchools != null) reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
                     ViewBag.CurrentPeriod = reportViewModel.Report.Period ?? _currentPeriod;
                 }
                 else
                 {
                     reportViewModel.IsValidForSubmission = false;
-                    reportViewModel.Percentages = new PercentagesViewModel(null);
-                    reportViewModel.PercentagesSchools = new PercentagesViewModel(null);
                     ViewBag.CurrentPeriod = _currentPeriod;
                 }
 
