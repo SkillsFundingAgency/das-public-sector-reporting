@@ -10,16 +10,13 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             User user, 
             string employerId, 
             string period,
-            bool? isLocalAuthority)
+            bool isLocalAuthority)
         {
             if (string.IsNullOrWhiteSpace(employerId))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(employerId));
 
             if (string.IsNullOrWhiteSpace(period))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(period));
-
-            if (!isLocalAuthority.HasValue)
-                throw new ArgumentException("Value cannot be null.", nameof(isLocalAuthority));
 
             EmployerId = employerId;
             Period = period;
@@ -30,7 +27,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
         public string EmployerId { get; }
         public string Period { get; }
-        public bool? IsLocalAuthority { get; }      
+        public bool IsLocalAuthority { get; }      
         public User User { get; }
     }
 }

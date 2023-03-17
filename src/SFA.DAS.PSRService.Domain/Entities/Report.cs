@@ -8,8 +8,8 @@ namespace SFA.DAS.PSRService.Domain.Entities
     {
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
-        public bool? HasTotalEmployeesMeetMinimum { get; set; }
-        public string TotalEmployees { get; set; }
+        public bool? HasMinimumEmployeeHeadcount { get; set; }
+        public int TotalEmployees { get; set; }
         public bool? IsLocalAuthority { get; set; }
         public string EmployerId { get; set; }
         public IEnumerable<Section> Sections { get; set; }
@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
                 ReportIsNotYetSubmitted()
                 && AllSectionsAreValid()
             && OrganisationNameIsValid()
-            && HasTotalEmployeesMeetMinimumIsValid()
+            && HasMinimumEmployeeHeadcountIsValid()
             && HasMinimumTotalEmployees();
         }
 
@@ -44,15 +44,15 @@ namespace SFA.DAS.PSRService.Domain.Entities
             if (!IsLocalAuthority.HasValue)
                 return true;
 
-            return string.IsNullOrEmpty(TotalEmployees) ? false : int.Parse(TotalEmployees) < 250 == false;
+            return TotalEmployees < 250 == false;
         }
 
-        private bool HasTotalEmployeesMeetMinimumIsValid()
+        private bool HasMinimumEmployeeHeadcountIsValid()
         {
             if (!IsLocalAuthority.HasValue)
                 return true;
 
-            return HasTotalEmployeesMeetMinimum.HasValue;
+            return HasMinimumEmployeeHeadcount.HasValue;
         }
 
         private bool ReportIsNotYetSubmitted()
@@ -74,23 +74,25 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public void UpdatePercentages()
         {
-            ReportingPercentages = GetPercentages();
-            ReportingPercentagesSchools = GetPercentagesSchools();
+            TotalEmployees = 0;
+
+            ReportingPercentages = GetPercentages("YourEmployees", "YourApprentices");
+            ReportingPercentagesSchools = GetPercentages("SchoolsEmployees", "SchoolsApprentices");
         }
 
-        private ReportingPercentages GetPercentages()
+        private ReportingPercentages GetPercentages(string employeesSection, string apprenticesSection)
         {
             var percentages = new ReportingPercentages();
 
             if (Sections == null)
                 return null;
 
-            var employeeQuestions = GetQuestionSection("YourEmployees");
+            var employeeQuestions = GetQuestionSection(employeesSection);
 
             if (employeeQuestions == null)
                 return null;
 
-            var apprenticeQuestions = GetQuestionSection("YourApprentices");
+            var apprenticeQuestions = GetQuestionSection(apprenticesSection);
 
             if (apprenticeQuestions == null)
                 return null;
@@ -122,61 +124,15 @@ namespace SFA.DAS.PSRService.Domain.Entities
                 percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
 
             if (IsLocalAuthority.HasValue)
-                TotalEmployees = (employmentPeriod + employmentEnd).ToString("F0");
+                TotalEmployees += Convert.ToInt32(employmentEnd);
 
-            if (ReportingPercentages != null)
+            if (ReportingPercentages != null && employeesSection == "YourEmployees" && apprenticesSection == "YourApprentices")
                 percentages.Title = ReportingPercentages.Title;
 
-            return percentages;
-
-        }
-        private ReportingPercentages GetPercentagesSchools()
-        {
-            var percentages = new ReportingPercentages();
-
-            if (Sections == null)
-                return null;
-
-            var employeeQuestions = GetQuestionSection("SchoolsEmployees");
-
-            if (employeeQuestions == null)
-                return null;
-
-            var apprenticeQuestions = GetQuestionSection("SchoolsApprentices");
-
-            if (apprenticeQuestions == null)
-                return null;
-
-
-            decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
-                employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
-            if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
-                apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
-                employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-            if (String.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
-                apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
-
-            if (String.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer) == false)
-                employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
-
-
-            if (apprenticePeriod != 0 & employmentPeriod != 0)
-                percentages.EmploymentStarts = ((apprenticePeriod / employmentPeriod) * 100).ToString("F2");
-
-            if (apprenticeEnd != 0 & employmentEnd != 0)
-                percentages.TotalHeadCount = ((apprenticeEnd / employmentEnd) * 100).ToString("F2");
-
-            if (apprenticePeriod != 0 & employmentStart != 0)
-                percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
-
-            percentages.Title = ReportingPercentagesSchools.Title;
+            if (ReportingPercentagesSchools != null && employeesSection == "SchoolsEmployees" && apprenticesSection == "SchoolsApprentices")
+                percentages.Title = ReportingPercentagesSchools.Title;
 
             return percentages;
-
         }
 
         private IEnumerable<Section> GetSections()
@@ -217,7 +173,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
             if (IsLocalAuthority.HasValue)
             {
-                if (HasTotalEmployeesMeetMinimumIsValid() == false)
+                if (HasMinimumEmployeeHeadcountIsValid() == false)
                     yield return @"TotalEmployees";
             }
 

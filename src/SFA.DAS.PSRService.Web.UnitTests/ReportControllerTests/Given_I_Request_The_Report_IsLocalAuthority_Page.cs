@@ -26,7 +26,6 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             // act
             var result = _controller.PostIsLocalAuthority(isLocalAuthority);
 
-
             // assert
             _mockUrlHelper.VerifyAll();
 
@@ -41,16 +40,14 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         [TestCase(false)]
         public void And_The_Report_Creation_Fails_Then_Throw_Error(bool isLocalAuthority)
         {
-         
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority))
-                .Throws(new Exception("Unable to create Report"));
-        
+                   .Throws(new Exception("Unable to create Report"));
+
             // act
             var result = _controller.PostIsLocalAuthority(isLocalAuthority);
-            
+
             // assert
             Assert.IsInstanceOf<BadRequestResult>(result);
         }
-
     }
 }

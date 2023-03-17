@@ -7,6 +7,7 @@
     ViewBag.ZenDeskLabel = "reporting-your-organsation";
     var organisationName = ViewData["OrganisationName"] != null ? this.ViewData["OrganisationName"].ToString() : string.Empty;
     var totalEmployees = ViewData["TotalEmployees"] != null ? this.ViewData["TotalEmployees"].ToString() : string.Empty;
+    bool? isLocalAuthority = ViewData["IsLocalAuthority"] != null ? (bool)this.ViewData["IsLocalAuthority"] : null;
 }
 
 <div class="form-group">
@@ -23,7 +24,7 @@
                 </td>
             }
         </tr>
-            @if (!string.IsNullOrWhiteSpace(totalEmployees))
+            @if (isLocalAuthority.HasValue)
         {
             <tr>
                 <td>Total number of employees</td>

@@ -35,7 +35,7 @@
                 </summary>
                 <div>
 
-                    @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", edit.OrganisationName }, { "TotalEmployees",edit.TotalEmployees}})
+                    @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", edit.OrganisationName }, { "TotalEmployees",edit.TotalEmployees},{ "IsLocalAuthority", edit.IsLocalAuthority}})
 
                     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
                     @if (edit.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
@@ -48,7 +48,10 @@
                     {
                         @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentagesSchools))
                     }
-                    @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                    @if (edit.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
+                    {
+                        @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                    }
                 </div>
             </details>
         }

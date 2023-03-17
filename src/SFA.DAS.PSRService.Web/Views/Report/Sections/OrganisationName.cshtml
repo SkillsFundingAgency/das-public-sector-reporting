@@ -23,7 +23,7 @@
         {
             <li class="task-list-item">
                 <a class="task-name" asp-controller="Report" asp-action="TotalEmployees" aria-describedby="organisation-name-completed">Total number of employees</a>
-            @if (Model.Report.HasTotalEmployeesMeetMinimum.HasValue)
+                @if (Model.Report.HasMinimumEmployeeHeadcount.HasValue)
                 {
                     <span id="TotalEmployees-task-completed" class="task-completed">COMPLETE</span>
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -15,42 +16,15 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
         [TestCase(false)]
         public void And_The_Report_Creation_Is_Successful_Then_Redirect_To_IsLocalAuthority(bool isLocalAuthority)
         {
-            // arrange
-            var url = "report/IsLocalAuthority";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
 
-            // act
-            var result = _controller.PostCreate();
+            var result = (RedirectToActionResult)_controller.PostCreate();
 
-
-            // assert
             _mockUrlHelper.VerifyAll();
 
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("IsLocalAuthority", actualContext.Action);
-            Assert.AreEqual("Report", actualContext.Controller);
+            result.Should().NotBeNull();
+            result.ActionName.Should().Be("IsLocalAuthority");
+            result.ControllerName.Should().Be("Report");
         }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void And_The_Report_Creation_Fails_Then_Throw_Error(bool isLocalAuthority)
-        {
-
-            _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority))
-                .Throws(new Exception("Unable to create Report"));
-
-            // act
-            var result = _controller.PostCreate();
-
-            // assert
-            Assert.IsInstanceOf<BadRequestResult>(result);
-        }
-
     }
 }
