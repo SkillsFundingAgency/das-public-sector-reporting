@@ -318,13 +318,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostTotalEmployees(bool? hasMinimumEmployeeHeadcount)
         {
-            if (!hasMinimumEmployeeHeadcount.HasValue)
-                return new RedirectResult(Url.Action("TotalEmployeesConfirmationRequired", "Report"));
-
             if (hasMinimumEmployeeHeadcount == false)
                 return new RedirectResult(Url.Action("ReportNotRequired"));
 
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!hasMinimumEmployeeHeadcount.HasValue)
+            {
+                ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+                ModelState.AddModelError("confirm-yes", "Please select did your organisation employ more than 250 people on 31 March 2021 or not");
+                return View("TotalEmployees", hasMinimumEmployeeHeadcount);
+            }
 
             report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
 

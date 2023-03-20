@@ -14,8 +14,16 @@
 
         <form id="myFormId" asp-action="PostTotalEmployees">
             <fieldset class="inline">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString ?
+                </legend>
+                @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
+                {
+                    <span id="confirm-error" class="error-message">
+                        <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                    </span>
+                }
                 <div class="form-group">
-                    <p>Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString ?</p>
                     <div class="multiple-choice">
                         <input id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
                         <label for="totalemployees-action-yes">Yes</label>
