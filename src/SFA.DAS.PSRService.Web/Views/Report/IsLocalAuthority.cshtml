@@ -5,33 +5,27 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/page-islocalauthority";
     ViewBag.ZenDeskLabel = "reporting-islocalauthority";
 }
-
 <a class="link-back" asp-controller="Report" asp-action="Create">Back</a>
 <div class="grid-row">
     <div class="column-two-thirds">
+        <h1 class="heading-medium">Are you a local authority?</h1>
         <form method="post">
-            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+            <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
                 <fieldset class="inline">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                        <h1 class="heading-medium">
-                            Are you a local authority?
-                        </h1>
-                    </legend>
+                    <legend class="visually-hidden">Are you a local authority?</legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
-                        <span id="confirm-error" class="error-message">
-                            <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
-                        </span>
+                    <p id="confirm-error" class="error-message">
+                        <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                    </p>
                     }
-                    <div class="govuk-radios">
-                        <div class="multiple-choice">
-                            <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True">
-                            <label for="islocalauthority-action-yes">Yes</label>
-                        </div>
-                        <div class="multiple-choice">
-                            <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False">
-                            <label for="islocalauthority-action-no">No</label>
-                        </div>
+                    <div class="multiple-choice">
+                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True">
+                        <label for="islocalauthority-action-yes">Yes</label>
+                    </div>
+                    <div class="multiple-choice">
+                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False">
+                        <label for="islocalauthority-action-no">No</label>
                     </div>
                 </fieldset>
             </div>

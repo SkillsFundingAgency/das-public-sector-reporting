@@ -101,7 +101,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
                 if (!isLocalAuthority.HasValue)
                 {
-                    ModelState.AddModelError("confirm-yes", "Please select is local authority or not");
+                    ModelState.AddModelError("confirm-yes", "Select whether you are a local authority or not");
                     return View("IsLocalAuthority");
                 }
 

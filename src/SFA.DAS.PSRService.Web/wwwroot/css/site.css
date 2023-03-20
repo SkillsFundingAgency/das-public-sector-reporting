@@ -1059,3 +1059,8 @@ a.govuk-button:active {
 
 .das-cookie-settings__confirmation {
   display: none; }
+
+
+p.error-message {
+  margin-bottom: 5px;
+}
