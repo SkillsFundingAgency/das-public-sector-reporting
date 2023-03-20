@@ -10,20 +10,28 @@
 <div class="grid-row">
     <div class="column-two-thirds">
         <form method="post">
-            <div class="form-group">
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
                 <fieldset class="inline">
-                    <legend>
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         <h1 class="heading-medium">
                             Are you a local authority?
                         </h1>
                     </legend>
-                    <div class="multiple-choice">
-                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True">
-                        <label for="islocalauthority-action-yes">Yes</label>
-                    </div>
-                    <div class="multiple-choice">
-                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False">
-                        <label for="islocalauthority-action-no">No</label>
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
+                    {
+                        <span id="confirm-error" class="error-message">
+                            <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                        </span>
+                    }
+                    <div class="govuk-radios">
+                        <div class="multiple-choice">
+                            <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True">
+                            <label for="islocalauthority-action-yes">Yes</label>
+                        </div>
+                        <div class="multiple-choice">
+                            <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False">
+                            <label for="islocalauthority-action-no">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>

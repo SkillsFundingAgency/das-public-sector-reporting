@@ -99,6 +99,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
+                if (!isLocalAuthority.HasValue)
+                {
+                    ModelState.AddModelError("confirm-yes", "Please select is local authority or not");
+                    return View("IsLocalAuthority");
+                }
+
                 var user = _userService.GetUserModel(User);
                 _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthority);
                 return new RedirectResult(Url.Action("Edit", "Report"));
