@@ -8,7 +8,7 @@
 <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h1 class="heading-medium">Total Number Of Employees</h1>
+        <h1 class="heading-medium">Total number of employees</h1>
         <div class="notice">
             <i class="icon icon-important">
                 <span class="visually-hidden">Warning</span>
@@ -20,7 +20,11 @@
         <form method="post" asp-action="PostTotalEmployees">
             <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
                 <fieldset class="inline">
-                    <legend class="visually-hidden">Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString ?</legend>
+                    <legend>
+                        <p class="body-text">
+                            Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
+                        </p>
+                    </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
                         <p id="confirm-error" class="error-message">
