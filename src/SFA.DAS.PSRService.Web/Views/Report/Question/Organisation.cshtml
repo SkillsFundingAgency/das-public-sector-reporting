@@ -25,7 +25,14 @@
             {
                 <tr>
                     <td>Is your organisation a local authority</td>
-                    <td class="bold">@Model.IsLocalAuthority.Value</td>
+                    @if (Model.IsLocalAuthority.Value)
+                    {
+                        <td class="bold">Yes</td>
+                    }
+                    else
+                    {
+                        <td class="bold">No</td>
+                    }
                     @if (canBeEdited)
                     {
                         <td class="link-right">

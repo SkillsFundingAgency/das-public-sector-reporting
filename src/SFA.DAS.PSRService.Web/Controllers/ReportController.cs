@@ -155,6 +155,15 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
+                if (!dataLossWarning.ConfirmIsLocalAuthority.HasValue)
+                {
+                    ModelState.AddModelError("confirm-yes", "Confirm,do you want to change your answer");
+                    return View("DataLossWarning", dataLossWarning);
+                }
+
+                if (!dataLossWarning.ConfirmIsLocalAuthority.Value)
+                    return new RedirectResult(Url.Action("Edit", "Report"));
+
                 var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
                 if (report != null)
