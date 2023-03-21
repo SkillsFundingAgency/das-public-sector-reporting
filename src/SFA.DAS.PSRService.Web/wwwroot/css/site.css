@@ -1064,3 +1064,7 @@ a.govuk-button:active {
 p.error-message {
   margin-bottom: 5px;
 }
+
+.notice {
+  margin-bottom: 20px;
+}
