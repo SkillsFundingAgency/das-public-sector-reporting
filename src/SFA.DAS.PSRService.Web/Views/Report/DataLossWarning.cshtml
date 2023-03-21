@@ -1,0 +1,20 @@
+﻿@model SFA.DAS.PSRService.Web.ViewModels.DataLossWarning
+@{
+    ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-organisation-reportnotrequired";
+}
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-id="@Model.IsLocalAuthority">Back</a>
+        <h1 class="heading-large">
+            Changes to 'Are you a local authority?' may result in the loss of the data already entered. If you would like to proceed, please confirm.
+        </h1>
+        <form method="post" asp-action="DataLossWarning">
+            <div class="form-group">
+                <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
+                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+            </div>
+        </form>
+        <a class="link-back" asp-controller="Report" asp-action="Edit">Go back to edit report</a>
+    </div>
+</div>

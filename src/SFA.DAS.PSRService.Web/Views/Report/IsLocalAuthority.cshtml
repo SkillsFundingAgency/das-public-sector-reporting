@@ -1,4 +1,4 @@
-﻿@model object
+﻿@model bool?
 
 @{
     ViewData["Title"] = "Public sector reporting";
@@ -9,7 +9,7 @@
 <div class="grid-row">
     <div class="column-two-thirds">
         <h1 class="heading-medium">Are you a local authority?</h1>
-        <form method="post">
+        <form method="post" asp-action="PostIsLocalAuthority">
             <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
                 <fieldset class="inline">
                     <legend class="visually-hidden">Are you a local authority?</legend>
@@ -20,11 +20,11 @@
                     </p>
                     }
                     <div class="multiple-choice">
-                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True">
+                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True" @(Model == true ? "checked" : "")>
                         <label for="islocalauthority-action-yes">Yes</label>
                     </div>
                     <div class="multiple-choice">
-                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False">
+                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model == false ? "checked" : "")>
                         <label for="islocalauthority-action-no">No</label>
                     </div>
                 </fieldset>

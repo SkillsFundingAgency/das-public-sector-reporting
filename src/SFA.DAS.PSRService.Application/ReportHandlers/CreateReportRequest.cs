@@ -23,7 +23,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             EmployerId = employerId;
             Period = period;
-            IsLocalAuthority = (bool)isLocalAuthority;
+            IsLocalAuthority = isLocalAuthority.Value;
 
             User = user ?? throw new ArgumentNullException(nameof(user));
         }

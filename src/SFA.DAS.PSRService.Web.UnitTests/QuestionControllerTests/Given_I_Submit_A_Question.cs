@@ -140,7 +140,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(_currentValidAndNotSubmittedReport).Verifiable();
-            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>())).Callback<Report, UserModel>((r, u) => actualReport = r).Verifiable("Report was not saved");
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null, false)).Callback<Report, UserModel,bool?,bool>((r, u, s, k) => actualReport = r).Verifiable("Report was not saved");
             _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
             _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 
@@ -215,7 +215,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(report).Verifiable();
-            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>())).Callback<Report, UserModel>((r, u) => actualReport = r).Verifiable("Report was not saved");
+            _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null, false)).Callback<Report, UserModel,bool?, bool>((r, u,k,h) => actualReport = r).Verifiable("Report was not saved");
             _reportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
             _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 

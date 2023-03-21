@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
@@ -22,6 +23,8 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
             _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
+
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
 
             // act
             var result = _controller.PostIsLocalAuthority(isLocalAuthority);

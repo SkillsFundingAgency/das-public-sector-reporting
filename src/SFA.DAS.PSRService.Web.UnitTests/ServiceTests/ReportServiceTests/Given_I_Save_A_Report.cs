@@ -122,7 +122,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 Id = new Guid("DC850E8E-8286-47DF-8BFD-8332A6483555")
             };
 
-            _reportService.SaveReport(report, user);
+            _reportService.SaveReport(report, user,null,false);
 
             _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()));
         }

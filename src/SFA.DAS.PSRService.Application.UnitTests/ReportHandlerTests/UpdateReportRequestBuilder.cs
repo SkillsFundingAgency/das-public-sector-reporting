@@ -58,7 +58,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             };
 
 
-            var request = new UpdateReportRequest(_report, user);
+            var request = new UpdateReportRequest(_report, user,null,false);
 
             SetUserName(request);
             SetUserId(request);

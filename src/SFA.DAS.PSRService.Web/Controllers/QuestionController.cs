@@ -88,7 +88,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     }
                 }
 
-                _reportService.SaveReport(report, _userService.GetUserModel(User));
+                _reportService.SaveReport(report, _userService.GetUserModel(User),null,false);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             var viewModel = new SectionViewModel

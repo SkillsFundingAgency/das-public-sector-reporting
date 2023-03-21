@@ -6,7 +6,14 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-edit";
     ViewBag.ZenDeskLabel = "reporting-progress-towards-target";
 }
-<a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+@if (Model.Report.IsLocalAuthority.HasValue)
+{
+    <a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority">Back</a>
+}
+else
+{
+    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+}
 
 <div class="grid-row">
     <div class="column-two-thirds">
