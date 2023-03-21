@@ -1,13 +1,10 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
+﻿@model SFA.DAS.PSRService.Web.ViewModels.OrganisationReviewViewModel
 
 @{
     ViewData["Title"] = "Your organisation";
     var canBeEdited = ViewBag.CanBeEdited;
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-your-organisation";
     ViewBag.ZenDeskLabel = "reporting-your-organsation";
-    var organisationName = ViewData["OrganisationName"] != null ? this.ViewData["OrganisationName"].ToString() : string.Empty;
-    bool? hasMinimumEmployeeHeadcount = ViewData["HasMinimumEmployeeHeadcount"] != null ? (bool)this.ViewData["HasMinimumEmployeeHeadcount"] : null;
-    bool? isLocalAuthority = ViewData["IsLocalAuthority"] != null ? (bool)this.ViewData["IsLocalAuthority"] : null;
 }
 
 <div class="form-group">
@@ -16,7 +13,7 @@
         <tbody>
             <tr>
                 <td>Organisation Name</td>
-                <td class="bold">@organisationName</td>
+                <td class="bold">@Model.OrganisationName</td>
                 @if (canBeEdited)
                 {
                     <td class="link-right">
@@ -24,11 +21,11 @@
                     </td>
                 }
             </tr>
-            @if (isLocalAuthority.HasValue)
+            @if (Model.IsLocalAuthority.HasValue)
             {
                 <tr>
                     <td>Is your organisation a local authority</td>
-                    <td class="bold">@isLocalAuthority.Value</td>
+                    <td class="bold">@Model.IsLocalAuthority.Value</td>
                     @if (canBeEdited)
                     {
                         <td class="link-right">
@@ -39,11 +36,11 @@
                 <tr>
                     <td>Total number of employees</td>
 
-                    @if (!hasMinimumEmployeeHeadcount.HasValue)
+                    @if (!Model.HasMinimumEmployeeHeadcount.HasValue)
                     {
                         <td class="bold"></td>
                     }
-                    else if (hasMinimumEmployeeHeadcount.Value)
+                    else if (Model.HasMinimumEmployeeHeadcount.Value)
                     {
                         <td class="bold">more than 250</td>
                     }
