@@ -27,6 +27,16 @@
             @if (isLocalAuthority.HasValue)
             {
                 <tr>
+                    <td>Is your organisation a local authority</td>
+                    <td class="bold">@isLocalAuthority.Value</td>
+                    @if (canBeEdited)
+                    {
+                        <td class="link-right">
+                            <a asp-controller="Report" asp-action="IsLocalAuthority">Change</a>
+                        </td>
+                    }
+                </tr>
+                <tr>
                     <td>Total number of employees</td>
 
                     @if (!hasMinimumEmployeeHeadcount.HasValue)
