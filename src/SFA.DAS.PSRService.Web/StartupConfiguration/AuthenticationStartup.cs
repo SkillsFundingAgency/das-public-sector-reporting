@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.GovUK.Auth.Authentication;
 using SFA.DAS.GovUK.Auth.Configuration;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -37,6 +38,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                         policy.RequireAuthenticatedUser();
                         policy.RequireClaim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier);
                         policy.Requirements.Add(new EmployerAccountRequirement());
+                        policy.Requirements.Add(new AccountActiveRequirement());
                     });
                 options.AddPolicy(
                     PolicyNames
@@ -51,6 +53,8 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             services.AddSingleton<IAuthorizationHandler, EmployerAccountHandler>();
             services.AddSingleton<IAuthorizationHandler, CanSubmitReportHandler>();
             services.AddSingleton<IAuthorizationHandler, CanEditReportHandler>();
+
+            services.AddSingleton<IAuthorizationHandler, AccountActiveAuthorizationHandler>();//TODO remove after gov one login go live
         }
 
         public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IConfiguration config)
