@@ -70,7 +70,7 @@ namespace SFA.DAS.PSRService.Web.Services
             return submittedReports;
         }
 
-        public void SaveReport(Report report, UserModel user, bool? isLocalAuthority, bool changeAreYouALocalAuthority)
+        public void SaveReport(Report report, UserModel user, bool? isLocalAuthority)
         {
             var reqestUser = new User
             {
@@ -78,7 +78,7 @@ namespace SFA.DAS.PSRService.Web.Services
                 Id = user.Id
             };
 
-            var request = new UpdateReportRequest(report, reqestUser, isLocalAuthority, changeAreYouALocalAuthority);
+            var request = new UpdateReportRequest(report, reqestUser, isLocalAuthority);
 
             if (_config.AuditWindowSize.HasValue)
                 request.AuditWindowSize = _config.AuditWindowSize.Value;

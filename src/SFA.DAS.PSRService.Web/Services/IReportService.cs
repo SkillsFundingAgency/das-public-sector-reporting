@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Web.Services
         Report GetReport(string period,string employerId);
         void SubmitReport(Report report);
         IEnumerable<Report> GetSubmittedReports(string employerId);
-        void SaveReport(Report report, UserModel user,bool? IsLocalAuthority, bool changeAreYouALocalAuthority);
+        void SaveReport(Report report, UserModel user,bool? IsLocalAuthority);
         bool CanBeEdited(Report report);
         IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
     }

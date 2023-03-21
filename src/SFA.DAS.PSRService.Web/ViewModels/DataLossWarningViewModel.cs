@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.PSRService.Web.ViewModels
 {
-    public class DataLossWarning
+    public class DataLossWarningViewModel
     {
         public bool IsLocalAuthority { get; set; }
     }

@@ -6,7 +6,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 {
     public class UpdateReportRequest : IRequest
     {
-        public UpdateReportRequest(Report report, User user, bool? isLocalAuthority, bool changeAreYouALocalAuthority)
+        public UpdateReportRequest(Report report, User user, bool? isLocalAuthority)
         {
             Report = report ?? throw new ArgumentNullException(nameof(report));
 
@@ -15,14 +15,11 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             AuditWindowSize = TimeSpan.FromMinutes(5); // default
 
             IsLocalAuthority = isLocalAuthority;
-
-            ChangeAreYouALocalAuthority = changeAreYouALocalAuthority;
         }
 
         public Report Report { get; set; }
         public TimeSpan AuditWindowSize { get; set; }
         public User User { get; }
         public bool? IsLocalAuthority { get; }
-        public bool ChangeAreYouALocalAuthority { get; set; }
     }
 }

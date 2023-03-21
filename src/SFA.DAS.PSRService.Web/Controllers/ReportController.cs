@@ -92,13 +92,13 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            bool? isLocalAuthority = null;
+            var isLocalAuthorityViewModelVm = new IsLocalAuthorityViewModel();
 
             if (report != null)
             {
                 if (!_reportService.CanBeEdited(report))
                     return new RedirectResult(Url.Action("Index", "Home"));
-                isLocalAuthority = id.HasValue ? id : report.IsLocalAuthority;
+                isLocalAuthorityViewModelVm.IsLocalAuthority = id.HasValue ? id : report.IsLocalAuthority;
                 ViewBag.CurrentPeriod = report.Period ?? _currentPeriod;
             }
             else
@@ -106,17 +106,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 ViewBag.CurrentPeriod = _currentPeriod;
             }
 
-            return View("IsLocalAuthority", isLocalAuthority);
+            return View("IsLocalAuthority", isLocalAuthorityViewModelVm);
         }
 
         [HttpPost]
         [Route("PostIsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult PostIsLocalAuthority(bool? isLocalAuthority)
+        public IActionResult PostIsLocalAuthority(IsLocalAuthorityViewModel isLocalAuthorityViewModel)
         {
             try
             {
-                if (!isLocalAuthority.HasValue)
+                if (!isLocalAuthorityViewModel.IsLocalAuthority.HasValue)
                 {
                     ModelState.AddModelError("confirm-yes", "Select whether you are a local authority or not");
                     return View("IsLocalAuthority");
@@ -127,17 +127,17 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 if (report == null)
                 {
                     var user = _userService.GetUserModel(User);
-                    _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthority);
+                    _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthorityViewModel.IsLocalAuthority);
                 }
                 else
                 {
-                    if (isLocalAuthority == report.IsLocalAuthority)
+                    if (isLocalAuthorityViewModel.IsLocalAuthority == report.IsLocalAuthority)
                         return new RedirectResult(Url.Action("Edit", "Report"));
 
                     if (!_reportService.CanBeEdited(report))
                         return new RedirectResult(Url.Action("Index", "Home"));
 
-                    return new RedirectResult(Url.Action("DataLossWarning", new DataLossWarning() { IsLocalAuthority = isLocalAuthority.Value }));
+                    return new RedirectResult(Url.Action("DataLossWarning", new DataLossWarningViewModel() { IsLocalAuthority = isLocalAuthorityViewModel.IsLocalAuthority.Value }));
                 }
 
                 return new RedirectResult(Url.Action("Edit", "Report"));
@@ -151,7 +151,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [HttpPost]
         [Route("DataLossWarning")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult PostDataLossWarning(DataLossWarning dataLossWarning)
+        public IActionResult PostDataLossWarning(DataLossWarningViewModel dataLossWarning)
         {
             try
             {
@@ -165,7 +165,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     if (dataLossWarning.IsLocalAuthority == report.IsLocalAuthority)
                         return new RedirectResult(Url.Action("Edit", "Report"));
 
-                    _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority, true);
+                    _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
                 }
 
                 return new RedirectResult(Url.Action("Edit", "Report"));
@@ -179,9 +179,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [HttpGet]
         [Route("DataLossWarning")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult DataLossWarning(DataLossWarning dataLossWarning)
+        public IActionResult DataLossWarning(DataLossWarningViewModel dataLossWarning)
         {
-            return View("DataLossWarning", dataLossWarning);
+            return View(dataLossWarning);
         }
 
         [Route("List")]
@@ -398,7 +398,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
 
-            _reportService.SaveReport(report, _userService.GetUserModel(User), null, false);
+            _reportService.SaveReport(report, _userService.GetUserModel(User), null);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
@@ -428,7 +428,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User), null, false);
+            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User), null);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }

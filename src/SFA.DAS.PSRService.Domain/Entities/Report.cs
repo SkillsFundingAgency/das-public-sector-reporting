@@ -9,7 +9,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
         public bool? HasMinimumEmployeeHeadcount { get; set; }
-        public int TotalEmployees { get; set; }
         public bool? IsLocalAuthority { get; set; }
         public string EmployerId { get; set; }
         public IEnumerable<Section> Sections { get; set; }
@@ -29,22 +28,13 @@ namespace SFA.DAS.PSRService.Domain.Entities
             return
                 ReportIsNotYetSubmitted()
                 && AllSectionsAreValid()
-            && OrganisationNameIsValid()
-            && HasMinimumEmployeeHeadcountIsValid()
-            && HasMinimumTotalEmployees();
+                && OrganisationNameIsValid()
+                && HasMinimumEmployeeHeadcountIsValid();
         }
 
         private bool OrganisationNameIsValid()
         {
             return string.IsNullOrWhiteSpace(OrganisationName) == false;
-        }
-
-        private bool HasMinimumTotalEmployees()
-        {
-            if (!IsLocalAuthority.HasValue)
-                return true;
-
-            return TotalEmployees >= 250;
         }
 
         private bool HasMinimumEmployeeHeadcountIsValid()
@@ -74,8 +64,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
 
         public void UpdatePercentages()
         {
-            TotalEmployees = 0;
-
             var reportingPercentages = GetPercentages("YourEmployees", "YourApprentices");
             var reportingPercentagesSchools = GetPercentages("SchoolsEmployees", "SchoolsApprentices");
 
@@ -132,9 +120,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
             if (apprenticePeriod != 0 & employmentStart != 0)
                 percentages.NewThisPeriod = ((apprenticePeriod / employmentStart) * 100).ToString("F2");
 
-            if (IsLocalAuthority.HasValue)
-                TotalEmployees += Convert.ToInt32(employmentEnd);
-
             return percentages;
         }
 
@@ -184,12 +169,6 @@ namespace SFA.DAS.PSRService.Domain.Entities
             {
                 yield return text;
             }
-        }
-
-        public IEnumerable<string> GetNamesOfFailedValidations()
-        {
-            if (HasMinimumTotalEmployees() == false)
-                yield return @"You do not have to submit a report because your organisation has less than 250 employees";
         }
 
         private IEnumerable<string> GetSummaryTextFromFirstLevelSubSectionsNotValidForSubmission()

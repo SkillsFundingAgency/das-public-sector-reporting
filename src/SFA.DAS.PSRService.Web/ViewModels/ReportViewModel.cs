@@ -44,12 +44,7 @@ namespace SFA.DAS.PSRService.Web.ViewModels
             {
                 validationResults.Add(new ValidationResult($"{summaryText} questions are mandatory"));
             }
-
-            foreach (var summaryText in Report.GetNamesOfFailedValidations())
-            {
-                validationResults.Add(new ValidationResult($"{summaryText}"));
-            }
-            
+           
             return validationResults;
         }
     }

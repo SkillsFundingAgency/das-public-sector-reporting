@@ -35,7 +35,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
 
             var reportDto = _mapper.Map<ReportDto>(request.Report);
 
-            if (request.ChangeAreYouALocalAuthority && request.IsLocalAuthority.HasValue)
+            if (request.IsLocalAuthority.HasValue)
             {
                 if (request.IsLocalAuthority != request.Report.IsLocalAuthority)
                     reportDto.ReportingData = GetQuestionConfig(request.IsLocalAuthority.Value).Result;

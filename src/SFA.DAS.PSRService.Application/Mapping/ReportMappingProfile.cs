@@ -14,7 +14,6 @@ namespace SFA.DAS.PSRService.Application.Mapping
                 .ForMember(dest => dest.SubmittedDetails, opts => opts.Ignore())
                 .ForMember(dest => dest.OrganisationName, opts => opts.Ignore())
                 .ForMember(dest => dest.HasMinimumEmployeeHeadcount, opts => opts.Ignore())
-                .ForMember(dest => dest.TotalEmployees, opts => opts.Ignore())
                 .ForMember(dest => dest.IsLocalAuthority, opts => opts.Ignore())
                 .ForMember(dest => dest.Sections, opts => opts.Ignore())
                 .ForMember(dest => dest.SerialNo, opts => opts.Ignore())
@@ -28,7 +27,6 @@ namespace SFA.DAS.PSRService.Application.Mapping
 
                     dest.OrganisationName = dataObject.OrganisationName;
                     dest.HasMinimumEmployeeHeadcount = dataObject.HasMinimumEmployeeHeadcount;
-                    dest.TotalEmployees = dataObject.TotalEmployees;
                     dest.IsLocalAuthority = dataObject.IsLocalAuthority;
                     dest.Sections = dataObject.Questions;
                     dest.SerialNo = dataObject.SerialNo;
@@ -49,7 +47,6 @@ namespace SFA.DAS.PSRService.Application.Mapping
             {
                 report.OrganisationName,
                 report.HasMinimumEmployeeHeadcount,
-                report.TotalEmployees,
                 report.IsLocalAuthority,
                 Questions = report.Sections,
                 SerialNo = report.SerialNo,

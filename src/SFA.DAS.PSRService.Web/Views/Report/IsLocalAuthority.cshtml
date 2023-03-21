@@ -1,4 +1,4 @@
-﻿@model bool?
+﻿@model SFA.DAS.PSRService.Web.ViewModels.IsLocalAuthorityViewModel
 
 @{
     ViewData["Title"] = "Public sector reporting";
@@ -20,11 +20,11 @@
                     </p>
                     }
                     <div class="multiple-choice">
-                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True" @(Model == true ? "checked" : "")>
+                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True" @(Model.IsLocalAuthority == true ? "checked" : "")>
                         <label for="islocalauthority-action-yes">Yes</label>
                     </div>
                     <div class="multiple-choice">
-                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model == false ? "checked" : "")>
+                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model.IsLocalAuthority == false ? "checked" : "")>
                         <label for="islocalauthority-action-no">No</label>
                     </div>
                 </fieldset>

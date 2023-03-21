@@ -9,6 +9,14 @@
 <div class="grid-row">
     <div class="column-two-thirds">
         <h1 class="heading-medium">Total Number Of Employees</h1>
+        <div class="notice">
+            <i class="icon icon-important">
+                <span class="visually-hidden">Warning</span>
+            </i>
+            <strong class="bold-small">
+                You will need this information to continue.
+            </strong>
+        </div>
         <form method="post" asp-action="PostTotalEmployees">
             <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
                 <fieldset class="inline">
