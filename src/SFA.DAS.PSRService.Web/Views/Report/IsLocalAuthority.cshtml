@@ -5,7 +5,15 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/page-islocalauthority";
     ViewBag.ZenDeskLabel = "reporting-islocalauthority";
 }
-<a class="link-back" asp-controller="Report" asp-action="Create">Back</a>
+@if (Model.IsLocalAuthority.HasValue)
+{
+    <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+}
+else
+{
+    <a class="link-back" asp-controller="Report" asp-action="Create">Back</a>
+}
+
 <div class="grid-row">
     <div class="column-two-thirds">
         <h1 class="heading-medium">Is your organisation a local authority?</h1>

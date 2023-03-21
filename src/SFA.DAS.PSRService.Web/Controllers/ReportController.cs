@@ -375,9 +375,10 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("OrganisationName", organisationVm);
         }
 
+        [Route("TotalEmployees/{id}")]
         [Route("TotalEmployees")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult TotalEmployees()
+        public IActionResult TotalEmployees(bool? id)
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
@@ -385,6 +386,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 return new RedirectResult(Url.Action("Index", "Home"));
 
             ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+
+            report.HasMinimumEmployeeHeadcount = id.HasValue ? id : report.HasMinimumEmployeeHeadcount;
 
             return View("TotalEmployees", report.HasMinimumEmployeeHeadcount);
         }
