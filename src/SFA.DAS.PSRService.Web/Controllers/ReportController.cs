@@ -393,9 +393,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             if (!hasMinimumEmployeeHeadcount.HasValue)
             {
-                ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
-                ModelState.AddModelError("confirm-yes", "Please select did your organisation employ more than 250 people on 31 March 2021 or not");
-                return View("TotalEmployees", hasMinimumEmployeeHeadcount);
+                return new RedirectResult(Url.Action("Edit", "Report"));
             }
 
             report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
