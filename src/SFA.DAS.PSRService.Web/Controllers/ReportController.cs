@@ -85,10 +85,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [HttpGet]
-        [Route("IsLocalAuthority/{id}")]
         [Route("IsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult IsLocalAuthority(bool? id)
+        public IActionResult IsLocalAuthority(bool? confirmIsLocalAuthority)
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
@@ -98,7 +97,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
                 if (!_reportService.CanBeEdited(report))
                     return new RedirectResult(Url.Action("Index", "Home"));
-                isLocalAuthorityViewModelVm.IsLocalAuthority = id.HasValue ? id : report.IsLocalAuthority;
+                isLocalAuthorityViewModelVm.IsLocalAuthority = confirmIsLocalAuthority.HasValue ? confirmIsLocalAuthority : report.IsLocalAuthority;
                 ViewBag.CurrentPeriod = report.Period ?? _currentPeriod;
             }
             else
@@ -110,7 +109,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [HttpPost]
-        [Route("PostIsLocalAuthority")]
+        [Route("IsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostIsLocalAuthority(IsLocalAuthorityViewModel isLocalAuthorityViewModel)
         {
@@ -391,7 +390,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("TotalEmployees", report.HasMinimumEmployeeHeadcount);
         }
 
-        [Route("PostTotalEmployees")]
+        [Route("TotalEmployees")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = PolicyNames.CanEditReport)]
