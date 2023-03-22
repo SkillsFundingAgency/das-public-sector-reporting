@@ -14,11 +14,9 @@ namespace SFA.DAS.PSRService.Web.ViewModels
             NewThisPeriod = percentages.NewThisPeriod + "%";
             Title = percentages.Title;
         }
-
         public string EmploymentStarts { get; }
         public string TotalHeadCount { get; }
         public string NewThisPeriod { get; }
         public string Title { get; }
-
     }
 }
