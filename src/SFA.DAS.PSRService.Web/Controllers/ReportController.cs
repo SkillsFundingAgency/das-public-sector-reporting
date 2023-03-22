@@ -377,7 +377,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
         [Route("TotalEmployees")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult TotalEmployees(bool? TotalEmployeesConfirmation)
+        public IActionResult TotalEmployees(bool? totalEmployeesConfirmation)
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
@@ -386,7 +386,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
 
-            report.HasMinimumEmployeeHeadcount = TotalEmployeesConfirmation.HasValue ? TotalEmployeesConfirmation : report.HasMinimumEmployeeHeadcount;
+            report.HasMinimumEmployeeHeadcount = totalEmployeesConfirmation.HasValue ? totalEmployeesConfirmation : report.HasMinimumEmployeeHeadcount;
 
             return View("TotalEmployees", report.HasMinimumEmployeeHeadcount);
         }
