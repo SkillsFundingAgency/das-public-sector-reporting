@@ -35,7 +35,7 @@
                 </summary>
                 <div>
 
-                    @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", edit.OrganisationName }, { "TotalEmployees",edit.TotalEmployees},{ "IsLocalAuthority", edit.IsLocalAuthority}})
+                    @Html.Partial("Question/Organisation",  new OrganisationReviewViewModel() { OrganisationName = edit.OrganisationName,HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount,IsLocalAuthority = edit.IsLocalAuthority })
 
                     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
                     @if (edit.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)

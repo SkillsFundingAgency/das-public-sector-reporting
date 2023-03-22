@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
+﻿@using SFA.DAS.PSRService.Web.ViewModels
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
     ViewBag.Title = "Review details";
@@ -89,7 +91,8 @@
                 </table>
             </div>
 
-            @Html.Partial("Question/Organisation", null, new ViewDataDictionary(ViewData) { { "OrganisationName", Model.Report.OrganisationName }, { "TotalEmployees", Model.Report.TotalEmployees},{ "IsLocalAuthority", Model.Report.IsLocalAuthority}})
+            @Html.Partial("Question/Organisation", new OrganisationReviewViewModel() { OrganisationName = Model.Report.OrganisationName,HasMinimumEmployeeHeadcount = Model.Report.HasMinimumEmployeeHeadcount,IsLocalAuthority = Model.Report.IsLocalAuthority })
+
             @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
             {

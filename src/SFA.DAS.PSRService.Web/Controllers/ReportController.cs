@@ -85,29 +85,112 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [HttpGet]
+        [Route("IsLocalAuthority/{id}")]
         [Route("IsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult IsLocalAuthority()
+        public IActionResult IsLocalAuthority(bool? id)
         {
-            return View();
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            var isLocalAuthorityViewModelVm = new IsLocalAuthorityViewModel();
+
+            if (report != null)
+            {
+                if (!_reportService.CanBeEdited(report))
+                    return new RedirectResult(Url.Action("Index", "Home"));
+                isLocalAuthorityViewModelVm.IsLocalAuthority = id.HasValue ? id : report.IsLocalAuthority;
+                ViewBag.CurrentPeriod = report.Period ?? _currentPeriod;
+            }
+            else
+            {
+                ViewBag.CurrentPeriod = _currentPeriod;
+            }
+
+            return View("IsLocalAuthority", isLocalAuthorityViewModelVm);
         }
 
         [HttpPost]
-        [Route("IsLocalAuthority")]
+        [Route("PostIsLocalAuthority")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult PostIsLocalAuthority(bool isLocalAuthority)
+        public IActionResult PostIsLocalAuthority(IsLocalAuthorityViewModel isLocalAuthorityViewModel)
         {
             try
             {
-                var user = _userService.GetUserModel(User);
-                _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthority);
+                if (!isLocalAuthorityViewModel.IsLocalAuthority.HasValue)
+                {
+                    ModelState.AddModelError("confirm-yes", "Select whether you are a local authority or not");
+                    return View("IsLocalAuthority");
+                }
+
+                var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+                if (report == null)
+                {
+                    var user = _userService.GetUserModel(User);
+                    _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthorityViewModel.IsLocalAuthority);
+                }
+                else
+                {
+                    if (isLocalAuthorityViewModel.IsLocalAuthority == report.IsLocalAuthority)
+                        return new RedirectResult(Url.Action("Edit", "Report"));
+
+                    if (!_reportService.CanBeEdited(report))
+                        return new RedirectResult(Url.Action("Index", "Home"));
+
+                    return new RedirectResult(Url.Action("DataLossWarning", new DataLossWarningViewModel() { IsLocalAuthority = isLocalAuthorityViewModel.IsLocalAuthority.Value }));
+                }
+
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception)
             {
-
                 return new BadRequestResult();
             }
+        }
+
+        [HttpPost]
+        [Route("DataLossWarning")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult PostDataLossWarning(DataLossWarningViewModel dataLossWarning)
+        {
+            try
+            {
+                if (!dataLossWarning.ConfirmIsLocalAuthority.HasValue)
+                {
+                    ModelState.AddModelError("confirm-yes", "Confirm,do you want to change your answer");
+                    return View("DataLossWarning", dataLossWarning);
+                }
+
+                if (!dataLossWarning.ConfirmIsLocalAuthority.Value)
+                    return new RedirectResult(Url.Action("Edit", "Report"));
+
+                var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+                if (report != null)
+                {
+                    if (!_reportService.CanBeEdited(report))
+                        return new RedirectResult(Url.Action("Index", "Home"));
+
+                    if (dataLossWarning.IsLocalAuthority == report.IsLocalAuthority)
+                        return new RedirectResult(Url.Action("Edit", "Report"));
+
+                    _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
+                }
+
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            }
+            catch (Exception)
+            {
+                return new BadRequestResult();
+            }
+        }
+
+        [HttpGet]
+        [Route("DataLossWarning")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult DataLossWarning(DataLossWarningViewModel dataLossWarning)
+        {
+            return View(dataLossWarning);
         }
 
         [Route("List")]
@@ -173,14 +256,12 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 {
                     reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
                     reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report.ReportingPercentages);
-                    reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
+                    if (reportViewModel.Report.ReportingPercentagesSchools != null) reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
                     ViewBag.CurrentPeriod = reportViewModel.Report.Period ?? _currentPeriod;
                 }
                 else
                 {
                     reportViewModel.IsValidForSubmission = false;
-                    reportViewModel.Percentages = new PercentagesViewModel(null);
-                    reportViewModel.PercentagesSchools = new PercentagesViewModel(null);
                     ViewBag.CurrentPeriod = _currentPeriod;
                 }
 
@@ -294,9 +375,10 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("OrganisationName", organisationVm);
         }
 
+        [Route("TotalEmployees/{id}")]
         [Route("TotalEmployees")]
         [Authorize(Policy = PolicyNames.CanEditReport)]
-        public IActionResult TotalEmployees()
+        public IActionResult TotalEmployees(bool? id)
         {
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
@@ -304,6 +386,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 return new RedirectResult(Url.Action("Index", "Home"));
 
             ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+
+            report.HasMinimumEmployeeHeadcount = id.HasValue ? id : report.HasMinimumEmployeeHeadcount;
 
             return View("TotalEmployees", report.HasMinimumEmployeeHeadcount);
         }
@@ -314,17 +398,19 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostTotalEmployees(bool? hasMinimumEmployeeHeadcount)
         {
-            if (!hasMinimumEmployeeHeadcount.HasValue)
-                return new RedirectResult(Url.Action("TotalEmployeesConfirmationRequired", "Report"));
-
             if (hasMinimumEmployeeHeadcount == false)
                 return new RedirectResult(Url.Action("ReportNotRequired"));
 
             var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
+            if (!hasMinimumEmployeeHeadcount.HasValue)
+            {
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            }
+
             report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
 
-            _reportService.SaveReport(report, _userService.GetUserModel(User));
+            _reportService.SaveReport(report, _userService.GetUserModel(User), null);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
@@ -354,7 +440,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User));
+            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User), null);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }

@@ -1,28 +1,26 @@
-﻿@model bool?
-
+﻿@model SFA.DAS.PSRService.Web.ViewModels.DataLossWarningViewModel
 @{
-    ViewData["Title"] = "Your organisation";
-    ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-your-totalemployees";
-    ViewBag.ZenDeskLabel = "reporting-your-totalemployees";
+    ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-datalosswarning";
 }
-<a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+
+<a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-id="@Model.IsLocalAuthority">Back</a>
 <div class="grid-row">
     <div class="column-two-thirds">
-        <h1 class="heading-medium">Total number of employees</h1>
+        <h1 class="heading-medium">Do you want to change your answer</h1>
         <div class="notice">
             <i class="icon icon-important">
                 <span class="visually-hidden">Warning</span>
             </i>
             <strong class="bold-small">
-                You will need this information to continue.
+                If you change your answer,your data will be lost
             </strong>
         </div>
-        <form method="post" asp-action="PostTotalEmployees">
+        <form method="post" asp-action="DataLossWarning">
             <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
                 <fieldset class="inline">
                     <legend>
                         <p class="body-text">
-                            Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
+                            Do you wish to continue?
                         </p>
                     </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
@@ -32,18 +30,20 @@
                         </p>
                     }
                     <div class="multiple-choice">
-                        <input id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
-                        <label for="totalemployees-action-yes">Yes</label>
+                        <input id="datalosswarning-action-yes" type="radio" name="ConfirmIsLocalAuthority" value="true">
+                        <label for="datalosswarning-action-yes">Yes</label>
                     </div>
                     <div class="multiple-choice">
-                        <input id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model == false ? "checked" : "")>
-                        <label for="totalemployees-action-no">No</label>
+                        <input id="datalosswarning-action-no" type="radio" name="ConfirmIsLocalAuthority" value="false">
+                        <label for="datalosswarning-action-no">No</label>
                     </div>
                 </fieldset>
             </div>
             <div class="form-group">
-                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+                <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
+                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue and save">
             </div>
         </form>
+        <a class="button" asp-controller="Report" asp-action="Edit">Cancel</a>
     </div>
 </div>

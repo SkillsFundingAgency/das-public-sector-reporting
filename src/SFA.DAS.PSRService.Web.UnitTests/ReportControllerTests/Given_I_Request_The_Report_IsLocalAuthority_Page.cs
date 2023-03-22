@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
+using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 {
@@ -23,8 +25,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
 
             _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
 
+            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+
             // act
-            var result = _controller.PostIsLocalAuthority(isLocalAuthority);
+            var result = _controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
 
             // assert
             _mockUrlHelper.VerifyAll();
@@ -44,7 +48,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
                    .Throws(new Exception("Unable to create Report"));
 
             // act
-            var result = _controller.PostIsLocalAuthority(isLocalAuthority);
+            var result = _controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
 
             // assert
             Assert.IsInstanceOf<BadRequestResult>(result);
