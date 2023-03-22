@@ -6,6 +6,7 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-edit";
     ViewBag.ZenDeskLabel = "reporting-progress-towards-target";
 }
+
 @if (Model.Report.IsLocalAuthority.HasValue)
 {
     <a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority">Back</a>

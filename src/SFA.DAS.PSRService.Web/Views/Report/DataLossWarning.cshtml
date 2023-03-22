@@ -42,8 +42,8 @@
             <div class="form-group">
                 <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
                 <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue and save">
+                <a class="button button-secondary" asp-controller="Report" asp-action="Edit">Cancel</a>
             </div>
         </form>
-        <a class="button" asp-controller="Report" asp-action="Edit">Cancel</a>
     </div>
 </div>
