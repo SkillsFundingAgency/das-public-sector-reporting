@@ -1,8 +1,7 @@
 ﻿{
   "OrganisationName": null,
-  "IsLocalAuthority": true,
+  "IsLocalAuthority": false,
   "HasMinimumEmployeeHeadcount": null,
-  "TotalEmployees": 0,
   "Questions": [
     {
       "SubSections": [
@@ -67,7 +66,7 @@
     }
   ],
   "Submitted": null,
-  "SerialNo": "4",
+  "SerialNo": "3",
   "ReportingPercentages": {
     "Title": "ReportingPercentage"
   }
