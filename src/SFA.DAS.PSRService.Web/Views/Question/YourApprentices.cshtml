@@ -44,7 +44,7 @@
 
 <div class="form-group">
     <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[2].Answer">
-        Number of new apprentices in England whose apprenticeship agreements started between @Model.CurrentPeriod.FullString
+        Number of new apprentices whose apprenticeship agreements started between @Model.CurrentPeriod.FullString
         <span class="form-hint">This includes both new hires and existing employees who started an apprenticeship</span>
         <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
     </label>
