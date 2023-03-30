@@ -9,7 +9,8 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         public CreateReportRequest(
             User user, 
             string employerId, 
-            string period)
+            string period,
+            bool? isLocalAuthority)
         {
             if (string.IsNullOrWhiteSpace(employerId))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(employerId));
@@ -17,15 +18,19 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             if (string.IsNullOrWhiteSpace(period))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(period));
 
+            if (!isLocalAuthority.HasValue)
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(isLocalAuthority));
+
             EmployerId = employerId;
             Period = period;
+            IsLocalAuthority = isLocalAuthority.Value;
 
             User = user ?? throw new ArgumentNullException(nameof(user));
         }
 
         public string EmployerId { get; }
         public string Period { get; }
-
+        public bool IsLocalAuthority { get; }      
         public User User { get; }
     }
 }

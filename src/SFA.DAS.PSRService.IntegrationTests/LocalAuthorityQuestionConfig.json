@@ -1,0 +1,137 @@
+﻿{
+  "OrganisationName": "Test",
+  "IsLocalAuthority": true,
+  "HasMinimumEmployeeHeadcount": true,
+  "Questions": [
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "YourEmployees",
+          "Title": "Your employees - excluding maintained schools",
+          "SummaryText": "Number of employees who work in England - excluding maintained schools"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "YourApprentices",
+          "Title": "Your apprentices - excluding maintained schools",
+          "SummaryText": "Number of apprentices who work in England - excluding maintained schools"
+        }
+      ],
+      "Questions": null,
+      "Id": "ReportNumbers",
+      "Title": "Report numbers in the following categories for local authority only",
+      "SummaryText": null,
+      "SerialNo": "2"
+    },
+    {
+      "SubSections": [
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "SchoolsEmployees",
+          "Title": "Your employees - maintained schools only",
+          "SummaryText": "Number of employees who work in England - maintained schools only"
+        },
+        {
+          "SubSections": null,
+          "Questions": [
+            {
+              "Id": "atStart",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "atEnd",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            },
+            {
+              "Id": "newThisPeriod",
+              "Answer": "",
+              "Optional": false,
+              "Type": 0
+            }
+          ],
+          "Id": "SchoolsApprentices",
+          "Title": "Your apprentices - maintained schools only",
+          "SummaryText": "Number of apprentices who work in England - maintained schools only"
+        }
+      ],
+      "Questions": null,
+      "Id": "ReportNumbersSchools",
+      "Title": "Report numbers in the following categories for maintained schools only",
+      "SummaryText": null,
+      "SerialNo": "3"
+    }
+  ],
+  "Submitted": null,
+  "SerialNo": "4",
+  "ReportingPercentages": {
+    "Title": "ReportingPercentage - excluding maintained schools"
+  },
+  "ReportingPercentagesSchools": {
+    "Title": "ReportingPercentage - maintained schools only"
+  }
+}

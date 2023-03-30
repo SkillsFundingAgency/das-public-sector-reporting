@@ -1,0 +1,53 @@
+﻿@using SFA.DAS.PSRService.Domain.Enums
+@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    var questionsList = Model.Questions.ToArray();
+    ViewBag.GaData.Vpv = "/public-sector-reporting/question/page-schools-apprentices";
+}
+
+<h1 class="heading-large">
+    @Model.CurrentSection.Title
+</h1>
+<p>
+    <details>
+        <summary>
+            <span class="summary">Who counts as an apprentice</span>
+        </summary>
+        <div class="panel panel-border-narrow">
+            <p class="heading-small">You should include the following staff when calculating your apprentice numbers:</p>
+            <ul class="list-bullet">
+                <li>anyone doing an approved English apprenticeship framework or standard with an apprenticeship agreement in place</li>
+            </ul>
+        </div>
+    </details>
+</p>
+<div class="form-group">
+    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[0].Answer">
+        Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.StartYear.AsFourDigitString
+        <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
+    </label>
+    <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
+    <input type="text" class="form-control form-control-1-3 js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" maxlength="11" />
+</div>
+
+<div class="form-group">
+    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[1].Answer">
+        Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.EndYear.AsFourDigitString
+        <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
+    </label>
+    <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
+    <input type="text"  class="form-control form-control-1-3 js-addcommas"  asp-for="@Model.Questions.ToArray()[1].Answer"  name="Section.Questions[1].Answer" value="@questionsList[1].Answer" maxlength="11" />
+</div>
+
+<div class="form-group">
+    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[2].Answer">
+        Number of new apprentices whose apprenticeship agreements started between @Model.CurrentPeriod.FullString
+        <span class="form-hint">This includes both new hires and existing employees who started an apprenticeship</span>
+        <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
+    </label>
+    <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
+    <input type="text"  class="form-control form-control-1-3 js-addcommas" asp-for="@Model.Questions.ToArray()[2].Answer"  name="Section.Questions[2].Answer" value="@questionsList[2].Answer" maxlength="11" />
+</div>

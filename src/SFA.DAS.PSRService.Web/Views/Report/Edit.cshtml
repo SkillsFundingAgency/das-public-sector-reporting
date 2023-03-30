@@ -6,7 +6,15 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-edit";
     ViewBag.ZenDeskLabel = "reporting-progress-towards-target";
 }
-<a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+
+@if (Model.Report.IsLocalAuthority.HasValue)
+{
+    <a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority">Back</a>
+}
+else
+{
+    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+}
 
 <div class="grid-row">
     <div class="column-two-thirds">
@@ -16,6 +24,18 @@
 <div class="grid-row">
     <div class="column-two-thirds">
         <p>Use this step by step list to help you report your progress towards meeting the public sector apprenticeship target:</p>
+
+        @if (Model.Report.IsLocalAuthority.HasValue)
+        {
+            <div class="notice">
+                <i class="icon icon-important">
+                    <span class="visually-hidden">Warning</span>
+                </i>
+                <strong class="bold-small">
+                    You do not need to fill out this form if your organisation has less than 250 employees.
+                </strong>
+            </div>
+        }
         <ol class="task-list">
             @Html.Partial("Sections/OrganisationName", Model)
 
@@ -28,7 +48,7 @@
             }
 
             @Html.Partial("Sections/Review", Model)
-           
+
         </ol>
     </div>
     <div class="column-one-third">

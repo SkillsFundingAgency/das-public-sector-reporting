@@ -26,7 +26,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
             _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
             _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
             _fileProviderMock = new Mock<IFileProvider>();
-            _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object);
+            _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object, _fileProviderMock.Object);
 
             var fileInfo = new StringFileInfo("", "QuestionConfig.json");
             _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);

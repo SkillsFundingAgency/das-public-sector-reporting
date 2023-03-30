@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
+﻿@using SFA.DAS.PSRService.Web.ViewModels
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.PSRService.Web.ViewModels.ReportViewModel
 
 @{
     ViewBag.Title = "Review details";
@@ -89,14 +91,24 @@
                 </table>
             </div>
 
-            @Html.Partial("Question/Organisation", Model.Report.OrganisationName)
+            @Html.Partial("Question/Organisation", new OrganisationReviewViewModel() { OrganisationName = Model.Report.OrganisationName,HasMinimumEmployeeHeadcount = Model.Report.HasMinimumEmployeeHeadcount,IsLocalAuthority = Model.Report.IsLocalAuthority })
+
             @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
+            {
+                @Html.Partial("Question/ReportNumbersSchools", Model.Report.Sections.Single(w => w.Id == "ReportNumbersSchools"))
+            }
+
+
             @Html.Partial("Question/ReportingPercentages", Model.Percentages)
+            @if (Model.PercentagesSchools != null)
+            {
+                @Html.Partial("Question/ReportingPercentages", Model.PercentagesSchools)
+            }
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
             {
                 @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
             }
-
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
             {

@@ -12,6 +12,7 @@ namespace SFA.DAS.PSRService.Domain.Entities
         public string Id { get; set; }
         public string Title { get; set; }
         public string SummaryText { get; set; }
+        public string SerialNo { get; set; }
         public string ZenDeskLabel => GetZendeskLabel_ByQuestionId(Id);
 
         public bool IsComplete()
@@ -44,6 +45,10 @@ namespace SFA.DAS.PSRService.Domain.Entities
                     return "reporting-your-employees";
                 case "FullTimeEquivalent":
                     return "reporting-full-time-equivalents";
+                case "SchoolsApprentices":
+                    return "reporting-Schools-apprentices";
+                case "SchoolsEmployees":
+                    return "reporting-Schools-employees";
             }
             return string.Empty;
         }

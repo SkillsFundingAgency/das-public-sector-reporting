@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model SFA.DAS.PSRService.Web.ViewModels.OrganisationReviewViewModel
 
 @{
     ViewData["Title"] = "Your organisation";
@@ -11,16 +11,62 @@
     <table>
         <caption class="heading-medium">Organisation</caption>
         <tbody>
-            <tr>
-                <td>Organisation Name</td>
-                <td class="bold">@Model</td>
+            @if (Model.IsLocalAuthority.HasValue)
+            {
+                <tr>
+                    <td>Is your organisation a local authority</td>
+                    @if (Model.IsLocalAuthority.Value)
+                    {
+                            <td class="bold">Yes</td>
+                    }
+                    else
+                    {
+                            <td class="bold">No</td>
+                    }
                     @if (canBeEdited)
                     {
+                            <td class="link-right">
+                                <a asp-controller="Report" asp-action="IsLocalAuthority">Change</a>
+                            </td>
+                    }
+                </tr>
+            }
+        <tr>
+            <td>Organisation Name</td>
+            <td class="bold">@Model.OrganisationName</td>
+                @if (canBeEdited)
+                {
                     <td class="link-right">
                         <a asp-controller="Report" asp-action="OrganisationName">Change</a>
                     </td>
+                }
+        </tr>
+            @if (Model.IsLocalAuthority.HasValue)
+            {
+                <tr>
+                    <td>Total number of employees</td>
+
+                    @if (!Model.HasMinimumEmployeeHeadcount.HasValue)
+                    {
+                            <td class="bold"></td>
                     }
-            </tr>
+                    else if (Model.HasMinimumEmployeeHeadcount.Value)
+                    {
+                            <td class="bold">More than 250</td>
+                    }
+                    else
+                    {
+                            <td class="bold"></td>
+                    }
+                    @if (canBeEdited)
+                    {
+                            <td class="link-right">
+                                <a asp-controller="Report" asp-action="TotalEmployees">Change</a>
+                            </td>
+                    }
+                </tr>
+            }
         </tbody>
     </table>
 </div>
+

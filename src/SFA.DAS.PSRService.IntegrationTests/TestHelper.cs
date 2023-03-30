@@ -12,6 +12,7 @@ using Dapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -85,6 +86,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 {
                     SqlConnectionString = TestHelper.ConnectionString,
                 });
+
                 config.For<IReportService>().Use<ReportService>();
                 config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
