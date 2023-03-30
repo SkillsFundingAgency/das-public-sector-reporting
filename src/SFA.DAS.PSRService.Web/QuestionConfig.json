@@ -1,5 +1,7 @@
 ﻿{
   "OrganisationName": null,
+  "IsLocalAuthority": false,
+  "HasMinimumEmployeeHeadcount": null,
   "Questions": [
     {
       "SubSections": [
@@ -54,28 +56,18 @@
           "Id": "YourApprentices",
           "Title": "Your apprentices",
           "SummaryText": "Number of apprentices who work in England"
-        },
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "atStart",
-              "Answer": "",
-              "Optional": true,
-              "Type": 0
-            }
-          ],
-          "Id": "FullTimeEquivalent",
-          "Title": "Full time equivalents",
-          "SummaryText": "Number of full-time equivalents who work in England (optional)"
         }
       ],
       "Questions": null,
       "Id": "ReportNumbers",
       "Title": "Report numbers in the following categories",
-      "SummaryText": null
+      "SummaryText": null,
+      "SerialNo": "2"
     }
-
   ],
-  "Submitted": null
+  "Submitted": null,
+  "SerialNo": "3",
+  "ReportingPercentages": {
+    "Title": "ReportingPercentage"
+  }
 }

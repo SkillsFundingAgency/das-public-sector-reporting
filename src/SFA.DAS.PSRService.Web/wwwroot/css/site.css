@@ -1070,6 +1070,7 @@ p.error-message {
 }
 
 .button-secondary,
+.button-secondary:link, 
 .button-secondary:visited {
   background-color: #f3f2f1;
   box-shadow: 0 2px 0 #929191;
@@ -1080,6 +1081,7 @@ p.error-message {
   color: #0b0c0c;
 }
 .button-secondary:active,
+.button-secondary:link:focus,
 .button-secondary:focus {
   outline: 3px solid #ffbf47;
   color: #0b0c0c;

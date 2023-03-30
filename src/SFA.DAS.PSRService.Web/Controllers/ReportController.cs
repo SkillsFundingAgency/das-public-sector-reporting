@@ -117,8 +117,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
             {
                 if (!isLocalAuthorityViewModel.IsLocalAuthority.HasValue)
                 {
-                    ModelState.AddModelError("confirm-yes", "Select whether you are a local authority or not");
-                    return View("IsLocalAuthority");
+                    ModelState.AddModelError("confirm-yes", "Select 'yes' if your organisation is a local authority");
+                    return View("IsLocalAuthority", isLocalAuthorityViewModel);
                 }
 
                 var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
