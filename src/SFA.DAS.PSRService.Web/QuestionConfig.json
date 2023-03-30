@@ -1,5 +1,7 @@
 ﻿{
   "OrganisationName": null,
+  "IsLocalAuthority": false,
+  "HasMinimumEmployeeHeadcount": null,
   "Questions": [
     {
       "SubSections": [
@@ -54,94 +56,18 @@
           "Id": "YourApprentices",
           "Title": "Your apprentices",
           "SummaryText": "Number of apprentices who work in England"
-        },
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "atStart",
-              "Answer": "",
-              "Optional": true,
-              "Type": 0
-            }
-          ],
-          "Id": "FullTimeEquivalent",
-          "Title": "Full time equivalents",
-          "SummaryText": "Number of full-time equivalents who work in England (optional)"
         }
       ],
       "Questions": null,
       "Id": "ReportNumbers",
       "Title": "Report numbers in the following categories",
-      "SummaryText": null
-    },
-    {
-      "SubSections": [
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "OutlineActions",
-              "Answer": "",
-              "Optional": false,
-              "Type": 2
-            }
-          ],
-          "Id": "OutlineActions",
-          "Title":
-            "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?",
-          "SummaryText":
-            "What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?"
-        },
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "Challenges",
-              "Answer": "",
-              "Optional": false,
-              "Type": 2
-            }
-          ],
-          "Id": "Challenges",
-          "Title": "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?",
-          "SummaryText":
-            "What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?"
-        },
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "TargetPlans",
-              "Answer": "",
-              "Optional": false,
-              "Type": 2
-            }
-          ],
-          "Id": "TargetPlans",
-          "Title": "How are you planning to meet the target in future? What will you continue to do or do differently?",
-          "SummaryText": "How are you planning to meet the target in future? What will you continue to do or do differently?"
-        },
-        {
-          "SubSections": null,
-          "Questions": [
-            {
-              "Id": "AnythingElse",
-              "Answer": "",
-              "Optional": true,
-              "Type": 2
-            }
-          ],
-          "Id": "AnythingElse",
-          "Title": "Do you have anything else you want to tell us? (optional)",
-          "SummaryText": "Do you have anything else you want to tell us? (optional)"
-        }
-      ],
-      "Questions": null,
-      "Id": "Factors",
-      "Title": "Factors that impacted your ability to meet the target",
-      "SummaryText": null
+      "SummaryText": null,
+      "SerialNo": "2"
     }
   ],
-  "Submitted": null
+  "Submitted": null,
+  "SerialNo": "3",
+  "ReportingPercentages": {
+    "Title": "ReportingPercentage"
+  }
 }

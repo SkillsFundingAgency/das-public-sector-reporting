@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
+using StructureMap.Query;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
@@ -28,7 +30,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             IUserService userService,
             IWebConfiguration webConfiguration,
             IPeriodService periodService,
-            IAuthorizationService authorizationService, 
+            IAuthorizationService authorizationService,
             IMediator mediatr)
             : base(webConfiguration, employerAccountService)
         {
@@ -79,17 +81,115 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Authorize(Policy = PolicyNames.CanEditReport)]
         public IActionResult PostCreate()
         {
+            return RedirectToAction("IsLocalAuthority", "Report");
+        }
+
+        [HttpGet]
+        [Route("IsLocalAuthority")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult IsLocalAuthority(bool? confirmIsLocalAuthority)
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            var isLocalAuthorityViewModelVm = new IsLocalAuthorityViewModel();
+
+            if (report != null)
+            {
+                if (!_reportService.CanBeEdited(report))
+                    return new RedirectResult(Url.Action("Index", "Home"));
+                isLocalAuthorityViewModelVm.IsLocalAuthority = confirmIsLocalAuthority.HasValue ? confirmIsLocalAuthority : report.IsLocalAuthority;
+                ViewBag.CurrentPeriod = report.Period ?? _currentPeriod;
+            }
+            else
+            {
+                ViewBag.CurrentPeriod = _currentPeriod;
+            }
+
+            return View("IsLocalAuthority", isLocalAuthorityViewModelVm);
+        }
+
+        [HttpPost]
+        [Route("IsLocalAuthority")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult PostIsLocalAuthority(IsLocalAuthorityViewModel isLocalAuthorityViewModel)
+        {
             try
             {
-                var user = _userService.GetUserModel(User);
-                _reportService.CreateReport(EmployerAccount.AccountId, user);
+                if (!isLocalAuthorityViewModel.IsLocalAuthority.HasValue)
+                {
+                    ModelState.AddModelError("confirm-yes", "Select 'yes' if your organisation is a local authority");
+                    return View("IsLocalAuthority", isLocalAuthorityViewModel);
+                }
+
+                var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+                if (report == null)
+                {
+                    var user = _userService.GetUserModel(User);
+                    _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthorityViewModel.IsLocalAuthority);
+                }
+                else
+                {
+                    if (isLocalAuthorityViewModel.IsLocalAuthority == report.IsLocalAuthority)
+                        return new RedirectResult(Url.Action("Edit", "Report"));
+
+                    if (!_reportService.CanBeEdited(report))
+                        return new RedirectResult(Url.Action("Index", "Home"));
+
+                    return new RedirectResult(Url.Action("DataLossWarning", new DataLossWarningViewModel() { IsLocalAuthority = isLocalAuthorityViewModel.IsLocalAuthority.Value }));
+                }
+
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
             catch (Exception)
             {
-
                 return new BadRequestResult();
             }
+        }
+
+        [HttpPost]
+        [Route("DataLossWarning")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult PostDataLossWarning(DataLossWarningViewModel dataLossWarning)
+        {
+            try
+            {
+                if (!dataLossWarning.ConfirmIsLocalAuthority.HasValue)
+                {
+                    ModelState.AddModelError("confirm-yes", "Confirm,do you want to change your answer");
+                    return View("DataLossWarning", dataLossWarning);
+                }
+
+                if (!dataLossWarning.ConfirmIsLocalAuthority.Value)
+                    return new RedirectResult(Url.Action("Edit", "Report"));
+
+                var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+                if (report != null)
+                {
+                    if (!_reportService.CanBeEdited(report))
+                        return new RedirectResult(Url.Action("Index", "Home"));
+
+                    if (dataLossWarning.IsLocalAuthority == report.IsLocalAuthority)
+                        return new RedirectResult(Url.Action("Edit", "Report"));
+
+                    _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
+                }
+
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            }
+            catch (Exception)
+            {
+                return new BadRequestResult();
+            }
+        }
+
+        [HttpGet]
+        [Route("DataLossWarning")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult DataLossWarning(DataLossWarningViewModel dataLossWarning)
+        {
+            return View(dataLossWarning);
         }
 
         [Route("List")]
@@ -136,7 +236,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
         {
             try
             {
-
                 if (period == null)
                     period = _currentPeriod.PeriodString;
 
@@ -152,17 +251,25 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     IsReadOnly = (UserIsAuthorizedForReportEdit() == false)
                 };
 
-                reportViewModel.IsValidForSubmission = reportViewModel.Report?.IsValidForSubmission() ?? false;
-                reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report?.ReportingPercentages);
-
-                ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+                if (reportViewModel.Report != null)
+                {
+                    reportViewModel.IsValidForSubmission = reportViewModel.Report.IsValidForSubmission();
+                    reportViewModel.Percentages = new PercentagesViewModel(reportViewModel.Report.ReportingPercentages);
+                    if (reportViewModel.Report.ReportingPercentagesSchools != null) reportViewModel.PercentagesSchools = new PercentagesViewModel(reportViewModel.Report.ReportingPercentagesSchools);
+                    ViewBag.CurrentPeriod = reportViewModel.Report.Period ?? _currentPeriod;
+                }
+                else
+                {
+                    reportViewModel.IsValidForSubmission = false;
+                    ViewBag.CurrentPeriod = _currentPeriod;
+                }
 
                 TryValidateModel(reportViewModel);
 
                 reportViewModel.Subtitle = GetSubtitleForUserAccessLevel();
                 reportViewModel.HashedEmployerAccountId = hashedEmployerAccountId;
 
-                return View("Summary",reportViewModel);
+                return View("Summary", reportViewModel);
             }
             catch
             {
@@ -182,7 +289,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             if (report.Submitted)
             {
-                return new RedirectResult(Url.Action("Index","Home"));
+                return new RedirectResult(Url.Action("Index", "Home"));
             }
 
             if (report.IsValidForSubmission() == false)
@@ -192,7 +299,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             var viewModel = new ReportViewModel { Report = report };
 
-            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report) )
+            if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Summary", "Report"));
 
             ViewBag.CurrentPeriod = _currentPeriod;
@@ -267,6 +374,57 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View("OrganisationName", organisationVm);
         }
 
+        [Route("TotalEmployees")]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult TotalEmployees(bool? totalEmployeesConfirmation)
+        {
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!_reportService.CanBeEdited(report))
+                return new RedirectResult(Url.Action("Index", "Home"));
+
+            ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
+
+            report.HasMinimumEmployeeHeadcount = totalEmployeesConfirmation.HasValue ? totalEmployeesConfirmation : report.HasMinimumEmployeeHeadcount;
+
+            return View("TotalEmployees", report.HasMinimumEmployeeHeadcount);
+        }
+
+        [Route("TotalEmployees")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = PolicyNames.CanEditReport)]
+        public IActionResult PostTotalEmployees(bool? hasMinimumEmployeeHeadcount)
+        {
+            if (hasMinimumEmployeeHeadcount == false)
+                return new RedirectResult(Url.Action("ReportNotRequired"));
+
+            var report = _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+
+            if (!hasMinimumEmployeeHeadcount.HasValue)
+            {
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            }
+
+            report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
+
+            _reportService.SaveReport(report, _userService.GetUserModel(User), null);
+
+            return new RedirectResult(Url.Action("Edit", "Report"));
+        }
+
+        [Route("TotalEmployeesConfirmationRequired")]
+        public IActionResult TotalEmployeesConfirmationRequired()
+        {
+            return View();
+        }
+
+        [Route("ReportNotRequired")]
+        public IActionResult ReportNotRequired()
+        {
+            return View();
+        }
+
         [Route("Change")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -280,7 +438,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
 
             reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User));
+            _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User), null);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
@@ -291,8 +449,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult Amend()
         {
             _mediatr.Send(
-                new UnSubmitReportRequest(EmployerAccount.AccountId, _currentPeriod));        
-              
+                new UnSubmitReportRequest(EmployerAccount.AccountId, _currentPeriod));
+
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
 
@@ -302,8 +460,8 @@ namespace SFA.DAS.PSRService.Web.Controllers
         public IActionResult ConfirmAmend([FromRoute] string hashedEmployerAccountId)
         {
             ViewBag.ReportPeriod = _currentPeriod;
-            
-            return View("ConfirmAmend");
+
+            return View();
         }
 
         private bool UserIsAuthorizedForReportSubmission()

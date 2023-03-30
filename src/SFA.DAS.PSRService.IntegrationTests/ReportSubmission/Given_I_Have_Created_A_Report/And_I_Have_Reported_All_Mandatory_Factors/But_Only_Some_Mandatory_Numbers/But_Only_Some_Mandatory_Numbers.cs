@@ -4,6 +4,8 @@
     public abstract class But_Only_Some_Mandatory_Numbers
         : And_I_Have_Reported_All_Mandatory_Factors
     {
+        public But_Only_Some_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority){}
+
         protected override void Given()
         {
             base.Given();

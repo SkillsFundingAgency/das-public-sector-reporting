@@ -11,6 +11,8 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
     {
         private IActionResult submitResult;
 
+        public When_I_Submit_The_Report() : base(false){}
+
         protected override void When()
         {
             try

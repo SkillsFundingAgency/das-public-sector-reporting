@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.IntegrationTests.Web;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.ViewModels;
 using StructureMap;
 
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report
@@ -18,6 +19,11 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
         private static Container _container;
         protected QuestionController QuestionController;
         protected Mock<IUrlHelper> MockUrlHelper;
+        private bool _IsLocalAuthority;
+        public Given_I_Have_Created_A_Report(bool isLocalAuthority)
+        {
+            this._IsLocalAuthority = isLocalAuthority;
+        }
         protected override void Given()
         {
             _container = new Container();
@@ -38,10 +44,9 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 
             SUT.ControllerContext.HttpContext = mockContext.Object;
             QuestionController.ControllerContext.HttpContext = mockContext.Object;
-
             TestHelper.ClearData();
 
-            SUT.PostCreate();
+            SUT.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = _IsLocalAuthority });
         }
 
         [TearDown]

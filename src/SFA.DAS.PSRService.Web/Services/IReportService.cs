@@ -7,11 +7,11 @@ namespace SFA.DAS.PSRService.Web.Services
 {
     public interface IReportService
     {
-        void CreateReport(string employerId, UserModel user);
+        void CreateReport(string employerId, UserModel user, bool? IsLocalAuthority);
         Report GetReport(string period,string employerId);
         void SubmitReport(Report report);
         IEnumerable<Report> GetSubmittedReports(string employerId);
-        void SaveReport(Report report, UserModel user);
+        void SaveReport(Report report, UserModel user,bool? IsLocalAuthority);
         bool CanBeEdited(Report report);
         IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
     }

@@ -3,6 +3,8 @@
     public abstract class And_All_Mandatory_Numbers
     : And_I_Have_Reported_All_Mandatory_Factors
     {
+        public And_All_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority){}
+
         protected override void Given()
         {
             base.Given();

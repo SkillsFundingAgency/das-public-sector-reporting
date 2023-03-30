@@ -6,8 +6,6 @@ namespace SFA.DAS.PSRService.Web.ViewModels
     public class OrganisationViewModel
     {
         public Report Report { get; set; }
-    
         public EmployerIdentifier EmployerAccount { get; set; }
-       
     }
 }
