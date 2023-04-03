@@ -5,10 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="LocalAuthorityQuestionConfig.json" />
     <None Remove="QuestionConfig.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="LocalAuthorityQuestionConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="QuestionConfig.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

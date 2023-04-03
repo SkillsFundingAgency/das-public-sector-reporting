@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
             validAnswers = new List<QuestionViewModel>
             {
                 new QuestionViewModel {Id = "atStart", Answer = "1"},
-                new QuestionViewModel {Id = "atEnd", Answer = "1"},
+                new QuestionViewModel {Id = "atEnd", Answer = "300"},
                 new QuestionViewModel {Id = "newThisPeriod", Answer = "1"}
             };
         }

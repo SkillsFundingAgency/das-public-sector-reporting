@@ -29,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
             _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
             _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
-            
+
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests
                 Id = new Guid("DC850E8E-8286-47DF-8BFD-8332A6483555")
             };
             //Act
-            _reportService.SaveReport(report, user);
+            _reportService.SaveReport(report, user, null);
 
             //Assert
             _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()), Times.Once);

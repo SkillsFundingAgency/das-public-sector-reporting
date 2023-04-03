@@ -7,31 +7,42 @@
     ViewData["Title"] = "Public sector reporting";
     var employerId = Context.GetRouteData().Values["hashedEmployerAccountId"];
     ViewBag.GaData.Vpv = "/public-sector-reporting/sections/page-report-numbers";
+    var SerialNo = (!string.IsNullOrEmpty(@Model.SerialNo)) ? @Model.SerialNo : "2";
 }
 
 <li>
     <h2 class="task-list-section">
-        <span class="task-list-section-number">2. </span> @Model.Title
+        <span class="task-list-section-number">@SerialNo. </span> @Model.Title
     </h2>
     <ul class="task-list-items">
+
         @if (Model.SubSections != null)
         {
             foreach (var subSection in Model.SubSections)
             {
-                    // @Html.Partial("Question/" + @subSection.Id, Model)
-                    <li class="task-list-item">
-                    <a class="task-name" 
-                    asp-controller="Question" 
-                    asp-action="Index" 
-                    asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" 
-                    asp-route-id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">
-                        @subSection.SummaryText
-                    </a>
-                        @if (subSection.IsComplete())
+
+                <li class="task-list-item">
+                    <a class="task-name"
+               asp-controller="Question"
+               asp-action="Index"
+               asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]"
+               asp-route-id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">
+
+                        @if (subSection.Id != "FullTimeEquivalent")
                         {
-                            <span id="@($"{subSection.Id}-task-completed")" class="task-completed">COMPLETE</span>
+                            @subSection.SummaryText.Split("-").First()
                         }
-                    </li>
+                        else
+                        {
+                            @subSection.SummaryText
+                        }
+
+                    </a>
+                    @if (subSection.IsComplete())
+                    {
+                        <span id="@($"{subSection.Id}-task-completed")" class="task-completed">COMPLETE</span>
+                    }
+                </li>
 
             }
         }

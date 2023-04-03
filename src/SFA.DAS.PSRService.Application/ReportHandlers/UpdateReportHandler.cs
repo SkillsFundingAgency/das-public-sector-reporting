@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -12,11 +15,13 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
     {
         private readonly IMapper _mapper;
         private readonly IReportRepository _reportRepository;
+        private readonly IFileProvider _fileProvider;
 
-        public UpdateReportHandler(IMapper mapper, IReportRepository reportRepository)
+        public UpdateReportHandler(IMapper mapper, IReportRepository reportRepository, IFileProvider fileProvider)
         {
             _mapper = mapper;
             _reportRepository = reportRepository;
+            _fileProvider = fileProvider;
         }
 
         protected override void HandleCore(UpdateReportRequest request)
@@ -29,8 +34,15 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
             request.Report.UpdatePercentages();
 
             var reportDto = _mapper.Map<ReportDto>(request.Report);
+
+            if (request.IsLocalAuthority.HasValue)
+            {
+                if (request.IsLocalAuthority != request.Report.IsLocalAuthority)
+                    reportDto.ReportingData = GetQuestionConfig(request.IsLocalAuthority.Value).Result;
+            }
+
             reportDto.UpdatedUtc = DateTime.UtcNow;
-            reportDto.UpdatedBy = JsonConvert.SerializeObject(new User {Id = request.User.Id, Name = request.User.Name});
+            reportDto.UpdatedBy = JsonConvert.SerializeObject(new User { Id = request.User.Id, Name = request.User.Name });
             if (!reportDto.AuditWindowStartUtc.HasValue)
                 reportDto.AuditWindowStartUtc = reportDto.UpdatedUtc;
 
@@ -68,6 +80,15 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers
         private static bool IsPreAudit(ReportDto oldVersion)
         {
             return !oldVersion.AuditWindowStartUtc.HasValue || !oldVersion.UpdatedUtc.HasValue || oldVersion.UpdatedBy == null;
+        }
+
+        private Task<string> GetQuestionConfig(bool isLocalAuthority)
+        {
+            var questionsConfig = _fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
+
+            using var jsonContents = questionsConfig.CreateReadStream();
+            using StreamReader sr = new StreamReader(jsonContents);
+            return Task.FromResult(sr.ReadToEnd());
         }
     }
 }

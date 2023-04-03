@@ -45,7 +45,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
         }
 
         [Test]
-        public void And_An_EmployeeId_And_Period_Is_Supplied_Then_Create_Report()
+        public void And_An_EmployeeId_And_Period_And_IsLocalAuthority_Is_Supplied_Then_Create_Report()
         {
             // arrange
             var userId = Guid.NewGuid();
@@ -58,6 +58,41 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
                     .WithUserId(userId)
                     .WithEmployerId(_employerId)
                     .ForPeriod(_reportingPeriod)
+                    .WithIsLocalAuthority(false)
+                    .Build();
+
+            _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Callback<ReportDto>(r => reportDto = r).Verifiable();
+
+            // act
+            var result = _createReportHandler.Handle(createReportRequest, new CancellationToken()).Result;
+
+            // assert
+            _reportRepositoryMock.VerifyAll();
+            Assert.AreEqual(_report.EmployerId, result.EmployerId);
+            Assert.AreEqual(_report.Submitted, result.Submitted);
+            Assert.AreEqual(_report.ReportingPeriod, result.ReportingPeriod);
+            Assert.AreEqual(_report.EmployerId, reportDto.EmployerId);
+            Assert.AreEqual(_report.ReportingPeriod, reportDto.ReportingPeriod);
+            Assert.IsTrue(reportDto.UpdatedBy.Contains(userId.ToString()));
+            Assert.IsNotNull(reportDto.AuditWindowStartUtc);
+            Assert.IsNotNull(reportDto.UpdatedUtc);
+        }
+
+        [Test]
+        public void And_An_EmployeeId_And_Period_And_As_IsLocalAuthority_Is_Supplied_Then_Create_Report()
+        {
+            // arrange
+            var userId = Guid.NewGuid();
+            var userName = "Bob Shurunkle";
+            ReportDto reportDto = null;
+
+            var createReportRequest =
+                new CreateReportRequestBuilder()
+                    .WithUserName(userName)
+                    .WithUserId(userId)
+                    .WithEmployerId(_employerId)
+                    .ForPeriod(_reportingPeriod)
+                    .WithIsLocalAuthority(true)
                     .Build();
 
             _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Callback<ReportDto>(r => reportDto = r).Verifiable();

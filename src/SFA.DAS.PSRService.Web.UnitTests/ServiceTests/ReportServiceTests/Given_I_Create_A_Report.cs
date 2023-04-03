@@ -36,8 +36,9 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
 
         }
 
-        [Test]
-        public void And_Employer_Id_And_Period_Is_Supplied_Then_Create_Report()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void And_Employer_Id_And_Period_Is_Supplied_Then_Create_Report(bool isLocalAuthority)
         {
             //Arrange
             CreateReportRequest actualRequest = null;
@@ -47,7 +48,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests
                 .Verifiable();
 
             //Act
-            _reportService.CreateReport("ABCDE", _user);
+            _reportService.CreateReport("ABCDE", _user, isLocalAuthority);
 
             //Assert
             _mediatorMock.VerifyAll();
