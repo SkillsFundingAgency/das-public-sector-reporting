@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerAccount))]
     public class ServiceController : Controller
     {
         private readonly IWebConfiguration _webConfiguration;

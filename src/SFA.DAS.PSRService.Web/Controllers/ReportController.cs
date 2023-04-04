@@ -15,7 +15,7 @@ using StructureMap.Query;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = nameof(PolicyNames.HasEmployerAccount))]
     [Route("accounts/{hashedEmployerAccountId}/[controller]")]
     public class ReportController : BaseController
     {

@@ -11,7 +11,6 @@ using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Controllers
 {
-    [Authorize]
     [Authorize(Policy = PolicyNames.CanEditReport)]
     public class QuestionController : BaseController
     {
