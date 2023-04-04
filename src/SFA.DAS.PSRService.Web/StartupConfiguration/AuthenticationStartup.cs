@@ -43,11 +43,28 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 options.AddPolicy(
                     PolicyNames
                         .CanEditReport
-                    , policy => { policy.Requirements.Add(new CanEditReport()); });
+                    , policy =>
+                    {
+                        policy.Requirements.Add(new CanEditReport());
+                        policy.Requirements.Add(new EmployerAccountRequirement());
+                        policy.Requirements.Add(new AccountActiveRequirement());
+                    });
                 options.AddPolicy(
                     PolicyNames
                         .CanSubmitReport
-                    , policy => { policy.Requirements.Add(new CanSubmitReport()); });
+                    , policy =>
+                    {
+                        policy.Requirements.Add(new CanSubmitReport());
+                        policy.Requirements.Add(new EmployerAccountRequirement());
+                        policy.Requirements.Add(new AccountActiveRequirement());
+                    });
+#if DEBUG
+                options.AddPolicy(
+                    "StubAuth",policy=>
+                    {
+                        policy.RequireAuthenticatedUser();
+                    });
+#endif
             });
 
             services.AddSingleton<IAuthorizationHandler, EmployerAccountHandler>();
@@ -55,6 +72,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             services.AddSingleton<IAuthorizationHandler, CanEditReportHandler>();
 
             services.AddSingleton<IAuthorizationHandler, AccountActiveAuthorizationHandler>();//TODO remove after gov one login go live
+            services.AddTransient<IStubAuthenticationService, StubAuthenticationService>();//TODO remove after gov one login go live
         }
 
         public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IConfiguration config)
