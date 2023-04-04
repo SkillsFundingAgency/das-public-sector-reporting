@@ -42,7 +42,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
 
             _employeeAccountServiceMock.Setup(x => x.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(new EmployerIdentifier { AccountId = TestAccountId });
 
-            _controller = new HomeController(null, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object) { Url = _mockUrlHelper.Object };
+            _controller = new HomeController(null, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object, null, null) { Url = _mockUrlHelper.Object };
         }
 
         [Test]

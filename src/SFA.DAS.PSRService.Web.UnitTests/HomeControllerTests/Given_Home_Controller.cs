@@ -38,7 +38,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests
             _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
                 .Returns(_employerIdentifier);
 
-            SUT = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object);
+            SUT = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object, null, null);
         }
     }
 }
