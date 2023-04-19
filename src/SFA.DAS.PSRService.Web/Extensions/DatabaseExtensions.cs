@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using Azure.Core;
+using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Data.SqlClient;
@@ -18,13 +20,18 @@ namespace SFA.DAS.PSRService.Web.Extensions
                 bool useManagedIdentity = !connectionStringBuilder.IntegratedSecurity && string.IsNullOrEmpty(connectionStringBuilder.UserID);
                 if (useManagedIdentity)
                 {
-                    var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                    var accessToken = azureServiceTokenProvider.GetAccessTokenAsync(AzureResource).Result;
+                    var azureServiceTokenProvider = new ChainedTokenCredential(
+                        new ManagedIdentityCredential(),
+                        new AzureCliCredential(),
+                        new VisualStudioCodeCredential(),
+                        new VisualStudioCredential());
+
                     return new SqlConnection
                     {
                         ConnectionString = sqlConnectionString,
-                        AccessToken = accessToken,
+                        AccessToken = azureServiceTokenProvider.GetToken(new TokenRequestContext(scopes: new string[] { AzureResource })).Token
                     };
+                    
                 }
                 else
                 {
