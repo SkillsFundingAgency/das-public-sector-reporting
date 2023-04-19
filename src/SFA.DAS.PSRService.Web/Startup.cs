@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.Forecasting.Web.Extensions;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -79,6 +80,14 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
 
             services.AddAndConfigureAuthentication(Configuration, _config);
+            if (Configuration.UseGovSignIn)
+            {
+                services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
+            }
+            else
+            {
+                services.AddMaMenuConfiguration("SignOut", Configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
+            }
             services.AddAuthorizationService();
             services.AddHealthChecks();
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
@@ -89,7 +98,8 @@ namespace SFA.DAS.PSRService.Web
                     opts.Filters.AddService<GoogleAnalyticsFilter>();
                     opts.Filters.AddService<ZenDeskApiFilter>();
                 })
-                .AddControllersAsServices().AddSessionStateTempDataProvider();
+                .AddControllersAsServices().AddSessionStateTempDataProvider()
+                .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
 
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
             services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
@@ -170,7 +180,13 @@ namespace SFA.DAS.PSRService.Web
                                     "https://*.zendesk.com",
                                     "wss://*.zendesk.com",
                                     "wss://*.zopim.com",
-                                    "https://*.rcrsv.io"
+                                    "https://*.rcrsv.io",
+                                    "https://das-at-frnt-end.azureedge.net", 
+                                    "https://das-test-frnt-end.azureedge.net", 
+                                    "https://das-test2-frnt-end.azureedge.net",
+                                    "https://das-demo-frnt-end.azureedge.net", 
+                                    "https://das-pp-frnt-end.azureedge.net",
+                                    "https://das-prd-frnt-end.azureedge.net"
                                     );
                     s.UnsafeInline();
                 }
@@ -187,7 +203,13 @@ namespace SFA.DAS.PSRService.Web
                                     "https://*.zendesk.com",
                                     "wss://*.zendesk.com",
                                     "wss://*.zopim.com",
-                                    "https://*.rcrsv.io");
+                                    "https://*.rcrsv.io",
+                                    "https://das-at-frnt-end.azureedge.net", 
+                                    "https://das-test-frnt-end.azureedge.net", 
+                                    "https://das-test2-frnt-end.azureedge.net",
+                                    "https://das-demo-frnt-end.azureedge.net", 
+                                    "https://das-pp-frnt-end.azureedge.net",
+                                    "https://das-prd-frnt-end.azureedge.net");
                     //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
                     if (env.IsEnvironment(EnvironmentNames.PREPROD))
                     {
@@ -199,7 +221,13 @@ namespace SFA.DAS.PSRService.Web
                     s.Self()
                     .CustomSources("data:",
                                     "https://fonts.googleapis.com/",
-                                    "https://assets-ukdoe.rcrsv.io/")
+                                    "https://assets-ukdoe.rcrsv.io/",
+                                    "https://das-at-frnt-end.azureedge.net", 
+                                    "https://das-test-frnt-end.azureedge.net", 
+                                    "https://das-test2-frnt-end.azureedge.net",
+                                    "https://das-demo-frnt-end.azureedge.net", 
+                                    "https://das-pp-frnt-end.azureedge.net",
+                                    "https://das-prd-frnt-end.azureedge.net")
                 )
                 .ConnectSources(s =>
                     s.Self()
@@ -224,7 +252,13 @@ namespace SFA.DAS.PSRService.Web
                                 "wss://*.zendesk.com",
                                 "wss://*.zopim.com",
                                 "data:",
-                                "https://assets.publishing.service.gov.uk"
+                                "https://assets.publishing.service.gov.uk",
+                                "https://das-at-frnt-end.azureedge.net", 
+                                "https://das-test-frnt-end.azureedge.net", 
+                                "https://das-test2-frnt-end.azureedge.net",
+                                "https://das-demo-frnt-end.azureedge.net", 
+                                "https://das-pp-frnt-end.azureedge.net",
+                                "https://das-prd-frnt-end.azureedge.net"
                                 );
                     }
                 )

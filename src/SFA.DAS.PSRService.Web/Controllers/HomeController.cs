@@ -131,6 +131,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
+        [Route("SignOut")]
         public async Task<IActionResult> Logout()
         {
             var idToken = await HttpContext.GetTokenAsync("id_token");

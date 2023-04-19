@@ -54,6 +54,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
     <PackageReference Include="System.Net.Security" Version="4.3.2" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+    <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
   </ItemGroup>
 
   <ItemGroup>
