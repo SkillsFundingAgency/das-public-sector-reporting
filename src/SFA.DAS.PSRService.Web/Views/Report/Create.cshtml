@@ -6,77 +6,80 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-create";
     ViewBag.ZenDeskLabel = "reporting-report-apprenticeship-target-data";
 }
-
-<div class="column-two-thirds">
-    <h1 class="heading-large">Report @ViewBag.CurrentPeriod.StartYear.AsFourDigitString to @ViewBag.CurrentPeriod.EndYear.AsFourDigitString public sector apprenticeship target data</h1>
-    <p>This report covers the period between @ViewBag.CurrentPeriod.FullString</p>
-    <p>
-        It must be completed by:
-    </p>
-    <ul class="list list-bullet">
-        <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March </li>
-    </ul>
-
-    <details>
-        <summary>
-            <span class="summary">The following public bodies are exempt</span>
-        </summary>
-        <div class="panel panel-border-wide">
-            <ul class="list list-bullet">
-                <li>charities</li>
-                <li>further education colleges</li>
-                <li>universities</li>
-                <li>housing associations and trusts</li>
-                <li>independent schools</li>
-                <li>partly state-owned financial bodies</li>
-                <li>BBC</li>
-                <li>Channel Four</li>
-                <li>The Houses of Commons and Lords</li>
-                <li>Post Office Ltd (and associated subsidiaries)</li>
-            </ul>
-        </div>
-    </details>
-
-    <details class="sfa-xlarge-bottom-margin">
-        <summary>
-            <span class="summary">How we will use the information you give us</span>
-        </summary>
-        <div class="panel panel-border-wide">
-            <ul class="list list-bullet">
-                <li>We (the Department for Education) will use the information submitted to assess your organisation’s progress towards meeting the public sector apprenticeships target</li>
-                <li>We will publish statistics featuring the figures and organisation name you provide</li>
-                <li>All information submitted will be subject to the Freedom of Information Act</li>
-            </ul>
-        </div>
-    </details>
-
-    <div class="panel panel-border-wide">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Report @ViewBag.CurrentPeriod.StartYear.AsFourDigitString to @ViewBag.CurrentPeriod.EndYear.AsFourDigitString public sector apprenticeship target data</h1>
+        <p>This report covers the period between @ViewBag.CurrentPeriod.FullString</p>
         <p>
-            Submissions deadline - 30 September @ViewBag.CurrentPeriod.EndYear.AsFourDigitString
+            It must be completed by:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>public authorities and organisations funded wholly or partly from public funds with 250 or more staff in England as of 31 March </li>
+        </ul>
+
+        <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">The following public bodies are exempt</span>
+            </summary>
+            <div class="govuk-details__text">
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>charities</li>
+                    <li>further education colleges</li>
+                    <li>universities</li>
+                    <li>housing associations and trusts</li>
+                    <li>independent schools</li>
+                    <li>partly state-owned financial bodies</li>
+                    <li>BBC</li>
+                    <li>Channel Four</li>
+                    <li>The Houses of Commons and Lords</li>
+                    <li>Post Office Ltd (and associated subsidiaries)</li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">How we will use the information you give us</span>
+            </summary>
+            <div class="govuk-details__text">
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>We (the Department for Education) will use the information submitted to assess your organisation’s progress towards meeting the public sector apprenticeships target</li>
+                    <li>We will publish statistics featuring the figures and organisation name you provide</li>
+                    <li>All information submitted will be subject to the Freedom of Information Act</li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="govuk-inset-text">
+            <p>
+                Submissions deadline - 30 September @ViewBag.CurrentPeriod.EndYear.AsFourDigitString
+            </p>
+        </div>
+
+        <p>You can update you report at any time before submitting it.</p>
+
+        <h2 class="govuk-heading-m">Before you start</h2>
+
+        <p>
+            You will need details about the number of employees you have:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>working in England</li>
+            <li>taken on during the reporting period</li>
+            <li>doing apprenticeships in England</li>
+            <li>who have started doing apprenticeships in England during the reporting period</li>
+        </ul>
+
+        <form method="post">
+            <div class="govuk-form-group">
+                <button id="report-create-start" class="govuk-button govuk-button--start"  type="submit">Start now <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+  </svg></button>
+            </div>
+        </form>
+
+        <p>
+            <a target="_blank" rel="external" href="https://www.gov.uk/government/publications/public-sector-apprenticeship-target" class="govuk-link">Detailed information about the public sector apprenticeship target</a>
         </p>
     </div>
-
-    <p>You can update you report at any time before submitting it.</p>
-
-    <h2 class="heading-medium">Before you start</h2>
-
-    <p>
-        You will need details about the number of employees you have:
-    </p>
-    <ul class="list list-bullet">
-        <li>working in England</li>
-        <li>taken on during the reporting period</li>
-        <li>doing apprenticeships in England</li>
-        <li>who have started doing apprenticeships in England during the reporting period</li>
-    </ul><p></p>
-
-    <form method="post">
-        <div class="form-group">
-            <button id="report-create-start" class="button button-start" type="submit">START</button>
-        </div>
-    </form>
-
-    <p>
-        <a target="_blank" rel="external" href="https://www.gov.uk/government/publications/public-sector-apprenticeship-target">Detailed information about the public sector apprenticeship target</a>
-    </p>
 </div>

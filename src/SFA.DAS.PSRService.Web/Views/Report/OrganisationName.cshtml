@@ -5,28 +5,28 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-your-organisation";
     ViewBag.ZenDeskLabel = "reporting-your-organsation";
 }
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
-        <h1 class="heading-large">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+        <h1 class="govuk-heading-l">
             Your organisation
         </h1>
 
         @*
-        <h2 class="heading-medium">
+        <h2 class="govuk-heading-m">
             @Model.EmployerAccount.EmployerName
         </h2>
         *@
 
         <form id="myFormId" asp-action="Change">
-            <fieldset>
-                <div class="form-group">
-                    <label class="form-label-bold" asp-for="Report.OrganisationName">
+            <fieldset class="govuk-fieldset">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" asp-for="Report.OrganisationName">
                         What is the name of the organisation you would like to report on?
                     </label>
-                    <input type="text" class="form-control form-control-3-4" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
+                    <input type="text" class="govuk-input govuk-!-width-three-quarters" asp-for="Report.OrganisationName" value="@Model.Report.OrganisationName" />
                 </div>
-                    <input class="button" type="submit" value="Continue">
+                    <input class="govuk-button" type="submit" value="Continue">
             </fieldset>
         </form>
     </div>

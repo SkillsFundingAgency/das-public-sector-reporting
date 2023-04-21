@@ -6,16 +6,16 @@
     var canBeEdited = ViewBag.CanBeEdited;
 }
 
-<div class="form-group">
-    <table>
-        <caption class="heading-medium">Full Time Equivalent</caption>
-        <tbody>
-            <tr>
-                <td>Full-time equivalents (optional)</td>
+<div class="govuk-form-group">
+    <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">Full Time Equivalent</caption>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">Full-time equivalents (optional)</td>
                 <td class="numeric bold js-addcommas">@questionList["atStart"].Answer</td>
                     @if (canBeEdited)
                     {
-                    <td class="link-right">
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
                         <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
                     </td>
                     }

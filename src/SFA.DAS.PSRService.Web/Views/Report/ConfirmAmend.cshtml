@@ -6,13 +6,13 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-confirm-amend";
 }
 
-<a class="link-back" asp-controller="Report" asp-action="List">Back</a>
-<div class="grid-row">
-    <div class="column-two-thirds">
+<a class="govuk-back-link" asp-controller="Report" asp-action="List">Back</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
         <p>If you amend this submission, you will have to resubmit your report for @ViewBag.ReportPeriod.FullString. You will not be able to view your previous submission from this point onwards.</p>
         <form asp-controller="Report" asp-action="Amend">
-            <div class="form-group">
-                <input id="report-confirm-amend" class="button" type="Submit" value="Amend your report">
+            <div class="govuk-form-group">
+                <input id="report-confirm-amend" class="govuk-button" type="Submit" value="Amend your report">
             </div>
         </form>
     </div>

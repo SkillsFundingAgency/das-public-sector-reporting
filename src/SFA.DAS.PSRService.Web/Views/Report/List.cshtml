@@ -7,45 +7,42 @@
     ViewBag.ZenDeskLabel = "reporting-submitted-reports";
 }
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
-        <h1 class="heading-xlarge">Submitted reports</h1>
-    </div>
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Home" asp-action="Index">Back</a>
+}
 
+<h1 class="govuk-heading-xl">Submitted reports</h1>
 
-    @if (Model.SubmittedReports.Count() > 0)
-    {
-    <div class="column-two-thirds">
-        <p>Choose the report you wish to view</p>
-    </div>
-    <div id="submitted-report-list" class="column-full">
-        <table>
-            <thead>
-                <tr>
-                <th scope="col">Organisation name</th>
-                <th scope="col">Reporting period</th>
-                <th class="numeric" scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var result in Model.SubmittedReports)
-            {
-                <tr>
-                    <th scope="row">@result.OrganisationName</th>
-                    <td>@Model.Periods[result.ReportingPeriod].FullString</td>
-                    <td class="link-right"><a href="../Report/Summary/@result.ReportingPeriod">View</a></td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-    }
+@if (Model.SubmittedReports.Count() > 0)
+{
 
-    @if (Model.SubmittedReports.Count() == 0)
-    {
-    <div  id="submitted-report-list-display-message" class="column-two-thirds">
-        <p>There are currently no submitted reports to show</p>
-    </div>
-    }
+<p>Choose the report you wish to view</p>
+<div id="submitted-report-list">
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Organisation name</th>
+                <th scope="col" class="govuk-table__header">Reporting period</th>
+                <th scope="col" class="govuk-table__header"></th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        @foreach (var result in Model.SubmittedReports)
+        {
+            <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">@result.OrganisationName</th>
+                <td class="govuk-table__cell">@Model.Periods[result.ReportingPeriod].FullString</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric"><a href="../Report/Summary/@result.ReportingPeriod">View</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>
+}
+
+@if (Model.SubmittedReports.Count() == 0)
+{
+<div  id="submitted-report-list-display-message">
+    <p>There are currently no submitted reports to show</p>
+</div>
+}

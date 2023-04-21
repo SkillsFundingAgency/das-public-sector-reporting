@@ -9,27 +9,27 @@
 
 @if (Model.Report.IsLocalAuthority.HasValue)
 {
-    <a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority">Back</a>
+    <a class="govuk-back-link" asp-controller="Report" asp-action="IsLocalAuthority">Back</a>
 }
 else
 {
-    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+    <a class="govuk-back-link" asp-controller="Home" asp-action="Index">Back</a>
 }
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-xlarge">Reporting your progress towards the public sector apprenticeship target</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Reporting your progress towards the public sector apprenticeship target</h1>
     </div>
 </div>
-<div class="grid-row">
-    <div class="column-two-thirds">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
         <p>Use this step by step list to help you report your progress towards meeting the public sector apprenticeship target:</p>
 
         @if (Model.Report.IsLocalAuthority.HasValue)
         {
             <div class="notice">
                 <i class="icon icon-important">
-                    <span class="visually-hidden">Warning</span>
+                    <span class="govuk-visually-hidden">Warning</span>
                 </i>
                 <strong class="bold-small">
                     You do not need to fill out this form if your organisation has less than 250 employees.

@@ -3,21 +3,21 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-datalosswarning";
 }
 
-<a class="link-back" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-confirmIsLocalAuthority="@Model.IsLocalAuthority">Back</a>
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-medium">Do you want to change your answer</h1>
+<a class="govuk-back-link" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-confirmIsLocalAuthority="@Model.IsLocalAuthority">Back</a>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-m">Do you want to change your answer</h1>
         <div class="notice">
             <i class="icon icon-important">
-                <span class="visually-hidden">Warning</span>
+                <span class="govuk-visually-hidden">Warning</span>
             </i>
             <strong class="bold-small">
                 If you change your answer, your data will be lost
             </strong>
         </div>
         <form method="post" asp-action="DataLossWarning">
-            <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
-                <fieldset class="inline">
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+                <fieldset class="govuk-fieldset">
                     <legend>
                         <p class="body-text">
                             Do you wish to continue?
@@ -25,23 +25,23 @@
                     </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
-                        <p id="confirm-error" class="error-message">
-                            <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                        <p id="confirm-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
                         </p>
                     }
-                    <div class="multiple-choice">
+                    <div class="govuk-radios__item">
                         <input id="datalosswarning-action-yes" type="radio" name="ConfirmIsLocalAuthority" value="true">
                         <label for="datalosswarning-action-yes">Yes</label>
                     </div>
-                    <div class="multiple-choice">
+                    <div class="govuk-radios__item">
                         <input id="datalosswarning-action-no" type="radio" name="ConfirmIsLocalAuthority" value="false">
                         <label for="datalosswarning-action-no">No</label>
                     </div>
                 </fieldset>
             </div>
-            <div class="form-group">
+            <div class="govuk-form-group">
                 <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
-                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue and save">
+                <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue and save">
                 <a class="button button-secondary" asp-controller="Report" asp-action="Edit">Cancel</a>
             </div>
         </form>

@@ -5,40 +5,47 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/page-islocalauthority";
     ViewBag.ZenDeskLabel = "reporting-islocalauthority";
 }
-@if (Model.IsLocalAuthority.HasValue)
-{
-    <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
-}
-else
-{
-    <a class="link-back" asp-controller="Report" asp-action="Create">Back</a>
+@section breadcrumb {
+    @if (Model.IsLocalAuthority.HasValue)
+    {
+        <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+    }
+    else
+    {
+        <a class="govuk-back-link" asp-controller="Report" asp-action="Create">Back</a>
+    }
 }
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-medium">Is your organisation a local authority?</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-action="IsLocalAuthority">
-            <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
-                <fieldset class="inline">
-                    <legend class="visually-hidden">Are you a local authority?</legend>
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Is your organisation a local authority?
+                        </h1>
+                    </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
-                    <p id="confirm-error" class="error-message">
-                        <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                    <p id="confirm-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
                     </p>
                     }
-                    <div class="multiple-choice">
-                        <input id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True" @(Model.IsLocalAuthority == true ? "checked" : "")>
-                        <label for="islocalauthority-action-yes">Yes</label>
-                    </div>
-                    <div class="multiple-choice">
-                        <input id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model.IsLocalAuthority == false ? "checked" : "")>
-                        <label for="islocalauthority-action-no">No</label>
+                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="islocalauthority-action-yes" type="radio" name="isLocalAuthority" value="True" @(Model.IsLocalAuthority == true ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="islocalauthority-action-yes">Yes</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model.IsLocalAuthority == false ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="islocalauthority-action-no">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>
-            <div class="form-group">
-                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+            <div class="govuk-button-group">
+                <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue">
             </div>
         </form>
     </div>

@@ -6,62 +6,72 @@
     ViewBag.ZenDeskLabel = "reporting-annual-apprenticeship-return";
 }
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <a href="@ViewData["HomeUrl"]" class="link-back">Back to Apprentices</a>
-        <h1 class="heading-xlarge">Annual apprenticeship return</h1>
+@section breadcrumb {
+    <a href="@ViewData["HomeUrl"]" class="govuk-back-link">Back to Apprentices</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Annual apprenticeship return</h1>
         <p>
             @Model.WelcomeMessage
         </p>
-
         <form id="SelectOption" action="@Url.Action("Submit")" method="post">
-            <div class="form-group">
-                <fieldset>
-                    <legend>
-                        <h2 class="heading-medium">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h2 class="govuk-fieldset__heading">
                             What do you want to do?
                         </h2>
                     </legend>
-                    <div class="multiple-choice">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         @if (Model.Readonly)
                         {
+                            <div class="govuk-radios__item">
                             if (Model.CurrentReportAlreadySubmitted == false)
                             {
-                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue">
+                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" class="govuk-radios__input">
                             }
                             else
                             {
-                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue">
+                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue" class="govuk-radios__input">
                             }
 
-                            <label for="home-action-view">View report</label>
+                                <label for="home-action-view" class="govuk-label govuk-radios__label">View report</label>
+                            </div>
                         }
                         else if (Model.CanEditReport)
                         {
-                            <input id="home-action-edit" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Edit.SubmitValue">
-                            <label for="home-action-edit">Edit report</label>
+                            <div class="govuk-radios__item">
+                                <input id="home-action-edit" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Edit.SubmitValue" class="govuk-radios__input">
+                                <label for="home-action-edit" class="govuk-label govuk-radios__label">Edit report</label>
+                            </div>
                         }
                         else if (Model.CanCreateReport)
                         {
-                            <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Create.SubmitValue">
-                            <label for="home-action-create">Create a new report</label>
+                            <div class="govuk-radios__item">
+                                <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.Create.SubmitValue" class="govuk-radios__input">
+                                <label for="home-action-create" class="govuk-label govuk-radios__label">Create a new report</label>
+                            </div>
                         }
                         else
                         {
-                            <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue">
-                            <label for="home-action-create">Create a new report</label>
+                            <div class="govuk-radios__item">
+                                <input id="home-action-create" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue" class="govuk-radios__input">
+                                <label for="home-action-create" class="govuk-label govuk-radios__label">Create a new report</label>
+                            </div>
                         }
-                    </div>
-                    <div class="multiple-choice">
-                        <input id="home-action-list" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.List.SubmitValue">
-                        <label for="home-action-list">View a submitted report</label>
+                    
+                        <div class="govuk-radios__item">
+                            <input id="home-action-list" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.List.SubmitValue" class="govuk-radios__input">
+                            <label for="home-action-list" class="govuk-label govuk-radios__label">View a submitted report</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>
-            <div class="form-group">
-                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+            <div class="govuk-button-group">
+                <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue">
             </div>
         </form>
-
     </div>
 </div>

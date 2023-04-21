@@ -6,17 +6,20 @@
     ViewBag.ZenDeskLabel = Model.CurrentSection.ZenDeskLabel;
 }
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
         <form class="questionForm" method="post" asp-action="@Model.CurrentSection.Id">
             <input type="hidden" name="section.ReportingPeriod" value="@Model.Report.ReportingPeriod" />
             <input type="hidden" name="section.Id" value="@Model.CurrentSection.Id" />
 
             <!-- Validation summary-->
-            <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-                <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
-                    Please fix these errors
+            <div asp-validation-summary="All" class="govuk-error-summary" data-module="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                <h2 class="govuk-error-summary__title" id="error-summary-heading">
+                    There is a problem
                 </h2>
             </div>
 
@@ -25,7 +28,7 @@
             @Html.Partial(Model.CurrentSection.Id, Model)
             @*}*@
 
-            <button type="submit" class="button">Continue</button>
+            <button type="submit" class="govuk-button">Continue</button>
         </form>
     </div>
 </div>
