@@ -27,11 +27,11 @@ else
 
         @if (Model.Report.IsLocalAuthority.HasValue)
         {
-            <div class="notice">
-                <i class="icon icon-important">
-                    <span class="govuk-visually-hidden">Warning</span>
-                </i>
-                <strong class="bold-small">
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-warning-text__assistive">Warning</span>
                     You do not need to fill out this form if your organisation has less than 250 employees.
                 </strong>
             </div>

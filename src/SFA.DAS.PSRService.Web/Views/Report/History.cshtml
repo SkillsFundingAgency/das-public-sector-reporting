@@ -9,13 +9,13 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-history";
 }
 
-<div class="grid-row report-history">
-    <div class="govuk-grid-column-two-thirds">
-        <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+}
+
+
         <h1 class="govuk-heading-xl">Report history</h1>
-    </div>
-    <div class="govuk-grid-column-full">
-        <div class="govuk-form-group">
+
             <table class="govuk-table">
                 @*<caption class="govuk-table__caption govuk-table__caption--m">Reporting period</caption>*@
                 <tbody class="govuk-table__body">
@@ -25,8 +25,9 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-
+ 
+<div class="govuk-grid-row report-history">
+    <div class="govuk-grid-column-two-thirds">
         @foreach (var edit in Model.EditHistoryMostRecentFirst)
         {
             <details class="govuk-details" data-module="govuk-details">
@@ -56,5 +57,4 @@
             </details>
         }
     </div>
-
 </div>

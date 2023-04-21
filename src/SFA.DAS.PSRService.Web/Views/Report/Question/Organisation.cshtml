@@ -26,7 +26,7 @@
                     @if (canBeEdited)
                     {
                             <td class="govuk-table__cell govuk-table__cell--numeric">
-                                <a asp-controller="Report" asp-action="IsLocalAuthority">Change</a>
+                                <a asp-controller="Report" asp-action="IsLocalAuthority" class="govuk-link" >Change</a>
                             </td>
                     }
                 </tr>
@@ -37,7 +37,7 @@
                 @if (canBeEdited)
                 {
                     <td class="govuk-table__cell govuk-table__cell--numeric">
-                        <a asp-controller="Report" asp-action="OrganisationName">Change</a>
+                        <a asp-controller="Report" asp-action="OrganisationName" class="govuk-link" >Change</a>
                     </td>
                 }
         </tr>
@@ -61,7 +61,7 @@
                     @if (canBeEdited)
                     {
                             <td class="govuk-table__cell govuk-table__cell--numeric">
-                                <a asp-controller="Report" asp-action="TotalEmployees">Change</a>
+                                <a asp-controller="Report" asp-action="TotalEmployees" class="govuk-link" >Change</a>
                             </td>
                     }
                 </tr>

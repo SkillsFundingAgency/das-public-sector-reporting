@@ -12,31 +12,31 @@
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
-                <td class="numeric bold js-addcommas">@questionList["atStart"].Answer</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList["atStart"].Answer</td>
                     @if (canBeEdited)
                     {
                     <td class="govuk-table__cell govuk-table__cell--numeric">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id" class="govuk-link">Change</a>
                     </td>
                     }
             </tr>
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">Number of apprentices who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear.AsFourDigitString</td>
-                <td class="numeric bold js-addcommas">@questionList["atEnd"].Answer</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList["atEnd"].Answer</td>
                     @if (canBeEdited)
                     {
                     <td class="govuk-table__cell govuk-table__cell--numeric">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id" class="govuk-link">Change</a>
                     </td>
                     }
             </tr>
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">Number of new apprentices who started working for you in England between @ViewBag.CurrentPeriod.FullString</td>
-                <td class="numeric bold js-addcommas">@questionList["newThisPeriod"].Answer</td>
+                <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList["newThisPeriod"].Answer</td>
                     @if (canBeEdited)
                     {
                     <td class="govuk-table__cell govuk-table__cell--numeric">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
+                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id" class="govuk-link">Change</a>
                     </td>
                     }
             </tr>

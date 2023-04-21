@@ -7,11 +7,10 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-m">Do you want to change your answer</h1>
-        <div class="notice">
-            <i class="icon icon-important">
-                <span class="govuk-visually-hidden">Warning</span>
-            </i>
-            <strong class="bold-small">
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
                 If you change your answer, your data will be lost
             </strong>
         </div>
@@ -42,7 +41,7 @@
             <div class="govuk-form-group">
                 <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
                 <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue and save">
-                <a class="button button-secondary" asp-controller="Report" asp-action="Edit">Cancel</a>
+                <a class="govuk-button govuk-button--secondary" asp-controller="Report" asp-action="Edit">Cancel</a>
             </div>
         </form>
     </div>
