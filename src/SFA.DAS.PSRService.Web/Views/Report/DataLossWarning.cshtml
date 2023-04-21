@@ -17,10 +17,8 @@
         <form method="post" asp-action="DataLossWarning">
             <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
-                    <legend>
-                        <p class="body-text">
-                            Do you wish to continue?
-                        </p>
+                    <legend class="govuk-fieldset__legend">
+                        Do you wish to continue?
                     </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
@@ -28,17 +26,19 @@
                             <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
                         </p>
                     }
-                    <div class="govuk-radios__item">
-                        <input id="datalosswarning-action-yes" type="radio" name="ConfirmIsLocalAuthority" value="true">
-                        <label for="datalosswarning-action-yes">Yes</label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input id="datalosswarning-action-no" type="radio" name="ConfirmIsLocalAuthority" value="false">
-                        <label for="datalosswarning-action-no">No</label>
+                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="datalosswarning-action-yes" type="radio" name="ConfirmIsLocalAuthority" value="true">
+                            <label class="govuk-label govuk-radios__label" for="datalosswarning-action-yes">Yes</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="datalosswarning-action-no" type="radio" name="ConfirmIsLocalAuthority" value="false">
+                            <label class="govuk-label govuk-radios__label" for="datalosswarning-action-no">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>
-            <div class="govuk-form-group">
+            <div class="govuk-button-group">
                 <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
                 <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue and save">
                 <a class="govuk-button govuk-button--secondary" asp-controller="Report" asp-action="Edit">Cancel</a>

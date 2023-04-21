@@ -35,7 +35,6 @@
                     <span class="govuk-details__summary-text">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
                 </summary>
                 <div>
-
                     @Html.Partial("Question/Organisation",  new OrganisationReviewViewModel() { OrganisationName = edit.OrganisationName,HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount,IsLocalAuthority = edit.IsLocalAuthority })
 
                     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))

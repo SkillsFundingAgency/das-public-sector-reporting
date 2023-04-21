@@ -3,12 +3,15 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-organisation-reportnotrequired";
 }
 
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="TotalEmployees" asp-route-TotalEmployeesConfirmation="false">Back</a>
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <a class="govuk-back-link" asp-controller="Report" asp-action="TotalEmployees" asp-route-TotalEmployeesConfirmation="false">Back</a>
         <h1 class="govuk-heading-l">
             You don't have to submit a report if you have less than 250 employees
         </h1>
-        <a href="@ViewData["HomeUrl"]">Go back to Manage apprenticeships homepage</a>
+        <a href="@ViewData["HomeUrl"]" class="govuk-link">Go back to Manage apprenticeships homepage</a>
     </div>
 </div>

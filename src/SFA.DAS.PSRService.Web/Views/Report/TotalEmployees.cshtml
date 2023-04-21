@@ -19,10 +19,8 @@
         <form method="post" asp-action="TotalEmployees">
             <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
-                    <legend>
-                        <p class="body-text">
-                            Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
-                        </p>
+                    <legend class="govuk-fieldset__legend">
+                        Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
                     </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
@@ -30,13 +28,15 @@
                             <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
                         </p>
                     }
-                    <div class="govuk-radios__item">
-                        <input id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
-                        <label for="totalemployees-action-yes">Yes</label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model == false ? "checked" : "")>
-                        <label for="totalemployees-action-no">No</label>
+                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="totalemployees-action-yes">Yes</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model == false ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="totalemployees-action-no">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>

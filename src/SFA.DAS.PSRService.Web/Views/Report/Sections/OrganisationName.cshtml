@@ -16,7 +16,7 @@
             <a class="task-name" asp-controller="Report" asp-action="OrganisationName" aria-describedby="organisation-name-completed">Your organisation's name</a>
             @if (!string.IsNullOrWhiteSpace(Model.Report.OrganisationName))
             {
-                <span id="OrganisationName-task-completed" class="task-completed">COMPLETE</span>
+                <span id="OrganisationName-task-completed" class="govuk-tag">Complete</span>
             }
         </li>
         @if (Model.Report.IsLocalAuthority.HasValue)
@@ -25,7 +25,7 @@
                 <a class="task-name" asp-controller="Report" asp-action="TotalEmployees" aria-describedby="organisation-name-completed">Total number of employees</a>
                 @if (Model.Report.HasMinimumEmployeeHeadcount.HasValue)
                 {
-                    <span id="TotalEmployees-task-completed" class="task-completed">COMPLETE</span>
+                    <span id="TotalEmployees-task-completed" class="govuk-tag">Complete</span>
                 }
             </li>
         }
