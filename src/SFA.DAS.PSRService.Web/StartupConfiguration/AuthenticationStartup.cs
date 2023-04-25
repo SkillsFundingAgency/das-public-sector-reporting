@@ -83,7 +83,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
             {
                 services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
                 services.Configure<GovUkOidcConfiguration>(config.GetSection("GovUkOidcConfiguration"));
-                services.AddAndConfigureGovUkAuthentication(config, $"{typeof(AuthenticationStartup).Assembly.GetName().Name}.Auth",typeof(EmployerAccountPostAuthenticationClaimsHandler));    
+                services.AddAndConfigureGovUkAuthentication(config, typeof(EmployerAccountPostAuthenticationClaimsHandler), "", "/SignIn-Stub");    
             }
             else
             {
