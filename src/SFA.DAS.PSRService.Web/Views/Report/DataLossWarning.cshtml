@@ -2,11 +2,13 @@
 @{
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-datalosswarning";
 }
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-confirmIsLocalAuthority="@Model.IsLocalAuthority">Back</a>
+}
 
-<a class="govuk-back-link" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-confirmIsLocalAuthority="@Model.IsLocalAuthority">Back</a>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-m">Do you want to change your answer</h1>
+        <h1 class="govuk-heading-l">Do you want to change your answer</h1>
         <div class="govuk-warning-text">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
             <strong class="govuk-warning-text__text">
@@ -41,7 +43,7 @@
             <div class="govuk-button-group">
                 <input type="hidden" asp-for="IsLocalAuthority" value="@Model.IsLocalAuthority">
                 <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue and save">
-                <a class="govuk-button govuk-button--secondary" asp-controller="Report" asp-action="Edit">Cancel</a>
+                <a class="govuk-link" asp-controller="Report" asp-action="Edit">Cancel</a>
             </div>
         </form>
     </div>

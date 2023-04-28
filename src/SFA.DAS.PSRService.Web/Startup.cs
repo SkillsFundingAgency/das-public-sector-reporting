@@ -161,6 +161,7 @@ namespace SFA.DAS.PSRService.Web
                 {
                     s.Self()
                         .CustomSources(
+                        "*.googletagmanager.com/",
                         "https://*.zdassets.com",
                         "https://*.zendesk.com",
                         "wss://*.zendesk.com",
@@ -210,12 +211,10 @@ namespace SFA.DAS.PSRService.Web
                                     "https://das-demo-frnt-end.azureedge.net", 
                                     "https://das-pp-frnt-end.azureedge.net",
                                     "https://das-prd-frnt-end.azureedge.net");
-                    //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
-                    if (env.IsEnvironment(EnvironmentNames.PREPROD))
-                    {
+       
                         s.UnsafeInline();
                         s.UnsafeEval();
-                    }
+                    
                 })
                 .FontSources(s =>
                     s.Self()
@@ -232,6 +231,7 @@ namespace SFA.DAS.PSRService.Web
                 .ConnectSources(s =>
                     s.Self()
                     .CustomSources(
+                        "*.google-analytics.com",
                         "https://*.zendesk.com",
                         "https://*.zdassets.com",
                         "https://dc.services.visualstudio.com",
@@ -244,6 +244,7 @@ namespace SFA.DAS.PSRService.Web
                         s.Self()
                             .CustomSources(
                                 "*.google-analytics.com",
+                                "*.googletagmanager.com",
                                 "https://ssl.gstatic.com",
                                 "https://www.gstatic.com/",
                                 "https://*.zopim.io",

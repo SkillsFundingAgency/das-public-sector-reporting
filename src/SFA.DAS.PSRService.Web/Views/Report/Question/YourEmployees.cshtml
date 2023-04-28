@@ -12,7 +12,7 @@
         <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
-                <td id="your-employees-at-start" class="numeric govuk-!-font-weight-bold js-addcommas">@questionList["atStart"].Answer</td>
+                <td id="your-employees-at-start" class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold js-addcommas">@questionList["atStart"].Answer</td>
                     @if (canBeEdited)
                     {
                     <td class="govuk-table__cell govuk-table__cell--numeric">

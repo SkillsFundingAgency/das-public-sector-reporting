@@ -46,8 +46,9 @@
     <label class="govuk-label govuk-label--m" asp-for="@Model.Questions.ToArray()[2].Answer">
         Number of new apprentices whose apprenticeship agreements started between @Model.CurrentPeriod.FullString
     </label>
-    <div class="govuk-form-hint">This includes both new hires and existing employees who started an apprenticeship</div>
+    <div class="govuk-hint">This includes both new hires and existing employees who started an apprenticeship</div>
     <p asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[2].Answer"></p>
     <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
     <input type="text"  class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[2].Answer"  name="Section.Questions[2].Answer" value="@questionsList[2].Answer" maxlength="11" />
 </div>
+

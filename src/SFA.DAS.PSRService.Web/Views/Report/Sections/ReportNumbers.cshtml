@@ -11,18 +11,18 @@
 }
 
 <li>
-    <h2 class="task-list-section">
-        <span class="task-list-section-number">@SerialNo. </span> @Model.Title
+    <h2 class="das-task-list__section">
+        <span class="das-task-list__section-number">@SerialNo. </span> @Model.Title
     </h2>
-    <ul class="task-list-items">
+    <ul class="das-task-list__items">
 
         @if (Model.SubSections != null)
         {
             foreach (var subSection in Model.SubSections)
             {
 
-                <li class="task-list-item">
-                    <a class="task-name"
+                <li class="das-task-list__item">
+                    <a class="govuk-link"
                asp-controller="Question"
                asp-action="Index"
                asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]"
@@ -40,7 +40,7 @@
                     </a>
                     @if (subSection.IsComplete())
                     {
-                        <span id="@($"{subSection.Id}-task-completed")" class="govuk-tag">Complete</span>
+                        <span id="@($"{subSection.Id}-task-completed")" class="das-tag das-task-list__task-tag">Complete</span>
                     }
                 </li>
 

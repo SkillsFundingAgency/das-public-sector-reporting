@@ -5,10 +5,12 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-your-totalemployees";
     ViewBag.ZenDeskLabel = "reporting-your-totalemployees";
 }
-<a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-m">Total number of employees</h1>
+        <h1 class="govuk-heading-l">Total number of employees</h1>
         <div class="govuk-warning-text">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
             <strong class="govuk-warning-text__text">

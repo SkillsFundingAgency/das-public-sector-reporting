@@ -5,12 +5,12 @@
 }
 
 <li>
-    <h2 class="task-list-section">
-        <span class="task-list-section-number">@SerialNo. </span> Review answers
+    <h2 class="das-task-list__section">
+        <span class="das-task-list__section-number">@SerialNo. </span> Review answers
     </h2>
-    <ul class="task-list-items">
-        <li class="task-list-item">
-            <a class="task-name" asp-controller="Report" asp-action="Summary" aria-describedby="eligibility-completed">
+    <ul class="das-task-list__items">
+        <li class="das-task-list__item">
+            <a class="govuk-link" asp-controller="Report" asp-action="Summary" aria-describedby="eligibility-completed">
                 @(Model.UserCanSubmitReports ? "Review and submit answers" : "Review answers")
             </a>
         </li>
