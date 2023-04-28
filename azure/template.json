@@ -79,6 +79,9 @@
             "type": "string",
             "defaultValue": "[utcNow()]"
         },
+        "cdnUrl": {
+            "type": "string"
+        },
         "stubAuth": {
             "type": "string"
         }
@@ -180,6 +183,10 @@
                                 {
                                     "name": "ResourceEnvironmentName",
                                     "value": "[parameters('resourceEnvironmentName')]"
+                                },
+                                {
+                                    "name": "Cdn:Url",
+                                    "value": "[parameters('cdnUrl')]"
                                 },
                                 {
                                     "name": "StubAuth",
