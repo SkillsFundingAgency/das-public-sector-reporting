@@ -11,7 +11,9 @@
     <a class="govuk-back-link" asp-controller="Home" asp-action="Index">Back</a>
 }
 
-<div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-l">Report submitted</h1>
-    <p>The report for the year 1 April @ViewBag.CurrentPeriod.StartYear.AsFourDigitString to 31 March @ViewBag.CurrentPeriod.EndYear.AsFourDigitString has already been submitted.</p>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Report submitted</h1>
+        <p>The report for the year 1 April @ViewBag.CurrentPeriod.StartYear.AsFourDigitString to 31 March @ViewBag.CurrentPeriod.EndYear.AsFourDigitString has already been submitted.</p>
+    </div>
 </div>
