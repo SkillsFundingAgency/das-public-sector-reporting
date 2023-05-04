@@ -24,7 +24,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.StartupConfiguration
         public async Task Then_The_Claims_Are_Populated_For_Gov_User(
             string nameIdentifier,
             string emailAddress,
-            GetUserAccountsResponse accountData)
+            EmployerUserAccounts accountData)
         {
             accountData.IsSuspended = false;
             var accountService = new Mock<IEmployerUserAccountsService>();
@@ -39,7 +39,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.StartupConfiguration
             accountService.Verify(x=>x.GetEmployerUserAccounts(emailAddress,nameIdentifier), Times.Once);
             actual.Should().ContainSingle(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
             var actualClaimValue = actual.First(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)).Value;
-            JsonConvert.SerializeObject(accountData.UserAccounts.ToDictionary(k => k.AccountId)).Should().Be(actualClaimValue);
+            JsonConvert.SerializeObject(accountData.EmployerAccounts.ToDictionary(k => k.AccountId)).Should().Be(actualClaimValue);
             actual.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value.Should().Be(accountData.EmployerUserId);
             actual.First(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier)).Value.Should().Be(emailAddress);
             actual.First(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier)).Value.Should().Be($"{accountData.FirstName} {accountData.LastName}");
@@ -50,7 +50,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.StartupConfiguration
         public async Task Then_The_Claims_Are_Populated_For_Gov_User_Thats_Suspended(
             string nameIdentifier,
             string emailAddress,
-            GetUserAccountsResponse accountData)
+            EmployerUserAccounts accountData)
         {
             accountData.IsSuspended = true;
             var accountService = new Mock<IEmployerUserAccountsService>();
@@ -65,7 +65,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.StartupConfiguration
             accountService.Verify(x=>x.GetEmployerUserAccounts(emailAddress,nameIdentifier), Times.Once);
             actual.Should().ContainSingle(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
             var actualClaimValue = actual.First(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)).Value;
-            JsonConvert.SerializeObject(accountData.UserAccounts.ToDictionary(k => k.AccountId)).Should().Be(actualClaimValue);
+            JsonConvert.SerializeObject(accountData.EmployerAccounts.ToDictionary(k => k.AccountId)).Should().Be(actualClaimValue);
             actual.First(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)).Value.Should().Be(accountData.EmployerUserId);
             actual.First(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier)).Value.Should().Be(emailAddress);
             actual.First(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier)).Value.Should().Be($"{accountData.FirstName} {accountData.LastName}");

@@ -8,7 +8,7 @@ namespace SFA.DAS.PSRService.Application.EmployerUserAccounts
 {
     public interface IEmployerUserAccountsService
     {
-        Task<GetUserAccountsResponse> GetEmployerUserAccounts(string email, string userId);
+        Task<EmployerUserAccounts> GetEmployerUserAccounts(string email, string userId);
     }
     public class EmployerUserAccountsService : IEmployerUserAccountsService
     {
@@ -18,7 +18,7 @@ namespace SFA.DAS.PSRService.Application.EmployerUserAccounts
         {
             _apiClient = apiClient;
         }
-        public async Task<GetUserAccountsResponse> GetEmployerUserAccounts(string email, string userId)
+        public async Task<EmployerUserAccounts> GetEmployerUserAccounts(string email, string userId)
         {
             var response = await _apiClient.Get<GetUserAccountsResponse>(new GetUserAccountsRequest(userId, email));
 
