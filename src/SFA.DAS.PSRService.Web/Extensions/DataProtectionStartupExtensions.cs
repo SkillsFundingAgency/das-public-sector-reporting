@@ -19,7 +19,7 @@ namespace SFA.DAS.PSRService.Web.Extensions
                 .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
             services.AddDataProtection()
-                .SetApplicationName("das-public-sector-reporting-web")
+                .SetApplicationName("das-employer")
                 .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
             return services;

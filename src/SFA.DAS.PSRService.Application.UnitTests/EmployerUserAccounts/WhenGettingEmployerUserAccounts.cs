@@ -30,7 +30,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.EmployerUserAccounts
 
             var actual = await service.GetEmployerUserAccounts(email, userId);
 
-            actual.Should().BeEquivalentTo(response);
+            actual.Should().BeEquivalentTo((Application.EmployerUserAccounts.EmployerUserAccounts)response);
         }
 
         [Test, MoqAutoData]
@@ -49,7 +49,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.EmployerUserAccounts
 
             var actual = await service.GetEmployerUserAccounts(email, userId);
 
-            actual.Should().BeEquivalentTo(new GetUserAccountsResponse());
+            actual.Should().BeEquivalentTo((Application.EmployerUserAccounts.EmployerUserAccounts)(new GetUserAccountsResponse()));
         }
         
         [Test, MoqAutoData]

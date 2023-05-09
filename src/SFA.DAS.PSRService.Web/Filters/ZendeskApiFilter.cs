@@ -31,8 +31,8 @@ namespace SFA.DAS.PSRService.Web.Filters
                 }
                 controller.ViewBag.ZendeskApiData = new ZenDeskApiData
                 {
-                    Name = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier)).Value,
-                    Email = user.Claims.First(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier)).Value,
+                    Name = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier))?.Value,
+                    Email = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier))?.Value,
                     Organization = account?.EmployerName
                 };
             }

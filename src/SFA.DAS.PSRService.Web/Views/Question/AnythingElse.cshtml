@@ -7,18 +7,18 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/question/page-anything-else";
 }
 
-<fieldset>
-     <div class="form-group">
+<fieldset class="govuk-fieldset">
+     <div class="govuk-form-group">
         <h1>
             <label asp-for="@Model.Questions.ToArray()[0].Answer">
-                <span class="heading-large">@Model.CurrentSection.Title</span>
-                <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
+                <span class="govuk-heading-l">@Model.CurrentSection.Title</span>
+                <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
             </label>
         </h1>
-        <p class="form-hint">For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</p>
+        <p class="govuk-hint">For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</p>
         <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
         <input type="hidden" name="Section.Questions[0].Type" value="@Model.Questions.ToArray()[0].Type" />
-        <textarea class="js-word-limit form-control form-control-3-4" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" rows="8"></textarea>
+        <textarea class="js-word-limit form-control govuk-!-width-three-quarters" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" rows="8"></textarea>
         <span class="sfa-form-control-after">
             <span class="words-left">500 words maximum</span>
         </span>

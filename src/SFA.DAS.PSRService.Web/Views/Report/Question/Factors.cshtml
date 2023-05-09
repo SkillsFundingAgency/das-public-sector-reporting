@@ -7,47 +7,47 @@
     ViewBag.ZenDeskLabel = "reporting-planning-to-meet-the-target";
 }
 
-<div class="form-group">
-    <table class="essay-questions">
-        <caption class="heading-medium">Factors that impacted your ability to meet the target</caption>
-        <tbody>
-            <tr>
-                <td>What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?</td>
-                <td class="bold">@questionList["OutlineActions"].Answer</td>
+<div class="govuk-form-group">
+    <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">Factors that impacted your ability to meet the target</caption>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">What actions have you taken this year to meet the target? How do these compare to the actions taken in the previous year?</td>
+                <td class="govuk-table__cell govuk-!-font-weight-bold">@questionList["OutlineActions"].Answer</td>
                     @if (canBeEdited)
                     {
-                    <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["OutlineActions"].Id">Change</a>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
+                        <a class="govuk-link" asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["OutlineActions"].Id">Change</a>
                     </td>
                     }
             </tr>
-            <tr>
-                <td>What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?</td>
-                <td class="bold">@questionList["Challenges"].Answer</td>
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">What challenges have you faced this year in your efforts to meet the target? How do these compare to the challenges experienced in the previous year?</td>
+                <td class="govuk-table__cell govuk-!-font-weight-bold">@questionList["Challenges"].Answer</td>
                     @if (canBeEdited)
                     {
-                    <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["Challenges"].Id">Change</a>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
+                        <a class="govuk-link" asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["Challenges"].Id">Change</a>
                     </td>
                     }
             </tr>
-            <tr>
-                <td>How are you planning to meet the target in future? What will you continue to do or do differently?</td>
-                <td class="bold">@questionList["TargetPlans"].Answer</td>
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">How are you planning to meet the target in future? What will you continue to do or do differently?</td>
+                <td class="govuk-table__cell govuk-!-font-weight-bold">@questionList["TargetPlans"].Answer</td>
                     @if (canBeEdited)
                     {
-                    <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["TargetPlans"].Id">Change</a>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
+                        <a class="govuk-link" asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["TargetPlans"].Id">Change</a>
                     </td>
                     }
             </tr>
-            <tr>
-                <td>Do you have anything else you want to tell us? (optional)</td>
-                <td class="bold">@questionList["AnythingElse"].Answer</td>
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">Do you have anything else you want to tell us? (optional)</td>
+                <td class="govuk-table__cell govuk-!-font-weight-bold">@questionList["AnythingElse"].Answer</td>
                     @if (canBeEdited)
                     {
-                    <td class="link-right">
-                        <a asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["AnythingElse"].Id">Change</a>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
+                        <a class="govuk-link" asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@questionList["AnythingElse"].Id">Change</a>
                     </td>
                     }
             </tr>

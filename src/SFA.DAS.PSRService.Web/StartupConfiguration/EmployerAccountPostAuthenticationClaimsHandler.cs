@@ -29,7 +29,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 .Value;
             
             var accounts = await _employerUserAccountsService.GetEmployerUserAccounts(email, userId);
-            var accountsAsJson = JsonConvert.SerializeObject(accounts.UserAccounts.ToDictionary(k => k.AccountId));
+            var accountsAsJson = JsonConvert.SerializeObject(accounts.EmployerAccounts.ToDictionary(k => k.AccountId));
             var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
                 JsonClaimValueTypes.Json);
             var returnList = new List<Claim>

@@ -4,28 +4,25 @@
 }
 
 <li>
-    <h2 class="task-list-section">
-        <span class="task-list-section-number">1. </span> Organisation name
+    <h2 class="das-task-list__section">
+        <span class="das-task-list__section-number">1. </span> Organisation name
     </h2>
 
-    <ul class="task-list-items">
-        <li class="task-list-item">
-            @*<a class="task-name" href="#" aria-describedby="organisation-name-completed">
-            Your organisation’s name
-            </a>*@
-            <a class="task-name" asp-controller="Report" asp-action="OrganisationName" aria-describedby="organisation-name-completed">Your organisation's name</a>
+    <ul class="das-task-list__items">
+        <li class="das-task-list__item">
+            <a class="govuk-link" asp-controller="Report" asp-action="OrganisationName" aria-describedby="organisation-name-completed">Your organisation's name</a>
             @if (!string.IsNullOrWhiteSpace(Model.Report.OrganisationName))
             {
-                <span id="OrganisationName-task-completed" class="task-completed">COMPLETE</span>
+                <span id="OrganisationName-task-completed" class="das-tag das-task-list__task-tag">Complete</span>
             }
         </li>
         @if (Model.Report.IsLocalAuthority.HasValue)
         {
-            <li class="task-list-item">
-                <a class="task-name" asp-controller="Report" asp-action="TotalEmployees" aria-describedby="organisation-name-completed">Total number of employees</a>
+            <li class="das-task-list__item">
+                <a class="govuk-link" asp-controller="Report" asp-action="TotalEmployees" aria-describedby="organisation-name-completed">Total number of employees</a>
                 @if (Model.Report.HasMinimumEmployeeHeadcount.HasValue)
                 {
-                    <span id="TotalEmployees-task-completed" class="task-completed">COMPLETE</span>
+                    <span id="TotalEmployees-task-completed" class="das-tag das-task-list__task-tag">Complete</span>
                 }
             </li>
         }

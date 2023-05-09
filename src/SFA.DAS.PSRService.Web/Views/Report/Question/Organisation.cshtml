@@ -7,61 +7,61 @@
     ViewBag.ZenDeskLabel = "reporting-your-organsation";
 }
 
-<div class="form-group">
-    <table>
-        <caption class="heading-medium">Organisation</caption>
-        <tbody>
+<div class="govuk-form-group">
+    <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">Organisation</caption>
+        <tbody class="govuk-table__body">
             @if (Model.IsLocalAuthority.HasValue)
             {
-                <tr>
-                    <td>Is your organisation a local authority</td>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">Is your organisation a local authority</td>
                     @if (Model.IsLocalAuthority.Value)
                     {
-                            <td class="bold">Yes</td>
+                            <td class="govuk-table__cell govuk-!-font-weight-bold">Yes</td>
                     }
                     else
                     {
-                            <td class="bold">No</td>
+                            <td class="govuk-table__cell govuk-!-font-weight-bold">No</td>
                     }
                     @if (canBeEdited)
                     {
-                            <td class="link-right">
-                                <a asp-controller="Report" asp-action="IsLocalAuthority">Change</a>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">
+                                <a asp-controller="Report" asp-action="IsLocalAuthority" class="govuk-link" >Change</a>
                             </td>
                     }
                 </tr>
             }
-        <tr>
-            <td>Organisation Name</td>
-            <td class="bold">@Model.OrganisationName</td>
+        <tr class="govuk-table__row">
+            <td class="govuk-table__cell">Organisation Name</td>
+            <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.OrganisationName</td>
                 @if (canBeEdited)
                 {
-                    <td class="link-right">
-                        <a asp-controller="Report" asp-action="OrganisationName">Change</a>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
+                        <a asp-controller="Report" asp-action="OrganisationName" class="govuk-link" >Change</a>
                     </td>
                 }
         </tr>
             @if (Model.IsLocalAuthority.HasValue)
             {
-                <tr>
-                    <td>Total number of employees</td>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">Total number of employees</td>
 
                     @if (!Model.HasMinimumEmployeeHeadcount.HasValue)
                     {
-                            <td class="bold"></td>
+                            <td class="govuk-table__cell govuk-!-font-weight-bold"></td>
                     }
                     else if (Model.HasMinimumEmployeeHeadcount.Value)
                     {
-                            <td class="bold">More than 250</td>
+                            <td class="govuk-table__cell govuk-!-font-weight-bold">More than 250</td>
                     }
                     else
                     {
-                            <td class="bold"></td>
+                            <td class="govuk-table__cell govuk-!-font-weight-bold"></td>
                     }
                     @if (canBeEdited)
                     {
-                            <td class="link-right">
-                                <a asp-controller="Report" asp-action="TotalEmployees">Change</a>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">
+                                <a asp-controller="Report" asp-action="TotalEmployees" class="govuk-link" >Change</a>
                             </td>
                     }
                 </tr>
