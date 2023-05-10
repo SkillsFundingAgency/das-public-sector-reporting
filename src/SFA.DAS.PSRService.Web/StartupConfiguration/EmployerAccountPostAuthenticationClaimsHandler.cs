@@ -29,16 +29,23 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration
                 .Value;
             
             var accounts = await _employerUserAccountsService.GetEmployerUserAccounts(email, userId);
-            var accountsAsJson = JsonConvert.SerializeObject(accounts.UserAccounts.ToDictionary(k => k.AccountId));
+            var accountsAsJson = JsonConvert.SerializeObject(accounts.EmployerAccounts.ToDictionary(k => k.AccountId));
             var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
                 JsonClaimValueTypes.Json);
-            return new List<Claim>
+            var returnList = new List<Claim>
             {
                 associatedAccountsClaim,
                 new Claim(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier, accounts.EmployerUserId),
                 new Claim(EmployerPsrsClaims.EmailClaimsTypeIdentifier, email),
                 new Claim(EmployerPsrsClaims.NameClaimsTypeIdentifier, $"{accounts.FirstName} {accounts.LastName}"),
             };
+
+            if (accounts.IsSuspended)
+            {
+                returnList.Add(new Claim(ClaimTypes.AuthorizationDecision, "Suspended"));
+            }
+            
+            return returnList;
         }
     }
 }

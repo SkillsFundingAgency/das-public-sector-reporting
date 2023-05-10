@@ -3,16 +3,17 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-reporting-percentages";
 }
 
-<div class="form-group">
-    <table>
-        <caption class="heading-medium">@Model.Title<br />
-        <span class="font-small">We have computed the percentages that will be reported from the figures you have given.</span>
+<div class="govuk-form-group">
+    <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">
+            @Model.Title<br />
+            <span class="govuk-!-font-size-16">We have computed the percentages that will be reported from the figures you have given.</span>
         </caption>
-        <tbody>
-        <tr>
-            <td>Percentage of apprenticeship starts (both new hires and existing employees who started an apprenticeship) between @ViewBag.CurrentPeriod.FullString as a proportion of total headcount on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
-            <td id="reportingpercentages-newthisperiod" class="numeric bold">@Model.NewThisPeriod</td>
-        </tr>
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">Percentage of apprenticeship starts (both new hires and existing employees who started an apprenticeship) between @ViewBag.CurrentPeriod.FullString as a proportion of total headcount on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
+                <td id="reportingpercentages-newthisperiod" class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold">@Model.NewThisPeriod</td>
+            </tr>
         </tbody>
     </table>
 </div>

@@ -5,44 +5,45 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-your-totalemployees";
     ViewBag.ZenDeskLabel = "reporting-your-totalemployees";
 }
-<a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <h1 class="heading-medium">Total number of employees</h1>
-        <div class="notice">
-            <i class="icon icon-important">
-                <span class="visually-hidden">Warning</span>
-            </i>
-            <strong class="bold-small">
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Total number of employees</h1>
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
                 You will need this information to continue.
             </strong>
         </div>
         <form method="post" asp-action="TotalEmployees">
-            <div class="form-group  @(ViewData.ModelState.IsValid ? "":"form-group-error")">
-                <fieldset class="inline">
-                    <legend>
-                        <p class="body-text">
-                            Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
-                        </p>
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend">
+                        Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
                     </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
-                        <p id="confirm-error" class="error-message">
-                            <span class="visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                        <p id="confirm-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
                         </p>
                     }
-                    <div class="multiple-choice">
-                        <input id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
-                        <label for="totalemployees-action-yes">Yes</label>
-                    </div>
-                    <div class="multiple-choice">
-                        <input id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model == false ? "checked" : "")>
-                        <label for="totalemployees-action-no">No</label>
+                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="totalemployees-action-yes" type="radio" name="hasMinimumEmployeeHeadcount" value="true" @(Model == true ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="totalemployees-action-yes">Yes</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="totalemployees-action-no" type="radio" name="hasMinimumEmployeeHeadcount" value="false" @(Model == false ? "checked" : "")>
+                            <label class="govuk-label govuk-radios__label" for="totalemployees-action-no">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>
-            <div class="form-group">
-                <input id="SubmitSelectOptionForm" class="button" type="submit" value="Continue">
+            <div class="govuk-form-group">
+                <input id="SubmitSelectOptionForm" class="govuk-button" type="submit" value="Continue">
             </div>
         </form>
     </div>

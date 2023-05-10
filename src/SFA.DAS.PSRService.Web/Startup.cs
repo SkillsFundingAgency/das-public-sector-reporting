@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EAS.Account.Api.Client;
+using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.Forecasting.Web.Extensions;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Application.Interfaces;
@@ -79,17 +80,26 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
 
             services.AddAndConfigureAuthentication(Configuration, _config);
+            if (Configuration.UseGovSignIn)
+            {
+                services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
+            }
+            else
+            {
+                services.AddMaMenuConfiguration("SignOut", Configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
+            }
             services.AddAuthorizationService();
             services.AddHealthChecks();
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
             services.AddMvc(opts =>
                 {
                     opts.EnableEndpointRouting = false;
-                    opts.Filters.Add(new AuthorizeFilter(PolicyNames.HasEmployerAccount));
+                    opts.Filters.Add(new AuthorizeFilter());
                     opts.Filters.AddService<GoogleAnalyticsFilter>();
                     opts.Filters.AddService<ZenDeskApiFilter>();
                 })
-                .AddControllersAsServices().AddSessionStateTempDataProvider();
+                .AddControllersAsServices().AddSessionStateTempDataProvider()
+                .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
 
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
             services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
@@ -144,91 +154,6 @@ namespace SFA.DAS.PSRService.Web
                 app.UseHsts();
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            // Add Content Security Policy           
-            app.UseCsp(options => options
-                .DefaultSources(s =>
-                {
-                    s.Self()
-                        .CustomSources(
-                        "https://*.zdassets.com",
-                        "https://*.zendesk.com",
-                        "wss://*.zendesk.com",
-                        "wss://*.zopim.com",
-                        "https://*.rcrsv.io",
-                        "https://assets.publishing.service.gov.uk"
-                        );
-                })
-                .StyleSources(s =>
-                {
-                    s.Self()
-                    .CustomSources("https://www.googletagmanager.com/",
-                                    "https://www.tagmanager.google.com/",
-                                    "https://tagmanager.google.com/",
-                                    "https://fonts.googleapis.com/",
-                                    "https://*.zdassets.com",
-                                    "https://*.zendesk.com",
-                                    "wss://*.zendesk.com",
-                                    "wss://*.zopim.com",
-                                    "https://*.rcrsv.io"
-                                    );
-                    s.UnsafeInline();
-                }
-                )
-                .ScriptSources(s =>
-                {
-                    s.Self()
-                        .CustomSources("https://az416426.vo.msecnd.net/scripts/a/ai.0.js",
-                                    "*.google-analytics.com",
-                                     "*.googleapis.com",
-                                    "*.googletagmanager.com/",
-                                    "https://www.tagmanager.google.com/",
-                                    "https://*.zdassets.com",
-                                    "https://*.zendesk.com",
-                                    "wss://*.zendesk.com",
-                                    "wss://*.zopim.com",
-                                    "https://*.rcrsv.io");
-                    //Google tag manager uses inline scripts when administering tags. This is done on PREPROD only
-                    if (env.IsEnvironment(EnvironmentNames.PREPROD))
-                    {
-                        s.UnsafeInline();
-                        s.UnsafeEval();
-                    }
-                })
-                .FontSources(s =>
-                    s.Self()
-                    .CustomSources("data:",
-                                    "https://fonts.googleapis.com/",
-                                    "https://assets-ukdoe.rcrsv.io/")
-                )
-                .ConnectSources(s =>
-                    s.Self()
-                    .CustomSources(
-                        "https://*.zendesk.com",
-                        "https://*.zdassets.com",
-                        "https://dc.services.visualstudio.com",
-                        "wss://*.zendesk.com",
-                        "wss://*.zopim.com",
-                        "https://*.rcrsv.io")
-                )
-                .ImageSources(s =>
-                    {
-                        s.Self()
-                            .CustomSources(
-                                "*.google-analytics.com",
-                                "https://ssl.gstatic.com",
-                                "https://www.gstatic.com/",
-                                "https://*.zopim.io",
-                                "https://*.zdassets.com",
-                                "https://*.zendesk.com",
-                                "wss://*.zendesk.com",
-                                "wss://*.zopim.com",
-                                "data:",
-                                "https://assets.publishing.service.gov.uk"
-                                );
-                    }
-                )
-                .ReportUris(r => r.Uris("/ContentPolicyReport/Report")));
 
             app.UseCookiePolicy(new CookiePolicyOptions
             {

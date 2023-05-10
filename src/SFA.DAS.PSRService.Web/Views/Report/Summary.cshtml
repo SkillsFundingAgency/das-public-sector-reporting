@@ -11,81 +11,76 @@
     ViewBag.ZenDeskLabel = "reporting-review-details";
 }
 
-<div class="grid-row">
+
+<div class="govuk-grid-row">
     @if (Model.Report == null)
     {
-        <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+        @section breadcrumb {
+            <a class="govuk-back-link" asp-controller="Home" asp-action="Index">Back</a>
+        }
         if (Model.IsReadOnly)
         {
-            <legend>
-                <h1 class="heading-xlarge">View details</h1>
-            </legend>
+            <h1 class="govuk-heading-xl">View details</h1>
         }
         else
         {
-            <legend>
-                <h1 class="heading-xlarge">Review details</h1>
-            </legend>
+            <h1 class="govuk-heading-xl">Review details</h1>
         }
         <p id="report-summary-no-reports-message">No reports have been created yet.</p>
     }
     else
     {
-        <div class="column-full review-details">
-            @if (!Model.Report.Submitted)
-            {
-                if (Model.CanBeEdited)
+        <div class="govuk-grid-column-full review-details">
+            @section breadcrumb {
+                @if (!Model.Report.Submitted)
                 {
-                    <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
+                    if (Model.CanBeEdited)
+                    {
+                        <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+                    }
+                    else
+                    {
+                        <a class="govuk-back-link" asp-controller="Home" asp-action="Index">Back</a>
+                    }
+
                 }
                 else
                 {
-                    <a class="link-back" asp-controller="Home" asp-action="Index">Back</a>
+                    <a class="govuk-back-link" asp-controller="Report" asp-action="List">Back</a>
                 }
-
-            }
-            else
-            {
-                <a class="link-back" asp-controller="Report" asp-action="List">Back</a>
             }
 
 
             @if (Model.Report.Submitted)
             {
-                <legend>
-                    <h1 class="heading-xlarge">Submitted details</h1>
-                </legend>
+                    <h1 class="govuk-heading-xl">Submitted details</h1>
             }
             else
             {
                 if (Model.IsReadOnly)
                 {
-                    <legend>
-                        <h1 class="heading-xlarge">View details</h1>
-                    </legend>
+                    <h1 class="govuk-heading-xl">View details</h1>
                     <p style="white-space: pre-line">@Model.Subtitle</p>
                 }
                 else
                 {
-                    <legend>
-                        <h1 class="heading-xlarge">Review details</h1>
-                    </legend>
+                    <h1 class="govuk-heading-xl">Review details</h1>
                     <p style="white-space: pre-line">@Model.Subtitle</p>
                 }
-                <div asp-validation-summary="All" class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-                    <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
-                        @(Model.IsReadOnly ? "These are the current errors" : "Please fix these errors")
+                <div asp-validation-summary="All" class="govuk-error-summary" data-module="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+                    <h2 class="govuk-error-summary__title" id="error-summary-heading">
+                        @(Model.IsReadOnly ? "These are the current errors" : "There is a problem")
                     </h2>
                 </div>
             }
 
-            <div class="form-group">
-                <table>
-                    @*<caption class="heading-medium">Reporting period</caption>*@
-                    <tbody>
-                        <tr>
-                            <td>Reporting period</td>
-                            <td class="bold">@Model.Report.Period.FullString</td>
+            <div class="govuk-form-group">
+                <table class="govuk-table">
+                    @*<caption class="govuk-table__caption govuk-table__caption--m">Reporting period</caption>*@
+                    <tbody class="govuk-table__body">
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">Reporting period</td>
+                            <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.Report.Period.FullString</td>
                         </tr>
                     </tbody>
                 </table>
@@ -112,11 +107,11 @@
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)
             {
-                <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="Confirm">Continue</a>
+                <a id="report-summary-continue" class="govuk-button" asp-controller="Report" asp-action="Confirm">Continue</a>
             }
             else if (Model.IsValidForSubmission && !Model.UserCanSubmitReports && !Model.IsReadOnly)
             {
-                <a id="report-summary-continue" class="button" asp-controller="Report" asp-action="EditComplete">Continue</a>
+                <a id="report-summary-continue" class="govuk-button" asp-controller="Report" asp-action="EditComplete">Continue</a>
             }
             else
             {
@@ -124,11 +119,11 @@
                 {
                     if (Model.UserCanEditReports && Model.Report.Period.Equals(Model.CurrentPeriod))
                     {
-                        <a id="report-summary-amend" class="button" asp-controller="Report" asp-action="ConfirmAmend">Amend report</a>
+                        <a id="report-summary-amend" class="govuk-button" asp-controller="Report" asp-action="ConfirmAmend">Amend report</a>
                     }
                     else
                     {
-                        <a id="report-summary-list" class="button" asp-controller="Report" asp-action="List">List submitted reports</a>
+                        <a id="report-summary-list" class="govuk-button" asp-controller="Report" asp-action="List">List submitted reports</a>
                     }
                 }
             }

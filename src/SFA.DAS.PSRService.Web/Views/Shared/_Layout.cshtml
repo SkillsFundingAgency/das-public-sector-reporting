@@ -1,110 +1,82 @@
-﻿@using SFA.DAS.PSRService.Web.Extensions
-@using SFA.DAS.MA.Shared.UI.Models;
+﻿@using SFA.DAS.Employer.Shared.UI.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var tagManagerCode = "GTM-KWQBWGJ";
+    string accountId = (string)this.ViewContext.RouteData.Values[RouteValues.HashedEmployerAccountId] ?? "";
+    ViewBag.HideHeaderBorder = true;
+    var footerModel = new FooterModel { AccountId = accountId, UsePrivacyV2 = true };
+    
+}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    @Html.Partial("_GoogleTagManager")
-    <title>@ViewData["Title"]</title>
+<html lang="en" class="govuk-template">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewData["Title"]</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#0b0c0c" />
 
-    <environment include="Development">
-        <!-- TEMPLATE STYLES - START -->
-        <!--[if gt IE 8]><!--><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template.css?0.23.0" /><!--<![endif]-->
-        <!--[if IE 6]><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template-ie6.css?0.23.0" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template-ie7.css?0.23.0" /><![endif]-->
-        <!--[if IE 8]><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template-ie8.css?0.23.0" /><![endif]-->
-        <link rel="stylesheet" media="print" href="/assets/stylesheets/govuk-template-print.css?0.23.0" />
-        <!--[if IE 8]><link rel="stylesheet" media="all" href="/assets/stylesheets/fonts-ie8.css?0.23.0" /><![endif]-->
-        <!--[if gte IE 9]><!--><link rel="stylesheet" media="all" href="/assets/stylesheets/fonts.css?0.23.0" /><!--<![endif]-->
-        <!-- TEMPLATE STYLES - END -->
-        <!-- ELEMENTS AND TOOLKIT STYLES - START -->
-        <!--[if gt IE 8]><!--><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-base.css?3.1.2" /><!--<![endif]-->
-        <!--[if IE 6]><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-ie6.css?3.1.2" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-ie7.css?3.1.2" /><![endif]-->
-        <!--[if IE 8]><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-ie8.css?3.1.2" /><![endif]-->
-        <!-- ELEMENTS AND TOOLKIT STYLES - END -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
+        <link rel="mask-icon" href="assets/images/govuk-mask-icon.svg" color="#0b0c0c"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/images/govuk-apple-touch-icon-180x180.png"/>
+        <link rel="apple-touch-icon" sizes="167x167" href="assets/images/govuk-apple-touch-icon-167x167.png"/>
+        <link rel="apple-touch-icon" sizes="152x152" href="assets/images/govuk-apple-touch-icon-152x152.png"/>
+        <link rel="apple-touch-icon" href="assets/images/govuk-apple-touch-icon.png"/>
 
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
+        <!--[if !IE 8]><!-->
+        <link href="css/main.css" rel="stylesheet" />
+        <link href="/css/app.css" rel="stylesheet" no-cdn />
 
-    <environment exclude="Development">
-        <!-- TEMPLATE STYLES - START -->
-        <!--[if gt IE 8]><!--><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template.min.css?0.23.0" /><!--<![endif]-->
-        <!--[if IE 6]><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template-ie6.min.css?0.23.0" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template-ie7.min.css?0.23.0" /><![endif]-->
-        <!--[if IE 8]><link rel="stylesheet" media="screen" href="/assets/stylesheets/govuk-template-ie8.min.css?0.23.0" /><![endif]-->
-        <link rel="stylesheet" media="print" href="/assets/stylesheets/govuk-template-print.min.css?0.23.0" />
-        <!--[if IE 8]><link rel="stylesheet" media="all" href="/assets/stylesheets/fonts-ie8.min.css?0.23.0" /><![endif]-->
-        <!--[if gte IE 9]><!--><link rel="stylesheet" media="all" href="/assets/stylesheets/fonts.min.css?0.23.0" /><!--<![endif]-->
-        <!-- TEMPLATE STYLES - END -->
-        <!-- ELEMENTS AND TOOLKIT STYLES - START -->
-        <!--[if gt IE 8]><!--><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-base.min.css?3.1.2" /><!--<![endif]-->
-        <!--[if IE 6]><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-ie6.min.css?3.1.2" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-ie7.min.css?3.1.2" /><![endif]-->
-        <!--[if IE 8]><link rel="stylesheet" media="screen" href="/assets/stylesheets/esfa-govuk-ie8.min.css?3.1.2" /><![endif]-->
-        <!-- ELEMENTS AND TOOLKIT STYLES - END -->
+        @RenderSection("styles", required: false)
 
-        <link rel="stylesheet" href="~/css/site.min.css" />
-    </environment>
+        <!--<![endif]-->
 
-    <!--[if lt IE 9]><script src="/assets/javascripts/ie.js?0.23.0"></script><![endif]-->
+        <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','@tagManagerCode');
+        </script>
+        <!-- End Google Tag Manager -->
+        @Html.Partial("_ZenDeskWidget")
+        @Html.Partial("_ZenDeskApi")
+    </head>
+    <body class="govuk-template__body ">
+        <script nws-csp-add-nonce="true">
+            document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+        </script>
+        <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
-    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        <partial name="_Header">
+            @* ReSharper disable once Mvc.PartialViewNotResolved *@
+            <partial name="_Menu" model="@accountId">
+            </partial>
+        </partial>
 
-    <link rel="mask-icon" href="/assets/images/gov.uk_logotype_crown.svg" color="#0b0c0c">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon-180x180.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="/assets/images/apple-touch-icon-167x167.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
-
-    <meta name="theme-color" content="#0b0c0c" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:image" content="/assets/images/opengraph-image.png">
-    @Html.Partial("_GoogleAnalyticsInfo")
-    @Html.Partial("_ZenDeskWidget")
-    @Html.Partial("_ZenDeskApi")
-</head>
-<body>
-    @Html.Partial("_GoogleTagManagerNoScript")
-    <script nws-csp-add-nonce="true" type="text/javascript">
-        document.body.className =
-            ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-
-    <div id="skiplink-container">
-        <div>
-            <a href="#content" class="skiplink">Skip to main content</a>
+        <div class="govuk-width-container">
+            @RenderSection("breadcrumb", required: false)
+            <main class="govuk-main-wrapper" id="main-content" role="main">
+                @RenderBody()
+            </main>
         </div>
-    </div>
+        
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        <partial name="_Footer" model="@footerModel"/>
 
-    @Html.Partial("_CookieBanner", Html.GetCookieBannerViewModel())
+        <script src="/libs/jquery/jquery.min.js"></script>
+        <script src="/libs/govuk-frontend/all.js"></script>
 
-    @Html.Partial("_Header", Html.GetHeaderViewModel(useLegacyStyles: true))
+        <script src="/js/das-all.min.js"></script>
+        <script src="/js/app.min.js"></script>
 
-    <main id="content" role="main">
-        @RenderBody()
-    </main>
+        @RenderSection("javascript", required: false)
 
-    @Html.Partial("_Footer", Html.GetFooterViewModel(useLegacyStyles: true))
+        <script src="/js/app.js" no-cdn  nws-csp-add-nonce></script>
+       
+        @RenderSection("Scripts", required: false)
 
-    <div id="global-app-error" class="app-error hidden"></div>
-
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/js/details.polyfill.js" asp-append-version="true"></script>()
-        <script src="~/js/shim-links-with-button-role.js" asp-append-version="true"></script>
-        <script src="~/js/show-hide-content.js" asp-append-version="true"></script>
-        <script src="~/js/cookies.js" asp-append-version="true"></script>
-        <script src="~/js/site-nav.js" asp-append-version="true"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-
-    <environment exclude="Development">
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
-    <script nws-csp-add-nonce="true">
-        if (
-            typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
-</body>
+    </body>
 </html>

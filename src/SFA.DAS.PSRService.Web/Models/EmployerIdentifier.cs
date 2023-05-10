@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.PSRService.Web.Models
+﻿using Newtonsoft.Json;
+
+namespace SFA.DAS.PSRService.Web.Models
 {
     public class EmployerIdentifier
     {

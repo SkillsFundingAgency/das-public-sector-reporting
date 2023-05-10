@@ -9,32 +9,32 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-history";
 }
 
-<div class="grid-row report-history">
-    <div class="column-two-thirds">
-        <a class="link-back" asp-controller="Report" asp-action="Edit">Back</a>
-        <h1 class="heading-xlarge">Report history</h1>
-    </div>
-    <div class="column-full">
-        <div class="form-group">
-            <table>
-                @*<caption class="heading-medium">Reporting period</caption>*@
-                <tbody>
-                    <tr>
-                        <td>Reporting period</td>
-                        <td class="bold">@Model.Period.FullString</td>
+@section breadcrumb {
+    <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
+}
+
+
+        <h1 class="govuk-heading-xl">Report history</h1>
+
+            <table class="govuk-table">
+                @*<caption class="govuk-table__caption govuk-table__caption--m">Reporting period</caption>*@
+                <tbody class="govuk-table__body">
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">Reporting period</td>
+                        <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.Period.FullString</td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-
+ 
+<div class="govuk-grid-row report-history">
+    <div class="govuk-grid-column-two-thirds">
         @foreach (var edit in Model.EditHistoryMostRecentFirst)
         {
-            <details>
-                <summary>
-                    <span class="summary">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
                 </summary>
                 <div>
-
                     @Html.Partial("Question/Organisation",  new OrganisationReviewViewModel() { OrganisationName = edit.OrganisationName,HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount,IsLocalAuthority = edit.IsLocalAuthority })
 
                     @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
@@ -56,5 +56,4 @@
             </details>
         }
     </div>
-
 </div>

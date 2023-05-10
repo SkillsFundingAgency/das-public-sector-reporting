@@ -9,17 +9,17 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/question/page-schools-employees";
 }
 
-<h1 class="heading-large">
+<h1 class="govuk-heading-l">
     @Model.CurrentSection.Title
 </h1>
-<div class="form-group">
-    <details>
-        <summary>
-            <span class="summary">Who counts as an employee</span>
+<div class="govuk-form-group">
+    <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">Who counts as an employee</span>
         </summary>
         <div class="panel panel-border-narrow">
-            <p class="heading-small">You should include the following staff when calculating your employee numbers:</p>
-            <ul class="list-bullet">
+            <p class="govuk-heading-s">You should include the following staff when calculating your employee numbers:</p>
+            <ul class="govuk-list govuk-list--bullet">
                 <li>anyone on your payroll on whose behalf you make National Insurance contributions</li>
                 <li>staff on fixed-term contracts</li>
                 <li>staff on maternity, paternity or adoption leave</li>
@@ -27,8 +27,8 @@
                 <li>apprentices employed by the public body through an Apprenticeship Training Agency</li>
                 <li>employees on secondment or loan if you are paying more than 50% of their wages</li>
             </ul>
-            <p class="heading-small">Do not include:</p>
-            <ul class="list-bullet">
+            <p class="govuk-heading-s">Do not include:</p>
+            <ul class="govuk-list govuk-list--bullet">
                 <li>anyone employed through employment agencies</li>
                 <li>those working on a zero-hour contract</li>
                 <li>bank staff</li>
@@ -39,30 +39,30 @@
     </details>
 </div>
 
-<div class="form-group">
-    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[0].Answer">
+<div class="govuk-form-group">
+    <label class="govuk-label govuk-label--m" asp-for="@Model.Questions.ToArray()[0].Answer">
         Number of employees who were working in England on 31 March @Model.CurrentPeriod.StartYear.AsFourDigitString
-        <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
+        <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[0].Answer"></span>
     </label>
-    <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="error-message" asp-valmsg-for="Section.Questions[0].Answer"></span>
+    <span asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="govuk-error-message" asp-valmsg-for="Section.Questions[0].Answer"></span>
     <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
-    <input type="text" class="form-control form-control-1-3 js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" maxlength="11" />
+    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" maxlength="11" />
 </div>
 
-<div class="form-group">
-    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[1].Answer">
+<div class="govuk-form-group">
+    <label class="govuk-label govuk-label--m" asp-for="@Model.Questions.ToArray()[1].Answer">
         Number of employees who were working in England on 31 March @Model.CurrentPeriod.EndYear.AsFourDigitString
-        <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
+        <span asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[1].Answer"></span>
     </label>
     <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-    <input type="text" class="form-control form-control-1-3 js-addcommas" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer" maxlength="11" />
+    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer" maxlength="11" />
 </div>
 
-<div class="form-group">
-    <label class="form-label-bold" asp-for="@Model.Questions.ToArray()[2].Answer">
+<div class="govuk-form-group">
+    <label class="govuk-label govuk-label--m" asp-for="@Model.Questions.ToArray()[2].Answer">
         Number of new employees who started working for you in England between @Model.CurrentPeriod.FullString
-        <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
+        <span asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[2].Answer"></span>
     </label>
     <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
-    <input type="text" class="form-control form-control-1-3 js-addcommas" name="Section.Questions[2].Answer"  asp-for="@Model.Questions.ToArray()[2].Answer" value="@questionsList[2].Answer" maxlength="11" />
+    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" name="Section.Questions[2].Answer"  asp-for="@Model.Questions.ToArray()[2].Answer" value="@questionsList[2].Answer" maxlength="11" />
 </div>
