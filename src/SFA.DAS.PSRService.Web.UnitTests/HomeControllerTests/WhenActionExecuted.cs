@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,10 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests;
 [TestFixture]
 public class WhenActionExecuted
 {
-    const string TestCommitmentsBaseUrl = "https://v2url.something";
-    const string TestPublicSectorReportingBaseUrl = "https://v2url.something";
-    const string TestAccountId = "XYR145";
+    private const string TestCommitmentsBaseUrl = "https://v2url.something";
+    private const string TestPublicSectorReportingBaseUrl = "https://v2url.something";
+    private const string TestAccountId = "XYR145";
+
     private HomeController _controller;
     private Mock<IUrlHelper> _mockUrlHelper;
     private Mock<IEmployerAccountService> _employeeAccountServiceMock;
@@ -44,7 +46,7 @@ public class WhenActionExecuted
 
         _controller = new HomeController(null, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object, null, null) { Url = _mockUrlHelper.Object };
     }
-    
+
     [TearDown]
     public void TearDown() => _controller?.Dispose();
 
@@ -57,6 +59,6 @@ public class WhenActionExecuted
         _controller.OnActionExecuting(ctx);
 
         var homeUrl = _controller.ViewData["HomeUrl"];
-        Assert.AreEqual($"{TestCommitmentsBaseUrl}/{TestAccountId}", homeUrl);
+        homeUrl.Should().Be($"{TestCommitmentsBaseUrl}/{TestAccountId}");
     }
 }

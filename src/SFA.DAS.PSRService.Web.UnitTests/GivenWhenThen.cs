@@ -7,7 +7,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests;
 public abstract class GivenWhenThen<TypeOfSUT>
 {
 
-    protected TypeOfSUT SUT;
+    protected TypeOfSUT Sut;
 
     [SetUp]
     public void GivenWhen()

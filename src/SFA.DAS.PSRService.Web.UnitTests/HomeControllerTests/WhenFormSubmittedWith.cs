@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -25,9 +26,9 @@ public class WhenFormSubmittedWith
         _mockPeriodService = new Mock<IPeriodService>();
         _authorizationServiceMock = new Mock<IAuthorizationService>(MockBehavior.Strict);
 
-        _controller = new HomeController(null,_employeeAccountServiceMock.Object, null,_mockPeriodService.Object,_authorizationServiceMock.Object, null, null) {Url = _mockUrlHelper.Object};
+        _controller = new HomeController(null, _employeeAccountServiceMock.Object, null, _mockPeriodService.Object, _authorizationServiceMock.Object, null, null) { Url = _mockUrlHelper.Object };
     }
-    
+
     [TearDown]
     public void TearDown() => _controller?.Dispose();
 
@@ -41,9 +42,9 @@ public class WhenFormSubmittedWith
 
         // assert
         var redirectResult = result as RedirectToActionResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(SubmitActions.Home.Create.ActionName, redirectResult.ActionName);
-        Assert.AreEqual(SubmitActions.Home.Create.ControllerName, redirectResult.ControllerName);
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be(SubmitActions.Home.Create.ActionName);
+        redirectResult.ControllerName.Should().Be(SubmitActions.Home.Create.ControllerName);
     }
 
     [Test]
@@ -57,9 +58,9 @@ public class WhenFormSubmittedWith
         // assert
 
         var redirectResult = result as RedirectToActionResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(SubmitActions.Home.List.ActionName, redirectResult.ActionName);
-        Assert.AreEqual(SubmitActions.Home.List.ControllerName, redirectResult.ControllerName);
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be(SubmitActions.Home.List.ActionName);
+        redirectResult.ControllerName.Should().Be(SubmitActions.Home.List.ControllerName);
     }
 
     [Test]
@@ -72,9 +73,9 @@ public class WhenFormSubmittedWith
 
         // assert
         var redirectResult = result as RedirectToActionResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(SubmitActions.Home.Edit.ActionName, redirectResult.ActionName);
-        Assert.AreEqual(SubmitActions.Home.Edit.ControllerName, redirectResult.ControllerName);
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be(SubmitActions.Home.Edit.ActionName);
+        redirectResult.ControllerName.Should().Be(SubmitActions.Home.Edit.ControllerName);
     }
 
     [Test]
@@ -87,19 +88,19 @@ public class WhenFormSubmittedWith
 
         // assert
         var redirectResult = result as RedirectToActionResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(SubmitActions.Home.View.ActionName, redirectResult.ActionName);
-        Assert.AreEqual(SubmitActions.Home.View.ControllerName, redirectResult.ControllerName);
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be(SubmitActions.Home.View.ActionName);
+        redirectResult.ControllerName.Should().Be(SubmitActions.Home.View.ControllerName);
     }
 
     [Test]
-    public void UnkownActionThenItShouldReturnError()
+    public void UnknownActionThenItShouldReturnError()
     {
         // arrange
         // act
         var result = _controller.Submit("whatever");
 
         // assert
-        Assert.IsInstanceOf<BadRequestResult>(result);
+        result.Should().BeOfType<BadRequestResult>();
     }
 }

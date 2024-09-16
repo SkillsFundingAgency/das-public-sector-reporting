@@ -16,7 +16,7 @@ public abstract class Given_A_Submitted_Report
 
     public Given_A_Submitted_Report()
     {
-        SUT = new ReportService(
+        Sut = new ReportService(
             config: Mock.Of<IWebConfiguration>(),
             mediator: Mock.Of<IMediator>(),
             periodService: Mock.Of<IPeriodService>());

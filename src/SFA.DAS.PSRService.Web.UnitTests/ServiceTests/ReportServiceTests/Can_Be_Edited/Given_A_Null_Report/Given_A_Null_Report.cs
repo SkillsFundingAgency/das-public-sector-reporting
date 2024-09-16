@@ -18,7 +18,7 @@ public abstract class Given_A_Null_Report
     {
         MockPeriodService = new Mock<IPeriodService>();
 
-        SUT = new ReportService(
+        Sut = new ReportService(
             config: Mock.Of<IWebConfiguration>(),
             mediator: Mock.Of<IMediator>(),
             periodService: MockPeriodService.Object

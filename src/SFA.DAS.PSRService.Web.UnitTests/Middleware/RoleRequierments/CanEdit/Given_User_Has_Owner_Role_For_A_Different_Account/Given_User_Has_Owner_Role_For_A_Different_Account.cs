@@ -14,74 +14,60 @@ using SFA.DAS.PSRService.Web.Models;
 namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanEdit.Given_User_Has_Owner_Role_For_A_Different_Account;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_User_Has_Owner_Role_For_A_Different_Account
-    : GivenWhenThen<CanEditReportHandler>
+public abstract class Given_User_Has_Owner_Role_For_A_Different_Account : GivenWhenThen<CanEditReportHandler>
 {
     protected AuthorizationHandlerContext HandlerContext;
 
-    public string AccountId => "TESTACCOUNTID";
+    private static string AccountId => "TESTACCOUNTID";
 
     protected override void Given()
     {
-        SUT = new CanEditReportHandler();
+        Sut = new CanEditReportHandler();
 
-        HandlerContext =
-            new AuthorizationHandlerContext(
-                requirements: new List<IAuthorizationRequirement> {new CanEditReport()}
-                , user: BuildUserWithRequiredRoleForAccount()
-                , resource: BuildResourceWithAccountID()
-            );
+        HandlerContext = new AuthorizationHandlerContext(
+            requirements: new List<IAuthorizationRequirement> { new CanEditReport() },
+            user: BuildUserWithRequiredRoleForAccount(),
+            resource: BuildResourceWithAccountID());
     }
 
-    private object BuildResourceWithAccountID()
+    private static object BuildResourceWithAccountID()
     {
-        var resourceContext
-            =
-            new ActionContext();
+        var resourceContext = new ActionContext();
 
-        var routeData
-            = 
-            new RouteData();
+        var routeData = new RouteData
+        {
+            Values =
+            {
+                [RouteValues.HashedEmployerAccountId] = AccountId
+            }
+        };
 
-        routeData
-            .Values[RouteValues.HashedEmployerAccountId] = AccountId;
+        resourceContext.RouteData = routeData;
 
-        resourceContext
-                .RouteData
-            =
-            routeData;
-
-        return
-            resourceContext;
+        return resourceContext;
     }
 
-    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    private static ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
-        return 
-            new ClaimsPrincipal(
-                new ClaimsIdentity(
-                    new Claim[]
-                    {
-                        new Claim(
-                            EmployerPsrsClaims
-                                .AccountsClaimsTypeIdentifier
-                            , EmployerIdentifierWithOwnerRoleForAccount()
-                            , JsonClaimValueTypes.Json), 
-                    }));
+        return new ClaimsPrincipal(new ClaimsIdentity(
+        [
+            new Claim(
+                EmployerPsrsClaims
+                    .AccountsClaimsTypeIdentifier
+                , EmployerIdentifierWithOwnerRoleForAccount()
+                , JsonClaimValueTypes.Json)
+        ]));
     }
 
-    private string EmployerIdentifierWithOwnerRoleForAccount()
+    private static string EmployerIdentifierWithOwnerRoleForAccount()
     {
-        return
-            JsonConvert.SerializeObject
-            (
-                new Dictionary<string, EmployerIdentifier>
-                {
-                    ["SOMEOTHERACCOUNT"] = new EmployerIdentifier
-                    {
-                        AccountId = AccountId,
-                        Role = EmployerPsrsRoleNames.Owner
-                    }
-                });
+        return JsonConvert.SerializeObject(new Dictionary<string, EmployerIdentifier>
+        {
+            ["SOMEOTHERACCOUNT"] = new()
+            {
+                AccountId = AccountId,
+                Role = EmployerPsrsRoleNames.Owner
+            }
+        });
     }
 }

@@ -19,69 +19,57 @@ public abstract class Given_User_Has_Owner_Role_For_A_Different_Account
 {
     protected AuthorizationHandlerContext HandlerContext;
 
-    public string AccountId => "TESTACCOUNTID";
+    private static string AccountId => "TESTACCOUNTID";
 
     protected override void Given()
     {
-        SUT = new CanSubmitReportHandler();
+        Sut = new CanSubmitReportHandler();
 
-        HandlerContext =
-            new AuthorizationHandlerContext(
-                requirements: new List<IAuthorizationRequirement> {new CanSubmitReport()}
-                , user: BuildUserWithRequiredRoleForAccount()
-                , resource: BuildResourceWithAccountID()
-            );
+        HandlerContext = new AuthorizationHandlerContext(
+            requirements: new List<IAuthorizationRequirement> { new CanSubmitReport() },
+            user: BuildUserWithRequiredRoleForAccount(),
+            resource: BuildResourceWithAccountId()
+        );
     }
 
-    private object BuildResourceWithAccountID()
+    private static object BuildResourceWithAccountId()
     {
-        var resourceContext
-            =
-            new ActionContext();
+        var resourceContext = new ActionContext();
 
-        var routeData
-            = 
-            new RouteData();
+        var routeData = new RouteData
+        {
+            Values =
+            {
+                [RouteValues.HashedEmployerAccountId] = AccountId
+            }
+        };
 
-        routeData
-            .Values[RouteValues.HashedEmployerAccountId] = AccountId;
+        resourceContext.RouteData = routeData;
 
-        resourceContext
-                .RouteData
-            =
-            routeData;
-
-        return
-            resourceContext;
+        return resourceContext;
     }
 
     private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
-        return 
-            new ClaimsPrincipal(
-                new ClaimsIdentity(
-                    new Claim[]
-                    {
-                        new Claim(
-                            EmployerPsrsClaims
-                                .AccountsClaimsTypeIdentifier
-                            , EmployerIdentifierWithOwnerRoleForAccount()
-                            , JsonClaimValueTypes.Json), 
-                    }));
+        return new ClaimsPrincipal(new ClaimsIdentity(
+        [
+            new Claim(
+                EmployerPsrsClaims
+                    .AccountsClaimsTypeIdentifier
+                , EmployerIdentifierWithOwnerRoleForAccount()
+                , JsonClaimValueTypes.Json)
+        ]));
     }
 
-    private string EmployerIdentifierWithOwnerRoleForAccount()
+    private static string EmployerIdentifierWithOwnerRoleForAccount()
     {
-        return
-            JsonConvert.SerializeObject
-            (
-                new Dictionary<string, EmployerIdentifier>
-                {
-                    ["SOMEOTHERACCOUNT"] = new EmployerIdentifier
-                    {
-                        AccountId = AccountId,
-                        Role = EmployerPsrsRoleNames.Owner
-                    }
-                });
+        return JsonConvert.SerializeObject(new Dictionary<string, EmployerIdentifier>
+        {
+            ["SOMEOTHERACCOUNT"] = new()
+            {
+                AccountId = AccountId,
+                Role = EmployerPsrsRoleNames.Owner
+            }
+        });
     }
 }

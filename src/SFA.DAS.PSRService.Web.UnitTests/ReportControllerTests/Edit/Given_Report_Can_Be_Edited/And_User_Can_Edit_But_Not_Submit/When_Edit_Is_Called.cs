@@ -15,7 +15,7 @@ public sealed class When_Edit_Is_Called
     {
         base.When();
 
-        result = SUT.Edit();
+        result = Sut.Edit();
 
         var viewResult = result as ViewResult;
 

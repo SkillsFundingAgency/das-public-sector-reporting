@@ -18,8 +18,8 @@ public sealed class When_Change_Method_Is_Called : Given_A_ReportController
 
     protected override void When()
     {
-        attribute = SUT.GetType()
-            .GetMethod(nameof(SUT.Change))
+        attribute = Sut.GetType()
+            .GetMethod(nameof(Sut.Change))
             .GetCustomAttribute(typeof(AuthorizeAttribute));
     }
 

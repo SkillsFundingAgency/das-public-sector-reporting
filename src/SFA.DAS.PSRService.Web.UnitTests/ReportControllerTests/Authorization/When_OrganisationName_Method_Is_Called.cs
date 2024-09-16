@@ -17,8 +17,8 @@ public sealed class When_OrganisationName_Method_Is_Called : Given_A_ReportContr
 
     protected override void When()
     {
-        attribute = SUT.GetType()
-            .GetMethod(nameof(SUT.OrganisationName))
+        attribute = Sut.GetType()
+            .GetMethod(nameof(Sut.OrganisationName))
             .GetCustomAttribute(typeof(AuthorizeAttribute));
     }
 

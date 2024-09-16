@@ -40,21 +40,21 @@ public class Given_I_Save_A_Report
 
         var Questions = new List<Question>()
         {
-            new Question()
+            new()
             {
                 Id = "atStart",
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             }
-            ,new Question()
+            ,new()
             {
                 Id = "atEnd",
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
-            new Question()
+            new()
             {
                 Id = "newThisPeriod",
                 Answer = "0",
@@ -67,7 +67,8 @@ public class Given_I_Save_A_Report
         var SectionOne = new Section()
         {
             Id = "SectionOne",
-            SubSections = new List<Section>() { new Section{
+            SubSections = new List<Section>() { new()
+            {
                 Id = "SubSectionOne",
                 Questions = Questions,
                 Title = "SubSectionOne",
@@ -81,7 +82,8 @@ public class Given_I_Save_A_Report
         var SectionTwo = new Section()
         {
             Id = "SectionTwo",
-            SubSections = new List<Section>() { new Section{
+            SubSections = new List<Section>() { new()
+            {
                 Id = "SubSectionTwo",
                 Questions = Questions,
                 Title = "SubSectionTwo",
@@ -95,7 +97,8 @@ public class Given_I_Save_A_Report
         var SectionThree = new Section()
         {
             Id = "SectionThree",
-            SubSections = new List<Section>() { new Section{
+            SubSections = new List<Section>() { new()
+            {
                 Id = "SubSectionThree",
                 Questions = Questions,
                 Title = "SubSectionThree",

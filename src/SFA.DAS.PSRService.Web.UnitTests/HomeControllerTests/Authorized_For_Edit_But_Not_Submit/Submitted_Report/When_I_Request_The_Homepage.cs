@@ -16,7 +16,7 @@ public class When_I_Request_The_Homepage : And_Current_Report_Submitted
 
     protected override void When()
     {
-        result = SUT.Index();
+        result = Sut.Index();
         viewResult = result as ViewResult;
         model = viewResult?.Model as IndexViewModel;
     }

@@ -10,7 +10,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests;
 [ExcludeFromCodeCoverage]
 public sealed class ReportBuilder
 {
-    private IEnumerable<Section> _sections = Enumerable.Empty<Section>();
+    private IEnumerable<Section> _sections = [];
     private bool _submittedStatus;
     private string _employerId = String.Empty;
     private Period _reportingPeriod = Period.ParsePeriodString("1718");
@@ -86,21 +86,21 @@ public sealed class ReportBuilder
     {
         var questions = new List<Question>
         {
-            new Question
+            new()
             {
                 Id = "atStart",
                 Answer = "123",
                 Type = QuestionType.Number,
                 Optional = false
             },
-            new Question
+            new()
             {
                 Id = "atEnd",
                 Answer = "123",
                 Type = QuestionType.Number,
                 Optional = false
             },
-            new Question
+            new()
             {
                 Id = "newThisPeriod",
                 Answer = "123",
@@ -114,7 +114,7 @@ public sealed class ReportBuilder
             Id = "SectionOne",
             SubSections = new List<Section>
             {
-                new Section
+                new()
                 {
                     Id = "SubSectionOne",
                     Questions = questions,
@@ -131,7 +131,7 @@ public sealed class ReportBuilder
             Id = "SectionTwo",
             SubSections = new List<Section>
             {
-                new Section
+                new()
                 {
                     Id = "SubSectionTwo",
                     Questions = questions,
@@ -148,7 +148,7 @@ public sealed class ReportBuilder
             Id = "SectionThree",
             SubSections = new List<Section>
             {
-                new Section
+                new()
                 {
                     Id = "SubSectionThree",
                     Questions = questions,
@@ -160,11 +160,12 @@ public sealed class ReportBuilder
             Title = "SectionThree"
         };
 
-        List<Section> sections = new List<Section>(3);
-
-        sections.Add(sectionOne);
-        sections.Add(sectionTwo);
-        sections.Add(sectionThree);
+        List<Section> sections =
+        [
+            sectionOne,
+            sectionTwo,
+            sectionThree
+        ];
 
         return sections;
     }
@@ -172,21 +173,21 @@ public sealed class ReportBuilder
     {
         var questions = new List<Question>()
         {
-            new Question()
+            new()
             {
                 Id = "atStart",
                 Answer = "",
                 Type = QuestionType.Number,
                 Optional = false
             }
-            ,new Question()
+            ,new()
             {
                 Id = "atEnd",
                 Answer = "",
                 Type = QuestionType.Number,
                 Optional = false
             },
-            new Question()
+            new()
             {
                 Id = "newThisPeriod",
                 Answer = "1,000",
@@ -201,7 +202,7 @@ public sealed class ReportBuilder
             Id = "SectionOne",
             SubSections = new List<Section>()
             {
-                new Section
+                new()
                 {
                     Id = "SubSectionOne",
                     Questions = questions,

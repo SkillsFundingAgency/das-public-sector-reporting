@@ -12,23 +12,24 @@ namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests;
 
 public abstract class Given_Home_Controller :GivenWhenThen<HomeController>
 {
-    protected Mock<IReportService> _mockReportService;
+    protected Mock<IReportService> MockReportService;
+    protected Mock<IAuthorizationService> AuthorizationServiceMock;
+    protected readonly Period CurrentPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
+    
     private Mock<IEmployerAccountService> _employeeAccountServiceMock;
     private EmployerIdentifier _employerIdentifier;
     private IWebConfiguration _webConfiguration;
     private Mock<IPeriodService> _mockPeriodService;
-    protected Mock<IAuthorizationService> _authorizationServiceMock;
-    protected Period CurrentPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
 
     protected override void Given()
     {
         _webConfiguration = new WebConfiguration();
         _webConfiguration.RootDomainUrl = "beetroot";
 
-        _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
+        MockReportService = new Mock<IReportService>(MockBehavior.Strict);
         _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
         _mockPeriodService = new Mock<IPeriodService>();
-        _authorizationServiceMock = new Mock<IAuthorizationService>(MockBehavior.Strict);
+        AuthorizationServiceMock = new Mock<IAuthorizationService>(MockBehavior.Strict);
 
         _mockPeriodService.Setup(r => r.GetCurrentPeriod()).Returns(CurrentPeriod);
 
@@ -38,6 +39,6 @@ public abstract class Given_Home_Controller :GivenWhenThen<HomeController>
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
 
-        SUT = new HomeController(_mockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, _authorizationServiceMock.Object, null, null);
+        Sut = new HomeController(MockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, AuthorizationServiceMock.Object, null, null);
     }
 }

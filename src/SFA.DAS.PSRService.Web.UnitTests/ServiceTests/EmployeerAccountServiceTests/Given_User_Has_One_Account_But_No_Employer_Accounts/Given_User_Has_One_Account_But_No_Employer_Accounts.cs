@@ -20,7 +20,7 @@ public abstract class Given_User_Has_One_Account_But_No_Employer_Accounts : Give
     protected static string UserId = Guid.NewGuid().ToString();
 
     protected static readonly string _accountIdOne = "MR66J4";
-    private static readonly string[] AccountId = { _accountIdOne};
+    private static readonly string[] AccountId = [_accountIdOne];
 
     private readonly IList<TeamMemberViewModel> _teamMembers = null;
     protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
@@ -33,7 +33,7 @@ public abstract class Given_User_Has_One_Account_But_No_Employer_Accounts : Give
 
         _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdOne)).ReturnsAsync(_teamMembers);
 
-        SUT = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
+        Sut = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
 
             
     }

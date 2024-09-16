@@ -19,21 +19,21 @@ public abstract class Given_A_Submitted_Report
     {
         var ApprenticeQuestions = new List<Question>()
         {
-            new Question()
+            new()
             {
                 Id = "atStart",
                 Answer = "20",
                 Type = QuestionType.Number,
                 Optional = false
             }
-            ,new Question()
+            ,new()
             {
                 Id = "atEnd",
                 Answer = "35",
                 Type = QuestionType.Number,
                 Optional = false
             },
-            new Question()
+            new()
             {
                 Id = "newThisPeriod",
                 Answer = "18",
@@ -44,21 +44,21 @@ public abstract class Given_A_Submitted_Report
         };
         var EmployeeQuestions = new List<Question>()
         {
-            new Question()
+            new()
             {
                 Id = "atStart",
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             }
-            ,new Question()
+            ,new()
             {
                 Id = "atEnd",
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
-            new Question()
+            new()
             {
                 Id = "newThisPeriod",
                 Answer = "50",
@@ -70,7 +70,8 @@ public abstract class Given_A_Submitted_Report
         var YourEmployees = new Section()
         {
             Id = "YourEmployeesSection",
-            SubSections = new List<Section>() { new Section{
+            SubSections = new List<Section>() { new()
+            {
                 Id = "YourEmployees",
                 Questions = EmployeeQuestions,
                 Title = "SubSectionTwo",
@@ -84,7 +85,8 @@ public abstract class Given_A_Submitted_Report
         var YourApprentices = new Section()
         {
             Id = "YourApprenticeSection",
-            SubSections = new List<Section>() { new Section{
+            SubSections = new List<Section>() { new()
+            {
                 Id = "YourApprentices",
                 Questions = ApprenticeQuestions,
                 Title = "SubSectionTwo",

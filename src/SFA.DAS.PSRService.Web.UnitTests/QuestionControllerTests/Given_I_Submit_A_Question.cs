@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -21,7 +22,7 @@ public class Given_I_Submit_A_Question
     private Mock<IEmployerAccountService> _employerAccountServiceMock;
     private Mock<IUrlHelper> _mockUrlHelper;
     private Mock<IUserService> _mockUserService;
-        
+
     private EmployerIdentifier _employerIdentifier;
     private Mock<IPeriodService> _periodServiceMock;
     private Report _currentValidAndNotSubmittedReport;
@@ -62,7 +63,7 @@ public class Given_I_Submit_A_Question
     public void And_A_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
-        var url = "home/index";
+        const string url = "home/index";
         UrlActionContext actualContext = null;
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
@@ -77,17 +78,17 @@ public class Given_I_Submit_A_Question
         _reportService.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Index", actualContext.Action);
-        Assert.AreEqual("Home", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Index");
+        actualContext.Controller.Should().Be("Home");
     }
 
     [Test]
     public void And_Report_Is_Not_Editable_Then_Redirect_Home()
     {
         // arrange
-        var url = "home/index";
+        const string url = "home/index";
         UrlActionContext actualContext = null;
         var report = new Report();
 
@@ -104,10 +105,10 @@ public class Given_I_Submit_A_Question
         _reportService.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Index", actualContext.Action);
-        Assert.AreEqual("Home", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Index");
+        actualContext.Controller.Should().Be("Home");
     }
 
     [Test]
@@ -122,7 +123,7 @@ public class Given_I_Submit_A_Question
 
         // assert
         _reportService.VerifyAll();
-        Assert.IsAssignableFrom<BadRequestResult>(result);
+        result.Should().BeOfType<BadRequestResult>();
     }
 
     [Test]
@@ -143,8 +144,8 @@ public class Given_I_Submit_A_Question
         {
             Id = "SubSectionOne",
             ReportingPeriod = "222",
-            Questions = new[]
-            {
+            Questions =
+            [
                 new QuestionViewModel
                 {
                     Id = "atEnd",
@@ -155,7 +156,7 @@ public class Given_I_Submit_A_Question
                     Id = "atStart",
                     Answer = "123"
                 }
-            }
+            ]
         };
 
         // act
@@ -166,30 +167,27 @@ public class Given_I_Submit_A_Question
         _mockUserService.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Edit", actualContext.Action);
-        Assert.AreEqual("Report", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Edit");
+        actualContext.Controller.Should().Be("Report");
 
-        Assert.IsNotNull(actualReport);
+        actualReport.Should().NotBeNull();
 
         var section = actualReport.GetQuestionSection("SubSectionOne");
 
-        Assert.IsNotNull(section);
-        Assert.AreEqual(3, section.Questions.Count());
-        Assert.AreEqual("123", section.Questions.Single(q => q.Id == "atStart").Answer);
-        Assert.AreEqual("123000", section.Questions.Single(q => q.Id == "atEnd").Answer);
+        section.Should().NotBeNull();
+        section.Questions.Count().Should().Be(3);
+        section.Questions.Single(q => q.Id == "atStart").Answer.Should().Be("123");
+        section.Questions.Single(q => q.Id == "atEnd").Answer.Should().Be("123000");
 
-        var originalNewThisPeriodAnswer
-            =
-            _currentValidAndNotSubmittedReport
-                .GetQuestionSection("SubSectionOne")
-                .Questions
-                .Single(
-                    q => q.Id == "newThisPeriod")
-                .Answer;
+        var originalNewThisPeriodAnswer = _currentValidAndNotSubmittedReport
+            .GetQuestionSection("SubSectionOne")
+            .Questions
+            .Single(q => q.Id == "newThisPeriod")
+            .Answer;
 
-        Assert.AreEqual(originalNewThisPeriodAnswer, section.Questions.Single(q => q.Id == "newThisPeriod").Answer);
+        section.Questions.Single(q => q.Id == "newThisPeriod").Answer.Should().Be(originalNewThisPeriodAnswer);
     }
 
     [Test]
@@ -197,15 +195,14 @@ public class Given_I_Submit_A_Question
     {
         // arrange
         Report actualReport = null;
-        var report =
-            new ReportBuilder()
-                .WithValidSections()
-                .ForCurrentPeriod()
-                .WithEmployerId("123")
-                .WhereReportIsNotAlreadySubmitted()
-                .Build();
+        var report = new ReportBuilder()
+            .WithValidSections()
+            .ForCurrentPeriod()
+            .WithEmployerId("123")
+            .WhereReportIsNotAlreadySubmitted()
+            .Build();
 
-        var url = "home/index";
+        const string url = "home/index";
         UrlActionContext actualContext = null;
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
@@ -218,8 +215,8 @@ public class Given_I_Submit_A_Question
         {
             Id = "SubSectionOne",
             ReportingPeriod = "222",
-            Questions = new[]
-            {
+            Questions =
+            [
                 new QuestionViewModel
                 {
                     Id = "atEnd",
@@ -230,8 +227,10 @@ public class Given_I_Submit_A_Question
                     Id = "atStart",
                     Answer = ""
                 }
-            }
-        };            // act
+            ]
+        }; 
+        
+        // act
         var result = _controller.Submit(sectionModel);
 
         // assert
@@ -240,12 +239,12 @@ public class Given_I_Submit_A_Question
         _mockUserService.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Edit", actualContext.Action);
-        Assert.AreEqual("Report", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Edit");
+        actualContext.Controller.Should().Be("Report");
 
-        Assert.IsNotNull(actualReport);
-        Assert.IsFalse(actualReport.IsValidForSubmission());
+        actualReport.Should().NotBeNull();
+        actualReport.IsValidForSubmission().Should().BeFalse();
     }
 }

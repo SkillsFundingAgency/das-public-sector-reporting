@@ -17,8 +17,8 @@ public sealed class When_Create_Method_Is_Called : Given_A_ReportController
 
     protected override void When()
     {
-        attribute = SUT.GetType()
-            .GetMethod(nameof(SUT.Create))
+        attribute = Sut.GetType()
+            .GetMethod(nameof(Sut.Create))
             .GetCustomAttribute(typeof(AuthorizeAttribute));
     }
 

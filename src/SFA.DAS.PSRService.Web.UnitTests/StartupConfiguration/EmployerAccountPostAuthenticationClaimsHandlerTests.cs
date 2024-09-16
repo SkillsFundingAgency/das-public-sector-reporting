@@ -76,9 +76,9 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
     {
         var identity = new ClaimsIdentity(new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, nameIdentifier),
+            new(ClaimTypes.NameIdentifier, nameIdentifier),
                 
-            new Claim(ClaimTypes.Email, emailAddress)
+            new(ClaimTypes.Email, emailAddress)
         });
         
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(identity));

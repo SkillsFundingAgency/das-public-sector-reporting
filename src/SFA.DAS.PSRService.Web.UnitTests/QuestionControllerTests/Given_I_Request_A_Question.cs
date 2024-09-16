@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -36,22 +37,20 @@ public class Given_I_Request_A_Question
 
         _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
 
-        _controller =
-            new QuestionController(
-                    _reportService.Object,
-                    _employerAccountServiceMock.Object,
-                    null,
-                    _periodServiceMock.Object,
-                    _mockUserService.Object)
-                {Url = _mockUrlHelper.Object};
-            
+        _controller = new QuestionController(
+                _reportService.Object,
+                _employerAccountServiceMock.Object,
+                null,
+                _periodServiceMock.Object,
+                _mockUserService.Object)
+            { Url = _mockUrlHelper.Object };
+
         _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
-            
     }
-    
+
     [TearDown]
     public void TearDown() => _controller?.Dispose();
 
@@ -59,7 +58,7 @@ public class Given_I_Request_A_Question
     public void And_A_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
-        var url = "home/index";
+        const string url = "home/index";
         UrlActionContext actualContext = null;
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
@@ -73,10 +72,10 @@ public class Given_I_Request_A_Question
         _mockUrlHelper.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Index", actualContext.Action);
-        Assert.AreEqual("Home", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Index");
+        actualContext.Controller.Should().Be("Home");
     }
 
     [Test]
@@ -105,10 +104,10 @@ public class Given_I_Request_A_Question
         _mockUrlHelper.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Index", actualContext.Action);
-        Assert.AreEqual("Home", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Index");
+        actualContext.Controller.Should().Be("Home");
     }
 
     [Test]
@@ -127,33 +126,30 @@ public class Given_I_Request_A_Question
             .WhereReportIsNotAlreadySubmitted()
             .ForCurrentPeriod()
             .Build();
-     
+
         _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
 
         // act
         var result = _controller.Index("YourEmployees");
-            
+
         // assert
-        Assert.IsAssignableFrom<NotFoundResult>(result);
+        result.Should().BeOfType<NotFoundResult>();
     }
 
     [Test]
     public void The_Question_ID_Exists_And_Report_Is_Valid_Then_Show_Question_Page()
     {
-            
-
-        var url = "home/index";
+        const string url = "home/index";
         UrlActionContext actualContext = null;
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        var stubReport =
-            new ReportBuilder()
-                .WithValidSections()
-                .WithEmployerId("ABCDE")
-                .ForCurrentPeriod()
-                .WhereReportIsNotAlreadySubmitted()
-                .Build();
+        var stubReport = new ReportBuilder()
+            .WithValidSections()
+            .WithEmployerId("ABCDE")
+            .ForCurrentPeriod()
+            .WhereReportIsNotAlreadySubmitted()
+            .Build();
 
         _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
@@ -162,29 +158,23 @@ public class Given_I_Request_A_Question
         var result = _controller.Index("SectionOne");
 
         // assert
-        Assert.AreEqual(typeof(ViewResult), result.GetType());
         var listViewResult = result as ViewResult;
-        Assert.IsNotNull(listViewResult);
-        Assert.AreEqual("Index", listViewResult.ViewName, "View name does not match, should be: Index");
+        listViewResult.Should().NotBeNull();
+        listViewResult.ViewName.Should().Be("Index", "View name does not match, should be: Index");
 
 
         var sectionViewModel = listViewResult.Model as SectionViewModel;
-        Assert.IsNotNull(sectionViewModel);
+        sectionViewModel.Should().NotBeNull();
 
         var report = sectionViewModel.Report;
-        Assert.IsNotNull(report);
+        report.Should().NotBeNull();
 
         var questionSection = sectionViewModel.CurrentSection;
-        Assert.IsNotNull(questionSection);
-        Assert.AreEqual(questionSection.Id, "SectionOne");
+        questionSection.Should().NotBeNull();
+        questionSection.Id.Should().Be("SectionOne");
 
-        var sectionOneQuestions =
-            stubReport
-                .Sections
-                .Where(s => s.Id == "SectionOne")
-                .Single()
-                .Questions;
+        var sectionOneQuestions = stubReport.Sections.Single(s => s.Id == "SectionOne").Questions;
 
-        CollectionAssert.AreEqual(questionSection.Questions, sectionOneQuestions);
+        questionSection.Questions.Should().BeEquivalentTo(sectionOneQuestions);
     }
 }

@@ -21,7 +21,7 @@ public abstract class Given_A_Valid_Report
         MockMediator = new Mock<IMediator>();
         MockPeriodService = new Mock<IPeriodService>();
 
-        SUT = new ReportService(
+        Sut = new ReportService(
             config: Mock.Of<IWebConfiguration>(),
             mediator: MockMediator.Object,
             periodService: MockPeriodService.Object);

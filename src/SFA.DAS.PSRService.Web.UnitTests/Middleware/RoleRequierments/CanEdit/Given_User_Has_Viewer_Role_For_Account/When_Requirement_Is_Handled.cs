@@ -9,7 +9,7 @@ public sealed class When_Requirement_Is_Handled : Given_User_Has_Viewer_Role_For
 {
     protected override void When()
     {
-        SUT.HandleAsync(HandlerContext);
+        Sut.HandleAsync(HandlerContext);
     }
 
     [Test]

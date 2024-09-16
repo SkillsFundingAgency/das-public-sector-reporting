@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -18,16 +19,13 @@ public class WhenHttpRequestIsMadeAnd
     public void SetUp()
     {
         _loggingMock = new Mock<ILogger<ErrorLoggingMiddleware>>(MockBehavior.Strict);
-           
             
         _errorLoggingMiddleware = new ErrorLoggingMiddleware(next: async (innerHttpContext) =>
         {
             await innerHttpContext.Response.WriteAsync("test response body");
         }, logger: _loggingMock.Object);
 
-
-        _errorLoggingMiddlewareException = new ErrorLoggingMiddleware(next: (_) => throw new Exception("Error Logging Middleware Exception Raised"), logger: _loggingMock.Object);
-
+        _errorLoggingMiddlewareException = new ErrorLoggingMiddleware(next: _ => throw new Exception("Error Logging Middleware Exception Raised"), logger: _loggingMock.Object);
     }
 
     [Test]
@@ -38,13 +36,11 @@ public class WhenHttpRequestIsMadeAnd
 
         // assert
         _loggingMock.VerifyAll();
-
-           
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.IsCompleted);
-        Assert.IsFalse(result.IsFaulted);
+        
+        result.Should().NotBeNull();
+        result.IsCompleted.Should().BeTrue();
+        result.IsFaulted.Should().BeFalse();
     }
-
 
     [Test]
     public void ErrorIsRaisedThenExceptionReturned()
@@ -52,10 +48,10 @@ public class WhenHttpRequestIsMadeAnd
         // arrange
 
         // act
-        var result = Assert.ThrowsAsync<AggregateException>(() => _errorLoggingMiddlewareException.InvokeAsync(new DefaultHttpContext()));
+        var action = () => _errorLoggingMiddlewareException.InvokeAsync(new DefaultHttpContext());
+        action.Should().ThrowAsync<AggregateException>();
 
         // assert
         _loggingMock.VerifyAll();
     }
-
 }

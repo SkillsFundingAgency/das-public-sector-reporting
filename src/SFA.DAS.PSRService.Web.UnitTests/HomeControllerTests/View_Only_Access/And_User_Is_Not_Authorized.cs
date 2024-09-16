@@ -11,12 +11,14 @@ public abstract class And_User_Is_Not_Authorized : Given_Home_Controller
     protected override void Given()
     {
         base.Given();
-        _authorizationServiceMock.Setup(m => m.AuthorizeAsync(
+        
+        AuthorizationServiceMock.Setup(m => m.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.IsAny<object>(),
                 PolicyNames.CanEditReport))
             .Returns(Task.FromResult(AuthorizationResult.Failed()));
-        _authorizationServiceMock.Setup(m => m.AuthorizeAsync(
+        
+        AuthorizationServiceMock.Setup(m => m.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.IsAny<object>(),
                 PolicyNames.CanSubmitReport))

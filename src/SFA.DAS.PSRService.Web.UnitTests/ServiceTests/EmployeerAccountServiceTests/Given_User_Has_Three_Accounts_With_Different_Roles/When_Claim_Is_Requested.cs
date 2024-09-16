@@ -18,7 +18,7 @@ public sealed class When_Claim_Is_Requested : GivenUserHasThreeAccountsWithDiffe
 
     protected override void When()
     {
-        _claim = SUT.GetClaim(UserId).Result;
+        _claim = Sut.GetClaim(UserId).Result;
     }
 
     [Test]

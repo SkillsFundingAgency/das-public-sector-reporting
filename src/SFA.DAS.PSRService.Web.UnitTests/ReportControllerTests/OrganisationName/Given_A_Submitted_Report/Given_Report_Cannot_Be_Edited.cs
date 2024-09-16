@@ -72,7 +72,7 @@ public abstract class Given_Report_Cannot_Be_Edited
                 ExpectedUrl);
 
 
-        SUT = new ReportController(
+        Sut = new ReportController(
             _mockReportService.Object,
             _employeeAccountServiceMock.Object,
             _userServiceMock.Object,

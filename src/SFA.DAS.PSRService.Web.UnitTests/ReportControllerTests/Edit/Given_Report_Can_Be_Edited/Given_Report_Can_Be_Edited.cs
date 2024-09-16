@@ -44,7 +44,7 @@ public abstract class Given_Report_Can_Be_Edited
                         It.IsAny<Report>()))
             .Returns(true);
 
-        SUT = new ReportController(
+        Sut = new ReportController(
             _mockReportService.Object,
             _employeeAccountServiceMock.Object,
             _userServiceMock.Object,

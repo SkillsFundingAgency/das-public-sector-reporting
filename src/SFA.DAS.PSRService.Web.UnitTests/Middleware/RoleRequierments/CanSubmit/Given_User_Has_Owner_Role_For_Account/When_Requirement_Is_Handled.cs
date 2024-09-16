@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Owner_Role_For_Account;
@@ -8,16 +9,12 @@ public sealed class When_Requirement_Is_Handled : Given_User_Has_Owner_Role_For_
 {
     protected override void When()
     {
-        SUT.HandleAsync(
-            HandlerContext);
+        Sut.HandleAsync(HandlerContext);
     }
 
     [Test]
     public void Then_Requirement_Is_Satisfied()
     {
-        Assert
-            .True(
-                HandlerContext
-                    .HasSucceeded);
+        HandlerContext.HasSucceeded.Should().BeTrue();
     }
 }

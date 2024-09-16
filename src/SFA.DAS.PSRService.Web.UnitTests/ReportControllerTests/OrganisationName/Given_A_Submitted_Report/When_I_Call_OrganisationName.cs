@@ -17,7 +17,7 @@ public sealed class When_I_Call_OrganisationName
     {
         base.When();
 
-        result = SUT.OrganisationName(string.Empty);
+        result = Sut.OrganisationName(string.Empty);
     }
 
     [Test]

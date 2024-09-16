@@ -15,7 +15,7 @@ public class When_I_Request_The_Homepage : And_No_Current_Report_Exists
 
     protected override void When()
     {
-        result = SUT.Index();
+        result = Sut.Index();
 
         viewResult = result as ViewResult;
         model = viewResult?.Model as IndexViewModel;

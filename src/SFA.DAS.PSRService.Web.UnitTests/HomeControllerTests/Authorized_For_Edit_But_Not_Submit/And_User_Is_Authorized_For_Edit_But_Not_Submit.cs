@@ -11,12 +11,12 @@ public abstract class And_User_Is_Authorized_For_Edit_But_Not_Submit : Given_Hom
     protected override void Given()
     {
         base.Given();
-        _authorizationServiceMock.Setup(m => m.AuthorizeAsync(
+        AuthorizationServiceMock.Setup(m => m.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.IsAny<object>(),
                 PolicyNames.CanEditReport))
             .Returns(Task.FromResult(AuthorizationResult.Success()));
-        _authorizationServiceMock.Setup(m => m.AuthorizeAsync(
+        AuthorizationServiceMock.Setup(m => m.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.IsAny<object>(),
                 PolicyNames.CanSubmitReport))

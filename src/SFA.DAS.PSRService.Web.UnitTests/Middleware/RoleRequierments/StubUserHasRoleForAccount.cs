@@ -5,8 +5,7 @@ using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments;
 
-public class StubUserHasRoleForAccount : 
-    AccountsClaimsAuthorizationHandler<TestRequirement>
+public class StubUserHasRoleForAccount : AccountsClaimsAuthorizationHandler<TestRequirement>
 {
     public static string RequiredRole => "Role";
 

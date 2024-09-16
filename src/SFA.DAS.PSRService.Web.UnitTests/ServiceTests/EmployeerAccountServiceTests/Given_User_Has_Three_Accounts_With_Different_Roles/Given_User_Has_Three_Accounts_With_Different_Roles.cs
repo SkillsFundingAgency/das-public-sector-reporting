@@ -22,11 +22,11 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
     protected static readonly string _accountIdOne = "MR66J4";
     protected static readonly string _accountIdTwo = "JD83N5";
     protected static readonly string _accountIdThree = "WD34D1";
-    private static readonly string[] AccountId = { _accountIdOne, _accountIdTwo, _accountIdThree};
+    private static readonly string[] AccountId = [_accountIdOne, _accountIdTwo, _accountIdThree];
 
-    private static readonly TeamMemberViewModel _teamMemberOwner = new TeamMemberViewModel() {Role = EmployerPsrsRoleNames.Owner, UserRef = UserId};
-    private static readonly TeamMemberViewModel _teamMemberTransactor = new TeamMemberViewModel() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId};
-    private static readonly TeamMemberViewModel _teamMemberViewer = new TeamMemberViewModel() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId};
+    private static readonly TeamMemberViewModel _teamMemberOwner = new() {Role = EmployerPsrsRoleNames.Owner, UserRef = UserId};
+    private static readonly TeamMemberViewModel _teamMemberTransactor = new() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId};
+    private static readonly TeamMemberViewModel _teamMemberViewer = new() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId};
 
     private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel>() { _teamMemberOwner };
     private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel>() { _teamMemberTransactor };
@@ -34,7 +34,7 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
 
     protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
-    private readonly static IList<AccountDetailViewModel> accountDetailViewModel = new List<AccountDetailViewModel>() { new AccountDetailViewModel { HashedAccountId = _accountIdOne}, new AccountDetailViewModel { HashedAccountId = _accountIdTwo }, new AccountDetailViewModel { HashedAccountId = _accountIdThree } };
+    private readonly static IList<AccountDetailViewModel> accountDetailViewModel = new List<AccountDetailViewModel>() { new() { HashedAccountId = _accountIdOne}, new() { HashedAccountId = _accountIdTwo }, new() { HashedAccountId = _accountIdThree } };
 
     protected override void Given()
     {
@@ -48,7 +48,7 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
 
         _accountApiClienMock.Setup(s => s.GetUserAccounts(UserId)).ReturnsAsync(accountDetailViewModel);
 
-        SUT = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
+        Sut = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
 
             
     }

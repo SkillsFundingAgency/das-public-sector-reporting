@@ -10,7 +10,6 @@ public class And_No_Current_Report_Exists : And_User_Is_Authorized_For_Submit
     {
         base.Given();
 
-        _mockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
-
+        MockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
     }
 }

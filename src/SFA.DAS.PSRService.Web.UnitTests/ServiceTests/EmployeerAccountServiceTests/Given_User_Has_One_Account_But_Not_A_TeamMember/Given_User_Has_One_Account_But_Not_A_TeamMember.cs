@@ -20,9 +20,9 @@ public abstract class Given_User_Has_One_Account_But_Not_A_TeamMember : GivenWhe
     protected static string UserId = Guid.NewGuid().ToString();
 
     protected static readonly string _accountIdOne = "MR66J4";
-    private static readonly string[] AccountId = { _accountIdOne};
+    private static readonly string[] AccountId = [_accountIdOne];
 
-    private readonly IList<TeamMemberViewModel> _teamMembers = new List<TeamMemberViewModel>() { new TeamMemberViewModel(), new TeamMemberViewModel() };
+    private readonly IList<TeamMemberViewModel> _teamMembers = new List<TeamMemberViewModel>() { new(), new() };
     protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
     protected override void Given()
@@ -33,7 +33,7 @@ public abstract class Given_User_Has_One_Account_But_Not_A_TeamMember : GivenWhe
 
         _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdOne)).ReturnsAsync(_teamMembers);
 
-        SUT = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
+        Sut = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
 
             
     }

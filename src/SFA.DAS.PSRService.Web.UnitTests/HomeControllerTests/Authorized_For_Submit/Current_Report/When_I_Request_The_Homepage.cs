@@ -8,79 +8,78 @@ using SFA.DAS.PSRService.Web.ViewModels.Home;
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Submit.Current_Report;
 
 [TestFixture]
-public class When_I_Request_The_Homepage : And_Current_Report_Exists
+public class WhenIRequestTheHomepage : And_Current_Report_Exists
 {
-    private IActionResult result;
-    private ViewResult viewResult;
-    private IndexViewModel model;
+    private IActionResult _result;
+    private ViewResult _viewResult;
+    private IndexViewModel _model;
 
     protected override void When()
     {
-        result = SUT.Index();
-        viewResult = result as ViewResult;
-        model = viewResult?.Model as IndexViewModel;
+        _result = Sut.Index();
+        _viewResult = _result as ViewResult;
+        _model = _viewResult?.Model as IndexViewModel;
     }
     [Test]
     public void Then_ViewResult_Is_Returned()
     {
-        viewResult = result as ViewResult;
+        _viewResult = _result as ViewResult;
     }
+    
     [Test]
     public void Then_ViewResult_Is_No_Null()
     {
-        Assert.IsNotNull(viewResult);
+        _viewResult.Should().NotBeNull();
     }
+    
     [Test]
     public void Then_Model_Is_An_IndexViewModel()
     {
-        model = viewResult.Model as IndexViewModel;
-
+        _model = _viewResult.Model as IndexViewModel;
     }
+    
     [Test]
     public void Then_Model_Is_Not_Null()
     {
-        Assert.IsNotNull(model);
+        _model.Should().NotBeNull();
     }
+    
     [Test]
     public void Then_Create_Report_Is_Disabled()
     {
-        Assert.IsFalse(model.CanCreateReport);
+        _model.CanCreateReport.Should().BeFalse();
     }
 
     [Test]
     public void Then_Edit_Report_Is_Enabled()
     {
-        Assert.IsTrue(model.CanEditReport);
+        _model.CanEditReport.Should().BeTrue();
     }
 
     [Test]
     public void Then_Readonly_Is_False()
     {
-        model.Readonly.Should().BeFalse();
+        _model.Readonly.Should().BeFalse();
     }
 
     [Test]
     public void Then_CurrentReportAlreadySubmitted_Is_False()
     {
-        model.CurrentReportAlreadySubmitted.Should().BeFalse();
+        _model.CurrentReportAlreadySubmitted.Should().BeFalse();
     }
 
     [Test]
     public void Then_The_Welcome_Message_Is_Submit_Report_In_Progress()
     {
-        var
-            expectedMessage
-                =
-                HomePageWelcomeMessageProvider
+        var expectedMessage = HomePageWelcomeMessageProvider
                     .GetMesssage()
                     .ForPeriod(CurrentPeriod)
                     .WhereUserCanSubmit()
                     .AndReportIsInProgress();
 
-        model
+        _model
             .WelcomeMessage
             .Should()
-            .BeEquivalentTo(
-                expectedMessage);
+            .BeEquivalentTo(expectedMessage);
     }
 }

@@ -15,7 +15,7 @@ public sealed class When_Roles_Are_Requested : Given_User_Has_One_Account_But_No
 
     protected override void When()
     {
-        _employerIdentifiers = SUT.GetUserRoles(EmployerIdentifiers, UserId).Result;
+        _employerIdentifiers = Sut.GetUserRoles(EmployerIdentifiers, UserId).Result;
     }
 
     [Test]

@@ -14,7 +14,7 @@ public class When_Submit_Is_Called
     {
         Assert
             .That(
-                () => SUT.SubmitReport(AlreadySubmittedReport),
+                () => Sut.SubmitReport(AlreadySubmittedReport),
                 Throws
                     .Exception
                     .TypeOf<InvalidOperationException>());

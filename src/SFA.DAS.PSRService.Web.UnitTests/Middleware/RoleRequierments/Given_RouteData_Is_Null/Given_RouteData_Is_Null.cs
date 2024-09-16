@@ -8,24 +8,23 @@ using SFA.DAS.PSRService.Web.Middleware.Authorization;
 namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.Given_RouteData_Is_Null;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_RouteData_Is_Null
-    : GivenWhenThen<AccountsClaimsAuthorizationHandler<TestRequirement>>
+public abstract class Given_RouteData_Is_Null : GivenWhenThen<AccountsClaimsAuthorizationHandler<TestRequirement>>
 {
     protected AuthorizationHandlerContext HandlerContext;
 
     protected override void Given()
     {
-        SUT = new StubUserHasRoleForAccount();
+        Sut = new StubUserHasRoleForAccount();
 
-        var validResourceType = new ActionContext();
+        var validResourceType = new ActionContext
+        {
+            RouteData = null!
+        };
 
-        validResourceType.RouteData = null;
-
-        HandlerContext =
-            new AuthorizationHandlerContext(
-                requirements: new List<IAuthorizationRequirement> {new TestRequirement()}
-                , user: new ClaimsPrincipal()
-                , resource: validResourceType
-            );
+        HandlerContext = new AuthorizationHandlerContext(
+            requirements: new List<IAuthorizationRequirement> { new TestRequirement() },
+            user: new ClaimsPrincipal(),
+            resource: validResourceType
+        );
     }
 }

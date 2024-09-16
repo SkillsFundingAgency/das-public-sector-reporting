@@ -13,7 +13,7 @@ public class When_Submit_Is_Called
 {
     public When_Submit_Is_Called()
     {
-        SUT
+        Sut
             .SubmitReport(
                 ValidNotSubmittedReport);
     }

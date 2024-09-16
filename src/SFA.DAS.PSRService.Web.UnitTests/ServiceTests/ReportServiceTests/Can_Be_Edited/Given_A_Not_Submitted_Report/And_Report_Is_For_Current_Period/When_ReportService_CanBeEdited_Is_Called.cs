@@ -16,7 +16,7 @@ public class When_ReportService_CanBeEdited_Is_Called
     {
         response
             =
-            SUT
+            Sut
                 .CanBeEdited(
                     StubReport);
     }
