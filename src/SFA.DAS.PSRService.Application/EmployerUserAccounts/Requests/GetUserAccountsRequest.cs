@@ -1,4 +1,4 @@
-using System.Web;
+using System.Net;
 using SFA.DAS.PSRService.Application.OuterApi.Requests;
 
 namespace SFA.DAS.PSRService.Application.EmployerUserAccounts.Requests
@@ -11,7 +11,7 @@ namespace SFA.DAS.PSRService.Application.EmployerUserAccounts.Requests
         public GetUserAccountsRequest(string userId, string email)
         {
             _userId = userId;
-            _email = HttpUtility.UrlEncode(email);
+            _email = WebUtility.UrlEncode(email);
         }
 
         public string GetUrl => $"accountusers/{_userId}/accounts?email={_email}";

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using AutoMapper;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
@@ -11,157 +12,134 @@ using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmittedTests
+namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetSubmittedTests;
+
+[TestFixture]
+public class Given_I_Get_Submitted_Reports
 {
-    [TestFixture]
-    public class Given_I_Get_Submitted_Reports
+    private Mock<IMapper> _mapperMock;
+    private Mock<IReportRepository> _reportRepositoryMock;
+    private IEnumerable<ReportDto> _reportDtoList;
+    private IEnumerable<Report> _reportList; 
+    private GetSubmittedHandler _getSubmittedHandler;
+
+    [SetUp]
+    public void Setup()
     {
-        private Mock<IMapper> _mapperMock;
-        private Mock<IReportRepository> _reportRepositoryMock;
-        private IEnumerable<ReportDto> _reportDtoList;
-        private IEnumerable<Report> _reportList;
+        _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
+        _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
+        _getSubmittedHandler = new GetSubmittedHandler(_reportRepositoryMock.Object, _mapperMock.Object);
+        _mapperMock.Setup(s => s.Map<Report>(It.IsAny<ReportDto>())).Returns(new Report());
 
-        private GetSubmittedHandler _getSubmittedHandler;
-
-        [SetUp]
-        public void Setup()
+        _reportList = new List<Report>
         {
-            _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-            _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
-            _getSubmittedHandler = new GetSubmittedHandler(_reportRepositoryMock.Object, _mapperMock.Object);
-
-
-            _mapperMock.Setup(s => s.Map<Report>(It.IsAny<ReportDto>())).Returns(new Report());
-
-            _reportList = (new List<Report>()
+            new()
             {
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "ABCDE",
-                    Submitted = false
-                },
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1617",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1516",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new Report()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "VWXYZ",
-                    Submitted = false
-                }
-            }).AsEnumerable();
-            _reportDtoList = (new List<ReportDto>()
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1718",
+                EmployerId = "ABCDE",
+                Submitted = false
+            },
+            new()
             {
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "ABCDE",
-                    Submitted = false
-                },
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1617",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1516",
-                    EmployerId = "ABCDE",
-                    Submitted = true
-                },
-                new ReportDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ReportingPeriod = "1718",
-                    EmployerId = "ABCDE",
-                    Submitted = false
-                }
-            }).AsEnumerable();
-
-        }
-
-
-
-        [Test]
-        public void When_An_Employer_Id_Isnt_Supplied_Then_Return_Empty_Collection()
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1617",
+                EmployerId = "ABCDE",
+                Submitted = true
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1516",
+                EmployerId = "ABCDE",
+                Submitted = true
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1718",
+                EmployerId = "VWXYZ",
+                Submitted = false
+            }
+        }.AsEnumerable();
+        
+        _reportDtoList = new List<ReportDto>
         {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1718",
+                EmployerId = "ABCDE",
+                Submitted = false
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1617",
+                EmployerId = "ABCDE",
+                Submitted = true
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1516",
+                EmployerId = "ABCDE",
+                Submitted = true
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ReportingPeriod = "1718",
+                EmployerId = "ABCDE",
+                Submitted = false
+            }
+        }.AsEnumerable();
+    }
 
-            //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns((IList<ReportDto>)null);
+    [Test]
+    public void When_An_Employer_Id_Is_Not_Supplied_Then_Return_Empty_Collection()
+    {
 
-            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = string.Empty };
+        //arrange
+        _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns((IList<ReportDto>)null);
 
-            //Act
+        var getSubmittedRequest = new GetSubmittedRequest { EmployerId = string.Empty };
 
-            var result = _getSubmittedHandler.Handle(getSubmittedRequest, new CancellationToken()).Result;
+        //Act
+        var result = _getSubmittedHandler.Handle(getSubmittedRequest, new CancellationToken()).Result;
 
+        //Assert
+        result.Should().BeEmpty();
+    }
 
+    [Test]
+    public void When_An_Employer_Id_Has_Submitted_Reports_Then_Return_List()
+    {
+        //arrange
+        _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns(_reportDtoList.Where(w => w.Submitted == true && w.EmployerId == "ABCDE").ToList);
+        var getSubmittedRequest = new GetSubmittedRequest { EmployerId = "ABCDE" };
 
-            //Assert
+        //Act
+        var result = _getSubmittedHandler.Handle(getSubmittedRequest, new CancellationToken()).Result;
 
-            CollectionAssert.IsEmpty(result);
+        //Assert
+        result.Should().NotBeNull();
+        var reports = result.ToList();
+        reports.Count.Should().Be(2);
+    }
 
+    [Test]
+    public void When_An_Employer_Id_Has_No_Submitted_Reports_Then_Return_Empty_Collection()
+    {
+        //arrange
+        _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns(new List<ReportDto>(0));
 
-        }
+        var getSubmittedRequest = new GetSubmittedRequest { EmployerId = "knfjkdngkfngk" };
 
-        [Test]
-        public void When_An_Employer_Id_Has_Submitted_Reports_Then_Return_List()
-        {
-            //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns(_reportDtoList.Where(w => w.Submitted == true && w.EmployerId == "ABCDE").ToList);
-            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = "ABCDE" };
+        //Act
+        var result = _getSubmittedHandler.Handle(getSubmittedRequest, new CancellationToken()).Result;
 
-
-            //Act
-            var result = _getSubmittedHandler.Handle(getSubmittedRequest, new CancellationToken()).Result;
-
-
-            //Assert
-
-            Assert.IsNotNull(result);
-            var reports = result.ToList();
-            CollectionAssert.AllItemsAreInstancesOfType(reports, typeof(Report));
-            Assert.AreEqual(reports.Count(), 2);
-
-
-        }
-
-        [Test]
-        public void When_An_Employer_Id_Has_No_Submitted_Reports_Then_Return_Empty_Collection()
-        {
-            //arrange
-            _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).Returns(new List<ReportDto>(0));
-
-            var getSubmittedRequest = new GetSubmittedRequest() { EmployerId = "knfjkdngkfngk" };
-
-            //Act
-
-            var result = _getSubmittedHandler.Handle(getSubmittedRequest, new CancellationToken()).Result;
-
-
-
-            //Assert
-
-            CollectionAssert.IsEmpty(result);
-        }
-
+        //Assert
+        result.Should().BeEmpty();
     }
 }

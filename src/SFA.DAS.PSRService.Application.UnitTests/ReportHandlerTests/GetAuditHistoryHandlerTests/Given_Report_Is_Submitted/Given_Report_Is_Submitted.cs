@@ -11,60 +11,44 @@ using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHistoryHandlerTests.Given_Report_Is_Submitted
+namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests.GetAuditHistoryHandlerTests.Given_Report_Is_Submitted;
+
+[ExcludeFromCodeCoverage]
+[TestFixture]
+public class Given_Report_Is_Not_Submitted : GivenWhenThen<GetReportEditHistoryMostRecentFirstHandler>
 {
-    [ExcludeFromCodeCoverage]
-    [TestFixture]
-    public class Given_Report_Is_Not_Submitted
-        : GivenWhenThen<GetReportEditHistoryMostRecentFirstHandler>
+    private IEnumerable<AuditRecord> _auditItems;
+
+    protected override void Given()
     {
-        private IEnumerable<AuditRecord> auditItems;
+        Sut = new GetReportEditHistoryMostRecentFirstHandler(SetupMockRepositoryReturn(), Mock.Of<IMapper>());
+    }
 
-        protected override void Given()
-        {
-            SUT = new GetReportEditHistoryMostRecentFirstHandler(
-                SetupMockRepositoryReturn(),
-                Mock.Of<IMapper>());
-        }
+    private static IReportRepository SetupMockRepositoryReturn()
+    {
+        var mockRepository = new Mock<IReportRepository>();
 
-        private IReportRepository SetupMockRepositoryReturn()
-        {
-            var mockRepository = new Mock<IReportRepository>();
+        mockRepository
+            .Setup(m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(new ReportDto {Submitted = true});
 
-            mockRepository
-                .Setup(
-                    m => m.Get(
-                        It.IsAny<string>(),
-                        It.IsAny<string>()))
-                .Returns(
-                    new ReportDto {Submitted = true});
+        mockRepository
+            .Setup(m => m.Get(It.IsAny<Guid>()))
+            .Returns(new ReportDto { Submitted = true });
 
-            mockRepository
-                .Setup(
-                    m => m.Get(
-                        It.IsAny<Guid>()))
-                .Returns(
-                    new ReportDto { Submitted = true });
+        return mockRepository.Object;
+    }
 
-            return
-                mockRepository
-                    .Object;
-        }
+    protected override void When()
+    {
+        var request = new GetReportEditHistoryMostRecentFirst(period: Period.FromInstantInPeriod(DateTime.UtcNow), accountId:"SomeAccountId");
 
-        protected override void When()
-        {
-            var requrestWithSubmittedReport =
-                new GetReportEditHistoryMostRecentFirst(
-                    period: Period.FromInstantInPeriod(DateTime.UtcNow), 
-                    accountId:"SomeAccountId");
+        _auditItems = Sut.Handle(request, new CancellationToken()).Result;
+    }
 
-            auditItems = SUT.Handle(requrestWithSubmittedReport, new CancellationToken()).Result;
-        }
-
-        [Test]
-        public void Then_Empty_Collection_Is_Returned()
-        {
-            auditItems.Should().BeEmpty();
-        }
+    [Test]
+    public void Then_Empty_Collection_Is_Returned()
+    {
+        _auditItems.Should().BeEmpty();
     }
 }
