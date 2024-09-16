@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using Dapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -28,7 +24,6 @@ using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using StructureMap;
-using ILogger = NLog.ILogger;
 
 namespace SFA.DAS.PSRService.IntegrationTests
 {
@@ -84,11 +79,11 @@ namespace SFA.DAS.PSRService.IntegrationTests
 
                 config.For<IWebConfiguration>().Use(new WebConfiguration
                 {
-                    SqlConnectionString = TestHelper.ConnectionString,
+                    SqlConnectionString = ConnectionString,
                 });
 
                 config.For<IReportService>().Use<ReportService>();
-                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(TestHelper.ConnectionString);
+                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(ConnectionString);
                 config.For<IEmployerAccountService>().Use<EmployerAccountService>();
                 config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
