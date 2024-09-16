@@ -1,32 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class GetSubmittedHandler(IReportRepository reportRepository, IMapper mapper) : IRequestHandler<GetSubmittedRequest, IEnumerable<Report>>
 {
-    public class GetSubmittedHandler : RequestHandler<GetSubmittedRequest, IEnumerable<Report>>
+    public async Task<IEnumerable<Report>> Handle(GetSubmittedRequest request, CancellationToken cancellationToken)
     {
-        private readonly IReportRepository _reportRepository;
-        private readonly IMapper _mapper;
-
-        public GetSubmittedHandler(IReportRepository reportRepository, IMapper mapper)
+        if (string.IsNullOrEmpty(request.EmployerId))
         {
-            _reportRepository = reportRepository;
-            _mapper = mapper;
+            return [];
         }
 
-        protected override IEnumerable<Report> HandleCore(GetSubmittedRequest request)
-        {
-            if (string.IsNullOrEmpty(request.EmployerId))
-                return Enumerable.Empty<Report>();
-
-            return
-                _reportRepository
-                    .GetSubmitted(request.EmployerId)
-                    .Select(data => _mapper.Map<Report>(data));
-        }
+        return reportRepository.GetSubmitted(request.EmployerId).Select(mapper.Map<Report>);
     }
 }

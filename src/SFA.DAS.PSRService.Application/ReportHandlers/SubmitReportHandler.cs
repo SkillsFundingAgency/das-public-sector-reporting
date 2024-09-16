@@ -1,32 +1,29 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class SubmitReportHandler(IMapper mapper, IReportRepository reportRepository) : IRequestHandler<SubmitReportRequest>
 {
-    public class SubmitReportHandler : RequestHandler<SubmitReportRequest>
+    public Task Handle(SubmitReportRequest request, CancellationToken cancellationToken)
     {
-        private IMapper _mapper;
-        private IReportRepository _reportRepository;
+        var reportDto = mapper.Map<ReportDto>(request.Report);
 
-        public SubmitReportHandler(IMapper mapper, IReportRepository reportRepository)
+        if (reportDto == null)
         {
-            _mapper = mapper;
-            _reportRepository = reportRepository;
+            return Task.CompletedTask;
         }
-        protected override void HandleCore(SubmitReportRequest request)
-        {
-            var reportDto = _mapper.Map<ReportDto>(request.Report);
 
-            if (reportDto == null)
-                return;
+        reportDto.Submitted = true;
 
-            reportDto.Submitted = true;
+        reportRepository.Update(reportDto);
 
-            _reportRepository.Update(reportDto);
-
-            _reportRepository.DeleteHistory(reportDto.Id);
-        }
+        reportRepository.DeleteHistory(reportDto.Id);
+        
+        return Task.CompletedTask;
     }
 }

@@ -1,26 +1,18 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class GetReportHandler(IReportRepository reportRepository, IMapper mapper) : IRequestHandler<GetReportRequest, Report>
 {
-    public class GetReportHandler : RequestHandler<GetReportRequest, Report>
+    public async Task<Report> Handle(GetReportRequest request, CancellationToken cancellationToken)
     {
-        private readonly IReportRepository _reportRepository;
-        private readonly IMapper _mapper;
+        var reportDto = reportRepository.Get(request.Period,request.EmployerId);
 
-        public GetReportHandler(IReportRepository reportRepository, IMapper mapper)
-        {
-            _reportRepository = reportRepository;
-            _mapper = mapper;
-        }
-
-        protected override Report HandleCore(GetReportRequest request)
-        {
-            var reportDto = _reportRepository.Get(request.Period,request.EmployerId);
-
-            return _mapper.Map<Report>(reportDto);
-        }
+        return await Task.FromResult(mapper.Map<Report>(reportDto));
     }
 }

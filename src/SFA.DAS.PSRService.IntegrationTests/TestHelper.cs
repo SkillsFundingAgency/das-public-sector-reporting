@@ -46,7 +46,7 @@ namespace SFA.DAS.PSRService.IntegrationTests
                 connection.Execute(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted)",
-                    new {report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted});
+                    new { report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted });
             }
         }
 
@@ -64,8 +64,8 @@ namespace SFA.DAS.PSRService.IntegrationTests
             {
                 connection.Execute("if exists(select 1 from Report) delete from Report");
             }
-
         }
+
         public static Action<ConfigurationExpression> ConfigureIoc()
         {
             return config =>
@@ -95,17 +95,15 @@ namespace SFA.DAS.PSRService.IntegrationTests
                     scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
                 });
 
-                config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
-                config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
                 config.For<IMediator>().Use<Mediator>();
                 config.For(typeof(ILogger<UserService>)).Use(Mock.Of<ILogger<UserService>>());
                 config.For<IAuthorizationService>().Use(Mock.Of<IAuthorizationService>());
 
                 var mockEmployerAccountService = new Mock<IEmployerAccountService>();
-                var employerIdentifier = new EmployerIdentifier {AccountId = "111", EmployerName = "222"};
+                var employerIdentifier = new EmployerIdentifier { AccountId = "111", EmployerName = "222" };
                 mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
                 config.For<IEmployerAccountService>().Use(mockEmployerAccountService.Object);
-                
+
                 var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
                 var mapper = mapConfig.CreateMapper();
                 config.For<IMapper>().Use(mapper);

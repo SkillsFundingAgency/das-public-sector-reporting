@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -9,50 +10,41 @@ using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class CreateReportHandler(IReportRepository reportRepository, IMapper mapper, IFileProvider fileProvider)
+    : IRequestHandler<CreateReportRequest, Report>
 {
-    public class CreateReportHandler : RequestHandler<CreateReportRequest, Report>
+    public async Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)
     {
-        private readonly IReportRepository _reportRepository;
-        private readonly IMapper _mapper;
-        private readonly IFileProvider _fileProvider;
-
-        public CreateReportHandler(IReportRepository reportRepository, IMapper mapper, IFileProvider fileProvider)
+        if (string.IsNullOrWhiteSpace(request.Period))
         {
-            _reportRepository = reportRepository;
-            _mapper = mapper;
-            _fileProvider = fileProvider;
+            throw new ApplicationException("Period must be supplied");
         }
 
-        protected override Report HandleCore(CreateReportRequest request)
+        var reportDto = new ReportDto
         {
-            if (string.IsNullOrWhiteSpace(request.Period))
-                throw new Exception("Period must be supplied");
+            EmployerId = request.EmployerId,
+            Submitted = false,
+            Id = Guid.NewGuid(),
+            ReportingPeriod = request.Period,
+            ReportingData = GetQuestionConfig(request.IsLocalAuthority).Result,
+            AuditWindowStartUtc = DateTime.UtcNow,
+            UpdatedUtc = DateTime.UtcNow,
+            UpdatedBy = JsonConvert.SerializeObject(new User { Id = request.User.Id, Name = request.User.Name })
+        };
 
-            var reportDto = new ReportDto
-            {
-                EmployerId = request.EmployerId,
-                Submitted = false,
-                Id = Guid.NewGuid(),
-                ReportingPeriod = request.Period,
-                ReportingData = GetQuestionConfig(request.IsLocalAuthority).Result,
-                AuditWindowStartUtc = DateTime.UtcNow,
-                UpdatedUtc = DateTime.UtcNow,
-                UpdatedBy = JsonConvert.SerializeObject(new User { Id = request.User.Id, Name = request.User.Name })
-            };
+        reportRepository.Create(reportDto);
 
-            _reportRepository.Create(reportDto);
+        return mapper.Map<Report>(reportDto);
+    }
 
-            return _mapper.Map<Report>(reportDto);
-        }
+    private Task<string> GetQuestionConfig(bool isLocalAuthority)
+    {
+        var questionsConfig = fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
 
-        private Task<string> GetQuestionConfig(bool isLocalAuthority)
-        {
-            var questionsConfig = _fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
-
-            using var jsonContents = questionsConfig.CreateReadStream();
-            using StreamReader sr = new StreamReader(jsonContents);
-            return Task.FromResult(sr.ReadToEnd());
-        }
+        using var jsonContents = questionsConfig.CreateReadStream();
+        using var streamReader = new StreamReader(jsonContents);
+        return Task.FromResult(streamReader.ReadToEnd());
     }
 }

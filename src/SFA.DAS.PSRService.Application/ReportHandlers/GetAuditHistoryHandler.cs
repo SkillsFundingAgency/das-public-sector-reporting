@@ -1,45 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class GetReportEditHistoryMostRecentFirstHandler : IRequestHandler<GetReportEditHistoryMostRecentFirst, IEnumerable<AuditRecord>>
 {
-    public class GetReportEditHistoryMostRecentFirstHandler : RequestHandler<GetReportEditHistoryMostRecentFirst, IEnumerable<AuditRecord>>
+    private readonly IReportRepository _reportRepository;
+    private readonly IMapper _mapper;
+
+    public GetReportEditHistoryMostRecentFirstHandler(IReportRepository reportRepository, IMapper mapper)
     {
-        private readonly IReportRepository _reportRepository;
-        private readonly IMapper _mapper;
+        _reportRepository = reportRepository;
+        _mapper = mapper;
+    }
 
-        public GetReportEditHistoryMostRecentFirstHandler(IReportRepository reportRepository, IMapper mapper)
+    public async Task<IEnumerable<AuditRecord>> Handle(GetReportEditHistoryMostRecentFirst request, CancellationToken cancellationToken)
+    {
+        var report = _reportRepository.Get(period: request.Period.PeriodString, employerId: request.AccountId);
+
+        if (report == null)
         {
-            _reportRepository = reportRepository;
-            _mapper = mapper;
+            return [];
         }
 
-        protected override IEnumerable<AuditRecord> HandleCore(GetReportEditHistoryMostRecentFirst mostRecentFirst)
+        if (report.Submitted)
         {
-            var report =
-                _reportRepository
-                    .Get(
-                        period: mostRecentFirst.Period.PeriodString,
-                        employerId: mostRecentFirst.AccountId);
-
-            if(report == null)
-                return
-                    Enumerable.Empty<AuditRecord>();
-
-            if (report.Submitted)
-                return
-                    Enumerable.Empty<AuditRecord>();
-
-            return
-                _reportRepository
-                    .GetAuditRecordsMostRecentFirst(
-                        report.Id)
-                    .Select(
-                        dto => _mapper.Map<AuditRecord>(dto));
+            return [];
         }
+
+        return _reportRepository.GetAuditRecordsMostRecentFirst(report.Id).Select(dto => _mapper.Map<AuditRecord>(dto));
     }
 }

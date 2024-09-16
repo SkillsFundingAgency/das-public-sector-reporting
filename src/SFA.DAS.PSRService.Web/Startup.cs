@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +21,6 @@ using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
@@ -103,6 +101,7 @@ namespace SFA.DAS.PSRService.Web
 
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
             services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
+            services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
 
             return ConfigureIOC(services);
         }
@@ -135,13 +134,13 @@ namespace SFA.DAS.PSRService.Web
                     scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
                     scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
                 });
-                config.For<SingleInstanceFactory>().Use<SingleInstanceFactory>(ctx => t => ctx.GetInstance(t));
-                config.For<MultiInstanceFactory>().Use<MultiInstanceFactory>(ctx => t => ctx.GetAllInstances(t));
+              
                 config.For<IMediator>().Use<Mediator>();
             });
 
             return container.GetInstance<IServiceProvider>();
         }
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
