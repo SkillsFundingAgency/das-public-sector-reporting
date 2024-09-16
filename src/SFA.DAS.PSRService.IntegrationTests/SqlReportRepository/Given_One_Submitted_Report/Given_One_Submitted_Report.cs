@@ -5,41 +5,40 @@ using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Data;
 
-namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Submitted_Report
-{
-    [ExcludeFromCodeCoverage]
-    public abstract class Given_One_Submitted_Report
+namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Submitted_Report;
+
+[ExcludeFromCodeCoverage]
+public abstract class Given_One_Submitted_Report
     : GivenWhenThen<IReportRepository>
+{
+    protected ReportDto SubmittedReport;
+    protected string EmployerId = "TestEmployerID";
+
+    protected override void Given()
     {
-        protected ReportDto SubmittedReport;
-        protected string EmployerId = "TestEmployerID";
+        RepositoryTestHelper
+            .ClearData();
 
-        protected override void Given()
+        SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
+
+        SubmittedReport = new ReportDto
         {
-            RepositoryTestHelper
-                .ClearData();
+            Id = RepositoryTestHelper.ReportOneId,
+            EmployerId = EmployerId,
+            ReportingData = "Some dumb piece of json",
+            ReportingPeriod = "2222",
+            Submitted = true
+        };
 
-            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
+        SUT
+            .Create(
+                SubmittedReport);
+    }
 
-            SubmittedReport = new ReportDto
-            {
-                Id = RepositoryTestHelper.ReportOneId,
-                EmployerId = EmployerId,
-                ReportingData = "Some dumb piece of json",
-                ReportingPeriod = "2222",
-                Submitted = true
-            };
-
-            SUT
-                .Create(
-                    SubmittedReport);
-        }
-
-        [TearDown]
-        public void ClearDatabase()
-        {
-            RepositoryTestHelper
-                .ClearData();
-        }
+    [TearDown]
+    public void ClearDatabase()
+    {
+        RepositoryTestHelper
+            .ClearData();
     }
 }

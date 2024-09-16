@@ -13,31 +13,25 @@ using StructureMap;
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_I_Have_Created_A_Report : GivenWhenThen<ReportController>
+public abstract class Given_I_Have_Created_A_Report(bool isLocalAuthority) : GivenWhenThen<ReportController>
 {
     private static Container _container;
     protected QuestionController QuestionController;
-    protected Mock<IUrlHelper> MockUrlHelper;
-    private bool _IsLocalAuthority;
-
-    public Given_I_Have_Created_A_Report(bool isLocalAuthority)
-    {
-        this._IsLocalAuthority = isLocalAuthority;
-    }
+    private Mock<IUrlHelper> _mockUrlHelper;
 
     protected override void Given()
     {
         _container = new Container();
         _container.Configure(TestHelper.ConfigureIoc());
-        MockUrlHelper = new Mock<IUrlHelper>();
-        MockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
+        _mockUrlHelper = new Mock<IUrlHelper>();
+        _mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
 
         QuestionController = _container.GetInstance<QuestionController>();
 
-        QuestionController.Url = MockUrlHelper.Object;
+        QuestionController.Url = _mockUrlHelper.Object;
 
         SUT = _container.GetInstance<ReportController>();
-        SUT.Url = MockUrlHelper.Object;
+        SUT.Url = _mockUrlHelper.Object;
         SUT.ObjectValidator = Mock.Of<IObjectModelValidator>();
 
         var mockContext = new Mock<HttpContext>();
@@ -47,12 +41,9 @@ public abstract class Given_I_Have_Created_A_Report : GivenWhenThen<ReportContro
         QuestionController.ControllerContext.HttpContext = mockContext.Object;
         TestHelper.ClearData();
 
-        SUT.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = _IsLocalAuthority });
+        SUT.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
     }
 
     [TearDown]
-    public void CleanUpAfterOurselves()
-    {
-        _container?.Dispose();
-    }
+    public void TearDown() => _container?.Dispose();
 }

@@ -11,78 +11,77 @@ using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Middleware.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanEdit.Given_User_Has_Owner_Role_For_Account
+namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanEdit.Given_User_Has_Owner_Role_For_Account;
+
+[ExcludeFromCodeCoverage]
+public abstract class Given_User_Has_Owner_Role_For_Account
+    : GivenWhenThen<CanEditReportHandler>
 {
-    [ExcludeFromCodeCoverage]
-    public abstract class Given_User_Has_Owner_Role_For_Account
-        : GivenWhenThen<CanEditReportHandler>
+    protected AuthorizationHandlerContext HandlerContext;
+
+    public string AccountId => "TESTACCOUNTID";
+
+    protected override void Given()
     {
-        protected AuthorizationHandlerContext HandlerContext;
+        SUT = new CanEditReportHandler();
 
-        public string AccountId => "TESTACCOUNTID";
+        HandlerContext =
+            new AuthorizationHandlerContext(
+                requirements: new List<IAuthorizationRequirement> {new CanEditReport()}
+                , user: BuildUserWithRequiredRoleForAccount()
+                , resource: BuildResourceWithAccountID()
+            );
+    }
 
-        protected override void Given()
-        {
-            SUT = new CanEditReportHandler();
+    private object BuildResourceWithAccountID()
+    {
+        var resourceContext
+            =
+            new ActionContext();
 
-            HandlerContext =
-                new AuthorizationHandlerContext(
-                    requirements: new List<IAuthorizationRequirement> {new CanEditReport()}
-                    , user: BuildUserWithRequiredRoleForAccount()
-                    , resource: BuildResourceWithAccountID()
-                );
-        }
+        var routeData
+            = 
+            new RouteData();
 
-        private object BuildResourceWithAccountID()
-        {
-            var resourceContext
-                =
-                new ActionContext();
+        routeData
+            .Values[RouteValues.HashedEmployerAccountId] = AccountId;
 
-            var routeData
-                = 
-                new RouteData();
+        resourceContext
+                .RouteData
+            =
+            routeData;
 
-            routeData
-                .Values[RouteValues.HashedEmployerAccountId] = AccountId;
+        return
+            resourceContext;
+    }
 
-            resourceContext
-                    .RouteData
-                =
-                routeData;
-
-            return
-                resourceContext;
-        }
-
-        private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
-        {
-            return 
-                new ClaimsPrincipal(
-                    new ClaimsIdentity(
-                        new Claim[]
-                        {
-                            new Claim(
-                                EmployerPsrsClaims
-                                    .AccountsClaimsTypeIdentifier
-                                , EmployerIdentifierWithOwnerRoleForAccount()
-                                , JsonClaimValueTypes.Json), 
-                        }));
-        }
-
-        private string EmployerIdentifierWithOwnerRoleForAccount()
-        {
-            return
-                JsonConvert.SerializeObject
-                (
-                    new Dictionary<string, EmployerIdentifier>
+    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    {
+        return 
+            new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new Claim[]
                     {
-                        [AccountId] = new EmployerIdentifier
-                        {
-                            AccountId = AccountId,
-                            Role = EmployerPsrsRoleNames.Owner
-                        }
-                    });
-        }
+                        new Claim(
+                            EmployerPsrsClaims
+                                .AccountsClaimsTypeIdentifier
+                            , EmployerIdentifierWithOwnerRoleForAccount()
+                            , JsonClaimValueTypes.Json), 
+                    }));
+    }
+
+    private string EmployerIdentifierWithOwnerRoleForAccount()
+    {
+        return
+            JsonConvert.SerializeObject
+            (
+                new Dictionary<string, EmployerIdentifier>
+                {
+                    [AccountId] = new EmployerIdentifier
+                    {
+                        AccountId = AccountId,
+                        Role = EmployerPsrsRoleNames.Owner
+                    }
+                });
     }
 }

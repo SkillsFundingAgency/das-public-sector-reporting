@@ -25,89 +25,88 @@ using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using StructureMap;
 
-namespace SFA.DAS.PSRService.IntegrationTests
+namespace SFA.DAS.PSRService.IntegrationTests;
+
+internal static class TestHelper
 {
-    internal static class TestHelper
+    public static string ConnectionString { get; }
+
+    static TestHelper()
     {
-        public static string ConnectionString { get; }
+        var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        ConnectionString = config["ConnectionString"];
+    }
 
-        static TestHelper()
+    public static Period CurrentPeriod => Period.FromInstantInPeriod(DateTime.UtcNow.Date);
+
+    public static void CreateReport(ReportDto report)
+    {
+        using (var connection = new SqlConnection(ConnectionString))
         {
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            ConnectionString = config["ConnectionString"];
-        }
-
-        public static Period CurrentPeriod => Period.FromInstantInPeriod(DateTime.UtcNow.Date);
-
-        public static void CreateReport(ReportDto report)
-        {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                connection.Execute(@"
+            connection.Execute(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted)",
-                    new { report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted });
-            }
+                new { report.Id, report.EmployerId, report.ReportingData, report.ReportingPeriod, report.Submitted });
         }
+    }
 
-        public static IList<ReportDto> GetAllReports()
+    public static IList<ReportDto> GetAllReports()
+    {
+        using (var connection = new SqlConnection(ConnectionString))
         {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                return connection.Query<ReportDto>("select * from Report").ToList();
-            }
+            return connection.Query<ReportDto>("select * from Report").ToList();
         }
+    }
 
-        public static void ClearData()
+    public static void ClearData()
+    {
+        using (var connection = new SqlConnection(ConnectionString))
         {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                connection.Execute("if exists(select 1 from Report) delete from Report");
-            }
+            connection.Execute("if exists(select 1 from Report) delete from Report");
         }
+    }
 
-        public static Action<ConfigurationExpression> ConfigureIoc()
+    public static Action<ConfigurationExpression> ConfigureIoc()
+    {
+        return config =>
         {
-            return config =>
+            config.Scan(_ =>
             {
-                config.Scan(_ =>
-                {
-                    _.AssemblyContainingType(typeof(Startup));
-                    _.WithDefaultConventions();
-                    _.SingleImplementationsOfInterface();
-                });
+                _.AssemblyContainingType(typeof(Startup));
+                _.WithDefaultConventions();
+                _.SingleImplementationsOfInterface();
+            });
 
-                config.For<IWebConfiguration>().Use(new WebConfiguration
-                {
-                    SqlConnectionString = ConnectionString,
-                });
+            config.For<IWebConfiguration>().Use(new WebConfiguration
+            {
+                SqlConnectionString = ConnectionString,
+            });
 
-                config.For<IReportService>().Use<ReportService>();
-                config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(ConnectionString);
-                config.For<IEmployerAccountService>().Use<EmployerAccountService>();
-                config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
+            config.For<IReportService>().Use<ReportService>();
+            config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(ConnectionString);
+            config.For<IEmployerAccountService>().Use<EmployerAccountService>();
+            config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
-                config.Scan(scanner =>
-                {
-                    scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
-                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
-                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
-                    scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-                });
+            config.Scan(scanner =>
+            {
+                scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
+                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
+                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
+                scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+            });
 
-                config.For<IMediator>().Use<Mediator>();
-                config.For(typeof(ILogger<UserService>)).Use(Mock.Of<ILogger<UserService>>());
-                config.For<IAuthorizationService>().Use(Mock.Of<IAuthorizationService>());
+            config.For<IMediator>().Use<Mediator>();
+            config.For(typeof(ILogger<UserService>)).Use(Mock.Of<ILogger<UserService>>());
+            config.For<IAuthorizationService>().Use(Mock.Of<IAuthorizationService>());
 
-                var mockEmployerAccountService = new Mock<IEmployerAccountService>();
-                var employerIdentifier = new EmployerIdentifier { AccountId = "111", EmployerName = "222" };
-                mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
-                config.For<IEmployerAccountService>().Use(mockEmployerAccountService.Object);
+            var mockEmployerAccountService = new Mock<IEmployerAccountService>();
+            var employerIdentifier = new EmployerIdentifier { AccountId = "111", EmployerName = "222" };
+            mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
+            config.For<IEmployerAccountService>().Use(mockEmployerAccountService.Object);
 
-                var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
-                var mapper = mapConfig.CreateMapper();
-                config.For<IMapper>().Use(mapper);
-            };
-        }
+            var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
+            var mapper = mapConfig.CreateMapper();
+            config.For<IMapper>().Use(mapper);
+        };
     }
 }

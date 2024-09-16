@@ -4,24 +4,23 @@ using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Data;
 
-namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
+namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository;
+
+[ExcludeFromCodeCoverage]
+public class Given_A_SQLReportRepository : GivenWhenThen<IReportRepository>
 {
-    [ExcludeFromCodeCoverage]
-    public class Given_A_SQLReportRepository : GivenWhenThen<IReportRepository>
+    protected override void Given()
     {
-        protected override void Given()
-        {
-            RepositoryTestHelper
-                .ClearData();
+        RepositoryTestHelper
+            .ClearData();
 
-            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
-        }
+        SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
+    }
 
-        [TearDown]
-        public void ClearDatabase()
-        {
-            RepositoryTestHelper
-                .ClearData();
-        }
+    [TearDown]
+    public void ClearDatabase()
+    {
+        RepositoryTestHelper
+            .ClearData();
     }
 }

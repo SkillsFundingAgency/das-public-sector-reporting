@@ -7,64 +7,63 @@ using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 
-namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
+namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository;
+
+internal static class RepositoryTestHelper
 {
-    internal static class RepositoryTestHelper
+    public static string ConnectionString { get; }
+
+    static RepositoryTestHelper()
     {
-        public static string ConnectionString { get; }
+        var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        ConnectionString = config["ConnectionString"];
+    }
 
-        static RepositoryTestHelper()
+    public static IList<ReportDto> GetAllReports()
+    {
+        using (var connection = new SqlConnection(ConnectionString))
         {
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            ConnectionString = config["ConnectionString"];
+            return connection.Query<ReportDto>("select * from Report").ToList();
         }
+    }
 
-        public static IList<ReportDto> GetAllReports()
+    public static IEnumerable<AuditRecordDto> GetAllAuditHistory()
+    {
+        using (var connection = new SqlConnection(ConnectionString))
         {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                return connection.Query<ReportDto>("select * from Report").ToList();
-            }
+            return connection.Query<AuditRecordDto>("select * from AuditHistory");
         }
+    }
 
-        public static IEnumerable<AuditRecordDto> GetAllAuditHistory()
+    public static void ClearData()
+    {
+        using (var connection = new SqlConnection(ConnectionString))
         {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                return connection.Query<AuditRecordDto>("select * from AuditHistory");
-            }
+            connection.Execute($"delete AuditHistory where ReportId = '{ReportOneId}'");
+            connection.Execute($"delete Report where Id = '{ReportOneId}'");
+
+            connection.Execute($"delete AuditHistory where ReportId = '{ReportTwoId}'");
+            connection.Execute($"delete Report where Id = '{ReportTwoId}'");
         }
 
-        public static void ClearData()
-        {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                connection.Execute($"delete AuditHistory where ReportId = '{ReportOneId}'");
-                connection.Execute($"delete Report where Id = '{ReportOneId}'");
+    }
+    public static DateTime TrimDateTime(DateTime date) {
+        return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
+    }
 
-                connection.Execute($"delete AuditHistory where ReportId = '{ReportTwoId}'");
-                connection.Execute($"delete Report where Id = '{ReportTwoId}'");
-            }
-
-        }
-        public static DateTime TrimDateTime(DateTime date) {
-            return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
-        }
-
-        public static Guid ReportOneId { get; } = new Guid("CDF3F279-3AE1-45A7-B0E6-01B06621853B");
-        public static Guid ReportTwoId { get; } = new Guid("B5B28BD5-6B3B-460F-8576-F367483B54C1");
+    public static Guid ReportOneId { get; } = new Guid("CDF3F279-3AE1-45A7-B0E6-01B06621853B");
+    public static Guid ReportTwoId { get; } = new Guid("B5B28BD5-6B3B-460F-8576-F367483B54C1");
 
 
-        public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
-        {
-            Assert.AreEqual(expectedReport.Id, actualReport.Id);
-            Assert.AreEqual(expectedReport.EmployerId, actualReport.EmployerId);
-            Assert.AreEqual(expectedReport.ReportingData, actualReport.ReportingData);
-            Assert.AreEqual(expectedReport.ReportingPeriod, actualReport.ReportingPeriod);
-            Assert.AreEqual(expectedReport.Submitted, actualReport.Submitted);
-            Assert.AreEqual(expectedReport.AuditWindowStartUtc, actualReport.AuditWindowStartUtc);
-            Assert.AreEqual(expectedReport.UpdatedUtc, actualReport.UpdatedUtc);
-            Assert.AreEqual(expectedReport.UpdatedBy, actualReport.UpdatedBy);
-        }
+    public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
+    {
+        Assert.AreEqual(expectedReport.Id, actualReport.Id);
+        Assert.AreEqual(expectedReport.EmployerId, actualReport.EmployerId);
+        Assert.AreEqual(expectedReport.ReportingData, actualReport.ReportingData);
+        Assert.AreEqual(expectedReport.ReportingPeriod, actualReport.ReportingPeriod);
+        Assert.AreEqual(expectedReport.Submitted, actualReport.Submitted);
+        Assert.AreEqual(expectedReport.AuditWindowStartUtc, actualReport.AuditWindowStartUtc);
+        Assert.AreEqual(expectedReport.UpdatedUtc, actualReport.UpdatedUtc);
+        Assert.AreEqual(expectedReport.UpdatedBy, actualReport.UpdatedBy);
     }
 }

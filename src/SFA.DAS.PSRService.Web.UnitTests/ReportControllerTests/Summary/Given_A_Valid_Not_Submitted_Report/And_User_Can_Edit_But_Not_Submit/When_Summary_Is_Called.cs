@@ -6,94 +6,93 @@ using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Not_Submitted_Report.
-    And_User_Can_Edit_But_Not_Submit
+    And_User_Can_Edit_But_Not_Submit;
+
+[ExcludeFromCodeCoverage]
+[TestFixture]
+public class When_Summary_Is_Called
+    : And_User_Can_Edit_But_Not_Submit
 {
-    [ExcludeFromCodeCoverage]
-    [TestFixture]
-    public class When_Summary_Is_Called
-        : And_User_Can_Edit_But_Not_Submit
+    private IActionResult result;
+
+    private ReportViewModel model;
+
+    protected override void When()
     {
-        private IActionResult result;
+        var hashedAccountId = "ABC123";
+        result = _controller.Summary(hashedAccountId, "1718");
 
-        private ReportViewModel model;
+        var viewResult = result as ViewResult;
 
-        protected override void When()
-        {
-            var hashedAccountId = "ABC123";
-            result = _controller.Summary(hashedAccountId, "1718");
+        model = viewResult?.Model as ReportViewModel;
+    }
 
-            var viewResult = result as ViewResult;
+    [Test]
+    public void Then_ViewModel_UserCanSubmitReports_Is_False()
+    {
+        Assert
+            .IsFalse(model.UserCanSubmitReports);
+    }
 
-            model = viewResult?.Model as ReportViewModel;
-        }
+    [Test]
+    public void Then_Result_Is_ViewResult()
+    {
+        Assert
+            .IsNotNull(result);
 
-        [Test]
-        public void Then_ViewModel_UserCanSubmitReports_Is_False()
-        {
-            Assert
-                .IsFalse(model.UserCanSubmitReports);
-        }
+        Assert
+            .IsInstanceOf<ViewResult>(result);
+    }
 
-        [Test]
-        public void Then_Result_Is_ViewResult()
-        {
-            Assert
-                .IsNotNull(result);
+    [Test]
+    public void Then_ViewName_Is_Summary()
+    {
+        Assert
+            .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
+    }
 
-            Assert
-                .IsInstanceOf<ViewResult>(result);
-        }
+    [Test]
+    public void Then_ViewModel_Is_ReportViewModel()
+    {
+        Assert
+            .IsNotNull(((ViewResult) result).Model);
 
-        [Test]
-        public void Then_ViewName_Is_Summary()
-        {
-            Assert
-                .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
-        }
+        Assert
+            .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
+    }
 
-        [Test]
-        public void Then_ViewModel_Is_ReportViewModel()
-        {
-            Assert
-                .IsNotNull(((ViewResult) result).Model);
+    [Test]
+    public void Then_ViewModel_Has_Report()
+    {
+        var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
 
-            Assert
-                .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
-        }
+        Assert
+            .IsNotNull(reportViewModel.Report);
+    }
 
-        [Test]
-        public void Then_ViewModel_Has_Report()
-        {
-            var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+    [Test]
+    public void Then_Subtitle_Is_Appropriate_For_Edit_user()
+    {
+        var
+            expectedText
+                =
+                SummaryPageMessageBuilder
+                    .GetSubtitle()
+                    .ForUserWhoCanEditButNotSubmit();
 
-            Assert
-                .IsNotNull(reportViewModel.Report);
-        }
+        model
+            .Subtitle
+            .Should()
+            .BeEquivalentTo(
+                expectedText);
+    }
 
-        [Test]
-        public void Then_Subtitle_Is_Appropriate_For_Edit_user()
-        {
-            var
-                expectedText
-                    =
-                    SummaryPageMessageBuilder
-                        .GetSubtitle()
-                        .ForUserWhoCanEditButNotSubmit();
-
-            model
-                .Subtitle
-                .Should()
-                .BeEquivalentTo(
-                    expectedText);
-        }
-
-        [Test]
-        public void Then_ViewModel_IsReadOnly_Is_False()
-        {
-            model
-                .IsReadOnly
-                .Should()
-                .BeFalse();
-        }
+    [Test]
+    public void Then_ViewModel_IsReadOnly_Is_False()
+    {
+        model
+            .IsReadOnly
+            .Should()
+            .BeFalse();
     }
 }

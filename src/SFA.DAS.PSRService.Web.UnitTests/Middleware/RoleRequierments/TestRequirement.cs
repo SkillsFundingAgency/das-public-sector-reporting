@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.HasRole
+namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments;
+
+public class TestRequirement : IAuthorizationRequirement
 {
-    public class TestRequirement : IAuthorizationRequirement
-    {
-    }
 }

@@ -5,26 +5,25 @@ using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.Given_A_Null_Report
-{
-    [ExcludeFromCodeCoverage]
-    public abstract class Given_A_Null_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.Given_A_Null_Report;
+
+[ExcludeFromCodeCoverage]
+public abstract class Given_A_Null_Report
     :GivenWhenThen<IReportService>
+{
+    protected Mock<IPeriodService> MockPeriodService;
+    protected Report StubReport;
+
+    public Given_A_Null_Report()
     {
-        protected Mock<IPeriodService> MockPeriodService;
-        protected Report StubReport;
+        MockPeriodService = new Mock<IPeriodService>();
 
-        public Given_A_Null_Report()
-        {
-            MockPeriodService = new Mock<IPeriodService>();
+        SUT = new ReportService(
+            config: Mock.Of<IWebConfiguration>(),
+            mediator: Mock.Of<IMediator>(),
+            periodService: MockPeriodService.Object
+        );
 
-            SUT = new ReportService(
-                config: Mock.Of<IWebConfiguration>(),
-                mediator: Mock.Of<IMediator>(),
-                periodService: MockPeriodService.Object
-            );
-
-            StubReport = null;
-        }
+        StubReport = null;
     }
 }

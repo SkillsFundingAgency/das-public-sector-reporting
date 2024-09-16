@@ -6,93 +6,92 @@ using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Not_Submitted_Report.
-    And_User_Has_View_Only_Access
+    And_User_Has_View_Only_Access;
+
+[ExcludeFromCodeCoverage]
+[TestFixture]
+public class When_Summary_Is_Called
+    : And_User_Has_View_Only_Access
 {
-    [ExcludeFromCodeCoverage]
-    [TestFixture]
-    public class When_Summary_Is_Called
-        : And_User_Has_View_Only_Access
+    private IActionResult result;
+    private ReportViewModel model;
+
+    protected override void When()
     {
-        private IActionResult result;
-        private ReportViewModel model;
+        var hashedAccountId = "ABC123";
+        result = _controller.Summary(hashedAccountId, "1718");
 
-        protected override void When()
-        {
-            var hashedAccountId = "ABC123";
-            result = _controller.Summary(hashedAccountId, "1718");
+        var viewResult = result as ViewResult;
 
-            var viewResult = result as ViewResult;
+        model = viewResult?.Model as ReportViewModel;
+    }
 
-            model = viewResult?.Model as ReportViewModel;
-        }
+    [Test]
+    public void Then_ViewModel_UserCanSubmitReports_Is_False()
+    {
+        Assert
+            .IsFalse(model.UserCanSubmitReports);
+    }
 
-        [Test]
-        public void Then_ViewModel_UserCanSubmitReports_Is_False()
-        {
-            Assert
-                .IsFalse(model.UserCanSubmitReports);
-        }
+    [Test]
+    public void Then_Result_Is_ViewResult()
+    {
+        Assert
+            .IsNotNull(result);
 
-        [Test]
-        public void Then_Result_Is_ViewResult()
-        {
-            Assert
-                .IsNotNull(result);
+        Assert
+            .IsInstanceOf<ViewResult>(result);
+    }
 
-            Assert
-                .IsInstanceOf<ViewResult>(result);
-        }
+    [Test]
+    public void Then_ViewName_Is_Summary()
+    {
+        Assert
+            .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
+    }
 
-        [Test]
-        public void Then_ViewName_Is_Summary()
-        {
-            Assert
-                .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
-        }
+    [Test]
+    public void Then_ViewModel_Is_ReportViewModel()
+    {
+        Assert
+            .IsNotNull(((ViewResult) result).Model);
 
-        [Test]
-        public void Then_ViewModel_Is_ReportViewModel()
-        {
-            Assert
-                .IsNotNull(((ViewResult) result).Model);
+        Assert
+            .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
+    }
 
-            Assert
-                .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
-        }
+    [Test]
+    public void Then_ViewModel_Has_Report()
+    {
+        var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
 
-        [Test]
-        public void Then_ViewModel_Has_Report()
-        {
-            var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+        Assert
+            .IsNotNull(reportViewModel.Report);
+    }
 
-            Assert
-                .IsNotNull(reportViewModel.Report);
-        }
+    [Test]
+    public void Then_Aubtitle_Is_Appropriate_For_User_With_ViewOnly_Access()
+    {
+        var
+            expectedText
+                =
+                SummaryPageMessageBuilder
+                    .GetSubtitle()
+                    .ForViewOnlyUser();
 
-        [Test]
-        public void Then_Aubtitle_Is_Appropriate_For_User_With_ViewOnly_Access()
-        {
-            var
-                expectedText
-                    =
-                    SummaryPageMessageBuilder
-                        .GetSubtitle()
-                        .ForViewOnlyUser();
+        model
+            .Subtitle
+            .Should()
+            .BeEquivalentTo(
+                expectedText);
+    }
 
-            model
-                .Subtitle
-                .Should()
-                .BeEquivalentTo(
-                    expectedText);
-        }
-
-        [Test]
-        public void Then_ViewModel_IsReadOnly_Is_True()
-        {
-            model
-                .IsReadOnly
-                .Should()
-                .BeTrue();
-        }
+    [Test]
+    public void Then_ViewModel_IsReadOnly_Is_True()
+    {
+        model
+            .IsReadOnly
+            .Should()
+            .BeTrue();
     }
 }

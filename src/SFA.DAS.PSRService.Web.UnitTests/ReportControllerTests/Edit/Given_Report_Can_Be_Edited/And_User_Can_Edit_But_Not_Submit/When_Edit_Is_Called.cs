@@ -3,58 +3,57 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Edit.Given_Report_Can_Be_Edited.And_User_Can_Edit_But_Not_Submit
-{
-    public sealed class When_Edit_Is_Called
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Edit.Given_Report_Can_Be_Edited.And_User_Can_Edit_But_Not_Submit;
+
+public sealed class When_Edit_Is_Called
     : And_User_Can_Edit_But_Not_Submit
+{
+    private IActionResult result;
+    private ReportViewModel model;
+
+    protected override void When()
     {
-        private IActionResult result;
-        private ReportViewModel model;
+        base.When();
 
-        protected override void When()
-        {
-            base.When();
+        result = SUT.Edit();
 
-            result = SUT.Edit();
+        var viewResult = result as ViewResult;
 
-            var viewResult = result as ViewResult;
+        model = viewResult?.Model as ReportViewModel;
+    }
+    [Test]
+    public void Then_ViewModel_UserCanSubmitReports_Is_False()
+    {
+        model
+            .UserCanSubmitReports
+            .Should()
+            .BeFalse();
+    }
 
-            model = viewResult?.Model as ReportViewModel;
-        }
-        [Test]
-        public void Then_ViewModel_UserCanSubmitReports_Is_False()
-        {
-            model
-                .UserCanSubmitReports
-                .Should()
-                .BeFalse();
-        }
+    [Test]
+    public void Then_Result_Is_ViewResult()
+    {
+        Assert
+            .IsNotNull(result);
 
-        [Test]
-        public void Then_Result_Is_ViewResult()
-        {
-            Assert
-                .IsNotNull(result);
+        Assert
+            .IsInstanceOf<ViewResult>(result);
+    }
 
-            Assert
-                .IsInstanceOf<ViewResult>(result);
-        }
+    [Test]
+    public void Then_ViewName_Is_Edit()
+    {
+        Assert
+            .AreEqual("Edit", ((ViewResult)result).ViewName, "View name does not match, should be: Summary");
+    }
 
-        [Test]
-        public void Then_ViewName_Is_Edit()
-        {
-            Assert
-                .AreEqual("Edit", ((ViewResult)result).ViewName, "View name does not match, should be: Summary");
-        }
+    [Test]
+    public void Then_ViewModel_Is_ReportViewModel()
+    {
+        Assert
+            .IsNotNull(((ViewResult)result).Model);
 
-        [Test]
-        public void Then_ViewModel_Is_ReportViewModel()
-        {
-            Assert
-                .IsNotNull(((ViewResult)result).Model);
-
-            Assert
-                .IsInstanceOf<ReportViewModel>(((ViewResult)result).Model);
-        }
+        Assert
+            .IsInstanceOf<ReportViewModel>(((ViewResult)result).Model);
     }
 }
