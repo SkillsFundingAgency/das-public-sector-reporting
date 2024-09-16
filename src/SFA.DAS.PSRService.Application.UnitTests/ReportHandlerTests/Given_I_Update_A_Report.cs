@@ -240,7 +240,7 @@ namespace SFA.DAS.PSRService.Application.UnitTests.ReportHandlerTests
 
             // act
             // assert
-            Assert.Throws<Exception>(() => _updateReportHandler.Handle(updateReportRequest, new CancellationToken()));
+            Assert.Throws<ApplicationException>(() => _updateReportHandler.Handle(updateReportRequest, new CancellationToken()));
         }
 
         [Test]
