@@ -10,49 +10,49 @@ using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.ViewModels;
 using StructureMap;
 
-namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report
+namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report;
+
+[ExcludeFromCodeCoverage]
+public abstract class Given_I_Have_Created_A_Report : GivenWhenThen<ReportController>
 {
-    [ExcludeFromCodeCoverage]
-    public abstract class Given_I_Have_Created_A_Report
-    :GivenWhenThen<ReportController>
+    private static Container _container;
+    protected QuestionController QuestionController;
+    protected Mock<IUrlHelper> MockUrlHelper;
+    private bool _IsLocalAuthority;
+
+    public Given_I_Have_Created_A_Report(bool isLocalAuthority)
     {
-        private static Container _container;
-        protected QuestionController QuestionController;
-        protected Mock<IUrlHelper> MockUrlHelper;
-        private bool _IsLocalAuthority;
-        public Given_I_Have_Created_A_Report(bool isLocalAuthority)
-        {
-            this._IsLocalAuthority = isLocalAuthority;
-        }
-        protected override void Given()
-        {
-            _container = new Container();
-            _container.Configure(TestHelper.ConfigureIoc());
-            MockUrlHelper = new Mock<IUrlHelper>();
-            MockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
+        this._IsLocalAuthority = isLocalAuthority;
+    }
 
-            QuestionController = _container.GetInstance<QuestionController>();
+    protected override void Given()
+    {
+        _container = new Container();
+        _container.Configure(TestHelper.ConfigureIoc());
+        MockUrlHelper = new Mock<IUrlHelper>();
+        MockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
 
-            QuestionController.Url = MockUrlHelper.Object;
+        QuestionController = _container.GetInstance<QuestionController>();
 
-            SUT = _container.GetInstance<ReportController>();
-            SUT.Url = MockUrlHelper.Object;
-            SUT.ObjectValidator = Mock.Of<IObjectModelValidator>();
+        QuestionController.Url = MockUrlHelper.Object;
 
-            var mockContext = new Mock<HttpContext>();
-            mockContext.Setup(c => c.User).Returns(new TestPrincipal());
+        SUT = _container.GetInstance<ReportController>();
+        SUT.Url = MockUrlHelper.Object;
+        SUT.ObjectValidator = Mock.Of<IObjectModelValidator>();
 
-            SUT.ControllerContext.HttpContext = mockContext.Object;
-            QuestionController.ControllerContext.HttpContext = mockContext.Object;
-            TestHelper.ClearData();
+        var mockContext = new Mock<HttpContext>();
+        mockContext.Setup(c => c.User).Returns(new TestPrincipal());
 
-            SUT.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = _IsLocalAuthority });
-        }
+        SUT.ControllerContext.HttpContext = mockContext.Object;
+        QuestionController.ControllerContext.HttpContext = mockContext.Object;
+        TestHelper.ClearData();
 
-        [TearDown]
-        public void CleanUpAfterOurselves()
-        {
-            //TestHelper.ClearData();
-        }
+        SUT.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = _IsLocalAuthority });
+    }
+
+    [TearDown]
+    public void CleanUpAfterOurselves()
+    {
+        _container?.Dispose();
     }
 }
