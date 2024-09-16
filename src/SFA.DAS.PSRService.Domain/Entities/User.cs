@@ -1,24 +1,25 @@
 ﻿using System;
 
-namespace SFA.DAS.PSRService.Domain.Entities
+namespace SFA.DAS.PSRService.Domain.Entities;
+
+public class User
 {
-    public class User
+    private string _name;
+    public Guid Id { get; set; }
+
+    public string Name
     {
-        private string _name;
-        public Guid Id { get; set; }
+        get => _name;
+        set => CheckAndSetToValue(value);
+    }
 
-        public string Name
+    private void CheckAndSetToValue(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
         {
-            get => _name;
-            set => checkAndSetToValue(value);
+            throw new ArgumentNullException( nameof(Name));
         }
 
-        private void checkAndSetToValue(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(Name));
-
-            _name = value;
-        }
+        _name = value;
     }
 }

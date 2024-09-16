@@ -1,203 +1,214 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.Domain
+namespace SFA.DAS.PSRService.Domain.UnitTests.Domain;
+
+[TestFixture]
+public class WhenASectionIsRequested
 {
-    [TestFixture]
-    public class WhenASectionIsRequested
+    [Test]
+    public void And_The_Question_Section_Exists_Then_Return_Section()
     {
-        [Test]
-        public void And_The_Question_Section_Exists_Then_Return_Section()
+        // arrange
+        var questions = new List<Question>
         {
-            // arrange
-            var questions = new List<Question>()
+            new()
             {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-                ,new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-            var sectionOne = new Section()
+                Id = "atStart",
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+            ,new()
             {
-                Id = "SectionOne",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionOne",
-                    Questions = questions,
-                    Title = "SubSectionOne",
-                    SummaryText = ""
-
-                }},
-                Questions = null,
-                Title = "SectionOne"
-            };
-
-            var sectionTwo = new Section()
+                Id = "atEnd",
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
             {
-                Id = "SectionTwo",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionTwo",
-                    Questions = questions,
-                    Title = "SubSectionTwo",
-                    SummaryText = ""
+                Id = "newThisPeriod",
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            }
 
-                }},
-                Questions = null,
-                Title = "SectionTwo"
-            };
+        };
 
-            var sectionThree = new Section()
+        var sectionOne = new Section
+        {
+            Id = "SectionOne",
+            SubSections = new List<Section>
+            { new()
             {
-                Id = "SectionThree",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionThree",
-                    Questions = questions,
-                    Title = "SubSectionThree",
-                    SummaryText = ""
+                Id = "SubSectionOne",
+                Questions = questions,
+                Title = "SubSectionOne",
+                SummaryText = ""
 
-                }},
-                Questions = null,
-                Title = "SectionThree"
-            };
+            }},
+            Questions = null,
+            Title = "SectionOne"
+        };
 
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(sectionOne);
-            sections.Add(sectionTwo);
-            sections.Add(sectionThree);
-            var report = new Report()
+        var sectionTwo = new Section
+        {
+            Id = "SectionTwo",
+            SubSections = new List<Section>
+            { new()
             {
-                Sections = sections
-            };
+                Id = "SubSectionTwo",
+                Questions = questions,
+                Title = "SubSectionTwo",
+                SummaryText = ""
 
-            // act
-            var result = report.GetQuestionSection("SubSectionTwo");
+            }},
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
+        var sectionThree = new Section
+        {
+            Id = "SectionThree",
+            SubSections = new List<Section>
+            { new()
+            {
+                Id = "SubSectionThree",
+                Questions = questions,
+                Title = "SubSectionThree",
+                SummaryText = ""
+
+            }},
+            Questions = null,
+            Title = "SectionThree"
+        };
+
+        IList<Section> sections = new List<Section>();
+
+        sections.Add(sectionOne);
+        sections.Add(sectionTwo);
+        sections.Add(sectionThree);
+        var report = new Report
+        {
+            Sections = sections
+        };
+
+        // act
+        var result = report.GetQuestionSection("SubSectionTwo");
         
-            Assert.NotNull(result);
-         
+        result.Should().NotBeNull();
+        
+        result.Id.Should().Be("SubSectionTwo");
+        result.Title.Should().Be( "SubSectionTwo");
+        result.Questions.Should().NotBeNull();
+        result.Questions.Should().NotBeEmpty();
+    }
 
-            Assert.AreEqual(result.Id, "SubSectionTwo");
-            Assert.AreEqual(result.Title, "SubSectionTwo");
-            Assert.NotNull(result.Questions);
-            CollectionAssert.IsNotEmpty(result.Questions);
+    [Test]
+    public void And_The_Report_Contains_No_Sections_Then_Null_Returned()
+    {
+        new Report().GetQuestionSection("SubSectionTwo").Should().BeNull();
+    }
 
-        }
-
-
-        [Test]
-        public void And_The_Report_Contains_No_Sections_Then_Null_Returned()
+    [Test]
+    public void And_The_Question_Section_Exists_More_Than_Once_Then_Throw_Error()
+    {
+        // arrange
+        var questions = new List<Question>
         {
-            Assert.IsNull(new Report().GetQuestionSection("SubSectionTwo"));
-        }
+            new()
+            {
+                Id = "atStart",
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+            ,new()
+            {
+                Id = "atEnd",
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = "newThisPeriod",
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            }
 
-        [Test]
-        public void And_The_Question_Section_Exists_More_Than_Once_Then_Throw_Error()
+        };
+
+        var sectionOne = new Section
         {
-            // arrange
-            var questions = new List<Question>()
+            Id = "SectionOne",
+            SubSections = new List<Section>
+            { new()
             {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-                ,new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
+                Id = "SubSectionOne",
+                Questions = questions,
+                Title = "SubSectionOne",
+                SummaryText = ""
 
-            };
+            }},
+            Questions = null,
+            Title = "SectionOne"
+        };
 
-            var sectionOne = new Section()
+        var sectionTwo = new Section
+        {
+            Id = "SectionTwo",
+            SubSections = new List<Section>
+            { new()
             {
-                Id = "SectionOne",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionOne",
-                    Questions = questions,
-                    Title = "SubSectionOne",
-                    SummaryText = ""
+                Id = "SubSectionOne",
+                Questions = questions,
+                Title = "SubSectionTwo",
+                SummaryText = ""
 
-                }},
-                Questions = null,
-                Title = "SectionOne"
-            };
+            }},
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
-            var sectionTwo = new Section()
+        var sectionThree = new Section
+        {
+            Id = "SectionOne",
+            SubSections = new List<Section>
+            { new()
             {
-                Id = "SectionTwo",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionOne",
-                    Questions = questions,
-                    Title = "SubSectionTwo",
-                    SummaryText = ""
+                Id = "SubSectionThree",
+                Questions = questions,
+                Title = "SubSectionThree",
+                SummaryText = ""
 
-                }},
-                Questions = null,
-                Title = "SectionTwo"
-            };
+            }},
+            Questions = null,
+            Title = "SectionThree"
+        };
 
-            var sectionThree = new Section()
-            {
-                Id = "SectionOne",
-                SubSections = new List<Section>() { new Section{
-                    Id = "SubSectionThree",
-                    Questions = questions,
-                    Title = "SubSectionThree",
-                    SummaryText = ""
+        var sections = new List<Section>
+        {
+            sectionOne,
+            sectionTwo,
+            sectionThree
+        };
 
-                }},
-                Questions = null,
-                Title = "SectionThree"
-            };
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(sectionOne);
-            sections.Add(sectionTwo);
-            sections.Add(sectionThree);
-            var report = new Report()
-            {
-                Sections = sections
-            };
-            // act
-
-            Assert.Throws<InvalidOperationException>(() => report.GetQuestionSection("SectionOne"));
-
-
-        }
+        var report = new Report
+        {
+            Sections = sections
+        };
+        
+        // act
+        var action = () => report.GetQuestionSection("SectionOne");
+        
+        // assert
+        action.Should().Throw<InvalidOperationException>();
     }
 }
