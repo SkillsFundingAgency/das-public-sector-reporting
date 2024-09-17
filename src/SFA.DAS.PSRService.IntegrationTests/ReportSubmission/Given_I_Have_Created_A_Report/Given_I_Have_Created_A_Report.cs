@@ -45,5 +45,9 @@ public abstract class Given_I_Have_Created_A_Report(bool isLocalAuthority) : Giv
     }
 
     [TearDown]
-    public void TearDown() => _container?.Dispose();
+    public void TearDown()
+    {
+        QuestionController?.Dispose();
+        _container?.Dispose();
+    }
 }

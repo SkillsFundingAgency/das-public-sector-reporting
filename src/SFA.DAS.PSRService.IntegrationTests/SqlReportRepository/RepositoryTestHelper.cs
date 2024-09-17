@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
+using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -21,33 +22,28 @@ internal static class RepositoryTestHelper
 
     public static IList<ReportDto> GetAllReports()
     {
-        using (var connection = new SqlConnection(ConnectionString))
-        {
-            return connection.Query<ReportDto>("select * from Report").ToList();
-        }
+        using var connection = new SqlConnection(ConnectionString);
+        return connection.Query<ReportDto>("select * from Report").ToList();
     }
 
     public static IEnumerable<AuditRecordDto> GetAllAuditHistory()
     {
-        using (var connection = new SqlConnection(ConnectionString))
-        {
-            return connection.Query<AuditRecordDto>("select * from AuditHistory");
-        }
+        using var connection = new SqlConnection(ConnectionString);
+        return connection.Query<AuditRecordDto>("select * from AuditHistory");
     }
 
     public static void ClearData()
     {
-        using (var connection = new SqlConnection(ConnectionString))
-        {
-            connection.Execute($"delete AuditHistory where ReportId = '{ReportOneId}'");
-            connection.Execute($"delete Report where Id = '{ReportOneId}'");
+        using var connection = new SqlConnection(ConnectionString);
+        connection.Execute($"delete AuditHistory where ReportId = '{ReportOneId}'");
+        connection.Execute($"delete Report where Id = '{ReportOneId}'");
 
-            connection.Execute($"delete AuditHistory where ReportId = '{ReportTwoId}'");
-            connection.Execute($"delete Report where Id = '{ReportTwoId}'");
-        }
-
+        connection.Execute($"delete AuditHistory where ReportId = '{ReportTwoId}'");
+        connection.Execute($"delete Report where Id = '{ReportTwoId}'");
     }
-    public static DateTime TrimDateTime(DateTime date) {
+
+    public static DateTime TrimDateTime(DateTime date)
+    {
         return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
     }
 
@@ -57,13 +53,13 @@ internal static class RepositoryTestHelper
 
     public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
     {
-        Assert.AreEqual(expectedReport.Id, actualReport.Id);
-        Assert.AreEqual(expectedReport.EmployerId, actualReport.EmployerId);
-        Assert.AreEqual(expectedReport.ReportingData, actualReport.ReportingData);
-        Assert.AreEqual(expectedReport.ReportingPeriod, actualReport.ReportingPeriod);
-        Assert.AreEqual(expectedReport.Submitted, actualReport.Submitted);
-        Assert.AreEqual(expectedReport.AuditWindowStartUtc, actualReport.AuditWindowStartUtc);
-        Assert.AreEqual(expectedReport.UpdatedUtc, actualReport.UpdatedUtc);
-        Assert.AreEqual(expectedReport.UpdatedBy, actualReport.UpdatedBy);
+        expectedReport.Id.Should().Be(actualReport.Id);
+        expectedReport.EmployerId.Should().Be(actualReport.EmployerId);
+        expectedReport.ReportingData.Should().Be(actualReport.ReportingData);
+        expectedReport.ReportingPeriod.Should().Be(actualReport.ReportingPeriod);
+        expectedReport.Submitted.Should().Be(actualReport.Submitted);
+        expectedReport.AuditWindowStartUtc.Should().Be(actualReport.AuditWindowStartUtc);
+        expectedReport.UpdatedUtc.Should().Be(actualReport.UpdatedUtc);
+        expectedReport.UpdatedBy.Should().Be(actualReport.UpdatedBy);
     }
 }

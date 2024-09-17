@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 
@@ -6,26 +7,18 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
 
 [TestFixture]
 [ExcludeFromCodeCoverage]
-public sealed class When_I_Call_Get
-    : Given_No_Existing_Reports_In_Database
+public sealed class When_I_Call_Get : Given_No_Existing_Reports_In_Database
 {
-    private ReportDto retrievedReport;
+    private ReportDto _retrievedReport;
 
     protected override void When()
     {
-        retrievedReport
-            =
-            SUT
-                .Get(
-                    "SomeReportingPeriod"
-                    , "SomeEmployerId");
+        _retrievedReport = SUT.Get("SomeReportingPeriod", "SomeEmployerId");
     }
 
     [Test]
     public void Then_Retrieved_Report_Is_Null()
     {
-        Assert
-            .IsNull(
-                retrievedReport);
+        _retrievedReport.Should().BeNull();
     }
 }

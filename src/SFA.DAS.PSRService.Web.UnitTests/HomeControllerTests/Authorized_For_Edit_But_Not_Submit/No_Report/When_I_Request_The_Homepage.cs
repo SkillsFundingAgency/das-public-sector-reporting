@@ -28,7 +28,7 @@ public class When_I_Request_The_Homepage : And_No_Current_Report_Exists
     [Test]
     public void Then_ViewResult_Is_No_Null()
     {
-        Assert.IsNotNull(viewResult);
+        viewResult.Should().NotBeNull();
     }
     [Test]
     public void Then_Model_Is_An_IndexViewModel()
@@ -39,19 +39,19 @@ public class When_I_Request_The_Homepage : And_No_Current_Report_Exists
     [Test]
     public void Then_Model_Is_Not_Null()
     {
-        Assert.IsNotNull(model);
+        model.Should().NotBeNull();
     }
 
     [Test]
     public void Then_Create_Report_Is_Enabled()
     {
-        Assert.IsTrue(model.CanCreateReport);
+        model.CanCreateReport.Should().BeTrue();
     }
 
     [Test]
     public void Then_Edit_Report_Is_Disabled()
     {
-        Assert.IsFalse(model.CanEditReport);
+        model.CanEditReport.Should().BeFalse();
     }
 
     [Test]

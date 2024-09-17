@@ -9,22 +9,21 @@ namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Crea
 public sealed class When_I_Submit_The_Report_As_LocalAuthority
     : And_All_Mandatory_Numbers_As_LocalAuthority
 {
-    private IActionResult submitResponse;
+    private IActionResult _submitResponse;
 
-    public When_I_Submit_The_Report_As_LocalAuthority() : base(true){}
+    public When_I_Submit_The_Report_As_LocalAuthority() : base(true)
+    {
+    }
 
     protected override void When()
     {
-        submitResponse = SUT.SubmitPost();
+        _submitResponse = SUT.SubmitPost();
     }
 
     [Test]
     public void Then_I_Am_Presented_With_The_SubmitConfirmation_View()
     {
-        Assert
-            .AreEqual(
-                "SubmitConfirmation"
-                , ((ViewResult) submitResponse).ViewName);
+        ((ViewResult)_submitResponse).ViewName.Should().Be("SubmitConfirmation");
     }
 
     [Test]

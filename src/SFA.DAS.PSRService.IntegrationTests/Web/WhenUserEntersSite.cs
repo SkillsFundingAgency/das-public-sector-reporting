@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
@@ -37,9 +39,12 @@ public class WhenUserEntersSite
         //TODO: Refactor test to Geiven-Then-When style and find a better way of onfiguring authorization
         _container.Inject<IAuthorizationService>(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
     }
-    
+
     [OneTimeTearDown]
-    public void TearDown() => _container?.Dispose();
+    public void OneTimeTearDown() => _container?.Dispose();
+
+    [TearDown]
+    public void TearDown() => _homeController?.Dispose();
 
     private static IAuthorizationService BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit()
     {
@@ -65,13 +70,13 @@ public class WhenUserEntersSite
 
         // act
         var result = _homeController.Index() as ViewResult;
-            
+
         // assert
-        Assert.IsNotNull(result);
-        Assert.IsInstanceOf<IndexViewModel>(result.Model);
-        var model = (IndexViewModel) result.Model;
-        Assert.IsTrue(model.CanCreateReport);
-        Assert.IsFalse(model.CanEditReport);
+        result.Should().NotBeNull();
+        result.Model.Should().BeOfType<IndexViewModel>();
+        var model = (IndexViewModel)result.Model;
+        model.CanCreateReport.Should().BeTrue();
+        model.CanEditReport.Should().BeFalse();
     }
 
     [Test]
@@ -89,13 +94,13 @@ public class WhenUserEntersSite
 
         // act
         var result = _homeController.Index() as ViewResult;
-            
+
         // assert
-        Assert.IsNotNull(result);
-        Assert.IsInstanceOf<IndexViewModel>(result.Model);
-        var model = (IndexViewModel) result.Model;
-        Assert.IsFalse(model.CanCreateReport);
-        Assert.IsFalse(model.CanEditReport);
+        result.Should().NotBeNull();
+        result.Model.Should().BeOfType<IndexViewModel>();
+        var model = (IndexViewModel)result.Model;
+        model.CanCreateReport.Should().BeFalse();
+        model.CanEditReport.Should().BeFalse();
     }
 
     [Test]
@@ -113,12 +118,12 @@ public class WhenUserEntersSite
 
         // act
         var result = _homeController.Index() as ViewResult;
-            
+
         // assert
-        Assert.IsNotNull(result);
-        Assert.IsInstanceOf<IndexViewModel>(result.Model);
-        var model = (IndexViewModel) result.Model;
-        Assert.IsFalse(model.CanCreateReport);
-        Assert.IsTrue(model.CanEditReport);
+        result.Should().NotBeNull();
+        result.Model.Should().BeOfType<IndexViewModel>();
+        var model = (IndexViewModel)result.Model;
+        model.CanCreateReport.Should().BeFalse();
+        model.CanEditReport.Should().BeTrue();
     }
 }

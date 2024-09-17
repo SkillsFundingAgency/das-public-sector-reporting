@@ -25,39 +25,41 @@ public class When_I_Request_The_Homepage : And_Current_Report_Submitted
     {
         viewResult = result as ViewResult;
     }
+
     [Test]
     public void Then_ViewResult_Is_No_Null()
     {
-        Assert.IsNotNull(viewResult);
+        viewResult.Should().NotBeNull();
     }
+
     [Test]
     public void Then_Model_Is_An_IndexViewModel()
     {
         model = viewResult.Model as IndexViewModel;
-
     }
+
     [Test]
     public void Then_Model_Is_Not_Null()
     {
-        Assert.IsNotNull(model);
+        model.Should().NotBeNull();
     }
 
     [Test]
     public void Then_Create_Report_Is_Disabled()
     {
-        Assert.IsFalse(model.CanCreateReport);
+        model.CanCreateReport.Should().BeFalse();
     }
 
     [Test]
     public void Then_Edit_Report_Is_Disabled()
     {
-        Assert.IsFalse(model.CanEditReport);
+        model.CanEditReport.Should().BeFalse();
     }
 
     [Test]
     public void Then_Report_Period_Matches_Current()
     {
-        Assert.AreEqual(CurrentPeriod, model.Period);
+        model.Period.Should().Be(CurrentPeriod);
     }
 
     [Test]

@@ -28,7 +28,7 @@ public class WhenIRequestTheHomepage : And_Current_Report_Submitted
     [Test]
     public void Then_ViewResult_Is_No_Null()
     {
-        Assert.IsNotNull(_viewResult);
+        _viewResult.Should().NotBeNull();
     }
     [Test]
     public void Then_Model_Is_An_IndexViewModel()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using AutoMapper;
+using FluentAssertions;
 using Microsoft.Extensions.FileProviders;
 using Moq;
 using NUnit.Framework;
@@ -26,7 +27,7 @@ public class Given_I_Update_A_Report
         _mapperMock = new Mock<IMapper>(MockBehavior.Strict);
         _reportRepositoryMock = new Mock<IReportRepository>(MockBehavior.Strict);
         _fileProviderMock = new Mock<IFileProvider>();
-        _updateReportHandler = new UpdateReportHandler( _mapperMock.Object, _reportRepositoryMock.Object, _fileProviderMock.Object);
+        _updateReportHandler = new UpdateReportHandler(_mapperMock.Object, _reportRepositoryMock.Object, _fileProviderMock.Object);
 
         var fileInfo = new StringFileInfo("", "QuestionConfig.json");
         _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
@@ -39,7 +40,7 @@ public class Given_I_Update_A_Report
         var justNow = DateTime.UtcNow;
         ReportDto actualReportDto = null;
         var reportId = Guid.NewGuid();
-        var updateUser = new User {Id = Guid.NewGuid(), Name = "Homer"};
+        var updateUser = new User { Id = Guid.NewGuid(), Name = "Homer" };
         var oldVersion = new ReportDto
         {
             Id = reportId,
@@ -70,20 +71,20 @@ public class Given_I_Update_A_Report
                         Id = reportId,
                         AuditWindowStartUtc = justNow,
                         UpdatedUtc = justNow,
-                        UpdatedBy = new User {Id = Guid.Empty, Name = "Homer"}
+                        UpdatedBy = new User { Id = Guid.Empty, Name = "Homer" }
                     })
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default(CancellationToken));
+        _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
-        Assert.IsNotNull(actualReportDto);
-        Assert.AreEqual(justNow, actualReportDto.AuditWindowStartUtc);
-        Assert.AreNotEqual(justNow, actualReportDto.UpdatedUtc);
-        Assert.IsNotNull(actualReportDto.UpdatedBy);
-        Assert.IsTrue(actualReportDto.UpdatedBy.Contains(updateUser.Name));
+        actualReportDto.Should().NotBeNull();
+        justNow.Should().Be(actualReportDto.AuditWindowStartUtc);
+        justNow.Should().NotBe(actualReportDto.UpdatedUtc);
+        actualReportDto.UpdatedBy.Should().NotBeNull();
+        actualReportDto.UpdatedBy.Should().Contain(updateUser.Name);
     }
 
     [Test]
@@ -94,7 +95,7 @@ public class Given_I_Update_A_Report
         ReportDto actualReportDto = null;
         AuditRecordDto actualAuditRecordDto = null;
         var reportId = Guid.NewGuid();
-        var updateUser = new User {Id = Guid.NewGuid(), Name = "Homer"};
+        var updateUser = new User { Id = Guid.NewGuid(), Name = "Homer" };
 
         var oldVersion = new ReportDto
         {
@@ -132,27 +133,27 @@ public class Given_I_Update_A_Report
                         Id = reportId,
                         AuditWindowStartUtc = longAgo,
                         UpdatedUtc = longAgo,
-                        UpdatedBy = new User {Id = Guid.Empty, Name = "Homer"}
+                        UpdatedBy = new User { Id = Guid.Empty, Name = "Homer" }
                     })
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default(CancellationToken));
+        _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
-        Assert.IsNotNull(actualReportDto);
-        Assert.AreNotEqual(longAgo, actualReportDto.AuditWindowStartUtc);
-        Assert.AreNotEqual(longAgo, actualReportDto.UpdatedUtc);
-        Assert.IsNotNull(actualReportDto.UpdatedBy);
-        Assert.IsTrue(actualReportDto.UpdatedBy.Contains(updateUser.Name));
-        Assert.AreEqual(newVersion.ReportingData, actualReportDto.ReportingData);
+        actualReportDto.Should().NotBeNull();
+        longAgo.Should().NotBe(actualReportDto.AuditWindowStartUtc);
+        longAgo.Should().NotBe(actualReportDto.UpdatedUtc);
+        actualReportDto.UpdatedBy.Should().NotBeNull();
+        actualReportDto.UpdatedBy.Should().Contain(updateUser.Name);
+        newVersion.ReportingData.Should().Be(actualReportDto.ReportingData);
 
-        Assert.IsNotNull(actualAuditRecordDto);
-        Assert.AreEqual(reportId, actualAuditRecordDto.ReportId);
-        Assert.AreEqual(longAgo, actualAuditRecordDto.UpdatedUtc);
-        Assert.IsTrue(actualAuditRecordDto.UpdatedBy.Contains(updateUser.Name));
-        Assert.AreEqual(oldVersion.ReportingData, actualAuditRecordDto.ReportingData);
+        actualAuditRecordDto.Should().NotBeNull();
+        reportId.Should().Be(actualAuditRecordDto.ReportId);
+        longAgo.Should().Be(actualAuditRecordDto.UpdatedUtc);
+        actualAuditRecordDto.UpdatedBy.Should().Contain(updateUser.Name);
+        oldVersion.ReportingData.Should().Be(actualAuditRecordDto.ReportingData);
     }
 
     [Test]
@@ -163,8 +164,8 @@ public class Given_I_Update_A_Report
         ReportDto actualReportDto = null;
         AuditRecordDto actualAuditRecordDto = null;
         var reportId = Guid.NewGuid();
-        var updateUser = new User {Id = Guid.NewGuid(), Name = "Homer"};
-        var oldUser = new User {Id = Guid.NewGuid(), Name = "Bob Shurunkle"};
+        var updateUser = new User { Id = Guid.NewGuid(), Name = "Homer" };
+        var oldUser = new User { Id = Guid.NewGuid(), Name = "Bob Shurunkle" };
 
         var oldVersion = new ReportDto
         {
@@ -200,28 +201,28 @@ public class Given_I_Update_A_Report
                         Id = reportId,
                         AuditWindowStartUtc = justNow,
                         UpdatedUtc = justNow,
-                        UpdatedBy = new User {Id = Guid.Empty, Name = "Homer"}
+                        UpdatedBy = new User { Id = Guid.Empty, Name = "Homer" }
                     })
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default(CancellationToken));
+        _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
 
-        Assert.IsNotNull(actualReportDto);
-        Assert.AreNotEqual(justNow, actualReportDto.AuditWindowStartUtc);
-        Assert.AreNotEqual(justNow, actualReportDto.UpdatedUtc);
-        Assert.IsNotNull(actualReportDto.UpdatedBy);
-        Assert.IsTrue(actualReportDto.UpdatedBy.Contains(updateUser.Name));
-        Assert.AreEqual(newVersion.ReportingData, actualReportDto.ReportingData);
+        actualReportDto.Should().NotBeNull();
+        justNow.Should().NotBe(actualReportDto.AuditWindowStartUtc);
+        justNow.Should().NotBe(actualReportDto.UpdatedUtc);
+        actualReportDto.UpdatedBy.Should().NotBeNull();
+        actualReportDto.UpdatedBy.Should().Contain(updateUser.Name);
+        newVersion.ReportingData.Should().Be(actualReportDto.ReportingData);
 
-        Assert.IsNotNull(actualAuditRecordDto);
-        Assert.AreEqual(reportId, actualAuditRecordDto.ReportId);
-        Assert.AreEqual(justNow, actualAuditRecordDto.UpdatedUtc);
-        Assert.IsTrue(actualAuditRecordDto.UpdatedBy.Contains(oldUser.Name));
-        Assert.AreEqual(oldVersion.ReportingData, actualAuditRecordDto.ReportingData);
+        actualAuditRecordDto.Should().NotBeNull();
+        reportId.Should().Be(actualAuditRecordDto.ReportId);
+        justNow.Should().Be(actualAuditRecordDto.UpdatedUtc);
+        actualAuditRecordDto.UpdatedBy.Should().Contain(oldUser.Name);
+        oldVersion.ReportingData.Should().Be(actualAuditRecordDto.ReportingData);
     }
 
     [Test]
@@ -233,24 +234,25 @@ public class Given_I_Update_A_Report
             new UpdateReportRequestBuilder()
                 .WithUserName("Bob Shurunkle")
                 .WithReport(
-                    new Report {Id = reportId})
+                    new Report { Id = reportId })
                 .Build();
 
-        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns((ReportDto) null).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns((ReportDto)null).Verifiable();
 
         // act
+        var action = () => _updateReportHandler.Handle(updateReportRequest, new CancellationToken());
+
         // assert
-        Assert.Throws<ApplicationException>(() => _updateReportHandler.Handle(updateReportRequest, new CancellationToken()));
+        action.Should().ThrowAsync<ApplicationException>();
     }
 
     [Test]
     public void When_Old_Version_Does_Not_Have_New_Values_They_Are_Recorded_And_No_Audit_Created()
     {
         // arrange
-        var justNow = DateTime.UtcNow.AddSeconds(-1);
         ReportDto actualReportDto = null;
         var reportId = Guid.NewGuid();
-        var updateUser = new User {Id = Guid.NewGuid(), Name = "Homer"};
+        var updateUser = new User { Id = Guid.NewGuid(), Name = "Homer" };
 
         var oldVersion = new ReportDto
         {
@@ -290,16 +292,16 @@ public class Given_I_Update_A_Report
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default(CancellationToken));
+        _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
 
-        Assert.IsNotNull(actualReportDto);
-        Assert.IsNotNull(actualReportDto.AuditWindowStartUtc);
-        Assert.IsNotNull(actualReportDto.UpdatedUtc);
-        Assert.IsNotNull(actualReportDto.UpdatedBy);
-        Assert.IsTrue(actualReportDto.UpdatedBy.Contains(updateUser.Name));
-        Assert.AreEqual(newVersion.ReportingData, actualReportDto.ReportingData);
+        actualReportDto.Should().NotBeNull();
+        actualReportDto.AuditWindowStartUtc.Should().NotBeNull();
+        actualReportDto.UpdatedUtc.Should().NotBeNull();
+        actualReportDto.UpdatedBy.Should().NotBeNull();
+        actualReportDto.UpdatedBy.Should().Contain(updateUser.Name);
+        newVersion.ReportingData.Should().Be(actualReportDto.ReportingData);
     }
 }
