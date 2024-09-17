@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MediatR;
-using Moq;
+﻿using MediatR;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;

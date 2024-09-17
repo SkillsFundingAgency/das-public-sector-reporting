@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 

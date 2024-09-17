@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.FileProviders;
@@ -39,7 +40,7 @@ public class Given_I_Create_A_Report
             Id = Guid.NewGuid(),
             Submitted = false
         };
-        
+
         var fileInfo = new StringFileInfo("", "QuestionConfig.json");
 
         _fileProviderMock.Setup(s => s.GetFileInfo(It.IsAny<string>())).Returns(fileInfo);
@@ -47,7 +48,7 @@ public class Given_I_Create_A_Report
     }
 
     [Test]
-    public void And_An_EmployeeId_And_Period_And_IsLocalAuthority_Is_Supplied_Then_Create_Report()
+    public async Task And_An_EmployeeId_And_Period_And_IsLocalAuthority_Is_Supplied_Then_Create_Report()
     {
         // arrange
         var userId = Guid.NewGuid();
@@ -63,26 +64,26 @@ public class Given_I_Create_A_Report
                 .WithIsLocalAuthority(false)
                 .Build();
 
-        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Callback<ReportDto>(r => reportDto = r).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Verifiable();
 
         // act
-        var result = _createReportHandler.Handle(createReportRequest, new CancellationToken()).Result;
+        var result = await _createReportHandler.Handle(createReportRequest, new CancellationToken());
 
         // assert
         _reportRepositoryMock.VerifyAll();
         _report.EmployerId.Should().Be(result.EmployerId);
-        _report.Submitted .Should().Be(result.Submitted);
-        _report.ReportingPeriod.Should().Be( result.ReportingPeriod);
-        _report.EmployerId.Should().Be( reportDto.EmployerId);
-        _report.ReportingPeriod.Should().Be( reportDto.ReportingPeriod);
-        
+        _report.Submitted.Should().Be(result.Submitted);
+        _report.ReportingPeriod.Should().Be(result.ReportingPeriod);
+        _report.EmployerId.Should().Be(reportDto.EmployerId);
+        _report.ReportingPeriod.Should().Be(reportDto.ReportingPeriod);
+
         reportDto.UpdatedBy.Contains(userId.ToString()).Should().BeTrue();
         reportDto.AuditWindowStartUtc.Should().NotBeNull();
         reportDto.UpdatedUtc.Should().NotBeNull();
     }
 
     [Test]
-    public void And_An_EmployeeId_And_Period_And_As_IsLocalAuthority_Is_Supplied_Then_Create_Report()
+    public async Task And_An_EmployeeId_And_Period_And_As_IsLocalAuthority_Is_Supplied_Then_Create_Report()
     {
         // arrange
         var userId = Guid.NewGuid();
@@ -98,18 +99,18 @@ public class Given_I_Create_A_Report
                 .WithIsLocalAuthority(true)
                 .Build();
 
-        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Callback<ReportDto>(r => reportDto = r).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Verifiable();
 
         // act
-        var result = _createReportHandler.Handle(createReportRequest, new CancellationToken()).Result;
+        var result = await _createReportHandler.Handle(createReportRequest, new CancellationToken());
 
         // assert
         _reportRepositoryMock.VerifyAll();
-        _report.EmployerId.Should().Be( result.EmployerId);
-        _report.Submitted.Should().Be( result.Submitted);
-        _report.ReportingPeriod.Should().Be( result.ReportingPeriod);
-        _report.EmployerId.Should().Be( reportDto.EmployerId);
-        _report.ReportingPeriod.Should().Be( reportDto.ReportingPeriod);
+        _report.EmployerId.Should().Be(result.EmployerId);
+        _report.Submitted.Should().Be(result.Submitted);
+        _report.ReportingPeriod.Should().Be(result.ReportingPeriod);
+        _report.EmployerId.Should().Be(reportDto.EmployerId);
+        _report.ReportingPeriod.Should().Be(reportDto.ReportingPeriod);
         reportDto.UpdatedBy.Contains(userId.ToString()).Should().BeTrue();
         reportDto.AuditWindowStartUtc.Should().NotBeNull();
         reportDto.UpdatedUtc.Should().NotBeNull();

@@ -9,21 +9,19 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 
 public class SubmitReportHandler(IMapper mapper, IReportRepository reportRepository) : IRequestHandler<SubmitReportRequest>
 {
-    public Task Handle(SubmitReportRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SubmitReportRequest request, CancellationToken cancellationToken)
     {
         var reportDto = mapper.Map<ReportDto>(request.Report);
 
         if (reportDto == null)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         reportDto.Submitted = true;
 
-        reportRepository.Update(reportDto);
+        await reportRepository.Update(reportDto);
 
-        reportRepository.DeleteHistory(reportDto.Id);
-        
-        return Task.CompletedTask;
+        await reportRepository.DeleteHistory(reportDto.Id);
     }
 }

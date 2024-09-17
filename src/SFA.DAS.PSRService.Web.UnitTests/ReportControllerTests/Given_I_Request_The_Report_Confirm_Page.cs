@@ -1,9 +1,6 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
@@ -12,7 +9,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
 public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
 {
     [Test]
-    public void When_The_Report_Is_Valid_To_Submit_Then_Show_Confirm_View()
+    public async Task When_The_Report_Is_Valid_To_Submit_Then_Show_Confirm_View()
     {
         // arrange
         var report = new ReportBuilder()
@@ -22,12 +19,12 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
             .WhereReportIsNotAlreadySubmitted()
             .Build();
 
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
         MockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
         Controller.ObjectValidator = GetObjectValidator().Object;
 
         // act
-        var result = Controller.Confirm();
+        var result = await Controller.Confirm();
 
         // assert
         result.Should().BeOfType<ViewResult>();
@@ -36,17 +33,17 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     }
 
     [Test]
-    public void When_Valid_Report_Confirmed_Then_Submit()
+    public async Task When_Valid_Report_Confirmed_Then_Submit()
     {
         // arrange
         var report = new Report(); // not submitted and empty sections, should be valid for submission
 
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
         MockReportService.Setup(s => s.SubmitReport(report)).Verifiable();
         Controller.ObjectValidator = GetObjectValidator().Object;
 
         // act
-        var result = Controller.SubmitPost();
+        var result = await Controller.SubmitPost();
 
         // assert
         MockReportService.VerifyAll();
@@ -65,10 +62,10 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     }
 
     [Test]
-    public void When_Unconfirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
+    public async Task When_Unconfirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
     {
         // arrange
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Report()).Verifiable();
         Controller.ObjectValidator = GetFailingObjectValidator().Object;
 
         const string url = "report/create";
@@ -76,7 +73,7 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
         // act
-        var result = Controller.Confirm();
+        var result = await Controller.Confirm();
 
         // assert
         MockReportService.VerifyAll();
@@ -97,10 +94,10 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     }
 
     [Test]
-    public void When_Confirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
+    public async Task When_Confirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
     {
         // arrange
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Report()).Verifiable();
 
         Controller.ObjectValidator = GetFailingObjectValidator().Object;
 
@@ -109,7 +106,7 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
         // act
-        var result = Controller.SubmitPost();
+        var result = await Controller.SubmitPost();
 
         // assert
         MockReportService.VerifyAll();
@@ -120,13 +117,13 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     }
 
     [Test]
-    public void When_Unconfirmed_Report_Is_Not_Found_Then_Return_404()
+    public async Task When_Unconfirmed_Report_Is_Not_Found_Then_Return_404()
     {
         // arrange
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null).Verifiable();
 
         // act
-        var result = Controller.Confirm();
+        var result = await Controller.Confirm();
 
         // assert
         MockReportService.VerifyAll();
@@ -134,13 +131,13 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     }
 
     [Test]
-    public void When_Confirmed_Report_Is_Not_Found_Then_Return_404()
+    public async Task When_Confirmed_Report_Is_Not_Found_Then_Return_404()
     {
         // arrange
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), "ABCDE")).Returns((Report)null).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), "ABCDE")).ReturnsAsync((Report)null).Verifiable();
 
         // act
-        var result = Controller.SubmitPost();
+        var result = await Controller.SubmitPost();
 
         // assert
         MockReportService.VerifyAll();
@@ -148,7 +145,7 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     }
 
     [Test]
-    public void When_The_Report_Is_Submitted_Redirect_To_Home()
+    public async Task When_The_Report_Is_Submitted_Redirect_To_Home()
     {
         // arrange
         const string url = "home/Index";
@@ -165,12 +162,12 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
                 .WhereReportIsAlreadySubmitted()
                 .Build();
 
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
         MockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
         Controller.ObjectValidator = GetObjectValidator().Object;
 
         // act
-        var result = Controller.Confirm();
+        var result = await Controller.Confirm();
 
         // assert
         result.Should().BeOfType<RedirectResult>();

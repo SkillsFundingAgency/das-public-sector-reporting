@@ -7,19 +7,17 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 
 public class UnSubmitReportHandler(IReportRepository reportRepository) : IRequestHandler<UnSubmitReportRequest>
 {
-    public Task Handle(UnSubmitReportRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UnSubmitReportRequest request, CancellationToken cancellationToken)
     {
-        var report = reportRepository.Get(request.ReportingPeriod.PeriodString, request.HashedEmployerAccountId);
+        var report = await reportRepository.Get(request.ReportingPeriod.PeriodString, request.HashedEmployerAccountId);
 
         if (report == null)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         report.Submitted = false;
 
-        reportRepository.Update(report);
-
-        return Task.CompletedTask;
+        await reportRepository.Update(report);
     }
 }

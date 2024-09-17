@@ -1,24 +1,18 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.Data.SqlClient;
-using NUnit.Framework;
-using SFA.DAS.PSRService.Application.Domain;
+﻿using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
-using SFA.DAS.PSRService.Data;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_Created_A_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_I_Have_Created_A_Report
-    : GivenWhenThen<IReportRepository>
+public abstract class Given_I_Have_Created_A_Report : GivenWhenThen<IReportRepository>
 {
     protected ReportDto CreatedReport { get; set; }
 
-    protected override void Given()
+    protected override async Task Given()
     {
         RepositoryTestHelper.ClearData();
 
-        SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
+        Sut = new Data.SqlReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
         CreatedReport = new ReportDto
         {
@@ -32,14 +26,13 @@ public abstract class Given_I_Have_Created_A_Report
             UpdatedBy = $"{{ Id: '{Guid.NewGuid()}', Name: 'Name'}}"
         };
 
-        SUT.Create(CreatedReport);
+        await Sut.Create(CreatedReport);
     }
 
 
     [TearDown]
     public void ClearDatabase()
     {
-        RepositoryTestHelper
-            .ClearData();
+        RepositoryTestHelper.ClearData();
     }
 }

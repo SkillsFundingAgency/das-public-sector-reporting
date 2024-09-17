@@ -2,15 +2,15 @@
 
 public abstract class And_All_Mandatory_Numbers(bool isLocalAuthority) : And_I_Have_Reported_All_Mandatory_Factors(isLocalAuthority)
 {
-    protected override void Given()
+    protected override async Task Given()
     {
-        base.Given();
-        BuildAndSubmitAllMandatoryNumbers();
+        await base.Given();
+        await BuildAndSubmitAllMandatoryNumbers();
     }
 
-    private void BuildAndSubmitAllMandatoryNumbers()
+    private async Task BuildAndSubmitAllMandatoryNumbers()
     {
-        QuestionController.Submit(new ReportNumbersAnswersBuilder().BuildValidYourEmployeesAnswers().ForReportingPeriod(TestHelper.CurrentPeriod));
-        QuestionController.Submit(new ReportNumbersAnswersBuilder().BuildValidYourApprenticesAnswers().ForReportingPeriod(TestHelper.CurrentPeriod));
+        await QuestionController.Submit(new ReportNumbersAnswersBuilder().BuildValidYourEmployeesAnswers().ForReportingPeriod(TestHelper.CurrentPeriod));
+        await QuestionController.Submit(new ReportNumbersAnswersBuilder().BuildValidYourApprenticesAnswers().ForReportingPeriod(TestHelper.CurrentPeriod));
     }
 }

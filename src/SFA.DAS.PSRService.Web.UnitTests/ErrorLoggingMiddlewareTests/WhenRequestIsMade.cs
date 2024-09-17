@@ -1,9 +1,5 @@
-﻿using System;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Middleware;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ErrorLoggingMiddlewareTests;

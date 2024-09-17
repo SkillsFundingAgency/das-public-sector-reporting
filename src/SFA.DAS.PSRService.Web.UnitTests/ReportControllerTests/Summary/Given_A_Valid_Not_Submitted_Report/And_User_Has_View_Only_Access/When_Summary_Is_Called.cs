@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -15,10 +12,10 @@ public class WhenSummaryIsCalled : And_User_Has_View_Only_Access
     private IActionResult _result;
     private ReportViewModel _model;
 
-    protected override void When()
+    protected override async Task  When()
     {
         const string hashedAccountId = "ABC123";
-        _result = Controller.Summary(hashedAccountId, "1718");
+        _result = await Controller.Summary(hashedAccountId, "1718");
 
         var viewResult = _result as ViewResult;
 

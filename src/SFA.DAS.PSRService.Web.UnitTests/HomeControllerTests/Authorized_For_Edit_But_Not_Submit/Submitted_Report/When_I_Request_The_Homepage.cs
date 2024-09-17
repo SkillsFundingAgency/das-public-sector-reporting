@@ -1,95 +1,86 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit_But_Not_Submit.Submitted_Report;
 
 [TestFixture]
-public class When_I_Request_The_Homepage : And_Current_Report_Submitted
+public class WhenIRequestTheHomepage : And_Current_Report_Submitted
 {
-    private IActionResult result;
-    private ViewResult viewResult;
-    private IndexViewModel model;
+    private IActionResult _result;
+    private ViewResult _viewResult;
+    private IndexViewModel _model;
 
-    protected override void When()
+    protected override async Task When()
     {
-        result = Sut.Index();
-        viewResult = result as ViewResult;
-        model = viewResult?.Model as IndexViewModel;
+        _result = await Sut.Index();
+        _viewResult = _result as ViewResult;
+        _model = _viewResult?.Model as IndexViewModel;
     }
 
     [Test]
     public void Then_ViewResult_Is_Returned()
     {
-        viewResult = result as ViewResult;
+        _viewResult = _result as ViewResult;
     }
 
     [Test]
     public void Then_ViewResult_Is_No_Null()
     {
-        viewResult.Should().NotBeNull();
+        _viewResult.Should().NotBeNull();
     }
 
     [Test]
     public void Then_Model_Is_An_IndexViewModel()
     {
-        model = viewResult.Model as IndexViewModel;
+        _model = _viewResult.Model as IndexViewModel;
     }
 
     [Test]
     public void Then_Model_Is_Not_Null()
     {
-        model.Should().NotBeNull();
+        _model.Should().NotBeNull();
     }
 
     [Test]
     public void Then_Create_Report_Is_Disabled()
     {
-        model.CanCreateReport.Should().BeFalse();
+        _model.CanCreateReport.Should().BeFalse();
     }
 
     [Test]
     public void Then_Edit_Report_Is_Disabled()
     {
-        model.CanEditReport.Should().BeFalse();
+        _model.CanEditReport.Should().BeFalse();
     }
 
     [Test]
     public void Then_Report_Period_Matches_Current()
     {
-        model.Period.Should().Be(CurrentPeriod);
+        _model.Period.Should().Be(CurrentPeriod);
     }
 
     [Test]
     public void Then_Readonly_Is_False()
     {
-        model.Readonly.Should().BeFalse();
+        _model.Readonly.Should().BeFalse();
     }
 
     [Test]
     public void Then_CurrentReportAlreadySubmitted_Is_True()
     {
-        model.CurrentReportAlreadySubmitted.Should().BeTrue();
+        _model.CurrentReportAlreadySubmitted.Should().BeTrue();
     }
 
     [Test]
     public void Then_The_Welcome_Message_Is_Edit_Report_Submitted()
     {
-        var
-            expectedMessage
-                =
-                HomePageWelcomeMessageProvider
+        var expectedMessage = HomePageWelcomeMessageProvider
                     .GetMesssage()
                     .ForPeriod(CurrentPeriod)
                     .WhereUserCanEdit()
                     .AndReportIsAlreadySubmitted();
-
-        model
-            .WelcomeMessage
-            .Should()
-            .BeEquivalentTo(
-                expectedMessage);
+        
+        _model.WelcomeMessage.Should().BeEquivalentTo(expectedMessage);
     }
 }

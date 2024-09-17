@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_Report_Does_Not_Exist;
@@ -11,7 +8,7 @@ public class Given_Report_Does_Not_Exist : GivenAReportController
 {
     protected override void Given()
     {
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null);
     }
 }
 
@@ -21,9 +18,9 @@ public class When_Summary_Is_Called : Given_Report_Does_Not_Exist
 {
     private IActionResult _result;
 
-    protected override void When()
+    protected override async Task  When()
     {
         const string hashedAccountId = "ABC123";
-        _result = Controller.Summary(hashedAccountId, "NoReport");
+        _result = await Controller.Summary(hashedAccountId, "NoReport");
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -15,7 +11,7 @@ public class Given_I_Request_The_Report_IsLocalAuthority_Page : ReportController
 {
     [TestCase(true)]
     [TestCase(false)]
-    public void And_The_Report_IsLocalAuthority_Is_Successful_Then_Redirect_To_Edit(bool isLocalAuthority)
+    public async Task And_The_Report_IsLocalAuthority_Is_Successful_Then_Redirect_To_Edit(bool isLocalAuthority)
     {
         // arrange
         var url = "report/Edit";
@@ -25,10 +21,10 @@ public class Given_I_Request_The_Report_IsLocalAuthority_Page : ReportController
 
         MockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
 
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null);
 
         // act
-        var result = Controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel { IsLocalAuthority = isLocalAuthority });
+        var result = await Controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel { IsLocalAuthority = isLocalAuthority });
 
         // assert
         MockUrlHelper.VerifyAll();

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using FluentAssertions;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization;
@@ -14,11 +10,13 @@ public sealed class WhenCreateMethodIsCalled : Given_A_ReportController
 {
     private Attribute _attribute;
 
-    protected override void When()
+    protected override Task When()
     {
         _attribute = Sut.GetType()
             .GetMethod(nameof(Sut.Create))
             .GetCustomAttribute(typeof(AuthorizeAttribute));
+
+        return Task.CompletedTask;
     }
 
     [Test]

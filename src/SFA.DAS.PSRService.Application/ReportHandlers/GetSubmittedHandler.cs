@@ -11,10 +11,10 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 
 public class GetSubmittedHandler(IReportRepository reportRepository, IMapper mapper) : IRequestHandler<GetSubmittedRequest, IEnumerable<Report>>
 {
-    public Task<IEnumerable<Report>> Handle(GetSubmittedRequest request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Report>> Handle(GetSubmittedRequest request, CancellationToken cancellationToken)
     {
         return string.IsNullOrEmpty(request.EmployerId)
-            ? Task.FromResult<IEnumerable<Report>>([])
-            : Task.FromResult(reportRepository.GetSubmitted(request.EmployerId).Select(mapper.Map<Report>));
+            ? []
+            : (await reportRepository.GetSubmitted(request.EmployerId)).Select(mapper.Map<Report>);
     }
 }

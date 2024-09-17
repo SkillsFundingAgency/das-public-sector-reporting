@@ -1,10 +1,8 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
@@ -38,7 +36,7 @@ public abstract class Given_Report_Cannot_Be_Edited : GivenWhenThen<ReportContro
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
         _mockReportService.Setup(m => m.GetReport(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(new Report { Submitted = true });
+            .ReturnsAsync(new Report { Submitted = true });
 
         _mockReportService.Setup(m => m.CanBeEdited(It.IsAny<Report>()))
             .Returns(false);

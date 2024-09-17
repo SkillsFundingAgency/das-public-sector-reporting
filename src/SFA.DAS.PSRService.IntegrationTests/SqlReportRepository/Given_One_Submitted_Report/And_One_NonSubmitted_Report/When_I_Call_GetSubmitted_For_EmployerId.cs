@@ -1,8 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Submitted_Report.And_One_NonSubmitted_Report;
@@ -13,9 +9,9 @@ public class When_I_Call_GetSubmitted_For_EmployerId : And_One_NonSubmitted_Repo
 {
     private IList<ReportDto> _submittedReports;
 
-    protected override void When()
+    protected override async Task When()
     {
-        _submittedReports = SUT.GetSubmitted(EmployerId);
+        _submittedReports = await Sut.GetSubmitted(EmployerId);
     }
 
     [Test]
@@ -27,9 +23,6 @@ public class When_I_Call_GetSubmitted_For_EmployerId : And_One_NonSubmitted_Repo
     [Test]
     public void Then_Retrieved_Report_Is_Equivalent_To_SubmittedReport()
     {
-        RepositoryTestHelper
-            .AssertReportsAreEquivalent(
-                SubmittedReport
-                , _submittedReports.Single());
+        RepositoryTestHelper.AssertReportsAreEquivalent(SubmittedReport, _submittedReports.Single());
     }
 }

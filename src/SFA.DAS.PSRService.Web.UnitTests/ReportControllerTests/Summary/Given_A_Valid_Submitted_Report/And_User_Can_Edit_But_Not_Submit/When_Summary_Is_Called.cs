@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Submitted_Report.And_User_Can_Edit_But_Not_Submit;
@@ -13,10 +10,10 @@ public class WhenSummaryIsCalled : And_User_Can_Edit_But_Not_Submit
     private IActionResult _result;
     private ReportViewModel _model;
 
-    protected override void When()
+    protected override async Task  When()
     {
         const string hashedAccountId = "ABC123";
-        _result = Controller.Summary(hashedAccountId, "1718");
+        _result = await Controller.Summary(hashedAccountId, "1718");
 
         var viewResult = _result as ViewResult;
 

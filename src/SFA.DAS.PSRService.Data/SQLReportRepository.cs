@@ -2,65 +2,57 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 
-namespace SFA.DAS.PSRService.Data
+namespace SFA.DAS.PSRService.Data;
+
+public class SqlReportRepository(IDbConnection connection) : IReportRepository
 {
-    public class SQLReportRepository : IReportRepository
+    public async Task<ReportDto> Get(string period, string employerId)
     {
-        private readonly IDbConnection _connection;
+        return await connection.QuerySingleOrDefaultAsync<ReportDto>(
+            "select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
+            new { employerId, period });
+    }
 
-        public SQLReportRepository(IDbConnection connection)
-        {
-            _connection = connection;
-        }
+    public async Task<ReportDto> Get(Guid id)
+    {
+        return await connection.QuerySingleOrDefaultAsync<ReportDto>("select * from Report where Id = @id", new { id });
+    }
 
-        public ReportDto Get(string period, string employerId)
-        {
-            var report = _connection.QuerySingleOrDefault<ReportDto>(
-                "select * from Report where EmployerID = @employerId and ReportingPeriod = @period",
-                new { employerId, period });
+    public async Task<IList<ReportDto>> GetSubmitted(string employerId)
+    {
+        var reportData = await connection.QueryAsync<ReportDto>(
+            "select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
+            new { employerId });
 
-            return report;
-        }
+        return reportData.ToList();
+    }
 
-        public ReportDto Get(Guid id)
-        {
-            return _connection.QuerySingleOrDefault<ReportDto>("select * from Report where Id = @id", new { id });
-        }
-
-        public IList<ReportDto> GetSubmitted(string employerId)
-        {
-            var reportData = _connection.Query<ReportDto>(
-                "select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
-                new { employerId });
-
-            return reportData.ToList();
-        }
-
-        public void Create(ReportDto report)
-        {
-            _connection.Execute(@"
+    public async Task Create(ReportDto report)
+    {
+        await connection.ExecuteAsync(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted],[AuditWindowStartUtc],[UpdatedUtc],[UpdatedBy])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @AuditWindowStartUtc, @UpdatedUtc, @UpdatedBy)",
-                new
-                {
-                    report.Id,
-                    report.EmployerId,
-                    report.ReportingData,
-                    report.ReportingPeriod,
-                    report.Submitted,
-                    report.AuditWindowStartUtc,
-                    report.UpdatedUtc,
-                    report.UpdatedBy
-                });
-        }
+            new
+            {
+                report.Id,
+                report.EmployerId,
+                report.ReportingData,
+                report.ReportingPeriod,
+                report.Submitted,
+                report.AuditWindowStartUtc,
+                report.UpdatedUtc,
+                report.UpdatedBy
+            });
+    }
 
-        public void Update(ReportDto reportDto)
-        {
-            _connection.Execute(@"
+    public async Task Update(ReportDto reportDto)
+    {
+        await connection.ExecuteAsync(@"
                     UPDATE [dbo].[Report]
                        SET [ReportingData] = @ReportingData
                           ,[Submitted] = @Submitted
@@ -68,20 +60,20 @@ namespace SFA.DAS.PSRService.Data
                           ,[UpdatedUtc] = @UpdatedUtc
                           ,[UpdatedBy] = @UpdatedBy
                      WHERE Id = @Id",
-                new
-                {
-                    reportDto.ReportingData,
-                    reportDto.Submitted,
-                    reportDto.AuditWindowStartUtc,
-                    reportDto.UpdatedUtc,
-                    reportDto.UpdatedBy,
-                    reportDto.Id
-                });
-        }
+            new
+            {
+                reportDto.ReportingData,
+                reportDto.Submitted,
+                reportDto.AuditWindowStartUtc,
+                reportDto.UpdatedUtc,
+                reportDto.UpdatedBy,
+                reportDto.Id
+            });
+    }
 
-        public void SaveAuditRecord(AuditRecordDto auditRecordDto)
-        {
-            _connection.Execute(@"
+    public async Task SaveAuditRecord(AuditRecordDto auditRecordDto)
+    {
+        await connection.ExecuteAsync(@"
                 INSERT INTO [dbo].[AuditHistory]
                     ([UpdatedUtc]
                     ,[ReportingData]
@@ -92,29 +84,30 @@ namespace SFA.DAS.PSRService.Data
                     ,@ReportingData
                     ,@UpdatedBy
                     ,@ReportId)",
-                new
-                {
-                    auditRecordDto.UpdatedUtc,
-                    auditRecordDto.ReportingData,
-                    auditRecordDto.UpdatedBy,
-                    auditRecordDto.ReportId
-                });
-        }
+            new
+            {
+                auditRecordDto.UpdatedUtc,
+                auditRecordDto.ReportingData,
+                auditRecordDto.UpdatedBy,
+                auditRecordDto.ReportId
+            });
+    }
 
-        public IReadOnlyList<AuditRecordDto> GetAuditRecordsMostRecentFirst(Guid reportId)
-        {
-            return _connection
-                .Query<AuditRecordDto>(
-                    "select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc",
-                    new { reportId }).ToList();
-        }
+    public async Task<IReadOnlyList<AuditRecordDto>> GetAuditRecordsMostRecentFirst(Guid reportId)
+    {
+        var records = await connection
+            .QueryAsync<AuditRecordDto>(
+                "select * from dbo.AuditHistory where ReportId = @reportId order by UpdatedUtc desc",
+                new { reportId });
 
-        public void DeleteHistory(Guid reportId)
-        {
-            _connection.Execute(@"
+        return records.ToList();
+    }
+
+    public async Task DeleteHistory(Guid reportId)
+    {
+        await connection.ExecuteAsync(@"
                     DELETE [dbo].[AuditHistory]
                      WHERE ReportId = @ReportId",
-                new { reportId });
-        }
+            new { reportId });
     }
 }

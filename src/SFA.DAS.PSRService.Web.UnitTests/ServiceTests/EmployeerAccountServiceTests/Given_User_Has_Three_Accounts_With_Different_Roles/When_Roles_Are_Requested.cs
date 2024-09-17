@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 
@@ -13,9 +10,9 @@ public sealed class When_Roles_Are_Requested : GivenUserHasThreeAccountsWithDiff
 {
     private IEnumerable<EmployerIdentifier> _employerIdentifiers;
 
-    protected override void When()
+    protected override async Task  When()
     {
-        _employerIdentifiers = Sut.GetUserRoles(EmployerIdentifiers, UserId).Result;
+        _employerIdentifiers = await Sut.GetUserRoles(EmployerIdentifiers, UserId);
     }
 
     [Test]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
 using NUnit.Framework;
@@ -30,9 +31,9 @@ public class Given_Mapped_Dto_Is_Null :GivenWhenThen<SubmitReportHandler>
         Sut = new SubmitReportHandler(mockMapper.Object, _mockRepository.Object);
     }
 
-    protected override void When()
+    protected override async Task When()
     {
-        Sut.Handle(new SubmitReportRequest(new Report()), new CancellationToken());
+        await Sut.Handle(new SubmitReportRequest(new Report()), new CancellationToken());
     }
 
     [Test]

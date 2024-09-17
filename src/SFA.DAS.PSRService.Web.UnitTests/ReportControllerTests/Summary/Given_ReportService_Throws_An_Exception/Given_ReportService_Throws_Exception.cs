@@ -1,10 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_ReportService_Throws_An_Exception;
 
@@ -27,10 +22,10 @@ public class When_Summary_Is_Called : Given_ReportService_Throws_Exception
 {
     private IActionResult _result;
 
-    protected override void When()
+    protected override async Task  When()
     {
         const string hashedAccountId = "ABC123";
-        _result = Controller.Summary(hashedAccountId, "ReportError");
+        _result = await Controller.Summary(hashedAccountId, "ReportError");
     }
 
     [Test]

@@ -1,26 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
-
-namespace SFA.DAS.PSRService.IntegrationTests;
+﻿namespace SFA.DAS.PSRService.IntegrationTests;
 
 [ExcludeFromCodeCoverage]
 public abstract class GivenWhenThen<TypeOfSUT>
 {
-
-    protected TypeOfSUT SUT;
+    protected TypeOfSUT Sut;
 
     [SetUp]
-    public void GivenWhen()
+    public async Task GivenWhen()
     {
-        Given();
-        When();
+        await Given();
+        await When();
     }
 
-    protected virtual void Given()
+    protected virtual async Task Given()
     {
     }
 
-    protected virtual void When()
+    protected virtual async Task When()
     {
     }
 }

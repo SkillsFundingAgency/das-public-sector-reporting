@@ -1,13 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Newtonsoft.Json.Linq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Controllers;
@@ -64,12 +58,12 @@ public class WhenUserEntersSite
     }
 
     [Test]
-    public void AndThereAreNoReportsThenCreateReportIsEnabled()
+    public async Task AndThereAreNoReportsThenCreateReportIsEnabled()
     {
         // arrange
 
         // act
-        var result = _homeController.Index() as ViewResult;
+        var result = await _homeController.Index() as ViewResult;
 
         // assert
         result.Should().NotBeNull();
@@ -80,7 +74,7 @@ public class WhenUserEntersSite
     }
 
     [Test]
-    public void AndThereIsSubmittedReportThenCreateReportIsDisabled()
+    public async Task AndThereIsSubmittedReportThenCreateReportIsDisabled()
     {
         // arrange
         TestHelper.CreateReport(new ReportDto
@@ -93,7 +87,7 @@ public class WhenUserEntersSite
         });
 
         // act
-        var result = _homeController.Index() as ViewResult;
+        var result = await _homeController.Index() as ViewResult;
 
         // assert
         result.Should().NotBeNull();
@@ -104,7 +98,7 @@ public class WhenUserEntersSite
     }
 
     [Test]
-    public void AndThereIsUnsubmittedReportThenEditReportIsEnabled()
+    public async Task AndThereIsUnsubmittedReportThenEditReportIsEnabled()
     {
         // arrange
         TestHelper.CreateReport(new ReportDto
@@ -117,7 +111,7 @@ public class WhenUserEntersSite
         });
 
         // act
-        var result = _homeController.Index() as ViewResult;
+        var result = await _homeController.Index() as ViewResult;
 
         // assert
         result.Should().NotBeNull();

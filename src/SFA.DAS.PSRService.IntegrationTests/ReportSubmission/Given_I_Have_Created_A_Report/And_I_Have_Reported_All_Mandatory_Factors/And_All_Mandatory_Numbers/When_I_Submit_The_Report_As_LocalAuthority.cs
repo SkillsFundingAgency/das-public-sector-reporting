@@ -1,13 +1,9 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.
     And_I_Have_Reported_All_Mandatory_Factors.And_All_Mandatory_Numbers;
 
-public sealed class When_I_Submit_The_Report_As_LocalAuthority
-    : And_All_Mandatory_Numbers_As_LocalAuthority
+public sealed class When_I_Submit_The_Report_As_LocalAuthority : And_All_Mandatory_Numbers_As_LocalAuthority
 {
     private IActionResult _submitResponse;
 
@@ -15,9 +11,9 @@ public sealed class When_I_Submit_The_Report_As_LocalAuthority
     {
     }
 
-    protected override void When()
+    protected override async Task When()
     {
-        _submitResponse = SUT.SubmitPost();
+        _submitResponse = await Sut.SubmitPost();
     }
 
     [Test]

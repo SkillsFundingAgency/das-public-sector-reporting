@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace SFA.DAS.PSRService.Application.UnitTests;
@@ -9,17 +10,17 @@ public abstract class GivenWhenThen<T>
     protected T Sut;
 
     [SetUp]
-    public void GivenWhen()
+    public async Task GivenWhen()
     {
         Given();
-        When();
+        await When();
     }
 
     protected virtual void Given()
     {
     }
 
-    protected virtual void When()
+    protected virtual async Task When()
     {
     }
 }

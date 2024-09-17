@@ -1,8 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using NUnit.Framework;
-
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.
+﻿namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.
     Given_A_Null_Report;
 
 [ExcludeFromCodeCoverage]

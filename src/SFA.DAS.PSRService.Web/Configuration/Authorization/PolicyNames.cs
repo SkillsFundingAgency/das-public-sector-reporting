@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace SFA.DAS.PSRService.Web.Configuration.Authorization
+﻿namespace SFA.DAS.PSRService.Web.Configuration.Authorization
 {
     public static class PolicyNames
     {

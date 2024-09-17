@@ -1,11 +1,6 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Amend.Given_A_Submitted_Report.And_User_Can_Edit;
@@ -29,11 +24,11 @@ public class WhenAmendIsCalled : And_User_Can_Edit
             .Returns(ExpectedUrl);
     }
 
-    protected override void When()
+    protected override async Task When()
     {
-        base.When();
+        await base.When();
 
-        _result = Controller.Amend();
+        _result = await Controller.Amend();
     }
 
     [Test]

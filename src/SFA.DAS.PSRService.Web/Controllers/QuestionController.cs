@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Domain.Enums;
@@ -27,18 +28,22 @@ namespace SFA.DAS.PSRService.Web.Controllers
         }
 
         [Route("accounts/{hashedEmployerAccountId}/[controller]/{id}")]
-        public IActionResult Index(string id)
+        public async Task<IActionResult> Index(string id)
         {
             var currentPeriod = _periodService.GetCurrentPeriod();
-            var report = _reportService.GetReport(currentPeriod.PeriodString, EmployerAccount.AccountId);
+            var report = await _reportService.GetReport(currentPeriod.PeriodString, EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
+            {
                 return new RedirectResult(Url.Action("Index", "Home"));
+            }
 
             var currentSection = report.GetQuestionSection(id);
 
             if (currentSection == null)
+            {
                 return new NotFoundResult();
+            }
 
             var sectionViewModel = new SectionViewModel
             {
@@ -56,9 +61,9 @@ namespace SFA.DAS.PSRService.Web.Controllers
         [Route("accounts/{hashedEmployerAccountId}/[controller]/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Submit(SectionModel section)
+        public async Task<IActionResult> Submit(SectionModel section)
         {
-            var report = _reportService.GetReport(section.ReportingPeriod, EmployerAccount.AccountId);
+            var report = await _reportService.GetReport(section.ReportingPeriod, EmployerAccount.AccountId);
 
             if (!_reportService.CanBeEdited(report))
                 return new RedirectResult(Url.Action("Index", "Home"));
@@ -76,7 +81,6 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     if (answeredQuestion == null)
                         continue;
 
-
                     if (question.Type == QuestionType.Number && !string.IsNullOrEmpty(answeredQuestion.Answer))
                     {
                         question.Answer = int.Parse(answeredQuestion.Answer.Trim(), NumberStyles.AllowThousands).ToString();
@@ -87,9 +91,10 @@ namespace SFA.DAS.PSRService.Web.Controllers
                     }
                 }
 
-                _reportService.SaveReport(report, _userService.GetUserModel(User),null);
+                await _reportService.SaveReport(report, _userService.GetUserModel(User), null);
                 return new RedirectResult(Url.Action("Edit", "Report"));
             }
+
             var viewModel = new SectionViewModel
             {
                 CurrentPeriod = report.Period,
@@ -97,6 +102,7 @@ namespace SFA.DAS.PSRService.Web.Controllers
                 Report = report,
                 Questions = section.Questions
             };
+            
             return View("Index", viewModel);
         }
     }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Threading;
-using FluentAssertions;
+﻿using System.Threading;
 using MediatR;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
-using Assert = NUnit.Framework.Assert;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests;
 
@@ -38,7 +33,7 @@ public class Given_I_Create_A_Report
 
     [TestCase(true)]
     [TestCase(false)]
-    public void And_Employer_Id_And_Period_Is_Supplied_Then_Create_Report(bool isLocalAuthority)
+    public async Task  And_Employer_Id_And_Period_Is_Supplied_Then_Create_Report(bool isLocalAuthority)
     {
         //Arrange
         CreateReportRequest actualRequest = null;
@@ -48,7 +43,7 @@ public class Given_I_Create_A_Report
             .Verifiable();
 
         //Act
-        _reportService.CreateReport("ABCDE", _user, isLocalAuthority);
+        await _reportService.CreateReport("ABCDE", _user, isLocalAuthority);
 
         //Assert
         _mediatorMock.VerifyAll();

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Dapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
@@ -17,7 +14,6 @@ using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.ReportHandlers;
-using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -83,7 +79,7 @@ internal static class TestHelper
             });
 
             config.For<IReportService>().Use<ReportService>();
-            config.For<IReportRepository>().Use<SQLReportRepository>().Ctor<string>().Is(ConnectionString);
+            config.For<IReportRepository>().Use<Data.SqlReportRepository>().Ctor<string>().Is(ConnectionString);
             config.For<IEmployerAccountService>().Use<EmployerAccountService>();
             config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 

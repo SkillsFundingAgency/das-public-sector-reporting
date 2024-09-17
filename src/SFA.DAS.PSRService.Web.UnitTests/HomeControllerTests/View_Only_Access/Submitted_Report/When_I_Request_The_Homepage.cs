@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
@@ -13,9 +11,9 @@ public class WhenIRequestTheHomepage : And_Current_Report_Submitted
     private ViewResult _viewResult;
     private IndexViewModel _model;
 
-    protected override void When()
+    protected override async Task When()
     {
-        _result = Sut.Index();
+        _result = await Sut.Index();
         _viewResult = _result as ViewResult;
         _model = _viewResult?.Model as IndexViewModel;
     }

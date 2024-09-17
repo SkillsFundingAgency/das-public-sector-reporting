@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public interface IReportService
 {
-    public interface IReportService
-    {
-        void CreateReport(string employerId, UserModel user, bool? IsLocalAuthority);
-        Report GetReport(string period,string employerId);
-        void SubmitReport(Report report);
-        IEnumerable<Report> GetSubmittedReports(string employerId);
-        void SaveReport(Report report, UserModel user,bool? IsLocalAuthority);
-        bool CanBeEdited(Report report);
-        IEnumerable<AuditRecord> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
-    }
+    Task CreateReport(string employerId, UserModel user, bool? isLocalAuthority);
+    Task<Report> GetReport(string period,string employerId);
+    Task SubmitReport(Report report);
+    Task<IEnumerable<Report>> GetSubmittedReports(string employerId);
+    Task SaveReport(Report report, UserModel user,bool? isLocalAuthority);
+    bool CanBeEdited(Report report);
+    Task<IEnumerable<AuditRecord>> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
 }

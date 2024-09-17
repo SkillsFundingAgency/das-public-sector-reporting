@@ -2,7 +2,6 @@
 using Azure.Core;
 using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Data.SqlClient;
 using StructureMap;
 

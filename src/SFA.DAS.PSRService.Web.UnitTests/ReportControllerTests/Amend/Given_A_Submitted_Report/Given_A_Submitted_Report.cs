@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Moq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
@@ -12,7 +9,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Amend.Given_A_S
 [ExcludeFromCodeCoverage]
 public abstract class GivenASubmittedReport : GivenAReportController
 {
-    protected Report CurrentReport;
+    private Report _currentReport;
 
     protected override void Given()
     {
@@ -104,7 +101,7 @@ public abstract class GivenASubmittedReport : GivenAReportController
             yourApprentices
         };
 
-        CurrentReport = new Report
+        _currentReport = new Report
         {
             Id = Guid.NewGuid(),
             ReportingPeriod = "1617",
@@ -120,7 +117,7 @@ public abstract class GivenASubmittedReport : GivenAReportController
             It.IsAny<object>()));
         Controller.ObjectValidator = objectValidator.Object;
 
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentReport);
-        MockReportService.Setup(s => s.CanBeEdited(CurrentReport)).Returns(true);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_currentReport);
+        MockReportService.Setup(s => s.CanBeEdited(_currentReport)).Returns(true);
     }
 }

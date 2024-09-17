@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoFixture.NUnit3;
-using FluentAssertions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
-using Moq;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.StartupConfiguration;

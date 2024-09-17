@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.PeriodServiceTests;

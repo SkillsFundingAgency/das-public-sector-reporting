@@ -1,6 +1,4 @@
-﻿using StructureMap.Query;
-
-namespace SFA.DAS.PSRService.Web.ViewModels
+﻿namespace SFA.DAS.PSRService.Web.ViewModels
 {
     public class OrganisationReviewViewModel
     {

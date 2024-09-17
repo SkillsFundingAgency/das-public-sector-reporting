@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.ViewModels;
 using SFA.DAS.Testing.AutoFixture;
@@ -15,13 +12,13 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
 public class Given_I_Request_The_Report_List_Page : ReportControllerTestBase
 {
     [Test, MoqAutoData]
-    public void And_More_Than_One_Report_Then_Show_List(string hashedAccountId)
+    public async Task And_More_Than_One_Report_Then_Show_List(string hashedAccountId)
     {
         // arrange
-        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList);
+        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).ReturnsAsync(ReportList);
         
         // act
-        var result = Controller.List(hashedAccountId);
+        var result = await Controller.List(hashedAccountId);
 
         // assert
         result.Should().BeOfType<ViewResult>();
@@ -41,7 +38,7 @@ public class Given_I_Request_The_Report_List_Page : ReportControllerTestBase
 
     [Test, MoqAutoData]
     [Ignore("No longer a requirement")]
-    public void And_Only_One_Report_Then_Redirect_To_Edit(string hashedAccountId)
+    public async Task And_Only_One_Report_Then_Redirect_To_Edit(string hashedAccountId)
     {
         // arrange
         const string url = "report/edit";
@@ -49,9 +46,9 @@ public class Given_I_Request_The_Report_List_Page : ReportControllerTestBase
 
         MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList.Take(1).ToList);
+        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).ReturnsAsync(ReportList.Take(1).ToList);
         // act
-        var result = Controller.List(hashedAccountId);
+        var result = await Controller.List(hashedAccountId);
 
         // assert
         MockUrlHelper.VerifyAll();
@@ -66,16 +63,16 @@ public class Given_I_Request_The_Report_List_Page : ReportControllerTestBase
 
     [Test, MoqAutoData]
     [Ignore("No longer a requirement")]
-    public void And_No_Report_Then_Redirect_To_Start(string hashedAccountId)
+    public async Task And_No_Report_Then_Redirect_To_Start(string hashedAccountId)
     {
         const string url = "home/index";
         UrlActionContext actualContext = null;
 
         MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(new List<Report>());
+        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).ReturnsAsync(new List<Report>());
         // act
-        var result = Controller.List(hashedAccountId);
+        var result = await Controller.List(hashedAccountId);
 
         // assert
         result.Should().BeOfType<RedirectResult>();

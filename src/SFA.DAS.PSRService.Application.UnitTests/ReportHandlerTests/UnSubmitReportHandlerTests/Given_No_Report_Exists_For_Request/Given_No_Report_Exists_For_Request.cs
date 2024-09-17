@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
@@ -22,14 +23,14 @@ public class Given_No_Report_Exists_For_Request :GivenWhenThen<UnSubmitReportHan
 
         _mockRepository
             .Setup(m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns((ReportDto) null);
+            .ReturnsAsync((ReportDto) null);
 
         Sut = new UnSubmitReportHandler(_mockRepository.Object);
     }
 
-    protected override void When()
+    protected override async Task When()
     {
-        Sut.Handle(new UnSubmitReportRequest("123456", Period.FromInstantInPeriod(DateTime.Now)), new CancellationToken());
+        await Sut.Handle(new UnSubmitReportRequest("123456", Period.FromInstantInPeriod(DateTime.Now)), new CancellationToken());
     }
 
     [Test]

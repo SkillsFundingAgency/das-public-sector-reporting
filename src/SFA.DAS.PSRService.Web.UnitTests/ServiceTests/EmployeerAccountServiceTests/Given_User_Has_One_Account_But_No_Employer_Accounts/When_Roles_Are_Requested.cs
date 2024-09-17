@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.EmployeerAccountServiceTests.Given_User_Has_One_Account_But_No_Employer_Accounts;
@@ -11,9 +8,9 @@ public sealed class When_Roles_Are_Requested : Given_User_Has_One_Account_But_No
 {
     private IEnumerable<EmployerIdentifier> _employerIdentifiers;
 
-    protected override void When()
+    protected override async Task  When()
     {
-        _employerIdentifiers = Sut.GetUserRoles(EmployerIdentifiers, UserId).Result;
+        _employerIdentifiers = await Sut.GetUserRoles(EmployerIdentifiers, UserId);
     }
 
     [Test]

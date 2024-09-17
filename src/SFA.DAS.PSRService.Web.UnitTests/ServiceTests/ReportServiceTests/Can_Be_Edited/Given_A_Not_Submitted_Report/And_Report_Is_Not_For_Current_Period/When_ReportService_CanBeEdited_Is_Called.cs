@@ -1,8 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using NUnit.Framework;
-
-namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.Given_A_Not_Submitted_Report.And_Report_Is_Not_For_Current_Period;
+﻿namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_Be_Edited.Given_A_Not_Submitted_Report.And_Report_Is_Not_For_Current_Period;
 
 [ExcludeFromCodeCoverage]
 [TestFixture]

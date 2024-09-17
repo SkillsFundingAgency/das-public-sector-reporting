@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
@@ -55,18 +51,18 @@ public class Given_I_Request_A_Question
     public void TearDown() => _controller?.Dispose();
 
     [Test]
-    public void And_A_Report_Does_Not_Exist_Then_Redirect_Home()
+    public async Task And_A_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
         const string url = "home/index";
         UrlActionContext actualContext = null;
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null);
         _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
         // act
-        var result = _controller.Index("YourEmployees");
+        var result = await _controller.Index("YourEmployees");
 
         // assert
         _mockUrlHelper.VerifyAll();
@@ -79,26 +75,25 @@ public class Given_I_Request_A_Question
     }
 
     [Test]
-    public void And_A_Valid_Report_Does_Not_Exist_Then_Redirect_Home()
+    public async Task And_A_Valid_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
         var url = "home/index";
         UrlActionContext actualContext = null;
 
-        var report =
-            new ReportBuilder()
-                .WithInvalidSections()
-                .WithEmployerId("ABCDE")
-                .ForCurrentPeriod()
-                .WhereReportIsNotAlreadySubmitted()
-                .Build();
+        var report = new ReportBuilder()
+            .WithInvalidSections()
+            .WithEmployerId("ABCDE")
+            .ForCurrentPeriod()
+            .WhereReportIsNotAlreadySubmitted()
+            .Build();
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report);
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
         // act
-        var result = _controller.Index("YourEmployees");
+        var result = await _controller.Index("YourEmployees");
 
         // assert
         _mockUrlHelper.VerifyAll();
@@ -111,7 +106,7 @@ public class Given_I_Request_A_Question
     }
 
     [Test]
-    public void And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
+    public async Task And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
     {
         // arrange
         var url = "home/index";
@@ -127,17 +122,17 @@ public class Given_I_Request_A_Question
             .ForCurrentPeriod()
             .Build();
 
-        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(stubReport);
 
         // act
-        var result = _controller.Index("YourEmployees");
+        var result = await _controller.Index("YourEmployees");
 
         // assert
         result.Should().BeOfType<NotFoundResult>();
     }
 
     [Test]
-    public void The_Question_ID_Exists_And_Report_Is_Valid_Then_Show_Question_Page()
+    public async Task The_Question_ID_Exists_And_Report_Is_Valid_Then_Show_Question_Page()
     {
         const string url = "home/index";
         UrlActionContext actualContext = null;
@@ -151,11 +146,11 @@ public class Given_I_Request_A_Question
             .WhereReportIsNotAlreadySubmitted()
             .Build();
 
-        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(stubReport);
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
         // act
-        var result = _controller.Index("SectionOne");
+        var result = await _controller.Index("SectionOne");
 
         // assert
         var listViewResult = result as ViewResult;

@@ -11,17 +11,22 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 
 public class GetReportEditHistoryMostRecentFirstHandler(IReportRepository reportRepository, IMapper mapper) : IRequestHandler<GetReportEditHistoryMostRecentFirst, IEnumerable<AuditRecord>>
 {
-    public Task<IEnumerable<AuditRecord>> Handle(GetReportEditHistoryMostRecentFirst request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<AuditRecord>> Handle(GetReportEditHistoryMostRecentFirst request, CancellationToken cancellationToken)
     {
-        var report = reportRepository.Get(period: request.Period.PeriodString, employerId: request.AccountId);
+        var report = await reportRepository.Get(period: request.Period.PeriodString, employerId: request.AccountId);
 
         if (report == null)
         {
-            return Task.FromResult<IEnumerable<AuditRecord>>([]);
+            return [];
         }
 
-        return report.Submitted 
-            ? Task.FromResult<IEnumerable<AuditRecord>>([]) 
-            : Task.FromResult(reportRepository.GetAuditRecordsMostRecentFirst(report.Id).Select(dto => mapper.Map<AuditRecord>(dto)));
+        if (report.Submitted)
+        {
+            return [];
+        }
+
+        var auditRecordDtos = await reportRepository.GetAuditRecordsMostRecentFirst(report.Id);
+
+        return auditRecordDtos.Select(mapper.Map<AuditRecord>);
     }
 }

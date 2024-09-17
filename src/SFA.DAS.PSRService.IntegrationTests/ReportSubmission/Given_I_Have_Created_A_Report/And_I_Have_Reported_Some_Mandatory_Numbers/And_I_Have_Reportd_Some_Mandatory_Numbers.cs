@@ -4,21 +4,18 @@
 public abstract class And_I_Have_Reportd_Some_Mandatory_Numbers
     : Given_I_Have_Created_A_Report
 {
-    public And_I_Have_Reportd_Some_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority){}
+    protected And_I_Have_Reportd_Some_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority){}
 
-    protected override void Given()
+    protected override async Task Given()
     {
-        base.Given();
-
-        BuildAndSubmitOnlyYourEmployeesNumbers();
+        await base.Given();
+        await BuildAndSubmitOnlyYourEmployeesNumbers();
     }
 
-    private void BuildAndSubmitOnlyYourEmployeesNumbers()
+    private async Task BuildAndSubmitOnlyYourEmployeesNumbers()
     {
-        QuestionController
-            .Submit(
-                new ReportNumbersAnswersBuilder()
-                    .BuildValidYourEmployeesAnswers()
-                    .ForReportingPeriod(TestHelper.CurrentPeriod));
+        await QuestionController.Submit(new ReportNumbersAnswersBuilder()
+            .BuildValidYourEmployeesAnswers()
+            .ForReportingPeriod(TestHelper.CurrentPeriod));
     }
 }

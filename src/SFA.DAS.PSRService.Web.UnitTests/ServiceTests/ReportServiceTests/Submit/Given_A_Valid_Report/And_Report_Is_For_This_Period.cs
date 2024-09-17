@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Moq;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submit.Given_A_Valid_Report;
 

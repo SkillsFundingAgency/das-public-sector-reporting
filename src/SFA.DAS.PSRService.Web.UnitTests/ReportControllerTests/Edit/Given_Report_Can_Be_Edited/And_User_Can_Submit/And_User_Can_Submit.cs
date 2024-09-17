@@ -1,7 +1,5 @@
 ﻿using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Moq;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Edit.Given_Report_Can_Be_Edited.And_User_Can_Submit;

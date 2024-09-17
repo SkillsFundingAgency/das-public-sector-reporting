@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Dapper;
-using FluentAssertions;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository;
@@ -47,9 +42,8 @@ internal static class RepositoryTestHelper
         return new DateTime(date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond), date.Kind);
     }
 
-    public static Guid ReportOneId { get; } = new Guid("CDF3F279-3AE1-45A7-B0E6-01B06621853B");
-    public static Guid ReportTwoId { get; } = new Guid("B5B28BD5-6B3B-460F-8576-F367483B54C1");
-
+    public static Guid ReportOneId { get; } = new("CDF3F279-3AE1-45A7-B0E6-01B06621853B");
+    public static Guid ReportTwoId { get; } = new("B5B28BD5-6B3B-460F-8576-F367483B54C1");
 
     public static void AssertReportsAreEquivalent(ReportDto expectedReport, ReportDto actualReport)
     {

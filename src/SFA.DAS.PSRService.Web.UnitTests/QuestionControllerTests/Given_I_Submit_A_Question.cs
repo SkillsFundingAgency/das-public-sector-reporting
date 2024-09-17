@@ -1,11 +1,8 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
@@ -46,7 +43,6 @@ public class Given_I_Submit_A_Question
 
         _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null, _periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
 
-
         _currentValidAndNotSubmittedReport =
             new ReportBuilder()
                 .WithValidSections()
@@ -60,18 +56,18 @@ public class Given_I_Submit_A_Question
     public void TearDown() => _controller?.Dispose();
 
     [Test]
-    public void And_A_Report_Does_Not_Exist_Then_Redirect_Home()
+    public async Task And_A_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
         const string url = "home/index";
         UrlActionContext actualContext = null;
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-        _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns((Report)null).Verifiable();
+        _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).ReturnsAsync((Report)null).Verifiable();
         _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
         // act
-        var result = _controller.Submit(new SectionModel { ReportingPeriod = "111" });
+        var result = await _controller.Submit(new SectionModel { ReportingPeriod = "111" });
 
         // assert
         _mockUrlHelper.VerifyAll();
@@ -85,7 +81,7 @@ public class Given_I_Submit_A_Question
     }
 
     [Test]
-    public void And_Report_Is_Not_Editable_Then_Redirect_Home()
+    public async Task And_Report_Is_Not_Editable_Then_Redirect_Home()
     {
         // arrange
         const string url = "home/index";
@@ -94,11 +90,11 @@ public class Given_I_Submit_A_Question
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns(report).Verifiable();
+        _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).ReturnsAsync(report).Verifiable();
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
         // act
-        var result = _controller.Submit(new SectionModel { ReportingPeriod = "111" });
+        var result = await _controller.Submit(new SectionModel { ReportingPeriod = "111" });
 
         // assert
         _mockUrlHelper.VerifyAll();
@@ -112,14 +108,14 @@ public class Given_I_Submit_A_Question
     }
 
     [Test]
-    public void And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
+    public async Task And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
     {
         // arrange
-        _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).Returns(_currentValidAndNotSubmittedReport).Verifiable();
+        _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).ReturnsAsync(_currentValidAndNotSubmittedReport).Verifiable();
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
         // act
-        var result = _controller.Submit(new SectionModel { ReportingPeriod = "111", Id = "No such section" });
+        var result = await _controller.Submit(new SectionModel { ReportingPeriod = "111", Id = "No such section" });
 
         // assert
         _reportService.VerifyAll();
@@ -127,7 +123,7 @@ public class Given_I_Submit_A_Question
     }
 
     [Test]
-    public void The_SectionViewModel_Is_Valid_Then_Save_Question_Section()
+    public async Task The_SectionViewModel_Is_Valid_Then_Save_Question_Section()
     {
         Report actualReport = null;
         var url = "home/index";
@@ -135,8 +131,8 @@ public class Given_I_Submit_A_Question
 
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(_currentValidAndNotSubmittedReport).Verifiable();
-        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Callback<Report, UserModel, bool?>((r, u, s) => actualReport = r).Verifiable("Report was not saved");
+        _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(_currentValidAndNotSubmittedReport).Verifiable();
+        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Verifiable("Report was not saved");
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
         _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 
@@ -160,7 +156,7 @@ public class Given_I_Submit_A_Question
         };
 
         // act
-        var result = _controller.Submit(sectionModel);
+        var result = await _controller.Submit(sectionModel);
 
         // assert
         _reportService.VerifyAll();
@@ -191,7 +187,7 @@ public class Given_I_Submit_A_Question
     }
 
     [Test]
-    public void The_SectionViewModel_Is_Valid_But_Report_Is_Not_Full_Then_Save_Question_Section()
+    public async Task The_SectionViewModel_Is_Valid_But_Report_Is_Not_Full_Then_Save_Question_Section()
     {
         // arrange
         Report actualReport = null;
@@ -206,8 +202,8 @@ public class Given_I_Submit_A_Question
         UrlActionContext actualContext = null;
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).Returns(report).Verifiable();
-        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Callback<Report, UserModel, bool?>((r, u, k) => actualReport = r).Verifiable("Report was not saved");
+        _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(report).Verifiable();
+        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Verifiable("Report was not saved");
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
         _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 
@@ -228,10 +224,10 @@ public class Given_I_Submit_A_Question
                     Answer = ""
                 }
             ]
-        }; 
-        
+        };
+
         // act
-        var result = _controller.Submit(sectionModel);
+        var result = await _controller.Submit(sectionModel);
 
         // assert
         _mockUrlHelper.VerifyAll();

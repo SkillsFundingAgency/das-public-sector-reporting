@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 public class CreateReportHandler(IReportRepository reportRepository, IMapper mapper, IFileProvider fileProvider)
     : IRequestHandler<CreateReportRequest, Report>
 {
-    public Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)
+    public async Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.Period))
         {
@@ -28,23 +28,23 @@ public class CreateReportHandler(IReportRepository reportRepository, IMapper map
             Submitted = false,
             Id = Guid.NewGuid(),
             ReportingPeriod = request.Period,
-            ReportingData = GetQuestionConfig(request.IsLocalAuthority).Result,
+            ReportingData = await GetQuestionConfig(request.IsLocalAuthority),
             AuditWindowStartUtc = DateTime.UtcNow,
             UpdatedUtc = DateTime.UtcNow,
             UpdatedBy = JsonConvert.SerializeObject(new User { Id = request.User.Id, Name = request.User.Name })
         };
 
-        reportRepository.Create(reportDto);
+        await reportRepository.Create(reportDto);
 
-        return Task.FromResult(mapper.Map<Report>(reportDto));
+        return mapper.Map<Report>(reportDto);
     }
 
-    private Task<string> GetQuestionConfig(bool isLocalAuthority)
+    private async Task<string> GetQuestionConfig(bool isLocalAuthority)
     {
         var questionsConfig = fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
 
-        using var jsonContents = questionsConfig.CreateReadStream();
+        await using var jsonContents = questionsConfig.CreateReadStream();
         using var streamReader = new StreamReader(jsonContents);
-        return Task.FromResult(streamReader.ReadToEnd());
+        return await streamReader.ReadToEndAsync();
     }
 }

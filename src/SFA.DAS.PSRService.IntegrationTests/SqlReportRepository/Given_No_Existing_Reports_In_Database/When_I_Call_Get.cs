@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using NUnit.Framework;
-using SFA.DAS.PSRService.Application.Domain;
+﻿using SFA.DAS.PSRService.Application.Domain;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Existing_Reports_In_Database;
 
@@ -11,9 +8,9 @@ public sealed class When_I_Call_Get : Given_No_Existing_Reports_In_Database
 {
     private ReportDto _retrievedReport;
 
-    protected override void When()
+    protected override async Task When()
     {
-        _retrievedReport = SUT.Get("SomeReportingPeriod", "SomeEmployerId");
+        _retrievedReport = await Sut.Get("SomeReportingPeriod", "SomeEmployerId");
     }
 
     [Test]

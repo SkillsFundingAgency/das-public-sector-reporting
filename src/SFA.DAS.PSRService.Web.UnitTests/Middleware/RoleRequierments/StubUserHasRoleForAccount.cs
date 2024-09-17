@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.PSRService.Web.Middleware.Authorization;
 using SFA.DAS.PSRService.Web.Models;
 

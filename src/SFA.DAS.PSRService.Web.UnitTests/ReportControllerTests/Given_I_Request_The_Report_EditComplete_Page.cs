@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
 

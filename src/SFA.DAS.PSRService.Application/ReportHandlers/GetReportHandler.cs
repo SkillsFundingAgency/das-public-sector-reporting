@@ -11,7 +11,7 @@ public class GetReportHandler(IReportRepository reportRepository, IMapper mapper
 {
     public async Task<Report> Handle(GetReportRequest request, CancellationToken cancellationToken)
     {
-        var reportDto = reportRepository.Get(request.Period,request.EmployerId);
+        var reportDto = await reportRepository.Get(request.Period,request.EmployerId);
 
         return await Task.FromResult(mapper.Map<Report>(reportDto));
     }

@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Edit.Given_Report_Can_Be_Edited.And_User_Can_Submit;
@@ -10,11 +8,11 @@ public sealed class WhenEditIsCalled : And_User_Can_Submit
     private IActionResult _result;
     private ReportViewModel _model;
 
-    protected override void When()
+    protected override async Task  When()
     {
-        base.When();
+        await base.When();
 
-        _result = Sut.Edit();
+        _result = await Sut.Edit();
 
         var viewResult = _result as ViewResult;
 

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Moq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
@@ -117,7 +115,7 @@ public abstract class GivenAValidSubmittedReport : GivenAReportController
             It.IsAny<object>()));
         Controller.ObjectValidator = objectValidator.Object;
 
-        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report);
         MockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
     }
 }

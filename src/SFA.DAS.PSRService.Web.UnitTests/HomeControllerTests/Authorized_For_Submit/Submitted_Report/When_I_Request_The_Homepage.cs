@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
 
@@ -13,9 +11,9 @@ public class WhenIRequestTheHomepage : And_Current_Report_Submitted
     private ViewResult _viewResult;
     private IndexViewModel _model;
 
-    protected override void When()
+    protected override async Task When()
     {
-        _result = Sut.Index();
+        _result = await Sut.Index();
         _viewResult = _result as ViewResult;
         _model = _viewResult?.Model as IndexViewModel;
     }
@@ -25,17 +23,19 @@ public class WhenIRequestTheHomepage : And_Current_Report_Submitted
     {
         _viewResult = _result as ViewResult;
     }
+
     [Test]
     public void Then_ViewResult_Is_No_Null()
     {
         _viewResult.Should().NotBeNull();
     }
+
     [Test]
     public void Then_Model_Is_An_IndexViewModel()
     {
         _model = _viewResult.Model as IndexViewModel;
-
     }
+
     [Test]
     public void Then_Model_Is_Not_Null()
     {
@@ -76,10 +76,10 @@ public class WhenIRequestTheHomepage : And_Current_Report_Submitted
     public void Then_The_Welcome_Message_Is_Submit_Report_Submitted()
     {
         var expectedMessage = HomePageWelcomeMessageProvider
-                    .GetMesssage()
-                    .ForPeriod(CurrentPeriod)
-                    .WhereUserCanSubmit()
-                    .AndReportIsAlreadySubmitted();
+            .GetMesssage()
+            .ForPeriod(CurrentPeriod)
+            .WhereUserCanSubmit()
+            .AndReportIsAlreadySubmitted();
 
         _model
             .WelcomeMessage

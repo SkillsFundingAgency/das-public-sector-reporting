@@ -4,21 +4,20 @@
 public abstract class But_Only_Some_Mandatory_Numbers
     : And_I_Have_Reported_All_Mandatory_Factors
 {
-    public But_Only_Some_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority){}
-
-    protected override void Given()
+    protected But_Only_Some_Mandatory_Numbers(bool isLocalAuthority) : base(isLocalAuthority)
     {
-        base.Given();
-
-        BuildAndSubmitOnlyYourApprentciesNumbers();
     }
 
-    private void BuildAndSubmitOnlyYourApprentciesNumbers()
+    protected override async Task Given()
     {
-        QuestionController
-            .Submit(
-                new ReportNumbersAnswersBuilder()
-                    .BuildValidYourApprenticesAnswers()
-                    .ForReportingPeriod(TestHelper.CurrentPeriod));
+        await base.Given();
+        await BuildAndSubmitOnlyYourApprentciesNumbers();
+    }
+
+    private async Task BuildAndSubmitOnlyYourApprentciesNumbers()
+    {
+        await QuestionController.Submit(new ReportNumbersAnswersBuilder()
+            .BuildValidYourApprenticesAnswers()
+            .ForReportingPeriod(TestHelper.CurrentPeriod));
     }
 }

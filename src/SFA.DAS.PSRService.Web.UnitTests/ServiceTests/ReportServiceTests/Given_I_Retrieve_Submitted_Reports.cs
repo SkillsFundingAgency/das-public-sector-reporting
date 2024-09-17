@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using FluentAssertions;
 using MediatR;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -26,18 +23,18 @@ public class Given_I_Retrieve_Submitted_Reports
         _mediatorMock = new Mock<IMediator>();
         _configMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-        _reportService = new ReportService(_configMock.Object,_mediatorMock.Object, _periodServiceMock.Object);
+        _reportService = new ReportService(_configMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
     }
-        
+
     [Test]
-    public void And_The_Report_Exists_Then_Show_Summary_Page()
+    public async Task And_The_Report_Exists_Then_Show_Summary_Page()
     {
         // arrange
         _mediatorMock.Setup(s => s.Send(It.IsAny<GetSubmittedRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Report>().AsEnumerable());
-        
+
         // act
-        var result = _reportService.GetSubmittedReports("ABCDE");
+        var result = await _reportService.GetSubmittedReports("ABCDE");
 
         _mediatorMock.Verify(m => m.Send(It.IsAny<GetSubmittedRequest>(), new CancellationToken()));
 

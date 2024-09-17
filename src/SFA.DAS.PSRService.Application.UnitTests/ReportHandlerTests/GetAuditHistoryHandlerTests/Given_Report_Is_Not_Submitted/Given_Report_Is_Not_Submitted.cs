@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
 using NUnit.Framework;
@@ -27,24 +28,24 @@ public class Given_Report_Is_Not_Submitted : GivenWhenThen<GetReportEditHistoryM
 
         _mockRepository
             .Setup(m => m.Get(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(new ReportDto { Submitted = false, Id = _expectedReportId });
+            .ReturnsAsync(new ReportDto { Submitted = false, Id = _expectedReportId });
 
         _mockRepository
             .Setup(m => m.Get(It.IsAny<Guid>()))
-            .Returns(new ReportDto { Submitted = false, Id = _expectedReportId });
+            .ReturnsAsync(new ReportDto { Submitted = false, Id = _expectedReportId });
 
         _mockRepository
             .Setup(m => m.GetAuditRecordsMostRecentFirst(It.IsAny<Guid>()))
-            .Returns(new List<AuditRecordDto>(0).AsReadOnly);
+            .ReturnsAsync(new List<AuditRecordDto>(0).AsReadOnly);
 
         return _mockRepository.Object;
     }
 
-    protected override void When()
+    protected override async Task When()
     {
         var request = new GetReportEditHistoryMostRecentFirst(period: Period.FromInstantInPeriod(DateTime.UtcNow), accountId: "SomeEmployerId");
 
-        Sut.Handle(request, new CancellationToken()).Wait();
+        await Sut.Handle(request, new CancellationToken());
     }
 
     [Test]

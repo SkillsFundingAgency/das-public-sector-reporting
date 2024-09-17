@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.IntegrationTests.Web;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -19,7 +17,7 @@ public abstract class Given_I_Have_Created_A_Report(bool isLocalAuthority) : Giv
     protected QuestionController QuestionController;
     private Mock<IUrlHelper> _mockUrlHelper;
 
-    protected override void Given()
+    protected override async Task Given()
     {
         _container = new Container();
         _container.Configure(TestHelper.ConfigureIoc());
@@ -30,18 +28,18 @@ public abstract class Given_I_Have_Created_A_Report(bool isLocalAuthority) : Giv
 
         QuestionController.Url = _mockUrlHelper.Object;
 
-        SUT = _container.GetInstance<ReportController>();
-        SUT.Url = _mockUrlHelper.Object;
-        SUT.ObjectValidator = Mock.Of<IObjectModelValidator>();
+        Sut = _container.GetInstance<ReportController>();
+        Sut.Url = _mockUrlHelper.Object;
+        Sut.ObjectValidator = Mock.Of<IObjectModelValidator>();
 
         var mockContext = new Mock<HttpContext>();
         mockContext.Setup(c => c.User).Returns(new TestPrincipal());
 
-        SUT.ControllerContext.HttpContext = mockContext.Object;
+        Sut.ControllerContext.HttpContext = mockContext.Object;
         QuestionController.ControllerContext.HttpContext = mockContext.Object;
         TestHelper.ClearData();
 
-        SUT.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
+        await Sut.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
     }
 
     [TearDown]

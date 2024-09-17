@@ -1,18 +1,16 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using SFA.DAS.PSRService.Application.Domain;
+﻿using SFA.DAS.PSRService.Application.Domain;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_I_Have_Created_A_Report.And_I_Have_Updated_The_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class And_I_Have_Updated_The_Report_Data
-    : Given_I_Have_Created_A_Report
+public abstract class And_I_Have_Updated_The_Report_Data : Given_I_Have_Created_A_Report
 {
     protected ReportDto UpdatedReport { get; set; }
 
-    protected override void Given()
+    protected override async Task Given()
     {
-        base.Given();
+        await base.Given();
+
         UpdatedReport = new ReportDto
         {
             Id = CreatedReport.Id,
@@ -25,6 +23,6 @@ public abstract class And_I_Have_Updated_The_Report_Data
             UpdatedBy = "Igor"
         };
 
-        SUT.Update(UpdatedReport);
+        await Sut.Update(UpdatedReport);
     }
 }

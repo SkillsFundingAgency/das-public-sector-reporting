@@ -1,9 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.Data.SqlClient;
-using NUnit.Framework;
-using SFA.DAS.PSRService.Application.Domain;
+﻿using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
-using SFA.DAS.PSRService.Data;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Submitted_Report;
 
@@ -12,14 +8,13 @@ public abstract class Given_One_Submitted_Report
     : GivenWhenThen<IReportRepository>
 {
     protected ReportDto SubmittedReport;
-    protected string EmployerId = "TestEmployerID";
+    protected readonly string EmployerId = "TestEmployerID";
 
-    protected override void Given()
+    protected override async Task Given()
     {
-        RepositoryTestHelper
-            .ClearData();
+        RepositoryTestHelper.ClearData();
 
-        SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
+        Sut = new Data.SqlReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
         SubmittedReport = new ReportDto
         {
@@ -30,15 +25,12 @@ public abstract class Given_One_Submitted_Report
             Submitted = true
         };
 
-        SUT
-            .Create(
-                SubmittedReport);
+        await Sut.Create(SubmittedReport);
     }
 
     [TearDown]
     public void ClearDatabase()
     {
-        RepositoryTestHelper
-            .ClearData();
+        RepositoryTestHelper.ClearData();
     }
 }

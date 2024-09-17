@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
-using FluentAssertions;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 
@@ -14,9 +11,9 @@ public sealed class When_Claim_Is_Requested : GivenUserHasThreeAccountsWithDiffe
 {
     private Claim _claim;
 
-    protected override void When()
+    protected override async Task When()
     {
-        _claim = Sut.GetClaim(UserId).Result;
+        _claim = await Sut.GetClaim(UserId);
     }
 
     [Test]

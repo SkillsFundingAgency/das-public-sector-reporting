@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Existing_Reports_In_Database;
@@ -12,9 +9,9 @@ public sealed class When_I_Call_GetSubmitted
 {
     private IList<ReportDto> _retrievedSubmittedReports;
 
-    protected override void When()
+    protected override async Task When()
     {
-        _retrievedSubmittedReports = SUT.GetSubmitted("DummyEmployerId");
+        _retrievedSubmittedReports = await Sut.GetSubmitted("DummyEmployerId");
     }
 
     [Test]

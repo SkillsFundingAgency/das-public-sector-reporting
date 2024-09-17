@@ -17,7 +17,7 @@ public class UpdateReportHandler(IMapper mapper, IReportRepository reportReposit
 {
     public async Task Handle(UpdateReportRequest request, CancellationToken cancellationToken)
     {
-        var oldVersion = reportRepository.Get(request.Report.Id);
+        var oldVersion = await reportRepository.Get(request.Report.Id);
 
         if (oldVersion == null)
         {
@@ -49,12 +49,12 @@ public class UpdateReportHandler(IMapper mapper, IReportRepository reportReposit
                 UpdatedUtc = oldVersion.UpdatedUtc.Value
             };
 
-            reportRepository.SaveAuditRecord(auditRecord);
+            await reportRepository.SaveAuditRecord(auditRecord);
 
             reportDto.AuditWindowStartUtc = reportDto.UpdatedUtc.Value;
         }
 
-        reportRepository.Update(reportDto);
+        await reportRepository.Update(reportDto);
     }
 
     private static bool RequiresAuditRecord(ReportDto oldVersion, ReportDto newVersion, TimeSpan requestAuditWindowSize)

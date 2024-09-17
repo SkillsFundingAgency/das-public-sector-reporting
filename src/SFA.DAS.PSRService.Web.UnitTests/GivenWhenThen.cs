@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
-
-namespace SFA.DAS.PSRService.Web.UnitTests;
+﻿namespace SFA.DAS.PSRService.Web.UnitTests;
 
 [ExcludeFromCodeCoverage]
 public abstract class GivenWhenThen<T>
@@ -9,17 +6,17 @@ public abstract class GivenWhenThen<T>
     protected T Sut;
 
     [SetUp]
-    public void GivenWhen()
+    public async Task GivenWhen()
     {
         Given();
-        When();
+        await When();
     }
 
     protected virtual void Given()
     {
     }
 
-    protected virtual void When()
+    protected virtual async Task When()
     {
     }
 }

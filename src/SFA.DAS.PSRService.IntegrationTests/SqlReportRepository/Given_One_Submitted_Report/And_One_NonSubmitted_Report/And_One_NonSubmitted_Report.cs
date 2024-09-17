@@ -1,20 +1,17 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using SFA.DAS.PSRService.Application.Domain;
+﻿using SFA.DAS.PSRService.Application.Domain;
 
 namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Submitted_Report.And_One_NonSubmitted_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class And_One_NonSubmitted_Report
-    : Given_One_Submitted_Report
+public abstract class And_One_NonSubmitted_Report : Given_One_Submitted_Report
 {
-    private ReportDto nonsubmittedReport;
+    private ReportDto _nonsubmittedReport;
 
-    protected override void Given()
+    protected override  async Task Given()
     {
-        base.Given();
+        await base.Given();
 
-        nonsubmittedReport = new ReportDto
+        _nonsubmittedReport = new ReportDto
         {
             Id = RepositoryTestHelper.ReportTwoId,
             EmployerId = EmployerId,
@@ -23,8 +20,6 @@ public abstract class And_One_NonSubmitted_Report
             Submitted = false
         };
 
-        SUT
-            .Create(
-                nonsubmittedReport);
+        await Sut.Create(_nonsubmittedReport);
     }
 }

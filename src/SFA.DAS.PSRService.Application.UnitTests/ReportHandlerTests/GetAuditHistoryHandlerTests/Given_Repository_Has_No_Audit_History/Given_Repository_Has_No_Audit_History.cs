@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Moq;
@@ -25,11 +26,11 @@ public class Given_Repository_Has_No_Audit_History : GivenWhenThen<GetReportEdit
         Sut = new GetReportEditHistoryMostRecentFirstHandler(SetupMockRepositoryReturn(), Mock.Of<IMapper>());
     }
 
-    protected override void When()
+    protected override async Task When()
     {
         var anyOldRequest = new GetReportEditHistoryMostRecentFirst(period:Period.FromInstantInPeriod(DateTime.UtcNow), accountId:"SomeAccountId");
 
-        _auditItems = Sut.Handle(anyOldRequest, new CancellationToken()).Result;
+        _auditItems = await Sut.Handle(anyOldRequest, new CancellationToken());
     }
     private static IReportRepository SetupMockRepositoryReturn()
     {
@@ -37,7 +38,7 @@ public class Given_Repository_Has_No_Audit_History : GivenWhenThen<GetReportEdit
 
         mockRepository
             .Setup(m => m.GetAuditRecordsMostRecentFirst(It.IsAny<Guid>()))
-            .Returns(new List<AuditRecordDto>(0).AsReadOnly);
+            .ReturnsAsync(new List<AuditRecordDto>(0).AsReadOnly);
 
         return mockRepository.Object;
     }

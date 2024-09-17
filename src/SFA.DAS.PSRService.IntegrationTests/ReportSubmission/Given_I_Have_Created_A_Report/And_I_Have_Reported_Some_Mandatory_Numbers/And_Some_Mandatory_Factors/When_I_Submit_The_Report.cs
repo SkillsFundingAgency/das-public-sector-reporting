@@ -1,27 +1,21 @@
-﻿using System;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
-
-namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.
+﻿namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.
     And_I_Have_Reported_Some_Mandatory_Numbers.And_Some_Mandatory_Factors;
 
-public sealed class When_I_Submit_The_Report
-    : And_Some_Mandatory_Factors
+public sealed class When_I_Submit_The_Report : And_Some_Mandatory_Factors
 {
-    private IActionResult submitResult;
-
     public When_I_Submit_The_Report() : base(false){}
 
-    protected override void When()
+    protected override Task When()
     {
         try
         {
-            submitResult = SUT.Submit();
+            Sut.Submit();
         }
         catch (Exception)
         {
         }
+        
+        return Task.CompletedTask;
     }
 
     [Test]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.FileProviders;
@@ -34,7 +35,7 @@ public class Given_I_Update_A_Report
     }
 
     [Test]
-    public void When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Not_Created()
+    public async Task When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Not_Created()
     {
         // arrange
         var justNow = DateTime.UtcNow;
@@ -48,6 +49,7 @@ public class Given_I_Update_A_Report
             UpdatedUtc = justNow,
             UpdatedBy = $"{{ Id: '{updateUser.Id}', Name: '{updateUser.Name}' }}"
         };
+
         var newVersion = new ReportDto
         {
             Id = reportId,
@@ -56,8 +58,8 @@ public class Given_I_Update_A_Report
             UpdatedBy = $"{{ Id: '{updateUser.Id}', Name: '{updateUser.Name}' }}"
         };
 
-        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Callback<ReportDto>(d => actualReportDto = d).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest =
@@ -76,7 +78,7 @@ public class Given_I_Update_A_Report
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default);
+        await _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
@@ -88,7 +90,7 @@ public class Given_I_Update_A_Report
     }
 
     [Test]
-    public void When_Report_Is_Updated_More_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Created()
+    public async Task When_Report_Is_Updated_More_Than_Audit_Window_Size_Ago_Then_Audit_Record_Is_Created()
     {
         // arrange
         var longAgo = DateTime.UtcNow.AddMinutes(-6);
@@ -115,15 +117,12 @@ public class Given_I_Update_A_Report
             ReportingData = "new report"
         };
 
-        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>()))
-            .Callback<AuditRecordDto>(d => actualAuditRecordDto = d).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>()))
-            .Callback<ReportDto>(d => actualReportDto = d).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
+        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
-        var updateReportRequest =
-            new UpdateReportRequestBuilder()
+        var updateReportRequest = new UpdateReportRequestBuilder()
                 .WithUserName(updateUser.Name)
                 .WithUserId(updateUser.Id)
                 .WithAutoWindowSizeInMinutes(5)
@@ -138,7 +137,7 @@ public class Given_I_Update_A_Report
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default);
+        await _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
@@ -157,7 +156,7 @@ public class Given_I_Update_A_Report
     }
 
     [Test]
-    public void When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_But_By_Different_User_Then_Audit_Record_Is_Created()
+    public async Task When_Report_Is_Updated_Less_Than_Audit_Window_Size_Ago_But_By_Different_User_Then_Audit_Record_Is_Created()
     {
         // arrange
         var justNow = DateTime.UtcNow;
@@ -185,9 +184,9 @@ public class Given_I_Update_A_Report
             ReportingData = "new report"
         };
 
-        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>())).Callback<AuditRecordDto>(d => actualAuditRecordDto = d).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Callback<ReportDto>(d => actualReportDto = d).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
+        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest =
@@ -206,7 +205,7 @@ public class Given_I_Update_A_Report
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default);
+        await _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();
@@ -237,7 +236,7 @@ public class Given_I_Update_A_Report
                     new Report { Id = reportId })
                 .Build();
 
-        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns((ReportDto)null).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync((ReportDto)null).Verifiable();
 
         // act
         var action = () => _updateReportHandler.Handle(updateReportRequest, new CancellationToken());
@@ -247,7 +246,7 @@ public class Given_I_Update_A_Report
     }
 
     [Test]
-    public void When_Old_Version_Does_Not_Have_New_Values_They_Are_Recorded_And_No_Audit_Created()
+    public async Task When_Old_Version_Does_Not_Have_New_Values_They_Are_Recorded_And_No_Audit_Created()
     {
         // arrange
         ReportDto actualReportDto = null;
@@ -272,8 +271,8 @@ public class Given_I_Update_A_Report
             ReportingData = "new report"
         };
 
-        _reportRepositoryMock.Setup(s => s.Get(reportId)).Returns(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Callback<ReportDto>(d => actualReportDto = d).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest =
@@ -292,7 +291,7 @@ public class Given_I_Update_A_Report
                 .Build();
 
         // act
-        _updateReportHandler.Handle(updateReportRequest, default);
+        await _updateReportHandler.Handle(updateReportRequest, default);
 
         // assert
         _reportRepositoryMock.VerifyAll();

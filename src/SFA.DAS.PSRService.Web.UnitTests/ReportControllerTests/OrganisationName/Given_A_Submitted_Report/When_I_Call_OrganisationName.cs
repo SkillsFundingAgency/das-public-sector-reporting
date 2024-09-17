@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.OrganisationName.Given_A_Submitted_Report;
 
@@ -11,11 +8,11 @@ public sealed class WhenICallOrganisationName : Given_Report_Cannot_Be_Edited
 {
     private IActionResult _result;
 
-    protected override void When()
+    protected override async Task  When()
     {
-        base.When();
+        await base.When();
 
-        _result = Sut.OrganisationName(string.Empty);
+        _result = await Sut.OrganisationName(string.Empty);
     }
 
     [Test]

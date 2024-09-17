@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Models;
-using Microsoft.AspNetCore.Routing;
 
 namespace SFA.DAS.PSRService.Web.Services
 {

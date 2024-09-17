@@ -1,10 +1,7 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
@@ -66,13 +63,13 @@ public class GivenAReportController
     public void TearDown() => Controller?.Dispose();
 
     [SetUp]
-    public void GivenAndWhen()
+    public async Task GivenAndWhen()
     {
         Given();
-        When();
+        await When();
     }
 
-    protected virtual void When()
+    protected virtual async Task When()
     {
     }
 

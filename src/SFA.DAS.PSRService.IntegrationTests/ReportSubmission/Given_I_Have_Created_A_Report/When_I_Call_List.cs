@@ -1,22 +1,16 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report;
 
-public sealed class When_I_Call_List : Given_I_Have_Created_A_Report
+public sealed class When_I_Call_List() : Given_I_Have_Created_A_Report(false)
 {
     private IActionResult _response;
 
-    public When_I_Call_List() : base(false)
+    protected override async Task When()
     {
-    }
-
-    protected override void When()
-    {
-        var hashedAccountId = "ABC123";
-        _response = SUT.List(hashedAccountId);
+        const string hashedAccountId = "ABC123";
+        _response = await Sut.List(hashedAccountId);
     }
 
     [Test]

@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.Authorized_For_Edit_But_Not_Submit.Current_Report;
 
@@ -11,6 +10,6 @@ public class And_Current_Report_Exists : And_User_Is_Authorized_For_Edit_But_Not
         base.Given();
 
         var report = new Report();
-        MockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).Returns(report).Verifiable("Current report wasn't requested");
+        MockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).ReturnsAsync(report).Verifiable("Current report wasn't requested");
     }
 }
