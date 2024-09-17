@@ -8,12 +8,11 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submit.Given_A_Submitted_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_A_Submitted_Report
-    :GivenWhenThen<IReportService>
+public abstract class Given_A_Submitted_Report :GivenWhenThen<IReportService>
 {
-    protected Report AlreadySubmittedReport;
+    protected readonly Report AlreadySubmittedReport;
 
-    public Given_A_Submitted_Report()
+    protected Given_A_Submitted_Report()
     {
         Sut = new ReportService(
             config: Mock.Of<IWebConfiguration>(),

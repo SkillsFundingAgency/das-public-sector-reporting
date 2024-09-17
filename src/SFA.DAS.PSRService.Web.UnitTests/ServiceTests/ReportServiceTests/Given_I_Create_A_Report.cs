@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
@@ -32,8 +33,7 @@ public class Given_I_Create_A_Report
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(_period);
 
         _reportService = new ReportService(Mock.Of<IWebConfiguration>(), _mediatorMock.Object, _periodServiceMock.Object);
-        _user = new UserModel {Id = Guid.NewGuid(), DisplayName = "Vladimir"};
-
+        _user = new UserModel { Id = Guid.NewGuid(), DisplayName = "Vladimir" };
     }
 
     [TestCase(true)]
@@ -43,8 +43,8 @@ public class Given_I_Create_A_Report
         //Arrange
         CreateReportRequest actualRequest = null;
         _mediatorMock.Setup(s => s.Send(It.IsAny<CreateReportRequest>(), It.IsAny<CancellationToken>()))
-            .Callback<IRequest<Report>, CancellationToken>((r,c) => actualRequest = (CreateReportRequest)r)
-            .ReturnsAsync(new Report {Id = Guid.NewGuid()})
+            .Callback<IRequest<Report>, CancellationToken>((r, c) => actualRequest = (CreateReportRequest)r)
+            .ReturnsAsync(new Report { Id = Guid.NewGuid() })
             .Verifiable();
 
         //Act
@@ -52,9 +52,9 @@ public class Given_I_Create_A_Report
 
         //Assert
         _mediatorMock.VerifyAll();
-        Assert.AreEqual("ABCDE", actualRequest.EmployerId);
-        Assert.AreEqual(_period.PeriodString, actualRequest.Period);
-        Assert.AreEqual(_user.DisplayName, actualRequest.User.Name);
-        Assert.AreEqual(_user.Id, actualRequest.User.Id);
+        actualRequest.EmployerId.Should().Be("ABCDE");
+        actualRequest.Period.Should().Be(_period.PeriodString);
+        actualRequest.User.Name.Should().Be(_user.DisplayName);
+        actualRequest.User.Id.Should().Be(_user.Id);
     }
 }

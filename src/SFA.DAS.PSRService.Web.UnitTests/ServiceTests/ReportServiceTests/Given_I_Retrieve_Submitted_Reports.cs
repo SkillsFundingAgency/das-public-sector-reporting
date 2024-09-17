@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using FluentAssertions;
 using MediatR;
 using Moq;
 using NUnit.Framework;
@@ -26,7 +27,6 @@ public class Given_I_Retrieve_Submitted_Reports
         _configMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
         _reportService = new ReportService(_configMock.Object,_mediatorMock.Object, _periodServiceMock.Object);
-
     }
         
     [Test]
@@ -35,14 +35,12 @@ public class Given_I_Retrieve_Submitted_Reports
         // arrange
         _mediatorMock.Setup(s => s.Send(It.IsAny<GetSubmittedRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Report>().AsEnumerable());
+        
         // act
         var result = _reportService.GetSubmittedReports("ABCDE");
 
         _mediatorMock.Verify(m => m.Send(It.IsAny<GetSubmittedRequest>(), new CancellationToken()));
 
-        CollectionAssert.AllItemsAreInstancesOfType(result, typeof(Report));
-
+        result.Should().AllBeOfType<Report>();
     }
-
-
 }

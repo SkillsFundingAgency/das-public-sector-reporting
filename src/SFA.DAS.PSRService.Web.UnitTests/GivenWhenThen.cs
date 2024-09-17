@@ -4,10 +4,9 @@ using NUnit.Framework;
 namespace SFA.DAS.PSRService.Web.UnitTests;
 
 [ExcludeFromCodeCoverage]
-public abstract class GivenWhenThen<TypeOfSUT>
+public abstract class GivenWhenThen<T>
 {
-
-    protected TypeOfSUT Sut;
+    protected T Sut;
 
     [SetUp]
     public void GivenWhen()

@@ -21,5 +21,4 @@ public sealed class When_Roles_Are_Requested : Given_User_Has_No_Accounts
     {
         _employerIdentifiers.Should().HaveCount(0);
     }
-
 }

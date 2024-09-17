@@ -3,10 +3,9 @@
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submit.Given_A_Valid_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class And_Report_Is_Not_Submitted
-    : Given_A_Valid_Report
+public abstract class And_Report_Is_Not_Submitted : Given_A_Valid_Report
 {
-    public And_Report_Is_Not_Submitted()
+    protected And_Report_Is_Not_Submitted()
     {
         ValidNotSubmittedReport.Submitted = false;
     }

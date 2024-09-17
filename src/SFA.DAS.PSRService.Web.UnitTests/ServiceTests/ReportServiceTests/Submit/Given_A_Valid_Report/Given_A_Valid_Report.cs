@@ -8,14 +8,13 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submit.Given_A_Valid_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_A_Valid_Report
-    : GivenWhenThen<IReportService>
+public abstract class Given_A_Valid_Report : GivenWhenThen<IReportService>
 {
     protected Report ValidNotSubmittedReport;
     protected Mock<IMediator> MockMediator;
     protected Mock<IPeriodService> MockPeriodService;
 
-    public Given_A_Valid_Report()
+    protected Given_A_Valid_Report()
     {
         MockMediator = new Mock<IMediator>();
         MockPeriodService = new Mock<IPeriodService>();

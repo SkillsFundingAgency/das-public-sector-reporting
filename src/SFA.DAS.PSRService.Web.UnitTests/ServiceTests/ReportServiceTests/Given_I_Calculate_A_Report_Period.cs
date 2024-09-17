@@ -23,7 +23,4 @@ public class Given_I_Calculate_A_Report_Period
 
         _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
     }
-
-       
-
 }

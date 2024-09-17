@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SFA.DAS.EAS.Account.Api.Client;
@@ -13,51 +14,36 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.EmployeerAccountServiceT
 [ExcludeFromCodeCoverage]
 public abstract class Given_User_Has_No_Accounts : GivenWhenThen<EmployerAccountService>
 {
+    protected static readonly string UserId = Guid.NewGuid().ToString();
+
     private Mock<ILogger<EmployerAccountService>> _loggerMock;
-    private Mock<IAccountApiClient> _accountApiClienMock;
+    private Mock<IAccountApiClient> _accountApiClientMock;
 
-    protected static string UserId = Guid.NewGuid().ToString();
+    private const string AccountIdOne = "MR66J4";
+    private const string AccountIdTwo = "JD83N5";
 
-    protected static readonly string _accountIdOne = "MR66J4";
-    protected static readonly string _accountIdTwo = "JD83N5";
-    private static readonly string[] AccountId = [_accountIdOne, _accountIdTwo];
-
+    private static readonly string[] AccountId = [AccountIdOne, AccountIdTwo];
 
     protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
     protected override void Given()
     {
-
         _loggerMock = new Mock<ILogger<EmployerAccountService>>();
-        _accountApiClienMock = new Mock<IAccountApiClient>(MockBehavior.Strict);
+        _accountApiClientMock = new Mock<IAccountApiClient>(MockBehavior.Strict);
 
-        _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdOne)).ReturnsAsync((IList<TeamMemberViewModel>)null);
-        _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdTwo)).ReturnsAsync(new List<TeamMemberViewModel>());
+        _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdOne)).ReturnsAsync((IList<TeamMemberViewModel>)null);
+        _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdTwo)).ReturnsAsync(new List<TeamMemberViewModel>());
 
-        Sut = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
-
-            
+        Sut = new EmployerAccountService(_loggerMock.Object, _accountApiClientMock.Object);
     }
 
-    private IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
+    private static IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
     {
-        var employerList = new List<EmployerIdentifier>();
-
-        foreach (string accountId in accountIds)
-        {
-            employerList.Add(EmployerIdentifierWitNoRoleForAccount(accountId));
-        }
-
-        return employerList;
+        return accountIds.Select(EmployerIdentifierWitNoRoleForAccount).ToList();
     }
 
-    private EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
+    private static EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
     {
-        return
-            new EmployerIdentifier
-            {
-                AccountId = accountId
-            };
+        return new EmployerIdentifier { AccountId = accountId };
     }
-
 }

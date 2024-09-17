@@ -33,18 +33,18 @@ public sealed class When_Roles_Are_Requested : GivenUserHasThreeAccountsWithDiff
     [Test]
     public void Then_AccountOne_Has_Owner_Role()
     {
-        _employerIdentifiers.Should().Contain(w => w.Role == EmployerPsrsRoleNames.Owner && w.AccountId == _accountIdOne);
+        _employerIdentifiers.Should().Contain(w => w.Role == EmployerPsrsRoleNames.Owner && w.AccountId == AccountIdOne);
     }
 
     [Test]
     public void Then_AccountTwo_Has_Transactor_Role()
     {
-        _employerIdentifiers.Should().Contain(w => w.Role == EmployerPsrsRoleNames.Transactor && w.AccountId == _accountIdTwo);
+        _employerIdentifiers.Should().Contain(w => w.Role == EmployerPsrsRoleNames.Transactor && w.AccountId == AccountIdTwo);
     }
 
     [Test]
     public void Then_AccountThree_Viewer_Role()
     {
-        _employerIdentifiers.Should().Contain(w => w.Role == EmployerPsrsRoleNames.Viewer && w.AccountId == _accountIdThree);
+        _employerIdentifiers.Should().Contain(w => w.Role == EmployerPsrsRoleNames.Viewer && w.AccountId == AccountIdThree);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SFA.DAS.EAS.Account.Api.Client;
@@ -15,63 +16,53 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.EmployeerAccountServiceT
 public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThen<EmployerAccountService>
 {
     private Mock<ILogger<EmployerAccountService>> _loggerMock;
-    private Mock<IAccountApiClient> _accountApiClienMock;
+    private Mock<IAccountApiClient> _accountApiClientMock;
 
-    protected static string UserId = Guid.NewGuid().ToString();
+    protected static readonly string UserId = Guid.NewGuid().ToString();
 
-    protected static readonly string _accountIdOne = "MR66J4";
-    protected static readonly string _accountIdTwo = "JD83N5";
-    protected static readonly string _accountIdThree = "WD34D1";
-    private static readonly string[] AccountId = [_accountIdOne, _accountIdTwo, _accountIdThree];
+    protected const string AccountIdOne = "MR66J4";
+    protected const string AccountIdTwo = "JD83N5";
+    protected const string AccountIdThree = "WD34D1";
+    private static readonly string[] AccountId = [AccountIdOne, AccountIdTwo, AccountIdThree];
 
-    private static readonly TeamMemberViewModel _teamMemberOwner = new() {Role = EmployerPsrsRoleNames.Owner, UserRef = UserId};
-    private static readonly TeamMemberViewModel _teamMemberTransactor = new() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId};
-    private static readonly TeamMemberViewModel _teamMemberViewer = new() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId};
+    private static readonly TeamMemberViewModel TeamMemberOwner = new() { Role = EmployerPsrsRoleNames.Owner, UserRef = UserId };
+    private static readonly TeamMemberViewModel TeamMemberTransactor = new() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId };
+    private static readonly TeamMemberViewModel TeamMemberViewer = new() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId };
 
-    private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel> { _teamMemberOwner };
-    private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel> { _teamMemberTransactor };
-    private readonly IList<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel> { _teamMemberViewer };
+    private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel> { TeamMemberOwner };
+    private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel> { TeamMemberTransactor };
+    private readonly IList<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel> { TeamMemberViewer };
 
-    protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
+    protected static IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
-    private readonly static IList<AccountDetailViewModel> accountDetailViewModel = new List<AccountDetailViewModel> { new() { HashedAccountId = _accountIdOne}, new() { HashedAccountId = _accountIdTwo }, new() { HashedAccountId = _accountIdThree } };
+    private static readonly IList<AccountDetailViewModel> AccountDetailViewModel = new List<AccountDetailViewModel>
+    {
+        new() { HashedAccountId = AccountIdOne },
+        new() { HashedAccountId = AccountIdTwo },
+        new() { HashedAccountId = AccountIdThree }
+    };
 
     protected override void Given()
     {
-
         _loggerMock = new Mock<ILogger<EmployerAccountService>>();
-        _accountApiClienMock = new Mock<IAccountApiClient>(MockBehavior.Strict);
+        _accountApiClientMock = new Mock<IAccountApiClient>(MockBehavior.Strict);
 
-        _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdOne)).ReturnsAsync(_teamMembersOwner);
-        _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdTwo)).ReturnsAsync(_teamMembersTransactor);
-        _accountApiClienMock.Setup(s => s.GetAccountUsers(_accountIdThree)).ReturnsAsync(_teamMembersViewer);
+        _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdOne)).ReturnsAsync(_teamMembersOwner);
+        _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdTwo)).ReturnsAsync(_teamMembersTransactor);
+        _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdThree)).ReturnsAsync(_teamMembersViewer);
 
-        _accountApiClienMock.Setup(s => s.GetUserAccounts(UserId)).ReturnsAsync(accountDetailViewModel);
+        _accountApiClientMock.Setup(s => s.GetUserAccounts(UserId)).ReturnsAsync(AccountDetailViewModel);
 
-        Sut = new EmployerAccountService(_loggerMock.Object,_accountApiClienMock.Object);
-
-            
+        Sut = new EmployerAccountService(_loggerMock.Object, _accountApiClientMock.Object);
     }
 
-    private IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
+    private static IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
     {
-        var employerList = new List<EmployerIdentifier>();
-
-        foreach (string accountId in accountIds)
-        {
-            employerList.Add(EmployerIdentifierWitNoRoleForAccount(accountId));
-        }
-
-        return employerList;
+        return accountIds.Select(EmployerIdentifierWitNoRoleForAccount).ToList();
     }
 
-    private EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
+    private static EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
     {
-        return
-            new EmployerIdentifier
-            {
-                AccountId = accountId
-            };
+        return new EmployerIdentifier { AccountId = accountId };
     }
-
 }

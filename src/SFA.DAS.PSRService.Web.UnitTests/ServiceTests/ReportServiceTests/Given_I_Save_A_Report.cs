@@ -14,7 +14,7 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests;
 
 [TestFixture]
-public class Given_I_Save_A_Report
+public class GivenISaveAReport
 {
     private ReportService _reportService;
     private Mock<IMediator> _mediatorMock;
@@ -37,7 +37,7 @@ public class Given_I_Save_A_Report
         _webConfigurationMock.SetupGet(s => s.AuditWindowSize).Returns((TimeSpan?)null);
         _mediatorMock.Setup(s => s.Send(It.IsAny<UpdateReportRequest>(), It.IsAny<CancellationToken>()));
 
-        var Questions = new List<Question>
+        var questions = new List<Question>
         {
             new()
             {
@@ -45,8 +45,8 @@ public class Given_I_Save_A_Report
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
-            }
-            ,new()
+            },
+            new()
             {
                 Id = "atEnd",
                 Answer = "0",
@@ -60,62 +60,66 @@ public class Given_I_Save_A_Report
                 Type = QuestionType.Number,
                 Optional = false
             }
-
         };
 
-        var SectionOne = new Section
+        var sectionOne = new Section
         {
             Id = "SectionOne",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionOne",
-                Questions = Questions,
-                Title = "SubSectionOne",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionOne",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionOne"
         };
 
-        var SectionTwo = new Section
+        var sectionTwo = new Section
         {
             Id = "SectionTwo",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionTwo",
-                Questions = Questions,
-                Title = "SubSectionTwo",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionTwo",
+                    Questions = questions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionTwo"
         };
 
-        var SectionThree = new Section
+        var sectionThree = new Section
         {
             Id = "SectionThree",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionThree",
-                Questions = Questions,
-                Title = "SubSectionThree",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionThree",
+                    Questions = questions,
+                    Title = "SubSectionThree",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionThree"
         };
 
-        IList<Section> sections = new List<Section>();
+        var sections = new List<Section>
+        {
+            sectionOne,
+            sectionTwo,
+            sectionThree
+        };
 
-        sections.Add(SectionOne);
-        sections.Add(SectionTwo);
-        sections.Add(SectionThree);
         var report = new Report
         {
             Sections = sections
@@ -127,9 +131,8 @@ public class Given_I_Save_A_Report
             Id = new Guid("DC850E8E-8286-47DF-8BFD-8332A6483555")
         };
 
-        _reportService.SaveReport(report, user,null);
+        _reportService.SaveReport(report, user, null);
 
         _mediatorMock.Verify(m => m.Send(It.IsAny<UpdateReportRequest>(), new CancellationToken()));
     }
-
 }

@@ -13,7 +13,7 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.PeriodServiceTests;
 public sealed class A_PeriodService
 {
     [TestCase(2017, 9, 30, "1617")]
-    [TestCase(2017, 10, 1,"1617")]
+    [TestCase(2017, 10, 1, "1617")]
     [TestCase(2017, 4, 1, "1617")]
     [TestCase(2017, 3, 31, "1516")]
     [TestCase(2019, 3, 31, "1718")]
@@ -26,19 +26,12 @@ public sealed class A_PeriodService
     {
         var mockDateTimeService = new Mock<IDateTimeService>();
 
-        mockDateTimeService
-            .Setup(
-                m => m.UtcNow)
-            .Returns(
-                DateTime
-                    .SpecifyKind(
-                        new DateTime(currentYear, currentMonth, currentDay),
-                        DateTimeKind.Utc));
+        mockDateTimeService.Setup(m => m.UtcNow)
+            .Returns(DateTime.SpecifyKind(new DateTime(currentYear, currentMonth, currentDay), DateTimeKind.Utc));
 
-        var SUT = new PeriodService(mockDateTimeService.Object);
+        var sut = new PeriodService(mockDateTimeService.Object);
 
-        SUT
-            .GetCurrentPeriod()
+        sut.GetCurrentPeriod()
             .PeriodString
             .Should()
             .Be(expectedPeriodShortForm);
@@ -61,19 +54,12 @@ public sealed class A_PeriodService
 
         var mockDateTimeService = new Mock<IDateTimeService>();
 
-        mockDateTimeService
-            .Setup(
-                m => m.UtcNow)
-            .Returns(
-                DateTime
-                    .SpecifyKind(
-                        new DateTime(currentYear, currentMonth, currentDay),
-                        DateTimeKind.Utc));
+        mockDateTimeService.Setup(m => m.UtcNow)
+            .Returns(DateTime.SpecifyKind(new DateTime(currentYear, currentMonth, currentDay), DateTimeKind.Utc));
 
-        var SUT = new PeriodService(mockDateTimeService.Object);
+        var sut = new PeriodService(mockDateTimeService.Object);
 
-        SUT
-            .PeriodIsCurrent(comparisonPeriod)
+        sut.PeriodIsCurrent(comparisonPeriod)
             .Should()
             .Be(expectedComparisonResult);
     }

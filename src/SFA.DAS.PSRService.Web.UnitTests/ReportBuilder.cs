@@ -16,8 +16,7 @@ public sealed class ReportBuilder
 
     public Report Build()
     {
-        return
-            new Report
+        return new Report
             {
                 ReportingPeriod = "1718",
                 Sections = _sections,
@@ -32,28 +31,24 @@ public sealed class ReportBuilder
     public ReportBuilder WithValidSections()
     {
         _sections = BuildValidReportSections();
-
         return this;
     }
 
     public ReportBuilder WithInvalidSections()
     {
         _sections = BuildInvalidReportSections();
-
         return this;
     }
 
     public ReportBuilder WhereReportIsAlreadySubmitted()
     {
         _submittedStatus = true;
-
         return this;
     }
 
     public ReportBuilder WhereReportIsNotAlreadySubmitted()
     {
         _submittedStatus = false;
-
         return this;
     }
 
@@ -61,27 +56,22 @@ public sealed class ReportBuilder
     public ReportBuilder WithEmployerId(string employerId)
     {
         _employerId = employerId;
-
         return this;
     }
-
 
     public ReportBuilder ForPeriod(Period period)
     {
         _reportingPeriod = period;
-
         return this;
     }
-
 
     public ReportBuilder ForCurrentPeriod()
     {
         _reportingPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
-
         return this;
     }
 
-    private static IEnumerable<Section> BuildValidReportSections()
+    public static IEnumerable<Section> BuildValidReportSections()
     {
         var questions = new List<Question>
         {

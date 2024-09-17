@@ -7,25 +7,18 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Can_B
 
 [ExcludeFromCodeCoverage]
 [TestFixture]
-public class When_ReportService_CanBeEdited_Is_Called
-    : And_Report_Is_For_Current_Period
+public class When_ReportService_CanBeEdited_Is_Called : And_Report_Is_For_Current_Period
 {
-    private bool response;
+    private readonly bool _response;
 
     public When_ReportService_CanBeEdited_Is_Called()
     {
-        response
-            =
-            Sut
-                .CanBeEdited(
-                    StubReport);
+        _response = Sut.CanBeEdited(StubReport);
     }
 
     [Test]
     public void Then_False_Is_Returned()
     {
-        response
-            .Should()
-            .BeFalse();
+        _response.Should().BeFalse();
     }
 }

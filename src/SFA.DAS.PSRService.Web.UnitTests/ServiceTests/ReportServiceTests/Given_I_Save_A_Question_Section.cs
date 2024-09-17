@@ -14,7 +14,7 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests;
 
 [TestFixture]
-public class Given_I_Save_A_Question_Section
+public class GivenISaveAQuestionSection
 {
     private ReportService _reportService;
     private Mock<IMediator> _mediatorMock;
@@ -27,9 +27,7 @@ public class Given_I_Save_A_Question_Section
         _mediatorMock = new Mock<IMediator>();
         _webConfigurationMock = new Mock<IWebConfiguration>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-
         _reportService = new ReportService(_webConfigurationMock.Object, _mediatorMock.Object, _periodServiceMock.Object);
-
     }
 
     [Test]
@@ -39,7 +37,7 @@ public class Given_I_Save_A_Question_Section
         _webConfigurationMock.SetupGet(s => s.AuditWindowSize).Returns((TimeSpan?)null);
         _mediatorMock.Setup(s => s.Send(It.IsAny<UpdateReportRequest>(), It.IsAny<CancellationToken>()));
 
-        var Questions = new List<Question>
+        var questions = new List<Question>
         {
             new()
             {
@@ -47,8 +45,8 @@ public class Given_I_Save_A_Question_Section
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
-            }
-            ,new()
+            },
+            new()
             {
                 Id = "atEnd",
                 Answer = "0",
@@ -62,73 +60,77 @@ public class Given_I_Save_A_Question_Section
                 Type = QuestionType.Number,
                 Optional = false
             }
-
         };
 
-        var SectionOne = new Section
+        var sectionOne = new Section
         {
             Id = "SectionOne",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionOne",
-                Questions = Questions,
-                Title = "SubSectionOne",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionOne",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionOne"
         };
 
-        var SectionTwo = new Section
+        var sectionTwo = new Section
         {
             Id = "SectionTwo",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionTwo",
-                Questions = Questions,
-                Title = "SubSectionTwo",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionTwo",
+                    Questions = questions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionTwo"
         };
 
-        var SectionThree = new Section
+        var sectionThree = new Section
         {
             Id = "SectionThree",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionThree",
-                Questions = Questions,
-                Title = "SubSectionThree",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionThree",
+                    Questions = questions,
+                    Title = "SubSectionThree",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionThree"
         };
 
-        IList<Section> sections = new List<Section>();
+        var sections = new List<Section>
+        {
+            sectionOne,
+            sectionTwo,
+            sectionThree
+        };
 
-        sections.Add(SectionOne);
-        sections.Add(SectionTwo);
-        sections.Add(SectionThree);
         var report = new Report
         {
             Sections = sections
         };
-
 
         var user = new UserModel
         {
             DisplayName = "Horatio",
             Id = new Guid("DC850E8E-8286-47DF-8BFD-8332A6483555")
         };
+
         //Act
         _reportService.SaveReport(report, user, null);
 
