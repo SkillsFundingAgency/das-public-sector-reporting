@@ -38,22 +38,24 @@
             </div>
         }
         <ol class="das-task-list">
-            @await Html.PartialAsync("Sections/OrganisationName", Model)
+            <partial name="Sections/OrganisationName" model="@Model)"/>
 
             @if (Model.Report.Sections != null)
             {
                 foreach (var sectionItem in Model.Report.Sections)
                 {
-                    @await Html.PartialAsync("Sections/" + sectionItem.Id, sectionItem)
+                    @{
+                        var sectionName = $"Sections/{sectionItem.Id}";
+                        <partial name="@sectionName" model="@sectionItem"/>
+                    }
                 }
             }
 
-
-            @await Html.PartialAsync("Sections/Review", Model)
+            <partial name="Sections/Review" model="@Model"/>
 
         </ol>
     </div>
     <div class="govuk-grid-column-one-third">
-        @await Html.PartialAsync("Sections/History")
+        <partial name="Sections/History"/>
     </div>
 </div>

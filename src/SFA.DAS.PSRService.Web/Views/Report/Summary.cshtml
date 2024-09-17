@@ -26,11 +26,13 @@
         {
             <h1 class="govuk-heading-xl">Review details</h1>
         }
+
         <p id="report-summary-no-reports-message">No reports have been created yet.</p>
     }
     else
     {
         <div class="govuk-grid-column-full review-details">
+
             @section breadcrumb {
                 @if (!Model.Report.Submitted)
                 {
@@ -42,7 +44,6 @@
                     {
                         <a class="govuk-back-link" asp-controller="Home" asp-action="Index">Back</a>
                     }
-
                 }
                 else
                 {
@@ -53,7 +54,7 @@
 
             @if (Model.Report.Submitted)
             {
-                    <h1 class="govuk-heading-xl">Submitted details</h1>
+                <h1 class="govuk-heading-xl">Submitted details</h1>
             }
             else
             {
@@ -67,6 +68,7 @@
                     <h1 class="govuk-heading-xl">Review details</h1>
                     <p style="white-space: pre-line">@Model.Subtitle</p>
                 }
+
                 <div asp-validation-summary="All" class="govuk-error-summary" data-module="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
                     <h2 class="govuk-error-summary__title" id="error-summary-heading">
                         @(Model.IsReadOnly ? "These are the current errors" : "There is a problem")
@@ -76,32 +78,31 @@
 
             <div class="govuk-form-group">
                 <table class="govuk-table">
-                    @*<caption class="govuk-table__caption govuk-table__caption--m">Reporting period</caption>*@
                     <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">Reporting period</td>
-                            <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.Report.Period.FullString</td>
-                        </tr>
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">Reporting period</td>
+                        <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.Report.Period.FullString</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
 
-            @await Html.PartialAsync("Question/Organisation", new OrganisationReviewViewModel() { OrganisationName = Model.Report.OrganisationName,HasMinimumEmployeeHeadcount = Model.Report.HasMinimumEmployeeHeadcount,IsLocalAuthority = Model.Report.IsLocalAuthority })
+            <partial name="Question/Organisation" model="@(new OrganisationReviewViewModel { OrganisationName = Model.Report.OrganisationName, HasMinimumEmployeeHeadcount = Model.Report.HasMinimumEmployeeHeadcount, IsLocalAuthority = Model.Report.IsLocalAuthority })"/>
 
-            @await Html.PartialAsync("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            <partial name="Question/ReportNumbers" model="@(Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))"/>
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
             {
-                @await Html.PartialAsync("Question/ReportNumbersSchools", Model.Report.Sections.Single(w => w.Id == "ReportNumbersSchools"))
+                <partial name="Question/ReportNumbersSchools" model="@(Model.Report.Sections.Single(w => w.Id == "ReportNumbersSchools"))"/>
             }
-            
-            @await Html.PartialAsync("Question/ReportingPercentages", Model.Percentages)
+
+            <partial name="Question/ReportingPercentages" model="@Model.Percentages"/>
             @if (Model.PercentagesSchools != null)
             {
-                @await Html.PartialAsync("Question/ReportingPercentages", Model.PercentagesSchools)
+                <partial name="Question/ReportingPercentages" model="@Model.PercentagesSchools"/>
             }
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
             {
-                @await Html.PartialAsync("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
+                <partial name="Question/Factors" model="@(Model.Report.Sections.Single(w => w.Id == "Factors"))"/>
             }
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)

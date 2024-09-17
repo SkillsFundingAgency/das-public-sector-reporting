@@ -16,17 +16,13 @@
             <input type="hidden" name="section.ReportingPeriod" value="@Model.Report.ReportingPeriod"/>
             <input type="hidden" name="section.Id" value="@Model.CurrentSection.Id"/>
 
-            <!-- Validation summary-->
             <div asp-validation-summary="All" class="govuk-error-summary" data-module="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
                 <h2 class="govuk-error-summary__title" id="error-summary-heading">
                     There is a problem
                 </h2>
             </div>
 
-            @*@foreach (var question in Model.CurrentSection.Questions)
-            {*@
-            @await Html.PartialAsync(Model.CurrentSection.Id, Model)
-            @*}*@
+            <partial name="@Model.CurrentSection.Id" model="@Model"/>
 
             <button type="submit" class="govuk-button">Continue</button>
         </form>

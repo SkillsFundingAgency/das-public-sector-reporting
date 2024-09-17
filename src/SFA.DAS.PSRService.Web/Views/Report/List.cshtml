@@ -13,36 +13,37 @@
 
 <h1 class="govuk-heading-xl">Submitted reports</h1>
 
-@if (Model.SubmittedReports.Count() > 0)
+@if (Model.SubmittedReports.Any())
 {
-
-<p>Choose the report you wish to view</p>
-<div id="submitted-report-list">
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
+    <p>Choose the report you wish to view</p>
+    <div id="submitted-report-list">
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
             <tr class="govuk-table__row">
                 <th scope="col" class="govuk-table__header">Organisation name</th>
                 <th scope="col" class="govuk-table__header">Reporting period</th>
                 <th scope="col" class="govuk-table__header"></th>
             </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-        @foreach (var result in Model.SubmittedReports)
-        {
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">@result.OrganisationName</th>
-                <td class="govuk-table__cell">@Model.Periods[result.ReportingPeriod].FullString</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric"><a href="../Report/Summary/@result.ReportingPeriod" class="govuk-link">View</a></td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody class="govuk-table__body">
+            @foreach (var result in Model.SubmittedReports)
+            {
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">@result.OrganisationName</th>
+                    <td class="govuk-table__cell">@Model.Periods[result.ReportingPeriod].FullString</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">
+                        <a href="../Report/Summary/@result.ReportingPeriod" class="govuk-link">View</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 }
 
-@if (Model.SubmittedReports.Count() == 0)
+@if (!Model.SubmittedReports.Any())
 {
-<div  id="submitted-report-list-display-message">
-    <p>There are currently no submitted reports to show</p>
-</div>
+    <div id="submitted-report-list-display-message">
+        <p>There are currently no submitted reports to show</p>
+    </div>
 }

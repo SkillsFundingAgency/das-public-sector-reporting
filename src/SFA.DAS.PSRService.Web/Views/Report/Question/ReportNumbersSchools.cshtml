@@ -3,6 +3,5 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-report-numbers";
 }
 
-@await Html.PartialAsync("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="SchoolsEmployees"))
-@await Html.PartialAsync("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="SchoolsApprentices"))
-
+<partial name="Question/YourEmployees" model="@Model.SubSections.Single(w => w.Id == "SchoolsEmployees")"/>
+<partial name="Question/YourApprentices" model="@Model.SubSections.Single(w => w.Id == "SchoolsApprentices")"/>

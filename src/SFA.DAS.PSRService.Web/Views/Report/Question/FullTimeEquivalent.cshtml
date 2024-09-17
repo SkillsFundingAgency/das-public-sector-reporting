@@ -10,16 +10,16 @@
     <table class="govuk-table">
         <caption class="govuk-table__caption govuk-table__caption--m">Full Time Equivalent</caption>
         <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell">Full-time equivalents (optional)</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold js-addcommas">@questionList["atStart"].Answer</td>
-                    @if (canBeEdited)
-                    {
-                    <td class="govuk-table__cell govuk-table__cell--numeric">
-                        <a class="govuk-link" asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
-                    </td>
-                    }
-            </tr>
+        <tr class="govuk-table__row">
+            <td class="govuk-table__cell">Full-time equivalents (optional)</td>
+            <td class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold js-addcommas">@questionList["atStart"].Answer</td>
+            @if (canBeEdited)
+            {
+                <td class="govuk-table__cell govuk-table__cell--numeric">
+                    <a class="govuk-link" asp-controller="Question" asp-action="Index" asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" asp-route-id="@Model.Id">Change</a>
+                </td>
+            }
+        </tr>
         </tbody>
     </table>
 </div>

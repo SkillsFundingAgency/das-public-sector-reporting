@@ -2,6 +2,7 @@
 @{
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/sections/page-datalosswarning";
 }
+
 @section breadcrumb {
     <a class="govuk-back-link" asp-controller="Report" asp-action="IsLocalAuthority" asp-route-confirmIsLocalAuthority="@Model.IsLocalAuthority">Back</a>
 }
@@ -17,7 +18,7 @@
             </strong>
         </div>
         <form method="post" asp-action="DataLossWarning">
-            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend">
                         Do you wish to continue?

@@ -7,7 +7,7 @@
 }
 
 <fieldset class="govuk-fieldset">
-     <div class="govuk-form-group">
+    <div class="govuk-form-group">
         <h1>
             <label asp-for="@Model.Questions.ToArray()[0].Answer">
                 <span class="govuk-heading-l">@Model.CurrentSection.Title</span>
@@ -15,8 +15,8 @@
             </label>
         </h1>
         <p class="govuk-hint">For Local Authorities this could include commenting on how schools and fire services in your control have contributed to the target</p>
-        <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id" />
-        <input type="hidden" name="Section.Questions[0].Type" value="@Model.Questions.ToArray()[0].Type" />
+        <input type="hidden" name="Section.Questions[0].Id" value="@Model.Questions.ToArray()[0].Id"/>
+        <input type="hidden" name="Section.Questions[0].Type" value="@Model.Questions.ToArray()[0].Type"/>
         <textarea class="js-word-limit form-control govuk-!-width-three-quarters" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" rows="8"></textarea>
         <span class="sfa-form-control-after">
             <span class="words-left">500 words maximum</span>

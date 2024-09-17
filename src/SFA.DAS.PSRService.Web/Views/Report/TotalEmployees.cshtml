@@ -5,9 +5,11 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/page-your-totalemployees";
     ViewBag.ZenDeskLabel = "reporting-your-totalemployees";
 }
+
 @section breadcrumb {
     <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
 }
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Total number of employees</h1>
@@ -19,7 +21,7 @@
             </strong>
         </div>
         <form method="post" asp-action="TotalEmployees">
-            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend">
                         Did your organisation employ more than 250 people on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString?
