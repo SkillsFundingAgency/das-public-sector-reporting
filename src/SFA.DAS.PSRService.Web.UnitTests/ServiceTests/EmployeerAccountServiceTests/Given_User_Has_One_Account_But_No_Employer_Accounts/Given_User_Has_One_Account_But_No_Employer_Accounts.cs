@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.EAS.Account.Api.Types;
-using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 
@@ -53,7 +52,7 @@ public abstract class Given_User_Has_One_Account_But_No_Employer_Accounts : Give
     private EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
     {
         return
-            new EmployerIdentifier()
+            new EmployerIdentifier
             {
                 AccountId = accountId
             };

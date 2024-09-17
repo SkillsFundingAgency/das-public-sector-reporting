@@ -28,13 +28,13 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
     private static readonly TeamMemberViewModel _teamMemberTransactor = new() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId};
     private static readonly TeamMemberViewModel _teamMemberViewer = new() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId};
 
-    private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel>() { _teamMemberOwner };
-    private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel>() { _teamMemberTransactor };
-    private readonly IList<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel>() { _teamMemberViewer };
+    private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel> { _teamMemberOwner };
+    private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel> { _teamMemberTransactor };
+    private readonly IList<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel> { _teamMemberViewer };
 
     protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
-    private readonly static IList<AccountDetailViewModel> accountDetailViewModel = new List<AccountDetailViewModel>() { new() { HashedAccountId = _accountIdOne}, new() { HashedAccountId = _accountIdTwo }, new() { HashedAccountId = _accountIdThree } };
+    private readonly static IList<AccountDetailViewModel> accountDetailViewModel = new List<AccountDetailViewModel> { new() { HashedAccountId = _accountIdOne}, new() { HashedAccountId = _accountIdTwo }, new() { HashedAccountId = _accountIdThree } };
 
     protected override void Given()
     {
@@ -68,7 +68,7 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
     private EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
     {
         return
-            new EmployerIdentifier()
+            new EmployerIdentifier
             {
                 AccountId = accountId
             };

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using MediatR;
 using Moq;
@@ -38,7 +37,7 @@ public class Given_I_Save_A_Report
         _webConfigurationMock.SetupGet(s => s.AuditWindowSize).Returns((TimeSpan?)null);
         _mediatorMock.Setup(s => s.Send(It.IsAny<UpdateReportRequest>(), It.IsAny<CancellationToken>()));
 
-        var Questions = new List<Question>()
+        var Questions = new List<Question>
         {
             new()
             {
@@ -64,10 +63,11 @@ public class Given_I_Save_A_Report
 
         };
 
-        var SectionOne = new Section()
+        var SectionOne = new Section
         {
             Id = "SectionOne",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
+            { new()
             {
                 Id = "SubSectionOne",
                 Questions = Questions,
@@ -79,10 +79,11 @@ public class Given_I_Save_A_Report
             Title = "SectionOne"
         };
 
-        var SectionTwo = new Section()
+        var SectionTwo = new Section
         {
             Id = "SectionTwo",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
+            { new()
             {
                 Id = "SubSectionTwo",
                 Questions = Questions,
@@ -94,10 +95,11 @@ public class Given_I_Save_A_Report
             Title = "SectionTwo"
         };
 
-        var SectionThree = new Section()
+        var SectionThree = new Section
         {
             Id = "SectionThree",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
+            { new()
             {
                 Id = "SubSectionThree",
                 Questions = Questions,
@@ -114,7 +116,7 @@ public class Given_I_Save_A_Report
         sections.Add(SectionOne);
         sections.Add(SectionTwo);
         sections.Add(SectionThree);
-        var report = new Report()
+        var report = new Report
         {
             Sections = sections
         };

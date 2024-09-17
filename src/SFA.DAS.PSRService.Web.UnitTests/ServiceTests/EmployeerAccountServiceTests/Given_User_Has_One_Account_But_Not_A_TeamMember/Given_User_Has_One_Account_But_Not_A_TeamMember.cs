@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.EAS.Account.Api.Types;
-using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 
@@ -22,7 +21,7 @@ public abstract class Given_User_Has_One_Account_But_Not_A_TeamMember : GivenWhe
     protected static readonly string _accountIdOne = "MR66J4";
     private static readonly string[] AccountId = [_accountIdOne];
 
-    private readonly IList<TeamMemberViewModel> _teamMembers = new List<TeamMemberViewModel>() { new(), new() };
+    private readonly IList<TeamMemberViewModel> _teamMembers = new List<TeamMemberViewModel> { new(), new() };
     protected IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
     protected override void Given()
@@ -53,7 +52,7 @@ public abstract class Given_User_Has_One_Account_But_Not_A_TeamMember : GivenWhe
     private EmployerIdentifier EmployerIdentifierWitNoRoleForAccount(string accountId)
     {
         return
-            new EmployerIdentifier()
+            new EmployerIdentifier
             {
                 AccountId = accountId
             };

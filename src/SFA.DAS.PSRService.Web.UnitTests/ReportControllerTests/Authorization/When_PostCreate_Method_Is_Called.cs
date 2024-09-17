@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using FluentAssertions;
 using Microsoft.AspNetCore.Authorization;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
-using SFA.DAS.PSRService.Web.Controllers;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization;
 
@@ -13,12 +12,11 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Authorization;
 [Category("Made Obsolete by automation testing")]
 public sealed class When_PostCreate_Method_Is_Called : Given_A_ReportController
 {
-    //TODO: Delete when automation testing completed
-    private Attribute attribute;
+    private Attribute _attribute;
 
     protected override void When()
     {
-        attribute = Sut.GetType()
+        _attribute = Sut.GetType()
             .GetMethod(nameof(Sut.PostCreate))
             .GetCustomAttribute(typeof(AuthorizeAttribute));
     }
@@ -26,17 +24,12 @@ public sealed class When_PostCreate_Method_Is_Called : Given_A_ReportController
     [Test]
     public void Then_Change_Method_Has_Authorization()
     {
-        Assert
-            .NotNull(
-                attribute);
+        _attribute.Should().NotBeNull();
     }
 
     [Test]
     public void Then_Change_Method_Is_Authorized_With_CanEdit_Policy()
     {
-        Assert
-            .AreEqual(
-                ((AuthorizeAttribute)attribute).Policy,
-                PolicyNames.CanEditReport);
+        ((AuthorizeAttribute)_attribute).Policy.Should().Be(PolicyNames.CanEditReport);
     }
 }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using MediatR;
+﻿using MediatR;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.PSRService.Application.ReportHandlers;
-using SFA.DAS.PSRService.Domain.Entities;
-using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 

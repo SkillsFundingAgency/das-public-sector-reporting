@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
@@ -12,7 +11,7 @@ public sealed class ReportBuilder
 {
     private IEnumerable<Section> _sections = [];
     private bool _submittedStatus;
-    private string _employerId = String.Empty;
+    private string _employerId = string.Empty;
     private Period _reportingPeriod = Period.ParsePeriodString("1718");
 
     public Report Build()
@@ -171,7 +170,7 @@ public sealed class ReportBuilder
     }
     private static IEnumerable<Section> BuildInvalidReportSections()
     {
-        var questions = new List<Question>()
+        var questions = new List<Question>
         {
             new()
             {
@@ -197,10 +196,10 @@ public sealed class ReportBuilder
 
         };
 
-        var sectionOne = new Section()
+        var sectionOne = new Section
         {
             Id = "SectionOne",
-            SubSections = new List<Section>()
+            SubSections = new List<Section>
             {
                 new()
                 {
@@ -215,6 +214,6 @@ public sealed class ReportBuilder
             Title = "SectionOne"
         };
 
-        return new List<Section>() { sectionOne };
+        return new List<Section> { sectionOne };
     }
 }

@@ -13,22 +13,22 @@ using SFA.DAS.PSRService.Web.Services;
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
 
 [TestFixture]
-public class Given_A_ReportController
+public class GivenAReportController
 {
-    protected ReportController _controller;
-    protected Mock<IReportService> _mockReportService;
-    protected Mock<IUrlHelper> MockUrlHelper;
-    private Mock<IEmployerAccountService> _employeeAccountServiceMock;
-    public Mock<IUserService> _userServiceMock;
-    private Mock<IPeriodService> _periodServiceMock;
-    private EmployerIdentifier _employerIdentifier;
-    protected Mock<IAuthorizationService> MockAuthorizationService;
-    protected Mock<IMediator> MockMediatr;
+    protected readonly ReportController Controller;
+    protected readonly Mock<IReportService> MockReportService;
+    protected readonly Mock<IUrlHelper> MockUrlHelper;
+    private readonly Mock<IEmployerAccountService> _employeeAccountServiceMock;
+    private readonly Mock<IUserService> _userServiceMock;
+    private readonly Mock<IPeriodService> _periodServiceMock;
+    private readonly EmployerIdentifier _employerIdentifier;
+    protected readonly Mock<IAuthorizationService> MockAuthorizationService;
+    protected readonly Mock<IMediator> MockMediatr;
 
-    public Given_A_ReportController()
+    public GivenAReportController()
     {
         MockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-        _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
+        MockReportService = new Mock<IReportService>(MockBehavior.Strict);
         _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
         _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
@@ -39,8 +39,8 @@ public class Given_A_ReportController
 
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-        _controller = new ReportController(
-            _mockReportService.Object, 
+        Controller = new ReportController(
+            MockReportService.Object, 
             _employeeAccountServiceMock.Object,
             _userServiceMock.Object, 
             null, 
@@ -51,10 +51,11 @@ public class Given_A_ReportController
             Url = MockUrlHelper.Object
         };
 
-        _employerIdentifier = new EmployerIdentifier() {AccountId = "ABCDE", EmployerName = "EmployerName"};
+        _employerIdentifier = new EmployerIdentifier {AccountId = "ABCDE", EmployerName = "EmployerName"};
 
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
             .Returns(_employerIdentifier);
+        
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
 
@@ -62,7 +63,7 @@ public class Given_A_ReportController
     }
     
     [OneTimeTearDown]
-    public void TearDown() => _controller?.Dispose();
+    public void TearDown() => Controller?.Dispose();
 
     [SetUp]
     public void GivenAndWhen()

@@ -1,9 +1,9 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -21,36 +21,36 @@ public class Given_I_Request_The_Report_IsLocalAuthority_Page : ReportController
         var url = "report/Edit";
         UrlActionContext actualContext = null;
 
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
+        MockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority));
 
-        _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
 
         // act
-        var result = _controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
+        var result = Controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel { IsLocalAuthority = isLocalAuthority });
 
         // assert
-        _mockUrlHelper.VerifyAll();
+        MockUrlHelper.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Edit", actualContext.Action);
-        Assert.AreEqual("Report", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Edit");
+        actualContext.Controller.Should().BeNull("Report");
     }
 
     [TestCase(true)]
     [TestCase(false)]
     public void And_The_Report_Creation_Fails_Then_Throw_Error(bool isLocalAuthority)
     {
-        _mockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority))
+        MockReportService.Setup(s => s.CreateReport(It.IsAny<string>(), It.IsAny<UserModel>(), isLocalAuthority))
             .Throws(new Exception("Unable to create Report"));
 
         // act
-        var result = _controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel() { IsLocalAuthority = isLocalAuthority });
+        var result = Controller.PostIsLocalAuthority(new IsLocalAuthorityViewModel { IsLocalAuthority = isLocalAuthority });
 
         // assert
-        Assert.IsInstanceOf<BadRequestResult>(result);
+        result.Should().BeOfType<BadRequestResult>();
     }
 }

@@ -12,7 +12,6 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
-using SFA.DAS.PSRService.Application.EmployerUserAccounts.Responses;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -10,12 +9,11 @@ using SFA.DAS.PSRService.Domain.Enums;
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Submitted_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_A_Valid_Submitted_Report
-    :Given_A_ReportController
+public abstract class GivenAValidSubmittedReport :GivenAReportController
 {
     protected override void Given()
     {
-        var ApprenticeQuestions = new List<Question>()
+        var apprenticeQuestions = new List<Question>
         {
             new()
             {
@@ -40,7 +38,8 @@ public abstract class Given_A_Valid_Submitted_Report
             }
 
         };
-        var EmployeeQuestions = new List<Question>()
+        
+        var employeeQuestions = new List<Question>
         {
             new()
             {
@@ -65,13 +64,15 @@ public abstract class Given_A_Valid_Submitted_Report
             }
 
         };
-        var YourEmployees = new Section()
+        
+        var yourEmployees = new Section
         {
             Id = "YourEmployeesSection",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
+            { new()
             {
                 Id = "YourEmployees",
-                Questions = EmployeeQuestions,
+                Questions = employeeQuestions,
                 Title = "SubSectionTwo",
                 SummaryText = ""
 
@@ -80,13 +81,14 @@ public abstract class Given_A_Valid_Submitted_Report
             Title = "SectionTwo"
         };
 
-        var YourApprentices = new Section()
+        var yourApprentices = new Section
         {
             Id = "YourApprenticeSection",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
+            { new()
             {
                 Id = "YourApprentices",
-                Questions = ApprenticeQuestions,
+                Questions = apprenticeQuestions,
                 Title = "SubSectionTwo",
                 SummaryText = ""
 
@@ -95,11 +97,13 @@ public abstract class Given_A_Valid_Submitted_Report
             Title = "SectionTwo"
         };
 
-        IList<Section> sections = new List<Section>();
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
 
-        sections.Add(YourEmployees);
-        sections.Add(YourApprentices);
-        var report = new Report()
+        var report = new Report
         {
             ReportingPeriod = "1617",
             Sections = sections,
@@ -111,10 +115,10 @@ public abstract class Given_A_Valid_Submitted_Report
         objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
             It.IsAny<ValidationStateDictionary>(),
             It.IsAny<string>(),
-            It.IsAny<Object>()));
-        _controller.ObjectValidator = objectValidator.Object;
+            It.IsAny<object>()));
+        Controller.ObjectValidator = objectValidator.Object;
 
-        _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
-        _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+        MockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
     }
 }

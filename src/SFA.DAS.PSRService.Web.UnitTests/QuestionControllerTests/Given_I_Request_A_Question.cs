@@ -45,7 +45,7 @@ public class Given_I_Request_A_Question
                 _mockUserService.Object)
             { Url = _mockUrlHelper.Object };
 
-        _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
+        _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
@@ -161,7 +161,6 @@ public class Given_I_Request_A_Question
         var listViewResult = result as ViewResult;
         listViewResult.Should().NotBeNull();
         listViewResult.ViewName.Should().Be("Index", "View name does not match, should be: Index");
-
 
         var sectionViewModel = listViewResult.Model as SectionViewModel;
         sectionViewModel.Should().NotBeNull();

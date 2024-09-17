@@ -9,81 +9,64 @@ namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A
 
 [ExcludeFromCodeCoverage]
 [TestFixture]
-public class When_Summary_Is_Called
-    : And_User_Can_Submit
+public class WhenSummaryIsCalled : And_User_Can_Submit
 {
-    private IActionResult result;
-    private ReportViewModel model;
+    private IActionResult _result;
+    private ReportViewModel _model;
 
     protected override void When()
     {
-        var hashedAccountId = "ABC123";
-        result = _controller.Summary(hashedAccountId, "1718");
+        const string hashedAccountId = "ABC123";
+        _result = Controller.Summary(hashedAccountId, "1718");
 
-        var viewResult = result as ViewResult;
+        var viewResult = _result as ViewResult;
 
-        model = viewResult?.Model as ReportViewModel;
+        _model = viewResult?.Model as ReportViewModel;
     }
 
     [Test]
     public void Then_ViewModel_UserCanSubmitReports_Is_True()
     {
-        var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+        var reportViewModel = ((ViewResult)_result).Model as ReportViewModel;
 
-        Assert
-            .IsTrue(reportViewModel.UserCanSubmitReports);
+        reportViewModel.UserCanSubmitReports.Should().BeTrue();
     }
 
     [Test]
     public void Then_ViewModel_UserCanEditReports_Is_True()
     {
-        model
-            .UserCanEditReports
-            .Should()
-            .BeTrue();
+        _model.UserCanEditReports.Should().BeTrue();
     }
+
     [Test]
     public void Then_Result_Is_ViewResult()
     {
-        Assert
-            .IsNotNull(result);
-
-        Assert
-            .IsInstanceOf<ViewResult>(result);
+        _result.Should().NotBeNull();
+        _result.Should().BeOfType<ViewResult>();
     }
 
     [Test]
     public void Then_ViewName_Is_Summary()
     {
-        Assert
-            .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
+        ((ViewResult)_result).ViewName.Should().Be("Summary", "View name does not match, should be: Summary");
     }
 
     [Test]
     public void Then_ViewModel_Is_ReportViewModel()
     {
-        Assert
-            .IsNotNull(((ViewResult) result).Model);
-
-        Assert
-            .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
+        ((ViewResult)_result).Model.Should().NotBeNull();
+        ((ViewResult)_result).Model.Should().BeOfType<ReportViewModel>();
     }
 
     [Test]
     public void Then_ViewModel_Has_Report()
     {
-        model
-            .Report
-            .Should()
-            .NotBeNull();
+        _model.Report.Should().NotBeNull();
     }
 
     [Test]
     public void Then_ViewModel_IsReadOnly_Is_False()
     {
-        model
-            .IsReadOnly
-            .Should()
-            .BeFalse();
+        _model.IsReadOnly.Should().BeFalse();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
@@ -15,42 +16,42 @@ public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
     public void The_Report_Exists_And_Is_Editable_Then_Show_Edit_Report()
     {
         // arrange
-        _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
-        _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(true).Verifiable();
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(true).Verifiable();
 
         // act
-        var result = _controller.Edit();
+        var result = Controller.Edit();
 
         // assert
-        _mockUrlHelper.VerifyAll();
-        _mockReportService.VerifyAll();
+        MockUrlHelper.VerifyAll();
+        MockReportService.VerifyAll();
 
-        Assert.AreEqual(typeof(ViewResult), result.GetType());
+        result.Should().BeOfType<RedirectResult>();
         var editViewResult = result as ViewResult;
-        Assert.IsNotNull(editViewResult);
-        Assert.AreEqual("Edit", editViewResult.ViewName, "View name does not match, should be: List");
+        editViewResult.Should().NotBeNull();
+        editViewResult.ViewName.Should().Be("Edit", "View name does not match, should be: List");
 
-        Assert.AreEqual(editViewResult.Model.GetType(), typeof(ReportViewModel));
+        editViewResult.Model.Should().BeOfType<ReportViewModel>();
         var reportViewModel = editViewResult.Model as ReportViewModel;
-        Assert.IsNotNull(reportViewModel);
-        Assert.IsNotNull(reportViewModel.Report.Id);
+        reportViewModel.Should().NotBeNull();
+        reportViewModel.Report.Id.Should().NotBe(default(Guid));
     }
 
     [Test]
     public void The_Report_Does_Not_Exist_Then_Should_Not_Error()
     {
         // arrange
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns("report/create");
-        _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null).Verifiable();
-        _mockReportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
+        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns("report/create");
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
         // act
-        var result = _controller.Edit();
+        var result = Controller.Edit();
 
         // assert
-        _mockUrlHelper.VerifyAll();
-        _mockReportService.VerifyAll();
-        Assert.IsAssignableFrom<RedirectResult>(result);
+        MockUrlHelper.VerifyAll();
+        MockReportService.VerifyAll();
+        result.Should().BeOfType<RedirectResult>();
     }
 
     [Test]
@@ -59,21 +60,21 @@ public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
         // arrange
         const string url = "report/create";
         UrlActionContext actualContext = null;
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-        _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
-        _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(false).Verifiable();
+        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(false).Verifiable();
 
         // act
-        var result = _controller.Edit();
+        var result = Controller.Edit();
 
         // assert
-        _mockUrlHelper.VerifyAll();
-        _mockReportService.VerifyAll();
+        MockUrlHelper.VerifyAll();
+        MockReportService.VerifyAll();
 
         var redirectResult = result as RedirectResult;
-        Assert.IsNotNull(redirectResult);
-        Assert.AreEqual(url, redirectResult.Url);
-        Assert.AreEqual("Index", actualContext.Action);
-        Assert.AreEqual("Home", actualContext.Controller);
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Index");
+        actualContext.Controller.Should().BeNull("Home");
     }
 }

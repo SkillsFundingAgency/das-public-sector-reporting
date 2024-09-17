@@ -4,7 +4,6 @@ using Moq;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
-using SFA.DAS.PSRService.Web.UnitTests.ServiceTests.PeriodServiceTests;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ServiceTests.ReportServiceTests.Submit.Given_A_Valid_Report;
 

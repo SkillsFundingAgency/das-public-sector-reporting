@@ -33,7 +33,7 @@ public abstract class Given_Home_Controller :GivenWhenThen<HomeController>
 
         _mockPeriodService.Setup(r => r.GetCurrentPeriod()).Returns(CurrentPeriod);
 
-        _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
+        _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
             .Returns(_employerIdentifier);
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))

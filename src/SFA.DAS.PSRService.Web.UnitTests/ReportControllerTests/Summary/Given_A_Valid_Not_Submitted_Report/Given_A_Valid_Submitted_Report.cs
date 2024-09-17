@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -10,12 +9,11 @@ using SFA.DAS.PSRService.Domain.Enums;
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Not_Submitted_Report;
 
 [ExcludeFromCodeCoverage]
-public abstract class Given_A_Valid_Submitted_Report
-    :Given_A_ReportController
+public abstract class GivenAValidSubmittedReport : GivenAReportController
 {
     protected override void Given()
     {
-        var ApprenticeQuestions = new List<Question>()
+        var apprenticeQuestions = new List<Question>
         {
             new()
             {
@@ -23,8 +21,8 @@ public abstract class Given_A_Valid_Submitted_Report
                 Answer = "20",
                 Type = QuestionType.Number,
                 Optional = false
-            }
-            ,new()
+            },
+            new()
             {
                 Id = "atEnd",
                 Answer = "35",
@@ -38,9 +36,9 @@ public abstract class Given_A_Valid_Submitted_Report
                 Type = QuestionType.Number,
                 Optional = false
             }
-
         };
-        var EmployeeQuestions = new List<Question>()
+        
+        var employeeQuestions = new List<Question>
         {
             new()
             {
@@ -48,8 +46,8 @@ public abstract class Given_A_Valid_Submitted_Report
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
-            }
-            ,new()
+            },
+            new()
             {
                 Id = "atEnd",
                 Answer = "300",
@@ -63,43 +61,49 @@ public abstract class Given_A_Valid_Submitted_Report
                 Type = QuestionType.Number,
                 Optional = false
             }
-
         };
-        var YourEmployees = new Section()
+        
+        var yourEmployees = new Section
         {
             Id = "YourEmployeesSection",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
             {
-                Id = "YourEmployees",
-                Questions = EmployeeQuestions,
-                Title = "SubSectionTwo",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionTwo"
         };
 
-        var YourApprentices = new Section()
+        var yourApprentices = new Section
         {
             Id = "YourApprenticeSection",
-            SubSections = new List<Section>() { new()
+            SubSections = new List<Section>
             {
-                Id = "YourApprentices",
-                Questions = ApprenticeQuestions,
-                Title = "SubSectionTwo",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionTwo"
         };
 
-        IList<Section> sections = new List<Section>();
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
 
-        sections.Add(YourEmployees);
-        sections.Add(YourApprentices);
-        var report = new Report()
+        var report = new Report
         {
             ReportingPeriod = "1617",
             Sections = sections,
@@ -110,10 +114,10 @@ public abstract class Given_A_Valid_Submitted_Report
         objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
             It.IsAny<ValidationStateDictionary>(),
             It.IsAny<string>(),
-            It.IsAny<Object>()));
-        _controller.ObjectValidator = objectValidator.Object;
+            It.IsAny<object>()));
+        Controller.ObjectValidator = objectValidator.Object;
 
-        _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
-        _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
+        MockReportService.Setup(s => s.CanBeEdited(report)).Returns(true);
     }
 }

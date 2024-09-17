@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Security.Claims;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 

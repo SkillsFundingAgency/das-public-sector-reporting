@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
@@ -9,9 +10,9 @@ public class Given_I_Request_The_Report_EditComplete_Page : ReportControllerTest
     [Test]
     public void Then_Show_EditComplete_View()
     {
-        var result = _controller.EditComplete();
+        var result = Controller.EditComplete();
 
-        Assert.IsAssignableFrom<ViewResult>(result);
-        Assert.IsTrue(((ViewResult)result).ViewName == "EditComplete");
+        result.Should().BeOfType<ViewResult>();
+        ((ViewResult)result).ViewName.Should().Be("EditComplete");
     }
 }

@@ -12,8 +12,7 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.OrganisationName.Given_A_Submitted_Report;
 
-public abstract class Given_Report_Cannot_Be_Edited
-    : GivenWhenThen<ReportController>
+public abstract class Given_Report_Cannot_Be_Edited : GivenWhenThen<ReportController>
 {
     private Mock<IReportService> _mockReportService;
     private Mock<IUrlHelper> _mockUrlHelper;
@@ -21,13 +20,12 @@ public abstract class Given_Report_Cannot_Be_Edited
     private Mock<IUserService> _userServiceMock;
     private Mock<IPeriodService> _periodServiceMock;
     private EmployerIdentifier _employerIdentifier;
-    protected Mock<IAuthorizationService> MockAuthorizationService;
-    protected string ExpectedUrl = @"Home/Index";
+    private Mock<IAuthorizationService> MockAuthorizationService;
+    protected const string ExpectedUrl = "Home/Index";
 
     protected override void Given()
     {
         base.Given();
-
 
         _mockUrlHelper = new Mock<IUrlHelper>();
         _mockReportService = new Mock<IReportService>();
@@ -39,38 +37,17 @@ public abstract class Given_Report_Cannot_Be_Edited
 
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-        _mockReportService
-            .Setup(
-                m =>
-                    m.GetReport(
-                        It.IsAny<string>(),
-                        It.IsAny<string>()))
-            .Returns(
-                new Report
-                {
-                    Submitted = true
-                });
+        _mockReportService.Setup(m => m.GetReport(It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(new Report { Submitted = true });
 
-        _mockReportService
-            .Setup(
-                m =>
-                    m.CanBeEdited(
-                        It.IsAny<Report>()))
-            .Returns(
-                false);
+        _mockReportService.Setup(m => m.CanBeEdited(It.IsAny<Report>()))
+            .Returns(false);
 
-        _mockUrlHelper
-            .Setup(
-                m =>
-                    m.Action(
-                        It.Is<UrlActionContext>(
-                            ctx =>
-                                ctx.Action.Equals("Index", StringComparison.OrdinalIgnoreCase)
-                                && ctx.Controller.Equals("Home", StringComparison.OrdinalIgnoreCase))
-                    ))
-            .Returns(
-                ExpectedUrl);
-
+        _mockUrlHelper.Setup(m => m.Action(It.Is<UrlActionContext>(
+                ctx =>
+                    ctx.Action.Equals("Index", StringComparison.OrdinalIgnoreCase)
+                    && ctx.Controller.Equals("Home", StringComparison.OrdinalIgnoreCase))))
+            .Returns(ExpectedUrl);
 
         Sut = new ReportController(
             _mockReportService.Object,
@@ -84,10 +61,11 @@ public abstract class Given_Report_Cannot_Be_Edited
             Url = _mockUrlHelper.Object
         };
 
-        _employerIdentifier = new EmployerIdentifier() {AccountId = "ABCDE", EmployerName = "EmployerName"};
+        _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
             .Returns(_employerIdentifier);
+        
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
 

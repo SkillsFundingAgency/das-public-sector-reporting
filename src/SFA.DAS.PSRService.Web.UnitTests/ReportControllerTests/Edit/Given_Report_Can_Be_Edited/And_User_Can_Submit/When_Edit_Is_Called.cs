@@ -5,26 +5,26 @@ using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Edit.Given_Report_Can_Be_Edited.And_User_Can_Submit;
 
-public sealed class When_Edit_Is_Called
-    :And_User_Can_Submit
+public sealed class WhenEditIsCalled : And_User_Can_Submit
 {
-    private IActionResult result;
-    private ReportViewModel model;
+    private IActionResult _result;
+    private ReportViewModel _model;
 
     protected override void When()
     {
         base.When();
 
-        result = Sut.Edit();
+        _result = Sut.Edit();
 
-        var viewResult = result as ViewResult;
+        var viewResult = _result as ViewResult;
 
-        model = viewResult?.Model as ReportViewModel;
+        _model = viewResult?.Model as ReportViewModel;
     }
+
     [Test]
     public void Then_ViewModel_UserCanSubmitReports_Is_True()
     {
-        model
+        _model
             .UserCanSubmitReports
             .Should()
             .BeTrue();
@@ -33,27 +33,20 @@ public sealed class When_Edit_Is_Called
     [Test]
     public void Then_Result_Is_ViewResult()
     {
-        Assert
-            .IsNotNull(result);
-
-        Assert
-            .IsInstanceOf<ViewResult>(result);
+        _result.Should().NotBeNull();
+        _result.Should().BeOfType<ViewResult>();
     }
 
     [Test]
     public void Then_ViewName_Is_Edit()
     {
-        Assert
-            .AreEqual("Edit", ((ViewResult)result).ViewName, "View name does not match, should be: Summary");
+        ((ViewResult)_result).ViewName.Should().Be("Edit", "View name does not match, should be: Summary");
     }
 
     [Test]
     public void Then_ViewModel_Is_ReportViewModel()
     {
-        Assert
-            .IsNotNull(((ViewResult)result).Model);
-
-        Assert
-            .IsInstanceOf<ReportViewModel>(((ViewResult)result).Model);
+        ((ViewResult)_result).Model.Should().NotBeNull();
+        ((ViewResult)_result).Model.Should().BeOfType<ReportViewModel>();
     }
 }

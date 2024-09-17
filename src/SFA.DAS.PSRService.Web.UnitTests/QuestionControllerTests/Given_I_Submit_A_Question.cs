@@ -37,7 +37,7 @@ public class Given_I_Submit_A_Question
         _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
 
 
-        _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
+        _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
             .Returns(_employerIdentifier);
