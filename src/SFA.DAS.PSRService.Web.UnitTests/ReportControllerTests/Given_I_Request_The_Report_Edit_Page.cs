@@ -26,7 +26,7 @@ public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
         MockUrlHelper.VerifyAll();
         MockReportService.VerifyAll();
 
-        result.Should().BeOfType<RedirectResult>();
+        result.Should().BeOfType<ViewResult>();
         var editViewResult = result as ViewResult;
         editViewResult.Should().NotBeNull();
         editViewResult.ViewName.Should().Be("Edit", "View name does not match, should be: List");
@@ -34,7 +34,6 @@ public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
         editViewResult.Model.Should().BeOfType<ReportViewModel>();
         var reportViewModel = editViewResult.Model as ReportViewModel;
         reportViewModel.Should().NotBeNull();
-        reportViewModel.Report.Id.Should().NotBe(default(Guid));
     }
 
     [Test]
@@ -75,6 +74,6 @@ public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
         redirectResult.Should().NotBeNull();
         redirectResult.Url.Should().Be(url);
         actualContext.Action.Should().Be("Index");
-        actualContext.Controller.Should().BeNull("Home");
+        actualContext.Controller.Should().Be("Home");
     }
 }

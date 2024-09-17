@@ -37,7 +37,7 @@ public class Given_I_Request_The_Report_IsLocalAuthority_Page : ReportController
         redirectResult.Should().NotBeNull();
         redirectResult.Url.Should().Be(url);
         actualContext.Action.Should().Be("Edit");
-        actualContext.Controller.Should().BeNull("Report");
+        actualContext.Controller.Should().Be("Report");
     }
 
     [TestCase(true)]
