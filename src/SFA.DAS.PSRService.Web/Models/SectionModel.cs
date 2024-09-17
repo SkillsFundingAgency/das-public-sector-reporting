@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SFA.DAS.PSRService.Web.ViewModels;
+﻿using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.Models
 {

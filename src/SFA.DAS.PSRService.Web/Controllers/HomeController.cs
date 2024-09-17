@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -77,16 +75,13 @@ public class HomeController : BaseController
     [Authorize(Policy = nameof(PolicyNames.HasEmployerAccount))]
     public IActionResult Submit(string action)
     {
-        if (_submitLookup.ContainsKey(action))
-        {
-            return BuildRedirectResultForSubmitAction(_submitLookup[action]);
-        }
-
-        return new BadRequestResult();
+        return _submitLookup.TryGetValue(action, out var value)
+            ? BuildRedirectResultForSubmitAction(value)
+            : new BadRequestResult();
     }
 
 #if DEBUG
-    [AllowAnonymous()]
+    [AllowAnonymous]
     [HttpGet]
     [Route("SignIn-Stub")]
     public IActionResult SigninStub()
@@ -141,7 +136,9 @@ public class HomeController : BaseController
         {
             CookieAuthenticationDefaults.AuthenticationScheme
         };
+
         _ = bool.TryParse(_config["StubAuth"], out var stubAuth);
+
         if (!stubAuth)
         {
             schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
@@ -159,7 +156,6 @@ public class HomeController : BaseController
     private async Task<bool> UserIsAuthorizedForReportEdit()
     {
         var result = await _authorizationService.AuthorizeAsync(User, ControllerContext, PolicyNames.CanEditReport);
-
         return result.Succeeded;
     }
 
@@ -178,14 +174,14 @@ public class HomeController : BaseController
         model.Readonly = userIsNotAuthorizedForReportEdit;
         model.CurrentReportAlreadySubmitted = reportIsAlreadySubmitted;
 
-        model.WelcomeMessage = BuildWelcomeMessageFromReportStatusAndUserAuthorization(report);
+        model.WelcomeMessage = await BuildWelcomeMessageFromReportStatusAndUserAuthorization(report);
     }
 
-    private string BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
+    private async Task<string> BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
     {
-        return new HomePageMessageProvider(this, _authorizationService)
-                .GetWelcomeMessage()
-                .ForPeriod(_currentPeriod)
-                .AndReport(report);
+        return await new HomePageMessageProvider(this, _authorizationService)
+            .GetWelcomeMessage()
+            .ForPeriod(_currentPeriod)
+            .AndReport(report);
     }
 }

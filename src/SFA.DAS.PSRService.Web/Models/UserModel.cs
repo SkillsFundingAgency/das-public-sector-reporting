@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.Models;

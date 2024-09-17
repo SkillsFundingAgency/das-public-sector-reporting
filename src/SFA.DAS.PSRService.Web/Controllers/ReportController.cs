@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Application.ReportHandlers;
@@ -149,7 +146,7 @@ public class ReportController : BaseController
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
-        catch (Exception exception)
+        catch (Exception)
         {
             return new BadRequestResult();
         }
@@ -175,20 +172,22 @@ public class ReportController : BaseController
 
             var report = await _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
-            if (report != null)
+            if (report == null)
             {
-                if (!_reportService.CanBeEdited(report))
-                {
-                    return new RedirectResult(Url.Action("Index", "Home"));
-                }
-
-                if (dataLossWarning.IsLocalAuthority == report.IsLocalAuthority)
-                {
-                    return new RedirectResult(Url.Action("Edit", "Report"));
-                }
-
-                await _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
+                return new RedirectResult(Url.Action("Edit", "Report"));
             }
+
+            if (!_reportService.CanBeEdited(report))
+            {
+                return new RedirectResult(Url.Action("Index", "Home"));
+            }
+
+            if (dataLossWarning.IsLocalAuthority == report.IsLocalAuthority)
+            {
+                return new RedirectResult(Url.Action("Edit", "Report"));
+            }
+
+            await _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
@@ -209,8 +208,6 @@ public class ReportController : BaseController
     [Route("List")]
     public async Task<IActionResult> List([FromRoute] string hashedEmployerAccountId)
     {
-        //need to get employee id, this needs to be moves somewhere
-
         var reportListViewmodel = new ReportListViewModel
         {
             HashedEmployerAccountId = hashedEmployerAccountId,

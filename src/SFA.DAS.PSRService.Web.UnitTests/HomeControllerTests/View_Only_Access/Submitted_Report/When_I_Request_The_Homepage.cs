@@ -76,7 +76,7 @@ public class WhenIRequestTheHomepage : And_Current_Report_Submitted
     public void Then_The_Welcome_Message_Is_View_Only_Report_Submitted()
     {
         var expectedMessage = HomePageWelcomeMessageProvider
-            .GetMesssage()
+            .GetMessage()
             .ForPeriod(CurrentPeriod)
             .WhereUserCanOnlyView()
             .AndReportIsAlreadySubmitted();

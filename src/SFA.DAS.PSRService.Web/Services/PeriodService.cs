@@ -1,5 +1,4 @@
-﻿using System;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.Services;
 

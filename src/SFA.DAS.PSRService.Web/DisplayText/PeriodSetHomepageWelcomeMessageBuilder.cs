@@ -1,101 +1,65 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 
-namespace SFA.DAS.PSRService.Web.DisplayText
+namespace SFA.DAS.PSRService.Web.DisplayText;
+
+public class PeriodSetHomepageWelcomeMessageBuilder(
+    HomeController homeController,
+    IAuthorizationService authorizationService,
+    Period currentPeriod)
 {
-    public class PeriodSetHomepageWelcomeMessageBuilder
+    public async Task<string> AndReport(Report report)
     {
-        private readonly HomeController _homeController;
-        private readonly IAuthorizationService _authorizationService;
-        private readonly Period _currentPeriod;
+        var firstStep = HomePageWelcomeMessageProvider
+            .GetMessage()
+            .ForPeriod(currentPeriod);
 
-        public PeriodSetHomepageWelcomeMessageBuilder(
-            HomeController homeController,
-            IAuthorizationService authorizationService,
-            Period currentPeriod)
+        var secondStep = await SetSecondStepBasedOnUserAccessLevel(firstStep);
+
+        return BuildMessageBasedOnReportStatus(secondStep, report);
+    }
+
+    private static string BuildMessageBasedOnReportStatus(ReportStatusHomePageMessageBuilder secondStep, Report report)
+    {
+        if (report == null)
         {
-            _homeController = homeController ?? throw new ArgumentNullException(nameof(homeController));
-            _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
-            _currentPeriod = currentPeriod ?? throw new ArgumentNullException(nameof(currentPeriod));
+            return secondStep.AndReportDoesNotExist();
         }
 
-        public string AndReport(Report report)
+        if (report.Submitted)
         {
-            var firstStep =
-                HomePageWelcomeMessageProvider
-                    .GetMesssage()
-                    .ForPeriod(_currentPeriod);
-
-            var secondStep = 
-                SetSecondStepBasedOnUserAccessLevel(firstStep);
-
-            return
-                BuildMessageBasedOnReportStatus(
-                    secondStep,
-                    report);
+            return secondStep.AndReportIsAlreadySubmitted();
         }
 
-        private string BuildMessageBasedOnReportStatus(
-            ReportStatusHomePageMessageBuilder secondStep,
-            Report report)
+        return secondStep.AndReportIsInProgress();
+    }
+
+    private async Task<ReportStatusHomePageMessageBuilder> SetSecondStepBasedOnUserAccessLevel(UserAccessLevelHomePageWelcomeMessageProvider firstStep)
+    {
+        if (await UserIsAuthorizedForReportSubmission())
         {
-            if (report == null)
-                return
-                    secondStep
-                        .AndReportDoesNotExist();
-
-            if (report.Submitted)
-                return
-                    secondStep
-                        .AndReportIsAlreadySubmitted();
-
-            return
-                secondStep
-                    .AndReportIsInProgress();
+            return firstStep.WhereUserCanSubmit();
         }
 
-        private ReportStatusHomePageMessageBuilder SetSecondStepBasedOnUserAccessLevel(UserAccessLevelHomePageWelcomeMessageProvider firstStep)
+        if (await UserIsAuthorizedForReportEdit())
         {
-            if (UserIsAuthorizedForReportSubmission())
-                return
-                    firstStep
-                        .WhereUserCanSubmit();
-
-            if (UserIsAuthorizedForReportEdit())
-                return
-                    firstStep
-                        .WhereUserCanEdit();
-
-            return
-                firstStep
-                    .WhereUserCanOnlyView();
+            return firstStep.WhereUserCanEdit();
         }
 
-        private bool UserIsAuthorizedForReportEdit()
-        {
-            return
-                _authorizationService
-                    .AuthorizeAsync(
-                        _homeController.User,
-                        _homeController.ControllerContext,
-                        PolicyNames.CanEditReport)
-                    .Result
-                    .Succeeded;
-        }
+        return firstStep.WhereUserCanOnlyView();
+    }
 
-        private bool UserIsAuthorizedForReportSubmission()
-        {
-            return
-                _authorizationService
-                    .AuthorizeAsync(
-                        _homeController.User,
-                        _homeController.ControllerContext,
-                        PolicyNames.CanSubmitReport)
-                    .Result
-                    .Succeeded;
-        }
+    private async Task<bool> UserIsAuthorizedForReportEdit()
+    {
+        var result = await authorizationService.AuthorizeAsync(homeController.User, homeController.ControllerContext, PolicyNames.CanEditReport);
+        return result.Succeeded;
+    }
+
+    private async Task<bool> UserIsAuthorizedForReportSubmission()
+    {
+        var result = await authorizationService.AuthorizeAsync(homeController.User, homeController.ControllerContext, PolicyNames.CanSubmitReport);
+        return result.Succeeded;
     }
 }

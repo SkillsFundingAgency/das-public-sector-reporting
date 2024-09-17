@@ -5,62 +5,56 @@ using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
 
-namespace SFA.DAS.PSRService.Web.Controllers
+namespace SFA.DAS.PSRService.Web.Controllers;
+
+public class ContentPolicyReportController(
+    ILogger<ContentPolicyReportController> logger,
+    IEmployerAccountService employerAccountService,
+    IWebConfiguration webConfiguration)
+    : BaseController(webConfiguration, employerAccountService)
 {
-    public class ContentPolicyReportController : BaseController
+    [AllowAnonymous]
+    [HttpPost("contentpolicyreport/report")]
+    [IgnoreAntiforgeryToken]
+    public IActionResult Report([FromBody] CspReportRequest request)
     {
-        private readonly ILogger<ContentPolicyReportController> _logger;
+        logger.LogWarning("CSP Violation: {cspReport}", request);
 
-        public ContentPolicyReportController(ILogger<ContentPolicyReportController> logger,
-            IEmployerAccountService employerAccountService, IWebConfiguration webConfiguration)
-            : base(webConfiguration, employerAccountService)
+        return Ok();
+    }
+
+    public class CspReportRequest
+    {
+        [JsonProperty(PropertyName = "csp-report")]
+        public CspReport CspReport { get; set; }
+
+        public override string ToString()
         {
-            _logger = logger;
+            return $"Violated: {CspReport.ViolatedDirective} by {CspReport.BlockedUri}";
         }
+    }
 
-        [AllowAnonymous]
-        [HttpPost("contentpolicyreport/report")]
-        [IgnoreAntiforgeryToken]
-        public IActionResult Report([FromBody] CspReportRequest request)
-        {
-            _logger.LogWarning("CSP Violation: {cspReport}", request);
+    public class CspReport
+    {
+        [JsonProperty(PropertyName = "document-uri")]
+        public string DocumentUri { get; set; }
 
-            return Ok();
-        }
+        [JsonProperty(PropertyName = "referrer")]
+        public string Referrer { get; set; }
 
-        public class CspReportRequest
-        {
-            [JsonProperty(PropertyName = "csp-report")]
-            public CspReport CspReport { get; set; }
+        [JsonProperty(PropertyName = "violated-directive")]
+        public string ViolatedDirective { get; set; }
 
-            public override string ToString()
-            {
-                return $"Violated: {CspReport.ViolatedDirective} by {CspReport.BlockedUri}";
-            }
-        }
+        [JsonProperty(PropertyName = "effective-directive")]
+        public string EffectiveDirective { get; set; }
 
-        public class CspReport
-        {
-            [JsonProperty(PropertyName = "document-uri")]
-            public string DocumentUri { get; set; }
+        [JsonProperty(PropertyName = "original-policy")]
+        public string OriginalPolicy { get; set; }
 
-            [JsonProperty(PropertyName = "referrer")]
-            public string Referrer { get; set; }
+        [JsonProperty(PropertyName = "blocked-uri")]
+        public string BlockedUri { get; set; }
 
-            [JsonProperty(PropertyName = "violated-directive")]
-            public string ViolatedDirective { get; set; }
-
-            [JsonProperty(PropertyName = "effective-directive")]
-            public string EffectiveDirective { get; set; }
-
-            [JsonProperty(PropertyName = "original-policy")]
-            public string OriginalPolicy { get; set; }
-
-            [JsonProperty(PropertyName = "blocked-uri")]
-            public string BlockedUri { get; set; }
-
-            [JsonProperty(PropertyName = "status-code")]
-            public int StatusCode { get; set; }
-        }
+        [JsonProperty(PropertyName = "status-code")]
+        public int StatusCode { get; set; }
     }
 }

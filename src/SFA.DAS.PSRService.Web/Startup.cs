@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using MediatR;
 using Microsoft.AspNetCore.Builder;

@@ -1,9 +1,8 @@
-﻿namespace SFA.DAS.PSRService.Web.Configuration.Authorization
+﻿namespace SFA.DAS.PSRService.Web.Configuration.Authorization;
+
+public static class PolicyNames
 {
-    public static class PolicyNames
-    {
-        public static string HasEmployerAccount => "HasEmployerAccount";
-        public const string CanEditReport = "CanEditReport";
-        public const string CanSubmitReport = "CanSubmitREport";
-    }
+    public static string HasEmployerAccount => nameof(HasEmployerAccount);
+    public const string CanEditReport = nameof(CanEditReport);
+    public const string CanSubmitReport = nameof(CanSubmitReport);
 }

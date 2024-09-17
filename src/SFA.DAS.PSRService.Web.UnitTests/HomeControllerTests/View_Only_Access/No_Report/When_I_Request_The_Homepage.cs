@@ -70,7 +70,7 @@ public class WhenIRequestTheHomepage : And_No_Current_Report_Exists
     public void Then_The_Welcome_Message_Is_View_Only_No_Report()
     {
         var expectedMessage = HomePageWelcomeMessageProvider
-            .GetMesssage()
+            .GetMessage()
             .ForPeriod(CurrentPeriod)
             .WhereUserCanOnlyView()
             .AndReportDoesNotExist();

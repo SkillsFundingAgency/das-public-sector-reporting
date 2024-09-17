@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 
 namespace SFA.DAS.PSRService.Web.ViewModels
 {

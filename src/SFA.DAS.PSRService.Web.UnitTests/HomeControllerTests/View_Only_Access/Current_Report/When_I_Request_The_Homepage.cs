@@ -70,7 +70,7 @@ public class WhenIRequestTheHomepage : And_Current_Report_Exists
     public void Then_The_Welcome_Message_Is_View_Only_Report_In_Progress()
     {
         var expectedMessage = HomePageWelcomeMessageProvider
-            .GetMesssage()
+            .GetMessage()
             .ForPeriod(CurrentPeriod)
             .WhereUserCanOnlyView()
             .AndReportIsInProgress();

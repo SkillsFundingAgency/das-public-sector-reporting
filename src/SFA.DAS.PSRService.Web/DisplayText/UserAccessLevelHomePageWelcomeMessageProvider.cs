@@ -1,29 +1,28 @@
 ﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.DisplayText
+namespace SFA.DAS.PSRService.Web.DisplayText;
+
+public class UserAccessLevelHomePageWelcomeMessageProvider
 {
-    public class UserAccessLevelHomePageWelcomeMessageProvider
+    private readonly Period _period;
+
+    public UserAccessLevelHomePageWelcomeMessageProvider(Period period)
     {
-        private readonly Period _period;
+        _period = period;
+    }
 
-        public UserAccessLevelHomePageWelcomeMessageProvider(Period period)
-        {
-            _period = period;
-        }
+    public UserCanOnlyViewHomePageWelcomeMessageProvider WhereUserCanOnlyView()
+    {
+        return new UserCanOnlyViewHomePageWelcomeMessageProvider(_period);
+    }
 
-        public UserCanOnlyViewHomePageWelcomeMessageProvider WhereUserCanOnlyView()
-        {
-            return new UserCanOnlyViewHomePageWelcomeMessageProvider(_period);
-        }
+    public UserCanEditHomePageWelcomeMessageProvider WhereUserCanEdit()
+    {
+        return new UserCanEditHomePageWelcomeMessageProvider(_period);
+    }
 
-        public UserCanEditHomePageWelcomeMessageProvider WhereUserCanEdit()
-        {
-            return new UserCanEditHomePageWelcomeMessageProvider(_period);
-        }
-
-        public UserCanSubmitHomePageWelcomeMessageProvider WhereUserCanSubmit()
-        {
-            return new UserCanSubmitHomePageWelcomeMessageProvider(_period);
-        }
+    public UserCanSubmitHomePageWelcomeMessageProvider WhereUserCanSubmit()
+    {
+        return new UserCanSubmitHomePageWelcomeMessageProvider(_period);
     }
 }
