@@ -42,7 +42,9 @@ public class ReportService(IWebConfiguration config, IMediator mediator, IPeriod
     public async Task SubmitReport(Report report)
     {
         if (!CanBeEdited(report) || !report.IsValidForSubmission())
+        {
             throw new InvalidOperationException("Report is invalid for submission.");
+        }
 
         await mediator.Send(new SubmitReportRequest(report));
     }

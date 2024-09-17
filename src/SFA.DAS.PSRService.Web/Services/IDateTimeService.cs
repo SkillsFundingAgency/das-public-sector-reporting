@@ -1,7 +1,6 @@
-﻿namespace SFA.DAS.PSRService.Web.Services
+﻿namespace SFA.DAS.PSRService.Web.Services;
+
+public interface IDateTimeService
 {
-    public interface IDateTimeService
-    {
-        DateTime UtcNow { get; }
-    }
+    DateTime UtcNow { get; }
 }

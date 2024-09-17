@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public interface IEmployerAccountService
 {
-    public interface IEmployerAccountService
-    {
-        EmployerIdentifier GetCurrentEmployerAccountId(HttpContext routeData);
-        Task<Claim> GetClaim(string userId);
-    }
+    EmployerIdentifier GetCurrentEmployerAccountId(HttpContext routeData);
+    Task<Claim> GetClaim(string userId);
 }

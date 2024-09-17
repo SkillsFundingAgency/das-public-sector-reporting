@@ -3,70 +3,65 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 
-namespace SFA.DAS.PSRService.Web.Utils
+namespace SFA.DAS.PSRService.Web.Utils;
+
+public class RedisCacheTicketStore : ITicketStore
 {
-    public class RedisCacheTicketStore : ITicketStore
+    private readonly RedisCache _cache;
+    private const string KeyPrefix = "AuthSessionStore-";
+    private const int RedisPort = 6379; // override default so that do not interfere with anyone else's server
+
+    public RedisCacheTicketStore(string redisConnectionString)
     {
-        private readonly IDistributedCache _cache;
-        private const string KeyPrefix = "AuthSessionStore-";
-        public static int RedisPort = 6379; // override default so that do not interfere with anyone else's server
-
-        public RedisCacheTicketStore(string redisConnectionString)
+        _cache = new RedisCache(new RedisCacheOptions
         {
-           
-            _cache = new RedisCache(new RedisCacheOptions
-            {
-                //TODO : Need to Configure this
-                Configuration = string.IsNullOrEmpty(redisConnectionString)? ("localhost:" + RedisPort) : redisConnectionString,
-                InstanceName = "PSRS.Master."
-            });
+            Configuration = string.IsNullOrEmpty(redisConnectionString) ? "localhost:" + RedisPort : redisConnectionString,
+            InstanceName = "PSRS.Master."
+        });
+    }
+
+    public async Task<string> StoreAsync(AuthenticationTicket ticket)
+    {
+        var guid = Guid.NewGuid();
+        var key = KeyPrefix + guid;
+
+        await RenewAsync(key, ticket);
+
+        return key;
+    }
+
+    public async Task RenewAsync(string key, AuthenticationTicket ticket)
+    {
+        var options = new DistributedCacheEntryOptions();
+        var expiresUtc = ticket.Properties.ExpiresUtc;
+        if (expiresUtc.HasValue)
+        {
+            options.SetAbsoluteExpiration(expiresUtc.Value);
         }
 
-        public Task<string> StoreAsync(AuthenticationTicket ticket)
-        {
-            var guid = Guid.NewGuid();
-            var key = KeyPrefix + guid;
-            RenewAsync(key, ticket);
-            return Task.FromResult(key);
-        }
+        options.SetSlidingExpiration(TimeSpan.FromMinutes(2));
 
-        public Task RenewAsync(string key, AuthenticationTicket ticket)
-        {
-            var options = new DistributedCacheEntryOptions();
-            var expiresUtc = ticket.Properties.ExpiresUtc;
-            if (expiresUtc.HasValue)
-            {
-                options.SetAbsoluteExpiration(expiresUtc.Value);
-            }
+        await _cache.SetAsync(key, SerializeToBytes(ticket), new DistributedCacheEntryOptions());
+    }
 
-            //TODO : Need to Configure this
-            options.SetSlidingExpiration(TimeSpan.FromMinutes(2));
+    public Task<AuthenticationTicket> RetrieveAsync(string key)
+    {
+        var ticket = DeserializeFromBytes(_cache.Get(key));
+        return Task.FromResult(ticket);
+    }
 
-            _cache.Set(key, SerializeToBytes(ticket), new DistributedCacheEntryOptions());
+    public async Task RemoveAsync(string key)
+    {
+        await _cache.RemoveAsync(key);
+    }
 
-            return Task.FromResult(0);
-        }
+    private static byte[] SerializeToBytes(AuthenticationTicket source)
+    {
+        return TicketSerializer.Default.Serialize(source);
+    }
 
-        public Task<AuthenticationTicket> RetrieveAsync(string key)
-        {
-            var ticket = DeserializeFromBytes(_cache.Get(key));
-            return Task.FromResult(ticket);
-        }
-
-        public Task RemoveAsync(string key)
-        {
-            _cache.Remove(key);
-            return Task.FromResult(0);
-        }
-
-        private static byte[] SerializeToBytes(AuthenticationTicket source)
-        {
-            return TicketSerializer.Default.Serialize(source);
-        }
-
-        private static AuthenticationTicket DeserializeFromBytes(byte[] source)
-        {
-            return source == null ? null : TicketSerializer.Default.Deserialize(source);
-        }
+    private static AuthenticationTicket DeserializeFromBytes(byte[] source)
+    {
+        return source == null ? null : TicketSerializer.Default.Deserialize(source);
     }
 }

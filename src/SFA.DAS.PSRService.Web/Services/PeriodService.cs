@@ -2,18 +2,11 @@
 
 namespace SFA.DAS.PSRService.Web.Services;
 
-public class PeriodService : IPeriodService
+public class PeriodService(IDateTimeService dateTimeService) : IPeriodService
 {
-    private readonly IDateTimeService _dateTimeService;
-
-    public PeriodService(IDateTimeService dateTimeService)
-    {
-        _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
-    }
-
     public Period GetCurrentPeriod()
     {
-        return Period.FromInstantInPeriod(_dateTimeService.UtcNow);
+        return Period.FromInstantInPeriod(dateTimeService.UtcNow);
     }
 
     public bool PeriodIsCurrent(Period comparisonPeriod)

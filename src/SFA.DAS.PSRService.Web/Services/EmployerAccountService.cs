@@ -7,80 +7,71 @@ using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public class EmployerAccountService(ILogger<EmployerAccountService> logger, IAccountApiClient accountApiClient) : IEmployerAccountService
 {
-    public class EmployerAccountService : IEmployerAccountService
+    private readonly ILogger<EmployerAccountService> _logger = logger;
+
+    private async Task<IEnumerable<EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId)
     {
-        private readonly ILogger<EmployerAccountService> _logger;
-        private readonly IAccountApiClient _accountApiClient;
+        var accounts = await accountApiClient.GetUserAccounts(userId);
 
-        public EmployerAccountService(ILogger<EmployerAccountService> logger, IAccountApiClient accountApiClient)
+        return accounts.Select(acc => new EmployerIdentifier { AccountId = acc.HashedAccountId, EmployerName = acc.DasAccountName });
+    }
+
+    public EmployerIdentifier GetCurrentEmployerAccountId(HttpContext context)
+    {
+        return (EmployerIdentifier)context.Items[ContextItemKeys.EmployerIdentifier];
+    }
+
+    private async Task<string> GetUserRole(EmployerIdentifier employerAccount, string userId)
+    {
+        var accounts = await accountApiClient.GetAccountUsers(employerAccount.AccountId);
+
+        if (accounts == null || accounts.Count == 0)
         {
-            _logger = logger;
-            _accountApiClient = accountApiClient;
+            return null;
         }
+        
+        var teamMember = accounts.FirstOrDefault(c => String.Equals(c.UserRef, userId, StringComparison.CurrentCultureIgnoreCase));
+        
+        return teamMember?.Role;
+    }
 
-        public async Task<IEnumerable<EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId)
+    public async Task<IEnumerable<EmployerIdentifier>> GetUserRoles(IEnumerable<EmployerIdentifier> values, string userId)
+    {
+        var employerIdentifiers = values.ToList();
+
+        var identifiersToRemove = new List<EmployerIdentifier>();
+
+        foreach (var employerIdentifier in values)
         {
-            var accounts = await _accountApiClient.GetUserAccounts(userId);
+            var result = await GetUserRole(employerIdentifier, userId);
 
-            return accounts
-                .Select(acc =>
-                    new EmployerIdentifier { AccountId = acc.HashedAccountId, EmployerName = acc.DasAccountName });
-        }
-
-        public EmployerIdentifier GetCurrentEmployerAccountId(HttpContext context)
-        {
-            return (EmployerIdentifier)context.Items[ContextItemKeys.EmployerIdentifier];
-        }
-
-        private async Task<string> getUserRole(EmployerIdentifier employerAccount, string userId)
-        {
-            var accounts = await _accountApiClient.GetAccountUsers(employerAccount.AccountId);
-
-            if (accounts == null || !accounts.Any())
+            if (result != null)
             {
-                return null;
+                employerIdentifier.Role = result;
             }
-            var teamMember = accounts.FirstOrDefault(c => String.Equals(c.UserRef, userId, StringComparison.CurrentCultureIgnoreCase));
-            return teamMember?.Role;
-        }
-
-        public async Task<IEnumerable<EmployerIdentifier>> GetUserRoles(IEnumerable<EmployerIdentifier> values, string userId)
-        {
-            var employerIdentifiers = values.ToList();
-
-            var identifiersToRemove = new List<EmployerIdentifier>();
-
-            foreach (var employerIdentifier in values)
+            else
             {
-                var result = await getUserRole(employerIdentifier, userId);
-
-                if (result != null)
-                {
-                    employerIdentifier.Role = result;
-                }
-                else
-                {
-                    identifiersToRemove.Add(employerIdentifier);
-                }
-
+                identifiersToRemove.Add(employerIdentifier);
             }
 
-            return employerIdentifiers.Except(identifiersToRemove);
         }
 
-        public async Task<Claim> GetClaim(string userId)
-        {
-            var accounts = await GetEmployerIdentifiersAsync(userId);
+        return employerIdentifiers.Except(identifiersToRemove);
+    }
 
-            accounts = await GetUserRoles(accounts.ToList(), userId);
+    public async Task<Claim> GetClaim(string userId)
+    {
+        var accounts = await GetEmployerIdentifiersAsync(userId);
 
-            var accountsAsJson = JsonConvert.SerializeObject(accounts.ToDictionary(k => k.AccountId));
-            var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
-                JsonClaimValueTypes.Json);
-            return associatedAccountsClaim;
-        }
+        accounts = await GetUserRoles(accounts.ToList(), userId);
+
+        var accountsAsJson = JsonConvert.SerializeObject(accounts.ToDictionary(k => k.AccountId));
+        var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
+            JsonClaimValueTypes.Json);
+        return associatedAccountsClaim;
     }
 }
-

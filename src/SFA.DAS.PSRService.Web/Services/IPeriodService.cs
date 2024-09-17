@@ -1,10 +1,9 @@
 ﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public interface IPeriodService
 {
-    public interface IPeriodService
-    {
-        Period GetCurrentPeriod();
-        bool PeriodIsCurrent(Period comparisonPeriod);
-    }
+    Period GetCurrentPeriod();
+    bool PeriodIsCurrent(Period comparisonPeriod);
 }
