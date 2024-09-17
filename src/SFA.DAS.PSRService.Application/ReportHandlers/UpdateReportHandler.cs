@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 public class UpdateReportHandler(IMapper mapper, IReportRepository reportRepository, IFileProvider fileProvider)
     : IRequestHandler<UpdateReportRequest>
 {
-    public Task Handle(UpdateReportRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateReportRequest request, CancellationToken cancellationToken)
     {
         var oldVersion = reportRepository.Get(request.Report.Id);
 
@@ -31,7 +31,7 @@ public class UpdateReportHandler(IMapper mapper, IReportRepository reportReposit
         if (request.IsLocalAuthority.HasValue)
         {
             if (request.IsLocalAuthority != request.Report.IsLocalAuthority)
-                reportDto.ReportingData = GetQuestionConfig(request.IsLocalAuthority.Value).Result;
+                reportDto.ReportingData = await GetQuestionConfig(request.IsLocalAuthority.Value);
         }
 
         reportDto.UpdatedUtc = DateTime.UtcNow;
@@ -55,14 +55,14 @@ public class UpdateReportHandler(IMapper mapper, IReportRepository reportReposit
         }
 
         reportRepository.Update(reportDto);
-
-        return Task.CompletedTask;
     }
 
     private static bool RequiresAuditRecord(ReportDto oldVersion, ReportDto newVersion, TimeSpan requestAuditWindowSize)
     {
         if (IsPreAudit(oldVersion)) // report could have been saved before we rolled out audit history
+        {
             return false;
+        }
 
         var oldUser = JsonConvert.DeserializeObject<User>(oldVersion.UpdatedBy);
         var newUser = JsonConvert.DeserializeObject<User>(newVersion.UpdatedBy);
@@ -77,13 +77,12 @@ public class UpdateReportHandler(IMapper mapper, IReportRepository reportReposit
         return !oldVersion.AuditWindowStartUtc.HasValue || !oldVersion.UpdatedUtc.HasValue || oldVersion.UpdatedBy == null;
     }
 
-    private Task<string> GetQuestionConfig(bool isLocalAuthority)
+    private async Task<string> GetQuestionConfig(bool isLocalAuthority)
     {
         var questionsConfig = fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
 
-        using var jsonContents = questionsConfig.CreateReadStream();
-        using StreamReader sr = new StreamReader(jsonContents);
-        return Task.FromResult(sr.ReadToEnd());
+        await using var jsonContents = questionsConfig.CreateReadStream();
+        using var streamReader = new StreamReader(jsonContents);
+        return await streamReader.ReadToEndAsync();
     }
-      
 }

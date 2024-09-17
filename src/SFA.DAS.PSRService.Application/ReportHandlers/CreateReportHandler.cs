@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Application.ReportHandlers;
 public class CreateReportHandler(IReportRepository reportRepository, IMapper mapper, IFileProvider fileProvider)
     : IRequestHandler<CreateReportRequest, Report>
 {
-    public async Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)
+    public Task<Report> Handle(CreateReportRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.Period))
         {
@@ -36,7 +36,7 @@ public class CreateReportHandler(IReportRepository reportRepository, IMapper map
 
         reportRepository.Create(reportDto);
 
-        return mapper.Map<Report>(reportDto);
+        return Task.FromResult(mapper.Map<Report>(reportDto));
     }
 
     private Task<string> GetQuestionConfig(bool isLocalAuthority)

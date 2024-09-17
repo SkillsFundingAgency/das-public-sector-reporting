@@ -1,7 +1,6 @@
-﻿namespace SFA.DAS.PSRService.Application.Handler.EmployerAccountHandler.GetUserAccountRole
+﻿namespace SFA.DAS.PSRService.Application.Handler.EmployerAccountHandler.GetUserAccountRole;
+
+public class GetUserAccountRoleResponse
 {
-    public class GetUserAccountRoleResponse
-    {
-        public string Role { get; set; }
-    }
+    public string Role { get; set; }
 }

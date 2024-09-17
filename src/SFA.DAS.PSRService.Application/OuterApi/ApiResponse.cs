@@ -1,18 +1,10 @@
 using System.Net;
 
-namespace SFA.DAS.PSRService.Application.OuterApi
-{
-    public class ApiResponse<TResponse>
-    {
-        public TResponse Body { get;  }
-        public HttpStatusCode StatusCode { get; }
-        public string ErrorContent { get ; }
+namespace SFA.DAS.PSRService.Application.OuterApi;
 
-        public ApiResponse (TResponse body, HttpStatusCode statusCode, string errorContent)
-        {
-            Body = body;
-            StatusCode = statusCode;
-            ErrorContent = errorContent;
-        }
-    }
+public class ApiResponse<TResponse>(TResponse body, HttpStatusCode statusCode, string errorContent)
+{
+    public TResponse Body { get;  } = body;
+    public HttpStatusCode StatusCode { get; } = statusCode;
+    public string ErrorContent { get ; } = errorContent;
 }

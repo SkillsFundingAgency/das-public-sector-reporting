@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using MediatR;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class GetReportEditHistoryMostRecentFirst : IRequest<IEnumerable<AuditRecord>>
 {
-    public class GetReportEditHistoryMostRecentFirst : IRequest<IEnumerable<AuditRecord>>
+    public Period Period { get; }
+    public  string AccountId{ get; }
+
+    public GetReportEditHistoryMostRecentFirst(Period period, string accountId)
     {
-        public Period Period { get; }
-        public  string AccountId{ get; }
+        if (string.IsNullOrWhiteSpace(accountId))
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(accountId));
 
-        public GetReportEditHistoryMostRecentFirst(
-            Period period, 
-            string accountId)
-        {
-            if (string.IsNullOrWhiteSpace(accountId))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(accountId));
-
-            this.Period = period;
-            this.AccountId= accountId;
-        }
+        Period = period;
+        AccountId= accountId;
     }
 }

@@ -12,7 +12,6 @@ using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.OuterApi;
-using SFA.DAS.PSRService.Application.OuterApi.Requests;
 
 namespace SFA.DAS.PSRService.Application.UnitTests.OuterApi;
 
