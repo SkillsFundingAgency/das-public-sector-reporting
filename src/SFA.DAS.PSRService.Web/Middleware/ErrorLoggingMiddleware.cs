@@ -4,44 +4,35 @@ using SFA.DAS.PSRService.Web.Middleware;
 
 namespace SFA.DAS.PSRService.Web.Middleware
 {
-    public class ErrorLoggingMiddleware
+    public class ErrorLoggingMiddleware(RequestDelegate next, ILogger<ErrorLoggingMiddleware> logger)
     {
-        private readonly ILogger<ErrorLoggingMiddleware> _logger;
-        private readonly RequestDelegate _next;
-
-        public ErrorLoggingMiddleware(RequestDelegate next, ILogger<ErrorLoggingMiddleware> logger)
-        {
-            _next = next;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
                 //Invoke the next call in the middleware tree
-                await _next(context);
+                await next(context);
             }
             catch (Exception ex)
             {
                 //If any other middleware has thrown an error and it hasnt been dealt with we will end up here
                 try
                 {
-                    //log the error.
-                    _logger.LogError($"Unhandled Exeption in {context.Request.Path} raised : {ex.Message} : Stack Trace : {ex.StackTrace}");
+                    logger.LogError(ex, "Unhandled Exception in {RequestPath}.", context.Request.Path);
                 }
-                //if logging doesnt work we have a problem! but we still need to hande it, this will allow us to see both exceptions
+                //if logging doesn't work we have a problem! but we still need to hande it, this will allow us to see both exceptions
                 catch (Exception loggingEx)
                 {
-                    IList<Exception> exceptionList = new List<Exception>();
+                    var exceptionList = new List<Exception>
+                    {
+                        ex,
+                        loggingEx
+                    };
 
-                    exceptionList.Add(ex);
-                    exceptionList.Add(loggingEx);
                     var aggregatedException = new AggregateException(exceptionList.AsEnumerable());
                     
                     throw aggregatedException;
                 }
-                //throw the error to allow the default unhandled exception behaviour
                 throw;
             }
         }

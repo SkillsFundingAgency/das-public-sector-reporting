@@ -21,7 +21,7 @@ public class PeriodSetHomepageWelcomeMessageBuilder(
         return BuildMessageBasedOnReportStatus(secondStep, report);
     }
 
-    private static string BuildMessageBasedOnReportStatus(ReportStatusHomePageMessageBuilder secondStep, Report report)
+    private static string BuildMessageBasedOnReportStatus(IReportStatusHomePageMessageBuilder secondStep, Report report)
     {
         if (report == null)
         {
@@ -36,7 +36,7 @@ public class PeriodSetHomepageWelcomeMessageBuilder(
         return secondStep.AndReportIsInProgress();
     }
 
-    private async Task<ReportStatusHomePageMessageBuilder> SetSecondStepBasedOnUserAccessLevel(UserAccessLevelHomePageWelcomeMessageProvider firstStep)
+    private async Task<IReportStatusHomePageMessageBuilder> SetSecondStepBasedOnUserAccessLevel(UserAccessLevelHomePageWelcomeMessageProvider firstStep)
     {
         if (await UserIsAuthorizedForReportSubmission())
         {

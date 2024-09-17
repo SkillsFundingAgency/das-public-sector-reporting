@@ -119,7 +119,7 @@ namespace SFA.DAS.PSRService.Web
                 });
 
                 config.For<IWebConfiguration>().Use(Configuration);
-                config.AddDatabaseRegistration(_hostingEnvironment, Configuration.SqlConnectionString);
+                config.AddDatabaseRegistration(Configuration.SqlConnectionString);
                 config.For<IReportRepository>().Use<SqlReportRepository>();
                 var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
                 config.For<IFileProvider>().Singleton().Use(physicalProvider);

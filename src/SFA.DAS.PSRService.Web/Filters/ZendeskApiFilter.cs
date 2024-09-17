@@ -4,45 +4,44 @@ using Newtonsoft.Json;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Filters
+namespace SFA.DAS.PSRService.Web.Filters;
+
+public class ZenDeskApiData
 {
-    public class ZenDeskApiFilter : ActionFilterAttribute
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Organization { get; set; }
+}
+
+public class ZenDeskApiFilter : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        if (filterContext.Controller is Controller controller)
         {
-            var controller = filterContext.Controller as Controller;
-            if (controller != null)
+            var user = controller.User;
+            EmployerIdentifier account = null;
+            var accountIdFromUrl = filterContext.RouteData.Values[RouteValues.HashedEmployerAccountId]?.ToString()?.ToUpper();
+
+            if (user.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
             {
-                var user = controller.User;
-                EmployerIdentifier account = null;
-                var accountIdFromUrl =
-                    filterContext.RouteData.Values[RouteValues.HashedEmployerAccountId]?.ToString().ToUpper();
-                if (user.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
+                var employerAccountClaim = user.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
+                var employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(employerAccountClaim?.Value);
+                
+                if (accountIdFromUrl != null)
                 {
-                    var employerAccountClaim =
-                        user.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
-                    var employerAccounts =
-                        JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(
-                            employerAccountClaim
-                                ?.Value);
-                    if (accountIdFromUrl != null) account = employerAccounts[accountIdFromUrl];
+                    account = employerAccounts[accountIdFromUrl];
                 }
-                controller.ViewBag.ZendeskApiData = new ZenDeskApiData
-                {
-                    Name = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier))?.Value,
-                    Email = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier))?.Value,
-                    Organization = account?.EmployerName
-                };
             }
 
-            base.OnActionExecuting(filterContext);
+            controller.ViewBag.ZendeskApiData = new ZenDeskApiData
+            {
+                Name = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.NameClaimsTypeIdentifier))?.Value,
+                Email = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.EmailClaimsTypeIdentifier))?.Value,
+                Organization = account?.EmployerName
+            };
         }
-        
-        public class ZenDeskApiData
-        {
-            public string Name { get; set; }
-            public string Email { get; set; }
-            public string Organization { get; set; }
-        }
+
+        base.OnActionExecuting(filterContext);
     }
 }

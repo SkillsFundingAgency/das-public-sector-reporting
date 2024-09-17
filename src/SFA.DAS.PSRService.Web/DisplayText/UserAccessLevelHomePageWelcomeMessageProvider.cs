@@ -2,27 +2,20 @@
 
 namespace SFA.DAS.PSRService.Web.DisplayText;
 
-public class UserAccessLevelHomePageWelcomeMessageProvider
+public class UserAccessLevelHomePageWelcomeMessageProvider(Period period)
 {
-    private readonly Period _period;
-
-    public UserAccessLevelHomePageWelcomeMessageProvider(Period period)
-    {
-        _period = period;
-    }
-
     public UserCanOnlyViewHomePageWelcomeMessageProvider WhereUserCanOnlyView()
     {
-        return new UserCanOnlyViewHomePageWelcomeMessageProvider(_period);
+        return new UserCanOnlyViewHomePageWelcomeMessageProvider(period);
     }
 
     public UserCanEditHomePageWelcomeMessageProvider WhereUserCanEdit()
     {
-        return new UserCanEditHomePageWelcomeMessageProvider(_period);
+        return new UserCanEditHomePageWelcomeMessageProvider(period);
     }
 
     public UserCanSubmitHomePageWelcomeMessageProvider WhereUserCanSubmit()
     {
-        return new UserCanSubmitHomePageWelcomeMessageProvider(_period);
+        return new UserCanSubmitHomePageWelcomeMessageProvider(period);
     }
 }

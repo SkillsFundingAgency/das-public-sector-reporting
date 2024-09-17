@@ -9,7 +9,7 @@ public class SummaryPageMessageBuilder
 
     public string ForViewOnlyUser()
     {
-        return @"You do not have the admin rights needed to edit or submit this report.";
+        return "You do not have the admin rights needed to edit or submit this report.";
     }
 
     public string ForUserWhoCanSubmit()

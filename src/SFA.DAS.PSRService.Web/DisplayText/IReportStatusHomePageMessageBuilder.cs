@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.PSRService.Web.DisplayText;
 
-public interface ReportStatusHomePageMessageBuilder
+public interface IReportStatusHomePageMessageBuilder
 {
     string AndReportDoesNotExist();
     string AndReportIsAlreadySubmitted();
