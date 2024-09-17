@@ -17,7 +17,7 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentNullException( nameof(Name));
+            throw new ArgumentNullException(nameof(Name));
         }
 
         _name = value;
