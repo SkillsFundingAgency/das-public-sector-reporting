@@ -149,7 +149,7 @@ public class ReportController : BaseController
 
             return new RedirectResult(Url.Action("Edit", "Report"));
         }
-        catch (Exception)
+        catch (Exception exception)
         {
             return new BadRequestResult();
         }

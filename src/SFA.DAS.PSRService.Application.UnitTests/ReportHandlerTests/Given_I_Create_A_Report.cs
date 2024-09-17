@@ -64,7 +64,10 @@ public class Given_I_Create_A_Report
                 .WithIsLocalAuthority(false)
                 .Build();
 
-        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>()))
+            .Callback<ReportDto>(r => reportDto = r)
+            .Returns(Task.CompletedTask)
+            .Verifiable();
 
         // act
         var result = await _createReportHandler.Handle(createReportRequest, new CancellationToken());
@@ -90,16 +93,18 @@ public class Given_I_Create_A_Report
         const string userName = "Bob Shurunkle";
         ReportDto reportDto = null;
 
-        var createReportRequest =
-            new CreateReportRequestBuilder()
-                .WithUserName(userName)
-                .WithUserId(userId)
-                .WithEmployerId(EmployerId)
-                .ForPeriod(ReportingPeriod)
-                .WithIsLocalAuthority(true)
-                .Build();
+        var createReportRequest = new CreateReportRequestBuilder()
+            .WithUserName(userName)
+            .WithUserId(userId)
+            .WithEmployerId(EmployerId)
+            .ForPeriod(ReportingPeriod)
+            .WithIsLocalAuthority(true)
+            .Build();
 
-        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Create(It.IsAny<ReportDto>()))
+            .Callback<ReportDto>(r => reportDto = r)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
 
         // act
         var result = await _createReportHandler.Handle(createReportRequest, new CancellationToken());

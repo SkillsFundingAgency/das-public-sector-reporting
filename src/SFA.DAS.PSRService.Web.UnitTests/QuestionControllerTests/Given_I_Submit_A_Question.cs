@@ -132,7 +132,7 @@ public class Given_I_Submit_A_Question
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
         _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(_currentValidAndNotSubmittedReport).Verifiable();
-        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Verifiable("Report was not saved");
+        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Callback<Report, UserModel, bool?>((r, u, s) => actualReport = r).Returns(() => Task.CompletedTask).Verifiable("Report was not saved");
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
         _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
 
@@ -191,6 +191,7 @@ public class Given_I_Submit_A_Question
     {
         // arrange
         Report actualReport = null;
+        
         var report = new ReportBuilder()
             .WithValidSections()
             .ForCurrentPeriod()
@@ -202,10 +203,11 @@ public class Given_I_Submit_A_Question
         UrlActionContext actualContext = null;
         _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
+        var userModel = new UserModel();
+        _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(userModel).Verifiable();
         _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(report).Verifiable();
-        _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Verifiable("Report was not saved");
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
-        _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
+        _reportService.Setup(s => s.SaveReport(report, userModel, null)).Callback<Report, UserModel, bool?>((r, u, k) => actualReport = r).Returns(() => Task.CompletedTask).Verifiable("Report was not saved");
 
         var sectionModel = new SectionModel
         {

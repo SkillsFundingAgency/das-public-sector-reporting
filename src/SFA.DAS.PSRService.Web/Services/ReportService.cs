@@ -57,18 +57,20 @@ public class ReportService(IWebConfiguration config, IMediator mediator, IPeriod
         return await mediator.Send(request);
     }
 
-    public async Task SaveReport(Report report, UserModel user, bool? isLocalAuthority)
+    public async Task SaveReport(Report report, UserModel userModel, bool? isLocalAuthority)
     {
-        var reqestUser = new User
+        var user = new User
         {
-            Name = user.DisplayName,
-            Id = user.Id
+            Name = userModel.DisplayName,
+            Id = userModel.Id
         };
 
-        var request = new UpdateReportRequest(report, reqestUser, isLocalAuthority);
+        var request = new UpdateReportRequest(report, user, isLocalAuthority);
 
         if (config.AuditWindowSize.HasValue)
+        {
             request.AuditWindowSize = config.AuditWindowSize.Value;
+        }
 
         await mediator.Send(request);
     }

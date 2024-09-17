@@ -39,7 +39,10 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         var report = new Report(); // not submitted and empty sections, should be valid for submission
 
         MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
-        MockReportService.Setup(s => s.SubmitReport(report)).Verifiable();
+        MockReportService.Setup(s => s.SubmitReport(report))
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
         Controller.ObjectValidator = GetObjectValidator().Object;
 
         // act

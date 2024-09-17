@@ -1,10 +1,9 @@
 ﻿using System.Security.Claims;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        UserModel GetUserModel(ClaimsPrincipal identity);
-    }
+    UserModel GetUserModel(ClaimsPrincipal identity);
 }

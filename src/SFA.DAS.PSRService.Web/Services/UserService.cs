@@ -3,29 +3,20 @@ using System.Security.Claims;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PSRService.Web.Models;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public class UserService(ILogger<UserService> logger) : IUserService
 {
-    public class UserService : IUserService
+    public UserModel GetUserModel(ClaimsPrincipal identity)
     {
-        private readonly ILogger<UserService> _logger;
-
-        public UserService(ILogger<UserService> logger)
+        try
         {
-            _logger = logger;
-       
+            return new UserModel(identity);
         }
-
-        public UserModel GetUserModel(ClaimsPrincipal identity)
+        catch (Exception exception)
         {
-            try
-            {
-                return new UserModel(identity);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e,$"Unable to map claims for user {identity.Identity.Name}",identity);
-                throw;
-            }
+            logger.LogError(exception, "Unable to map claims for user {IdentityName}", identity.Identity?.Name);
+            throw;
         }
     }
 }

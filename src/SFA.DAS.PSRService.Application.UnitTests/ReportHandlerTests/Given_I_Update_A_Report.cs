@@ -59,7 +59,11 @@ public class Given_I_Update_A_Report
         };
 
         _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>()))
+            .Callback<ReportDto>(d => actualReportDto = d)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest =
@@ -96,6 +100,7 @@ public class Given_I_Update_A_Report
         var longAgo = DateTime.UtcNow.AddMinutes(-6);
         ReportDto actualReportDto = null;
         AuditRecordDto actualAuditRecordDto = null;
+        
         var reportId = Guid.NewGuid();
         var updateUser = new User { Id = Guid.NewGuid(), Name = "Homer" };
 
@@ -118,8 +123,16 @@ public class Given_I_Update_A_Report
         };
 
         _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>())).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>()))
+            .Callback<AuditRecordDto>(d => actualAuditRecordDto = d)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>()))
+            .Callback<ReportDto>(d => actualReportDto = d)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest = new UpdateReportRequestBuilder()
@@ -185,8 +198,16 @@ public class Given_I_Update_A_Report
         };
 
         _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>())).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.SaveAuditRecord(It.IsAny<AuditRecordDto>()))
+            .Callback<AuditRecordDto>(d => actualAuditRecordDto = d)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>()))
+            .Callback<ReportDto>(d => actualReportDto = d)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest =
@@ -272,7 +293,11 @@ public class Given_I_Update_A_Report
         };
 
         _reportRepositoryMock.Setup(s => s.Get(reportId)).ReturnsAsync(oldVersion).Verifiable();
-        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>())).Verifiable();
+        _reportRepositoryMock.Setup(s => s.Update(It.IsAny<ReportDto>()))
+            .Callback<ReportDto>(d => actualReportDto = d)
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
+        
         _mapperMock.Setup(s => s.Map<ReportDto>(It.IsAny<Report>())).Returns(newVersion);
 
         var updateReportRequest =

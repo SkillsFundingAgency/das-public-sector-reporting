@@ -11,7 +11,7 @@ public interface IReportService
     Task<Report> GetReport(string period,string employerId);
     Task SubmitReport(Report report);
     Task<IEnumerable<Report>> GetSubmittedReports(string employerId);
-    Task SaveReport(Report report, UserModel user,bool? isLocalAuthority);
+    Task SaveReport(Report report, UserModel userModel,bool? isLocalAuthority);
     bool CanBeEdited(Report report);
     Task<IEnumerable<AuditRecord>> GetReportEditHistoryMostRecentFirst(Period period, string employerId);
 }
