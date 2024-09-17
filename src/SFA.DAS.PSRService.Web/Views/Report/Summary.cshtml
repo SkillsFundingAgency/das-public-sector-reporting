@@ -86,23 +86,22 @@
                 </table>
             </div>
 
-            @Html.Partial("Question/Organisation", new OrganisationReviewViewModel() { OrganisationName = Model.Report.OrganisationName,HasMinimumEmployeeHeadcount = Model.Report.HasMinimumEmployeeHeadcount,IsLocalAuthority = Model.Report.IsLocalAuthority })
+            @await Html.PartialAsync("Question/Organisation", new OrganisationReviewViewModel() { OrganisationName = Model.Report.OrganisationName,HasMinimumEmployeeHeadcount = Model.Report.HasMinimumEmployeeHeadcount,IsLocalAuthority = Model.Report.IsLocalAuthority })
 
-            @Html.Partial("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
+            @await Html.PartialAsync("Question/ReportNumbers", Model.Report.Sections.Single(w => w.Id == "ReportNumbers"))
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
             {
-                @Html.Partial("Question/ReportNumbersSchools", Model.Report.Sections.Single(w => w.Id == "ReportNumbersSchools"))
+                @await Html.PartialAsync("Question/ReportNumbersSchools", Model.Report.Sections.Single(w => w.Id == "ReportNumbersSchools"))
             }
-
-
-            @Html.Partial("Question/ReportingPercentages", Model.Percentages)
+            
+            @await Html.PartialAsync("Question/ReportingPercentages", Model.Percentages)
             @if (Model.PercentagesSchools != null)
             {
-                @Html.Partial("Question/ReportingPercentages", Model.PercentagesSchools)
+                @await Html.PartialAsync("Question/ReportingPercentages", Model.PercentagesSchools)
             }
             @if (Model.Report.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
             {
-                @Html.Partial("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
+                @await Html.PartialAsync("Question/Factors", Model.Report.Sections.Single(w => w.Id == "Factors"))
             }
 
             @if (Model.IsValidForSubmission && Model.UserCanSubmitReports)

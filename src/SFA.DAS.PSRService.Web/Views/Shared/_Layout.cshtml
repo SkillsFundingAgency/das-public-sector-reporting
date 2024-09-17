@@ -25,7 +25,7 @@
     <link href="css/main.css" rel="stylesheet" />
     <link href="/css/app.css" rel="stylesheet" no-cdn />
 
-    @RenderSection("styles", required: false)
+    @await RenderSectionAsync("styles", required: false)
 
     <!-- Google Tag Manager -->
     <script>
@@ -39,8 +39,8 @@
         })(window, document, 'script', 'dataLayer', '@tagManagerCode');
     </script>
     <!-- End Google Tag Manager -->
-    @Html.Partial("_ZenDeskWidget")
-    @Html.Partial("_ZenDeskApi")
+    @await Html.PartialAsync("_ZenDeskWidget")
+    @await Html.PartialAsync("_ZenDeskApi")
 </head>
 
 <body class="govuk-template__body ">
@@ -57,7 +57,7 @@
     </partial>
 
     <div class="govuk-width-container">
-        @RenderSection("breadcrumb", required: false)
+        @await RenderSectionAsync("breadcrumb", required: false)
         <main class="govuk-main-wrapper" id="main-content" role="main">
             @RenderBody()
         </main>
@@ -76,12 +76,12 @@
     <script src="/js/das-all.min.js"></script>
     <script src="/js/app.min.js"></script>
 
-    @RenderSection("javascript", required: false)
+    @await RenderSectionAsync("javascript", required: false)
 
     <script src="/js/app.js" no-cdn nws-csp-add-nonce></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 
-</body>
+    </body>
 
 </html>

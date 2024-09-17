@@ -3,9 +3,10 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-report-numbers";
 }
 
-@Html.Partial("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="YourEmployees"))
-@Html.Partial("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="YourApprentices"))
+
+@await Html.PartialAsync("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="YourEmployees"))
+@await Html.PartialAsync("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="YourApprentices"))
 @if (Model.SubSections.SingleOrDefault(w => w.Id == "FullTimeEquivalent") != null)
 {
-    @Html.Partial("Question/FullTimeEquivalent", Model.SubSections.Single(w => w.Id =="FullTimeEquivalent"))
+    @await Html.PartialAsync("Question/FullTimeEquivalent", Model.SubSections.Single(w => w.Id =="FullTimeEquivalent"))
 }

@@ -3,6 +3,6 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-report-numbers";
 }
 
-@Html.Partial("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="SchoolsEmployees"))
-@Html.Partial("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="SchoolsApprentices"))
+@await Html.PartialAsync("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="SchoolsEmployees"))
+@await Html.PartialAsync("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="SchoolsApprentices"))
 

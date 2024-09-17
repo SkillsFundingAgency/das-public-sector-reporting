@@ -13,19 +13,18 @@
     <a class="govuk-back-link" asp-controller="Report" asp-action="Edit">Back</a>
 }
 
+<h1 class="govuk-heading-xl">Report history</h1>
 
-        <h1 class="govuk-heading-xl">Report history</h1>
+<table class="govuk-table">
+    @*<caption class="govuk-table__caption govuk-table__caption--m">Reporting period</caption>*@
+    <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+        <td class="govuk-table__cell">Reporting period</td>
+        <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.Period.FullString</td>
+    </tr>
+    </tbody>
+</table>
 
-            <table class="govuk-table">
-                @*<caption class="govuk-table__caption govuk-table__caption--m">Reporting period</caption>*@
-                <tbody class="govuk-table__body">
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">Reporting period</td>
-                        <td class="govuk-table__cell govuk-!-font-weight-bold">@Model.Period.FullString</td>
-                    </tr>
-                </tbody>
-            </table>
- 
 <div class="govuk-grid-row report-history">
     <div class="govuk-grid-column-two-thirds">
         @foreach (var edit in Model.EditHistoryMostRecentFirst)
@@ -35,22 +34,22 @@
                     <span class="govuk-details__summary-text">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
                 </summary>
                 <div>
-                    @Html.Partial("Question/Organisation",  new OrganisationReviewViewModel() { OrganisationName = edit.OrganisationName,HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount,IsLocalAuthority = edit.IsLocalAuthority })
+                    @await Html.PartialAsync("Question/Organisation", new OrganisationReviewViewModel() { OrganisationName = edit.OrganisationName, HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount, IsLocalAuthority = edit.IsLocalAuthority })
 
-                    @Html.Partial("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
+                    @await Html.PartialAsync("Question/ReportNumbers", edit.Sections.Single(w => w.Id == "ReportNumbers"))
                     @if (edit.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
                     {
-                        @Html.Partial("Question/ReportNumbersSchools", edit.Sections.Single(w => w.Id == "ReportNumbersSchools"))
+                        @await Html.PartialAsync("Question/ReportNumbersSchools", edit.Sections.Single(w => w.Id == "ReportNumbersSchools"))
                     }
 
-                    @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
+                    @await Html.PartialAsync("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentages))
                     @if (edit.ReportingPercentagesSchools != null)
                     {
-                        @Html.Partial("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentagesSchools))
+                        @await Html.PartialAsync("Question/ReportingPercentages", new PercentagesViewModel(edit.ReportingPercentagesSchools))
                     }
                     @if (edit.Sections.SingleOrDefault(w => w.Id == "Factors") != null)
                     {
-                        @Html.Partial("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
+                        @await Html.PartialAsync("Question/Factors", edit.Sections.Single(w => w.Id == "Factors"))
                     }
                 </div>
             </details>
