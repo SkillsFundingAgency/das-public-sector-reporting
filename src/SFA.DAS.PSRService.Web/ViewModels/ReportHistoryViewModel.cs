@@ -1,10 +1,9 @@
 ﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.ViewModels
+namespace SFA.DAS.PSRService.Web.ViewModels;
+
+public class ReportHistoryViewModel
 {
-    public class ReportHistoryViewModel
-    {
-        public Period Period { get; set; }
-        public IEnumerable<AuditRecord> EditHistoryMostRecentFirst { get; set; }
-    }
+    public Period Period { get; set; }
+    public IEnumerable<AuditRecord> EditHistoryMostRecentFirst { get; set; }
 }

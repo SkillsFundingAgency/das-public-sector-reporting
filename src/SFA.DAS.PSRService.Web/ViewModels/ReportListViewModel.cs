@@ -1,11 +1,10 @@
 ﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.ViewModels
+namespace SFA.DAS.PSRService.Web.ViewModels;
+
+public class ReportListViewModel
 {
-    public class ReportListViewModel
-    {
-        public IEnumerable<Report>SubmittedReports { get; set; }
-        public Dictionary<string,Period> Periods { get; set; }
-        public string HashedEmployerAccountId { get; set; }
-    }
+    public IEnumerable<Report>SubmittedReports { get; set; }
+    public Dictionary<string,Period> Periods { get; set; }
+    public string HashedEmployerAccountId { get; set; }
 }
