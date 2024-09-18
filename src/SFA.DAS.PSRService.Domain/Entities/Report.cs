@@ -129,17 +129,17 @@ public class Report
             employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtStart).Answer);
         }
 
-        if (apprenticePeriod != 0 & employmentPeriod != 0)
+        if (apprenticePeriod != 0 && employmentPeriod != 0)
         {
             percentages.EmploymentStarts = (apprenticePeriod / employmentPeriod * 100).ToString("F2");
         }
 
-        if (apprenticeEnd != 0 & employmentEnd != 0)
+        if (apprenticeEnd != 0 && employmentEnd != 0)
         {
             percentages.TotalHeadCount = (apprenticeEnd / employmentEnd * 100).ToString("F2");
         }
 
-        if (apprenticePeriod != 0 & employmentStart != 0)
+        if (apprenticePeriod != 0 && employmentStart != 0)
         {
             percentages.NewThisPeriod = (apprenticePeriod / employmentStart * 100).ToString("F2");
         }
@@ -188,12 +188,9 @@ public class Report
             yield return "Organisation";
         }
 
-        if (IsLocalAuthority.HasValue)
+        if (IsLocalAuthority.HasValue && !HasMinimumEmployeeHeadcountIsValid())
         {
-            if (!HasMinimumEmployeeHeadcountIsValid())
-            {
-                yield return "TotalEmployees";
-            }
+            yield return "TotalEmployees";
         }
 
         foreach (var text in GetSummaryTextFromFirstLevelSubSectionsNotValidForSubmission())

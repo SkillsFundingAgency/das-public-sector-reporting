@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace SFA.DAS.PSRService.Domain.Values;
 
-public class TwoThousandsCommonEraYear : IEquatable<TwoThousandsCommonEraYear>
+public sealed class TwoThousandsCommonEraYear : IEquatable<TwoThousandsCommonEraYear>
 {
     public static TwoThousandsCommonEraYear FromYearAsNumber(int year)
     {

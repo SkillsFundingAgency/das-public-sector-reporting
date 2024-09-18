@@ -3,7 +3,7 @@ using SFA.DAS.PSRService.Domain.Values;
 
 namespace SFA.DAS.PSRService.Domain.Entities;
 
-public class Period : IEquatable<Period>
+public sealed class Period : IEquatable<Period>
 {
     public TwoThousandsCommonEraYear StartYear { get; }
 
