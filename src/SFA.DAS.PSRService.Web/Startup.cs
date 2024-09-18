@@ -1,4 +1,3 @@
-using System.IO;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,10 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Logging;
-using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.Employer.Shared.UI;
-using SFA.DAS.Forecasting.Web.Extensions;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
@@ -32,47 +29,23 @@ namespace SFA.DAS.PSRService.Web;
 
 public class Startup
 {
-    private readonly IConfigurationRoot _config;
+    private readonly IConfiguration _config;
     private readonly IHostEnvironment _hostingEnvironment;
-    private IWebConfiguration Configuration { get; }
+    private readonly IWebConfiguration _configuration;
 
     public Startup(IConfiguration configuration, IHostEnvironment env)
     {
         _hostingEnvironment = env;
-        var config = new ConfigurationBuilder()
-            .AddConfiguration(configuration)
-            .SetBasePath(Directory.GetCurrentDirectory());
-
-#if DEBUG
-        if (!configuration.IsDev())
-        {
-            config.AddJsonFile("appsettings.json", false)
-                .AddJsonFile("appsettings.Development.json", true);
-        }
-#endif
-
-        config.AddEnvironmentVariables();
-        config.AddAzureTableStorage(options =>
-            {
-                options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                options.EnvironmentName = configuration["EnvironmentName"];
-                options.PreFixConfigurationKeys = false;
-            }
-        );
-
-        _config = config.Build();
-        Configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
+        _config = configuration.BuildDasConfiguration();
+        _configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
     }
-
-
 
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<IEmployerAccountService, EmployerAccountService>();
         services.AddTransient<IAccountApiClient, AccountApiClient>();
         services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
-        services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
+        services.AddSingleton<IAccountApiConfiguration>(_configuration.AccountsApi);
             
         services.AddLogging(builder =>
         {
@@ -80,22 +53,22 @@ public class Startup
             builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
         });
 
-        services.AddSingleton(Configuration.OuterApiConfiguration);
+        services.AddSingleton(_configuration.OuterApiConfiguration);
         services.AddHttpClient<IOuterApiClient, OuterApiClient>();
         services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
 
-        services.AddAndConfigureAuthentication(Configuration, _config);
-        if (Configuration.UseGovSignIn)
+        services.AddAndConfigureAuthentication(_configuration, _config);
+        if (_configuration.UseGovSignIn)
         {
             services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
         }
         else
         {
-            services.AddMaMenuConfiguration("SignOut", Configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
+            services.AddMaMenuConfiguration("SignOut", _configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
         }
         services.AddAuthorizationService();
         services.AddHealthChecks();
-        services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
+        services.AddDataProtectionSettings(_hostingEnvironment, _configuration);
         services.AddMvc(opts =>
             {
                 opts.EnableEndpointRouting = false;
@@ -128,8 +101,8 @@ public class Startup
                 _.SingleImplementationsOfInterface();
             });
 
-            config.For<IWebConfiguration>().Use(Configuration);
-            config.AddDatabaseRegistration(Configuration.SqlConnectionString);
+            config.For<IWebConfiguration>().Use(_configuration);
+            config.AddDatabaseRegistration(_configuration.SqlConnectionString);
             config.For<IReportRepository>().Use<SqlReportRepository>();
             var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
             config.For<IFileProvider>().Singleton().Use(physicalProvider);
