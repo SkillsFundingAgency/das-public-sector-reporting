@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests;
@@ -18,6 +19,13 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(ReportController))]
     [TestCase(typeof(ServiceController))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_Controllers(Type toResolve)
+    {
+        RunTestForType(toResolve);
+    }
+    
+    [TestCase(typeof(GoogleAnalyticsFilter))]
+    [TestCase(typeof(ZenDeskApiFilter))]
+    public void Then_The_Dependencies_Are_Correctly_Resolved_For_Filters(Type toResolve)
     {
         RunTestForType(toResolve);
     }

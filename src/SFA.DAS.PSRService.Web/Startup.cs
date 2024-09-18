@@ -1,25 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Logging;
-using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.Employer.Shared.UI;
-using SFA.DAS.PSRService.Application.EmployerUserAccounts;
-using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
-using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Extensions;
-using SFA.DAS.PSRService.Web.Filters;
-using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 
 namespace SFA.DAS.PSRService.Web;
@@ -41,11 +34,8 @@ public class Startup
     {
         services.AddConfigurationOptions(_configuration);
         services.AddSingleton(_configuration);
-        
-        services.AddTransient<IEmployerAccountService, EmployerAccountService>();
-        services.AddTransient<IAccountApiClient, AccountApiClient>();
-        services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
-        services.AddSingleton<IAccountApiConfiguration>(_webConfiguration.AccountsApi);
+        services.AddSingleton(_webConfiguration);
+        services.AddSingleton(_webConfiguration.OuterApiConfiguration);
 
         services.AddLogging(builder =>
         {
@@ -53,11 +43,12 @@ public class Startup
             builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
         });
 
-        services.AddSingleton(_webConfiguration.OuterApiConfiguration);
+        services.AddHttpContextAccessor();
+        services.AddApplicationServices(_webConfiguration);
+        services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
         services.AddHttpClient<IOuterApiClient, OuterApiClient>();
-        services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
-
         services.AddAndConfigureAuthentication(_webConfiguration, _configuration);
+        
         if (_webConfiguration.UseGovSignIn)
         {
             services.AddMaMenuConfiguration("SignOut", _configuration["ResourceEnvironmentName"]);
@@ -70,30 +61,10 @@ public class Startup
         services.AddAuthorizationService();
         services.AddHealthChecks();
         services.AddDataProtectionSettings(_hostingEnvironment, _webConfiguration);
-        services.AddMvc(opts =>
-            {
-                opts.EnableEndpointRouting = false;
-                opts.Filters.Add(new AuthorizeFilter());
-                opts.Filters.AddService<GoogleAnalyticsFilter>();
-                opts.Filters.AddService<ZenDeskApiFilter>();
-            })
-            .AddControllersAsServices()
-            .AddSessionStateTempDataProvider()
-            .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
-
+        services.AddWebServices();
         services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
         services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
         services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
-
-        services.AddSingleton(_webConfiguration);
-        services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
-        services.AddScoped<IReportRepository, SqlReportRepository>();
-        services.AddTransient<IReportService, ReportService>();
-        services.AddTransient<IPeriodService, PeriodService>();
-        services.AddTransient<IDateTimeService, SystemDateTimeService>();
-        services.AddTransient<IUserService, UserService>();
-        
-        services.AddHttpContextAccessor();
 
         var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
         services.AddSingleton(physicalProvider);
