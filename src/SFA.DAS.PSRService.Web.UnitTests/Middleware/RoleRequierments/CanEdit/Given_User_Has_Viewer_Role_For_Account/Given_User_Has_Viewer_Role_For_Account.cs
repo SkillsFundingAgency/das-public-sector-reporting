@@ -30,7 +30,7 @@ public abstract class Given_User_Has_Viewer_Role_For_Account : GivenWhenThen<Can
         );
     }
 
-    private static object BuildResourceWithAccountId()
+    private static ActionContext BuildResourceWithAccountId()
     {
         var resourceContext = new ActionContext();
 
@@ -47,7 +47,7 @@ public abstract class Given_User_Has_Viewer_Role_For_Account : GivenWhenThen<Can
         return resourceContext;
     }
 
-    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    private static ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
         return new ClaimsPrincipal(new ClaimsIdentity(
         [

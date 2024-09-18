@@ -30,7 +30,7 @@ public abstract class Given_User_Has_Owner_Role_For_Account : GivenWhenThen<CanE
         );
     }
 
-    private static object BuildResourceWithAccountId()
+    private static ActionContext BuildResourceWithAccountId()
     {
         var resourceContext = new ActionContext();
         var routeData = new RouteData
@@ -46,7 +46,7 @@ public abstract class Given_User_Has_Owner_Role_For_Account : GivenWhenThen<CanE
         return resourceContext;
     }
 
-    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    private static ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
         return new ClaimsPrincipal(new ClaimsIdentity(
         [

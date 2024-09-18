@@ -34,7 +34,7 @@ public class Report
 
     private bool OrganisationNameIsValid()
     {
-        return string.IsNullOrWhiteSpace(OrganisationName) == false;
+        return !string.IsNullOrWhiteSpace(OrganisationName);
     }
 
     private bool HasMinimumEmployeeHeadcountIsValid()
@@ -44,7 +44,7 @@ public class Report
 
     private bool ReportIsNotYetSubmitted()
     {
-        return Submitted == false;
+        return !Submitted;
     }
 
     private bool AllSectionsAreValid()
@@ -104,27 +104,27 @@ public class Report
 
         decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
 
-        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer) == false)
+        if (!string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer))
         {
             employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer) == false)
+        if (!string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer))
         {
             apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer) == false)
+        if (!string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer))
         {
             employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer) == false)
+        if (!string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer))
         {
             apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtStart).Answer) == false)
+        if (!string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtStart).Answer))
         {
             employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtStart).Answer);
         }
@@ -147,7 +147,7 @@ public class Report
         return percentages;
     }
 
-    private IEnumerable<Section> GetSections()
+    private List<Section> GetSections()
     {
         var sectionList = new List<Section>();
 
@@ -164,7 +164,7 @@ public class Report
         return sectionList;
     }
 
-    private static IEnumerable<Section> GetSections(Section section)
+    private static List<Section> GetSections(Section section)
     {
         var sectionList = new List<Section> { section };
 
@@ -183,14 +183,14 @@ public class Report
 
     public IEnumerable<string> GetNamesOfIncompleteMandatoryQuestionSections()
     {
-        if (OrganisationNameIsValid() == false)
+        if (!OrganisationNameIsValid())
         {
             yield return "Organisation";
         }
 
         if (IsLocalAuthority.HasValue)
         {
-            if (HasMinimumEmployeeHeadcountIsValid() == false)
+            if (!HasMinimumEmployeeHeadcountIsValid())
             {
                 yield return "TotalEmployees";
             }

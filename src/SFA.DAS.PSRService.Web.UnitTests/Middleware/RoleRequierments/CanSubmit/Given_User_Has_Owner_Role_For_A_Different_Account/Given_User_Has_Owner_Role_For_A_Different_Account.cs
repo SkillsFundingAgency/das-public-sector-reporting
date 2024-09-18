@@ -31,7 +31,7 @@ public abstract class Given_User_Has_Owner_Role_For_A_Different_Account
         );
     }
 
-    private static object BuildResourceWithAccountId()
+    private static ActionContext BuildResourceWithAccountId()
     {
         var resourceContext = new ActionContext();
 
@@ -48,7 +48,7 @@ public abstract class Given_User_Has_Owner_Role_For_A_Different_Account
         return resourceContext;
     }
 
-    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    private static ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
         return new ClaimsPrincipal(new ClaimsIdentity(
         [

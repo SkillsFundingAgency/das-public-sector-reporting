@@ -30,7 +30,7 @@ public abstract class Given_User_Has_Transactor_Role_For_Account : GivenWhenThen
         );
     }
 
-    private static object BuildResourceWithAccountId()
+    private static ActionContext BuildResourceWithAccountId()
     {
         var resourceContext = new ActionContext();
         var routeData = new RouteData

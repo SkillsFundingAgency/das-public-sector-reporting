@@ -30,7 +30,7 @@ public abstract class Given_User_Has_Owner_Role_For_Account : GivenWhenThen<CanS
         );
     }
 
-    private static object BuildResourceWithAccountId()
+    private static ActionContext BuildResourceWithAccountId()
     {
         var resourceContext = new ActionContext();
 
@@ -47,7 +47,7 @@ public abstract class Given_User_Has_Owner_Role_For_Account : GivenWhenThen<CanS
         return resourceContext;
     }
 
-    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    private static ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
         return new ClaimsPrincipal(new ClaimsIdentity(
         [

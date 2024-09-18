@@ -60,7 +60,7 @@ public class TwoThousandsCommonEraYear : IEquatable<TwoThousandsCommonEraYear>
             return true;
         }
 
-        if (obj.GetType() != this.GetType())
+        if (obj.GetType() != GetType())
         {
             return false;
         }
@@ -75,8 +75,7 @@ public class TwoThousandsCommonEraYear : IEquatable<TwoThousandsCommonEraYear>
 
     private readonly DateTime _firstOfJanThisYear;
 
-    private TwoThousandsCommonEraYear(DateTime instantInYear)
-        : this(instantInYear.Year)
+    private TwoThousandsCommonEraYear(DateTime instantInYear) : this(instantInYear.Year)
     {
     }
 

@@ -157,7 +157,7 @@ public sealed class ReportBuilder
 
         return sections;
     }
-    private static IEnumerable<Section> BuildInvalidReportSections()
+    private static List<Section> BuildInvalidReportSections()
     {
         var questions = new List<Question>
         {

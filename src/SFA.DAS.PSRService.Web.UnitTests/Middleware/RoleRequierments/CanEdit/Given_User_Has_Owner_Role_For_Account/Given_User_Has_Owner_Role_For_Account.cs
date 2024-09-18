@@ -27,11 +27,11 @@ public abstract class Given_User_Has_Owner_Role_For_Account
         HandlerContext = new AuthorizationHandlerContext(
             requirements: new List<IAuthorizationRequirement> { new CanEditReport() },
             user: BuildUserWithRequiredRoleForAccount(),
-            resource: BuildResourceWithAccountID()
+            resource: BuildResourceWithAccountId()
         );
     }
 
-    private static object BuildResourceWithAccountID()
+    private static ActionContext BuildResourceWithAccountId()
     {
         var resourceContext = new ActionContext();
         var routeData = new RouteData
