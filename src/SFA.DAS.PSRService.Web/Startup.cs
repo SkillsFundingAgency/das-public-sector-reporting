@@ -1,11 +1,9 @@
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
@@ -23,52 +21,52 @@ using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
-using StructureMap;
 
 namespace SFA.DAS.PSRService.Web;
 
 public class Startup
 {
-    private readonly IConfiguration _config;
+    private readonly IConfiguration _configuration;
     private readonly IHostEnvironment _hostingEnvironment;
-    private readonly IWebConfiguration _configuration;
+    private readonly IWebConfiguration _webConfiguration;
 
     public Startup(IConfiguration configuration, IHostEnvironment env)
     {
         _hostingEnvironment = env;
-        _config = configuration.BuildDasConfiguration();
-        _configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
+        _configuration = configuration.BuildDasConfiguration();
+        _webConfiguration = _configuration.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
     }
 
-    public IServiceProvider ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<IEmployerAccountService, EmployerAccountService>();
         services.AddTransient<IAccountApiClient, AccountApiClient>();
         services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
-        services.AddSingleton<IAccountApiConfiguration>(_configuration.AccountsApi);
-            
+        services.AddSingleton<IAccountApiConfiguration>(_webConfiguration.AccountsApi);
+
         services.AddLogging(builder =>
         {
             builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
             builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
         });
 
-        services.AddSingleton(_configuration.OuterApiConfiguration);
+        services.AddSingleton(_webConfiguration.OuterApiConfiguration);
         services.AddHttpClient<IOuterApiClient, OuterApiClient>();
         services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
 
-        services.AddAndConfigureAuthentication(_configuration, _config);
-        if (_configuration.UseGovSignIn)
+        services.AddAndConfigureAuthentication(_webConfiguration, _configuration);
+        if (_webConfiguration.UseGovSignIn)
         {
-            services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
+            services.AddMaMenuConfiguration("SignOut", _configuration["ResourceEnvironmentName"]);
         }
         else
         {
-            services.AddMaMenuConfiguration("SignOut", _configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
+            services.AddMaMenuConfiguration("SignOut", _webConfiguration.Identity.ClientId, _configuration["ResourceEnvironmentName"]);
         }
+
         services.AddAuthorizationService();
         services.AddHealthChecks();
-        services.AddDataProtectionSettings(_hostingEnvironment, _configuration);
+        services.AddDataProtectionSettings(_hostingEnvironment, _webConfiguration);
         services.AddMvc(opts =>
             {
                 opts.EnableEndpointRouting = false;
@@ -76,53 +74,24 @@ public class Startup
                 opts.Filters.AddService<GoogleAnalyticsFilter>();
                 opts.Filters.AddService<ZenDeskApiFilter>();
             })
-            .AddControllersAsServices().AddSessionStateTempDataProvider()
+            .AddControllersAsServices()
+            .AddSessionStateTempDataProvider()
             .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
 
         services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
         services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
         services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
-
-        services.AddApplicationInsightsTelemetry();
-
-        return ConfigureIOC(services);
-    }
-
-    private IServiceProvider ConfigureIOC(IServiceCollection services)
-    {
-        var container = new Container();
-
-        container.Configure(config =>
-        {
-            config.Scan(_ =>
-            {
-                _.AssemblyContainingType(typeof(Startup));
-                _.WithDefaultConventions();
-                _.SingleImplementationsOfInterface();
-            });
-
-            config.For<IWebConfiguration>().Use(_configuration);
-            config.AddDatabaseRegistration(_configuration.SqlConnectionString);
-            config.For<IReportRepository>().Use<SqlReportRepository>();
-            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
-            config.For<IFileProvider>().Singleton().Use(physicalProvider);
-
-            config.Populate(services);
-
-            config.Scan(scanner =>
-            {
-                scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
-                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
-                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
-                scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-            });
-              
-            config.For<IMediator>().Use<Mediator>();
-        });
-
-        return container.GetInstance<IServiceProvider>();
-    }
         
+        services.AddSingleton(_webConfiguration);
+        services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
+        services.AddScoped<IReportRepository, SqlReportRepository>();
+        
+        var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+        services.AddSingleton(physicalProvider);
+        
+        services.AddApplicationInsightsTelemetry();
+    }
+    
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
@@ -162,19 +131,5 @@ public class Startup
                 pattern: "Service/{action}",
                 defaults: new { controller = "Service" });
         });
-    }
-
-    public class Constants
-    {
-        private readonly IdentityServerConfiguration _configuration;
-
-        public Constants(IdentityServerConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
-        public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
-
     }
 }
