@@ -54,10 +54,6 @@ public class Given_I_Request_A_Question
     public async Task And_A_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
-        const string url = "home/index";
-        UrlActionContext actualContext = null;
-
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
         _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null);
         _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
@@ -67,28 +63,23 @@ public class Given_I_Request_A_Question
         // assert
         _mockUrlHelper.VerifyAll();
 
-        var redirectResult = result as RedirectResult;
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Index");
-        actualContext.Controller.Should().Be("Home");
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 
     [Test]
     public async Task And_A_Valid_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
-        var url = "home/index";
-        UrlActionContext actualContext = null;
-
         var report = new ReportBuilder()
             .WithInvalidSections()
             .WithEmployerId("ABCDE")
             .ForCurrentPeriod()
             .WhereReportIsNotAlreadySubmitted()
             .Build();
-
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        
         _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report);
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
@@ -98,21 +89,17 @@ public class Given_I_Request_A_Question
         // assert
         _mockUrlHelper.VerifyAll();
 
-        var redirectResult = result as RedirectResult;
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Index");
-        actualContext.Controller.Should().Be("Home");
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 
     [Test]
     public async Task And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
     {
         // arrange
-        var url = "home/index";
-        UrlActionContext actualContext = null;
-
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
         var stubReport = new ReportBuilder()

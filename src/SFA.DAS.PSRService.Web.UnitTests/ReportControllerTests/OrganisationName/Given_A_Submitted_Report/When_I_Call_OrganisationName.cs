@@ -8,7 +8,7 @@ public sealed class WhenICallOrganisationName : Given_Report_Cannot_Be_Edited
 {
     private IActionResult _result;
 
-    protected override async Task  When()
+    protected override async Task When()
     {
         await base.When();
 
@@ -20,11 +20,10 @@ public sealed class WhenICallOrganisationName : Given_Report_Cannot_Be_Edited
     {
         _result
             .Should()
-            .BeAssignableTo<RedirectResult>();
+            .BeAssignableTo<RedirectToActionResult>();
 
-        ((RedirectResult) _result)
-            .Url
-            .Should()
-            .BeEquivalentTo(ExpectedUrl);
+        var actionResult = _result as RedirectToActionResult;
+        actionResult.ControllerName.Should().Be("Home");
+        actionResult.ActionName.Should().Be("Index");
     }
 }

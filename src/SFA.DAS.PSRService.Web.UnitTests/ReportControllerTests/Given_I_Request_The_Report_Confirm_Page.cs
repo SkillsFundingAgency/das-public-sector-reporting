@@ -42,7 +42,7 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         MockReportService.Setup(s => s.SubmitReport(report))
             .Returns(() => Task.CompletedTask)
             .Verifiable();
-        
+
         Controller.ObjectValidator = GetObjectValidator().Object;
 
         // act
@@ -71,19 +71,14 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Report()).Verifiable();
         Controller.ObjectValidator = GetFailingObjectValidator().Object;
 
-        const string url = "report/create";
-        UrlActionContext actualContext = null;
-        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
         // act
-        var result = await Controller.Confirm();
+        var result = await Controller.Confirm() as RedirectToActionResult;
 
         // assert
         MockReportService.VerifyAll();
-        result.Should().BeOfType<RedirectResult>();
-        actualContext.Should().NotBeNull();
-        actualContext.Controller.Should().Be("Report");
-        actualContext.Action.Should().Be("Summary");
+        result.Should().BeOfType<RedirectToActionResult>();
+        result.ControllerName.Should().Be("Report");
+        result.ActionName.Should().Be("Summary");
     }
 
     private static Mock<IObjectModelValidator> GetFailingObjectValidator()
@@ -109,14 +104,12 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
         // act
-        var result = await Controller.SubmitPost();
+        var result = await Controller.SubmitPost() as RedirectToActionResult;
 
         // assert
         MockReportService.VerifyAll();
-        result.Should().BeOfType<RedirectResult>();
-        actualContext.Should().NotBeNull();
-        actualContext.Controller.Should().Be("Report");
-        actualContext.Action.Should().Be("Summary");
+        result.ControllerName.Should().Be("Report");
+        result.ActionName.Should().Be("Summary");
     }
 
     [Test]
@@ -151,12 +144,6 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
     public async Task When_The_Report_Is_Submitted_Redirect_To_Home()
     {
         // arrange
-        const string url = "home/Index";
-        UrlActionContext actualContext = null;
-
-        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-
         var report =
             new ReportBuilder()
                 .WithValidSections()
@@ -173,10 +160,10 @@ public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
         var result = await Controller.Confirm();
 
         // assert
-        result.Should().BeOfType<RedirectResult>();
-        var redirectResult = result as RedirectResult;
+        result.Should().BeOfType<RedirectToActionResult>();
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Index");
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 }

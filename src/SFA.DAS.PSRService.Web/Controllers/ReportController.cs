@@ -53,7 +53,7 @@ public class ReportController : BaseController
 
         if (!_reportService.CanBeEdited(report))
         {
-            return new RedirectResult(Url.Action("Index", "Home"));
+            return RedirectToAction("Index", "Home");
         }
 
         var viewModel = new ReportViewModel
@@ -95,7 +95,7 @@ public class ReportController : BaseController
         {
             if (!_reportService.CanBeEdited(report))
             {
-                return new RedirectResult(Url.Action("Index", "Home"));
+                return RedirectToAction("Index", "Home");
             }
 
             isLocalAuthorityViewModelVm.IsLocalAuthority = confirmIsLocalAuthority.HasValue ? confirmIsLocalAuthority : report.IsLocalAuthority;
@@ -133,18 +133,18 @@ public class ReportController : BaseController
             {
                 if (isLocalAuthorityViewModel.IsLocalAuthority == report.IsLocalAuthority)
                 {
-                    return new RedirectResult(Url.Action("Edit", "Report"));
+                    return RedirectToAction("Edit", "Report");
                 }
 
                 if (!_reportService.CanBeEdited(report))
                 {
-                    return new RedirectResult(Url.Action("Index", "Home"));
+                    return RedirectToAction("Index", "Home");
                 }
 
-                return new RedirectResult(Url.Action("DataLossWarning", new DataLossWarningViewModel() { IsLocalAuthority = isLocalAuthorityViewModel.IsLocalAuthority.Value }));
+                return RedirectToAction("DataLossWarning", new DataLossWarningViewModel { IsLocalAuthority = isLocalAuthorityViewModel.IsLocalAuthority.Value });
             }
 
-            return new RedirectResult(Url.Action("Edit", "Report"));
+            return RedirectToAction("Edit", "Report");
         }
         catch (Exception)
         {
@@ -167,29 +167,29 @@ public class ReportController : BaseController
 
             if (!dataLossWarning.ConfirmIsLocalAuthority.Value)
             {
-                return new RedirectResult(Url.Action("Edit", "Report"));
+                return RedirectToAction("Edit", "Report");
             }
 
             var report = await _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
             if (report == null)
             {
-                return new RedirectResult(Url.Action("Edit", "Report"));
+                return RedirectToAction("Edit", "Report");
             }
 
             if (!_reportService.CanBeEdited(report))
             {
-                return new RedirectResult(Url.Action("Index", "Home"));
+                return RedirectToAction("Index", "Home");
             }
 
             if (dataLossWarning.IsLocalAuthority == report.IsLocalAuthority)
             {
-                return new RedirectResult(Url.Action("Edit", "Report"));
+                return RedirectToAction("Edit", "Report");
             }
 
             await _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
 
-            return new RedirectResult(Url.Action("Edit", "Report"));
+            return RedirectToAction("Edit", "Report");
         }
         catch (Exception)
         {
@@ -306,19 +306,19 @@ public class ReportController : BaseController
 
         if (report.Submitted)
         {
-            return new RedirectResult(Url.Action("Index", "Home"));
+            return RedirectToAction("Index", "Home");
         }
 
         if (report.IsValidForSubmission() == false)
         {
-            return new RedirectResult(Url.Action("Summary", "Report"));
+            return RedirectToAction("Summary", "Report");
         }
 
         var viewModel = new ReportViewModel { Report = report };
 
         if (!TryValidateModel(viewModel) || !_reportService.CanBeEdited(report))
         {
-            return new RedirectResult(Url.Action("Summary", "Report"));
+            return RedirectToAction("Summary", "Report");
         }
 
         ViewBag.CurrentPeriod = _currentPeriod;
@@ -355,7 +355,7 @@ public class ReportController : BaseController
 
         if (!TryValidateModel(new ReportViewModel { Report = report }))
         {
-            return new RedirectResult(Url.Action("Summary", "Report"));
+            return RedirectToAction("Summary", "Report");
         }
 
         var user = _userService.GetUserModel(User);
@@ -384,7 +384,7 @@ public class ReportController : BaseController
 
         if (!_reportService.CanBeEdited(report))
         {
-            return new RedirectResult(Url.Action("Index", "Home"));
+            return RedirectToAction("Index", "Home");
         }
 
         var organisationVm = new OrganisationViewModel
@@ -409,7 +409,7 @@ public class ReportController : BaseController
 
         if (!_reportService.CanBeEdited(report))
         {
-            return new RedirectResult(Url.Action("Index", "Home"));
+            return RedirectToAction("Index", "Home");
         }
 
         ViewBag.CurrentPeriod = report?.Period ?? _currentPeriod;
@@ -427,21 +427,21 @@ public class ReportController : BaseController
     {
         if (hasMinimumEmployeeHeadcount == false)
         {
-            return new RedirectResult(Url.Action("ReportNotRequired"));
+            return RedirectToAction("ReportNotRequired");
         }
 
         var report = await _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
         if (!hasMinimumEmployeeHeadcount.HasValue)
         {
-            return new RedirectResult(Url.Action("Edit", "Report"));
+            return RedirectToAction("Edit", "Report");
         }
 
         report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
 
         await _reportService.SaveReport(report, _userService.GetUserModel(User), null);
 
-        return new RedirectResult(Url.Action("Edit", "Report"));
+        return RedirectToAction("Edit", "Report");
     }
 
     [Route("TotalEmployeesConfirmationRequired")]
@@ -471,7 +471,7 @@ public class ReportController : BaseController
 
         await _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User), null);
 
-        return new RedirectResult(Url.Action("Edit", "Report"));
+        return RedirectToAction("Edit", "Report");
     }
 
 
@@ -481,7 +481,7 @@ public class ReportController : BaseController
     {
         await _mediatr.Send(new UnSubmitReportRequest(EmployerAccount.AccountId, _currentPeriod));
 
-        return new RedirectResult(Url.Action("Edit", "Report"));
+        return RedirectToAction("Edit", "Report");
     }
 
     [HttpGet]

@@ -60,10 +60,6 @@ public class Given_I_Submit_A_Question
     public async Task And_A_Report_Does_Not_Exist_Then_Redirect_Home()
     {
         // arrange
-        const string url = "home/index";
-        UrlActionContext actualContext = null;
-
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
         _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).ReturnsAsync((Report)null).Verifiable();
         _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
@@ -74,23 +70,17 @@ public class Given_I_Submit_A_Question
         _mockUrlHelper.VerifyAll();
         _reportService.VerifyAll();
 
-        var redirectResult = result as RedirectResult;
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Index");
-        actualContext.Controller.Should().Be("Home");
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 
     [Test]
     public async Task And_Report_Is_Not_Editable_Then_Redirect_Home()
     {
         // arrange
-        const string url = "home/index";
-        UrlActionContext actualContext = null;
         var report = new Report();
-
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
         _reportService.Setup(s => s.GetReport("111", It.IsAny<string>())).ReturnsAsync(report).Verifiable();
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
@@ -101,11 +91,10 @@ public class Given_I_Submit_A_Question
         _mockUrlHelper.VerifyAll();
         _reportService.VerifyAll();
 
-        var redirectResult = result as RedirectResult;
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Index");
-        actualContext.Controller.Should().Be("Home");
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 
     [Test]
@@ -127,11 +116,7 @@ public class Given_I_Submit_A_Question
     public async Task The_SectionViewModel_Is_Valid_Then_Save_Question_Section()
     {
         Report actualReport = null;
-        var url = "home/index";
-        UrlActionContext actualContext = null;
-
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
+        
         _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(_currentValidAndNotSubmittedReport).Verifiable();
         _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Callback<Report, UserModel, bool?>((r, u, s) => actualReport = r).Returns(() => Task.CompletedTask).Verifiable("Report was not saved");
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
@@ -163,11 +148,10 @@ public class Given_I_Submit_A_Question
         _reportService.VerifyAll();
         _mockUserService.VerifyAll();
 
-        var redirectResult = result as RedirectResult;
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Edit");
-        actualContext.Controller.Should().Be("Report");
+        redirectResult.ActionName.Should().Be("Edit");
+        redirectResult.ControllerName.Should().Be("Report");
 
         actualReport.Should().NotBeNull();
 
@@ -199,11 +183,7 @@ public class Given_I_Submit_A_Question
             .WithEmployerId("123")
             .WhereReportIsNotAlreadySubmitted()
             .Build();
-
-        const string url = "home/index";
-        UrlActionContext actualContext = null;
-        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
+        
         var userModel = new UserModel();
         _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(userModel).Verifiable();
         _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(report).Verifiable();
@@ -237,11 +217,10 @@ public class Given_I_Submit_A_Question
         _reportService.VerifyAll();
         _mockUserService.VerifyAll();
 
-        var redirectResult = result as RedirectResult;
+        var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
-        redirectResult.Url.Should().Be(url);
-        actualContext.Action.Should().Be("Edit");
-        actualContext.Controller.Should().Be("Report");
+        redirectResult.ActionName.Should().Be("Edit");
+        redirectResult.ControllerName.Should().Be("Report");
 
         actualReport.Should().NotBeNull();
         actualReport.IsValidForSubmission().Should().BeFalse();

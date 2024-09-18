@@ -17,10 +17,9 @@ public class WhenAmendIsCalled : And_User_Can_Edit
         base.Given();
 
         MockUrlHelper
-            .Setup(m => m.Action(It.Is<UrlActionContext>(
-                ctx =>
-                    ctx.Action.Equals("Edit", StringComparison.OrdinalIgnoreCase)
-                    && ctx.Controller.Equals("Report", StringComparison.OrdinalIgnoreCase))))
+            .Setup(m => m.Action(It.Is<UrlActionContext>(ctx =>
+                ctx.Action.Equals("Edit", StringComparison.OrdinalIgnoreCase)
+                && ctx.Controller.Equals("Report", StringComparison.OrdinalIgnoreCase))))
             .Returns(ExpectedUrl);
     }
 
@@ -40,13 +39,10 @@ public class WhenAmendIsCalled : And_User_Can_Edit
     [Test]
     public void Then_I_Am_Redirected_To_EditPage()
     {
-        _result
-            .Should()
-            .BeAssignableTo<RedirectResult>();
-
-        ((RedirectResult)_result)
-            .Url
-            .Should()
-            .BeEquivalentTo(ExpectedUrl);
+        _result.Should().BeAssignableTo<RedirectToActionResult>();
+        
+        var theResult = _result as RedirectToActionResult;
+        theResult.ControllerName.Should().Be("Report");
+        theResult.ActionName.Should().Be("Edit");
     }
 }

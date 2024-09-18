@@ -26,7 +26,7 @@ public class QuestionController(
 
         if (!reportService.CanBeEdited(report))
         {
-            return new RedirectResult(Url.Action("Index", "Home"));
+            return RedirectToAction("Index", "Home");
         }
 
         var currentSection = report.GetQuestionSection(id);
@@ -66,7 +66,7 @@ public class QuestionController(
 
         if (!reportService.CanBeEdited(report))
         {
-            return new RedirectResult(Url.Action("Index", "Home"));
+            return RedirectToAction("Index", "Home");
         }
 
         var currentSection = report.GetQuestionSection(section.Id);
@@ -99,7 +99,7 @@ public class QuestionController(
             var userModel = userService.GetUserModel(User);
             await reportService.SaveReport(report, userModel, null);
 
-            return new RedirectResult(Url.Action("Edit", "Report"));
+            return RedirectToAction("Edit", "Report");
         }
 
         var viewModel = new SectionViewModel

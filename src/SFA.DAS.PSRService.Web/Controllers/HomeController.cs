@@ -23,7 +23,6 @@ namespace SFA.DAS.PSRService.Web.Controllers;
 public class HomeController : BaseController
 {
     private readonly IReportService _reportService;
-    private readonly IPeriodService _periodService;
     private readonly IAuthorizationService _authorizationService;
     private readonly IConfiguration _config;
     private readonly IStubAuthenticationService _stubAuthenticationService;
@@ -32,25 +31,27 @@ public class HomeController : BaseController
 
     private readonly IReadOnlyDictionary<string, SubmitAction> _submitLookup;
 
-    public HomeController(IReportService reportService, IEmployerAccountService employerAccountService,
-        IWebConfiguration webConfiguration, IPeriodService periodService,
-        IAuthorizationService authorizationService, IConfiguration config, IStubAuthenticationService stubAuthenticationService)
+    public HomeController(IReportService reportService, 
+        IEmployerAccountService employerAccountService,
+        IWebConfiguration webConfiguration,
+        IPeriodService periodService,
+        IAuthorizationService authorizationService,
+        IConfiguration config,
+        IStubAuthenticationService stubAuthenticationService)
         : base(webConfiguration, employerAccountService)
     {
         _reportService = reportService;
-        _periodService = periodService;
         _authorizationService = authorizationService;
         _config = config;
         _stubAuthenticationService = stubAuthenticationService;
-
-        _currentPeriod = _periodService.GetCurrentPeriod();
-
-        _submitLookup = new ReadOnlyDictionary<string, SubmitAction>(BuildSubmitLookups());
+        
+        _currentPeriod = periodService.GetCurrentPeriod();
+        _submitLookup = BuildSubmitLookups();
     }
 
-    private static IDictionary<string, SubmitAction> BuildSubmitLookups()
+    private static ReadOnlyDictionary<string, SubmitAction> BuildSubmitLookups()
     {
-        return new Dictionary<string, SubmitAction>
+        var values = new Dictionary<string, SubmitAction>
         {
             [Home.Edit.SubmitValue] = Home.Edit,
             [Home.List.SubmitValue] = Home.List,
@@ -58,6 +59,8 @@ public class HomeController : BaseController
             [Home.View.SubmitValue] = Home.View,
             [Home.AlreadySubmitted.SubmitValue] = Home.AlreadySubmitted
         };
+
+        return values.AsReadOnly();
     }
 
     [Authorize(Policy = nameof(PolicyNames.HasEmployerAccount))]
@@ -114,7 +117,7 @@ public class HomeController : BaseController
     }
 #endif
 
-    private IActionResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
+    private RedirectToActionResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
     {
         return RedirectToAction(submitAction.ActionName, submitAction.ControllerName);
     }

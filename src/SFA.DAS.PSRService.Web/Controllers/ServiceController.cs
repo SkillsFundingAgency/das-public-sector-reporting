@@ -19,6 +19,7 @@ public class ServiceController(IWebConfiguration webConfiguration) : Controller
         var baseUrl = BaseUrl();
         return Redirect($"{baseUrl}Service/Email/change");
     }
+    
     [AllowAnonymous]
     public IActionResult AccessDenied(string action)
     {
