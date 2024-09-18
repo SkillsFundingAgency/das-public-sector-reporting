@@ -28,181 +28,180 @@ using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 using StructureMap;
 
-namespace SFA.DAS.PSRService.Web
-{
-    public class Startup
-    {
-        private readonly IConfigurationRoot _config;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        private IWebConfiguration Configuration { get; }
+namespace SFA.DAS.PSRService.Web;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
-        {
-            _hostingEnvironment = env;
-            var config = new ConfigurationBuilder()
-                .AddConfiguration(configuration)
-                .SetBasePath(Directory.GetCurrentDirectory());
+public class Startup
+{
+    private readonly IConfigurationRoot _config;
+    private readonly IHostEnvironment _hostingEnvironment;
+    private IWebConfiguration Configuration { get; }
+
+    public Startup(IConfiguration configuration, IHostEnvironment env)
+    {
+        _hostingEnvironment = env;
+        var config = new ConfigurationBuilder()
+            .AddConfiguration(configuration)
+            .SetBasePath(Directory.GetCurrentDirectory());
 
 #if DEBUG
-            if (!configuration.IsDev())
-            {
-                config.AddJsonFile("appsettings.json", false)
-                    .AddJsonFile("appsettings.Development.json", true);
-            }
+        if (!configuration.IsDev())
+        {
+            config.AddJsonFile("appsettings.json", false)
+                .AddJsonFile("appsettings.Development.json", true);
+        }
 #endif
 
-            config.AddEnvironmentVariables();
-            config.AddAzureTableStorage(options =>
-                {
-                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                    options.EnvironmentName = configuration["EnvironmentName"];
-                    options.PreFixConfigurationKeys = false;
-                }
-            );
+        config.AddEnvironmentVariables();
+        config.AddAzureTableStorage(options =>
+            {
+                options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                options.EnvironmentName = configuration["EnvironmentName"];
+                options.PreFixConfigurationKeys = false;
+            }
+        );
 
-            _config = config.Build();
-            Configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
-        }
+        _config = config.Build();
+        Configuration = _config.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
+    }
 
 
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-            services.AddTransient<IEmployerAccountService, EmployerAccountService>();
-            services.AddTransient<IAccountApiClient, AccountApiClient>();
-            services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
-            services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
+    public IServiceProvider ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<IEmployerAccountService, EmployerAccountService>();
+        services.AddTransient<IAccountApiClient, AccountApiClient>();
+        services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
+        services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
             
-            services.AddLogging(builder =>
+        services.AddLogging(builder =>
+        {
+            builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
+            builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+        });
+
+        services.AddSingleton(Configuration.OuterApiConfiguration);
+        services.AddHttpClient<IOuterApiClient, OuterApiClient>();
+        services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
+
+        services.AddAndConfigureAuthentication(Configuration, _config);
+        if (Configuration.UseGovSignIn)
+        {
+            services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
+        }
+        else
+        {
+            services.AddMaMenuConfiguration("SignOut", Configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
+        }
+        services.AddAuthorizationService();
+        services.AddHealthChecks();
+        services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
+        services.AddMvc(opts =>
             {
-                builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
-                builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+                opts.EnableEndpointRouting = false;
+                opts.Filters.Add(new AuthorizeFilter());
+                opts.Filters.AddService<GoogleAnalyticsFilter>();
+                opts.Filters.AddService<ZenDeskApiFilter>();
+            })
+            .AddControllersAsServices().AddSessionStateTempDataProvider()
+            .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
+
+        services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
+        services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
+        services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
+
+        services.AddApplicationInsightsTelemetry();
+
+        return ConfigureIOC(services);
+    }
+
+    private IServiceProvider ConfigureIOC(IServiceCollection services)
+    {
+        var container = new Container();
+
+        container.Configure(config =>
+        {
+            config.Scan(_ =>
+            {
+                _.AssemblyContainingType(typeof(Startup));
+                _.WithDefaultConventions();
+                _.SingleImplementationsOfInterface();
             });
 
-            services.AddSingleton(Configuration.OuterApiConfiguration);
-            services.AddHttpClient<IOuterApiClient, OuterApiClient>();
-            services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
+            config.For<IWebConfiguration>().Use(Configuration);
+            config.AddDatabaseRegistration(Configuration.SqlConnectionString);
+            config.For<IReportRepository>().Use<SqlReportRepository>();
+            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+            config.For<IFileProvider>().Singleton().Use(physicalProvider);
 
-            services.AddAndConfigureAuthentication(Configuration, _config);
-            if (Configuration.UseGovSignIn)
+            config.Populate(services);
+
+            config.Scan(scanner =>
             {
-                services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
-            }
-            else
-            {
-                services.AddMaMenuConfiguration("SignOut", Configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
-            }
-            services.AddAuthorizationService();
-            services.AddHealthChecks();
-            services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
-            services.AddMvc(opts =>
-                {
-                    opts.EnableEndpointRouting = false;
-                    opts.Filters.Add(new AuthorizeFilter());
-                    opts.Filters.AddService<GoogleAnalyticsFilter>();
-                    opts.Filters.AddService<ZenDeskApiFilter>();
-                })
-                .AddControllersAsServices().AddSessionStateTempDataProvider()
-                .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
-
-            services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
-            services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
-            services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
-
-            services.AddApplicationInsightsTelemetry();
-
-            return ConfigureIOC(services);
-        }
-
-        private IServiceProvider ConfigureIOC(IServiceCollection services)
-        {
-            var container = new Container();
-
-            container.Configure(config =>
-            {
-                config.Scan(_ =>
-                {
-                    _.AssemblyContainingType(typeof(Startup));
-                    _.WithDefaultConventions();
-                    _.SingleImplementationsOfInterface();
-                });
-
-                config.For<IWebConfiguration>().Use(Configuration);
-                config.AddDatabaseRegistration(Configuration.SqlConnectionString);
-                config.For<IReportRepository>().Use<SqlReportRepository>();
-                var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
-                config.For<IFileProvider>().Singleton().Use(physicalProvider);
-
-                config.Populate(services);
-
-                config.Scan(scanner =>
-                {
-                    scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
-                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
-                    scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
-                    scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-                });
+                scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
+                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
+                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
+                scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+            });
               
-                config.For<IMediator>().Use<Mediator>();
-            });
+            config.For<IMediator>().Use<Mediator>();
+        });
 
-            return container.GetInstance<IServiceProvider>();
-        }
+        return container.GetInstance<IServiceProvider>();
+    }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                IdentityModelEventSource.ShowPII = true;
-            }
-            else
-            {
-                app.UseHsts();
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                Secure = CookieSecurePolicy.Always
-            });
-
-            app.UseStaticFiles()
-                .UseHttpsRedirection()
-                .UseErrorLoggingMiddleware()
-                .UseSession()
-                .UseAuthentication()
-                .UseHealthChecks("/ping");
-
-            app.UseRouting();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "accounts/{hashedEmployerAccountId}/{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                        name: "Service-Controller",
-                        pattern: "Service/{action}",
-                        defaults: new { controller = "Service" });
-            });
+            app.UseDeveloperExceptionPage();
+            IdentityModelEventSource.ShowPII = true;
+        }
+        else
+        {
+            app.UseHsts();
+            app.UseExceptionHandler("/Home/Error");
         }
 
-        public class Constants
+        app.UseCookiePolicy(new CookiePolicyOptions
         {
-            private readonly IdentityServerConfiguration _configuration;
+            Secure = CookieSecurePolicy.Always
+        });
 
-            public Constants(IdentityServerConfiguration configuration)
-            {
-                _configuration = configuration;
-            }
+        app.UseStaticFiles()
+            .UseHttpsRedirection()
+            .UseErrorLoggingMiddleware()
+            .UseSession()
+            .UseAuthentication()
+            .UseHealthChecks("/ping");
 
-            public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
-            public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
+        app.UseRouting();
+        app.UseAuthorization();
 
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "accounts/{hashedEmployerAccountId}/{controller=Home}/{action=Index}/{id?}");
+
+            endpoints.MapControllerRoute(
+                name: "Service-Controller",
+                pattern: "Service/{action}",
+                defaults: new { controller = "Service" });
+        });
+    }
+
+    public class Constants
+    {
+        private readonly IdentityServerConfiguration _configuration;
+
+        public Constants(IdentityServerConfiguration configuration)
+        {
+            _configuration = configuration;
         }
+
+        public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
+        public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
+
     }
 }
