@@ -32,21 +32,21 @@ public class SqlReportRepository(IDbConnection connection) : IReportRepository
         return reportData.ToList();
     }
 
-    public async Task Create(ReportDto report)
+    public async Task Create(ReportDto reportDto)
     {
         await connection.ExecuteAsync(@"
                     INSERT INTO [dbo].[Report] ([Id],[EmployerId],[ReportingPeriod],[ReportingData],[Submitted],[AuditWindowStartUtc],[UpdatedUtc],[UpdatedBy])
                                         VALUES (@Id, @EmployerId, @ReportingPeriod, @ReportingData, @Submitted, @AuditWindowStartUtc, @UpdatedUtc, @UpdatedBy)",
             new
             {
-                report.Id,
-                report.EmployerId,
-                report.ReportingData,
-                report.ReportingPeriod,
-                report.Submitted,
-                report.AuditWindowStartUtc,
-                report.UpdatedUtc,
-                report.UpdatedBy
+                reportDto.Id,
+                reportDto.EmployerId,
+                reportDto.ReportingData,
+                reportDto.ReportingPeriod,
+                reportDto.Submitted,
+                reportDto.AuditWindowStartUtc,
+                reportDto.UpdatedUtc,
+                reportDto.UpdatedBy
             });
     }
 

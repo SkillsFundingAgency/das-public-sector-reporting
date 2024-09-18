@@ -20,7 +20,8 @@ public abstract class GivenWhenThen<T>
     {
     }
 
-    protected virtual async Task When()
+    protected virtual Task When()
     {
+        return Task.CompletedTask;
     }
 }
