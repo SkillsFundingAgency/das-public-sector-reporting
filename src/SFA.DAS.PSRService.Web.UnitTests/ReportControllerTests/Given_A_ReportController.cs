@@ -69,8 +69,9 @@ public class GivenAReportController
         await When();
     }
 
-    protected virtual async Task When()
+    protected virtual Task When()
     {
+        return Task.CompletedTask;
     }
 
     protected virtual void Given()

@@ -47,21 +47,21 @@ public class WhenPercentageUpdateIsRequested
                             [
                                 new Question
                                 {
-                                    Id = "atStart",
+                                    Id = QuestionIdentities.AtStart,
                                     Answer = "250",
                                     Type = QuestionType.Number,
                                     Optional = false
                                 },
                                 new Question
                                 {
-                                    Id = "atEnd",
+                                    Id = QuestionIdentities.AtEnd,
                                     Answer = "300",
                                     Type = QuestionType.Number,
                                     Optional = false
                                 },
                                 new Question
                                 {
-                                    Id = "newThisPeriod",
+                                    Id = QuestionIdentities.NewThisPeriod,
                                     Answer = "50",
                                     Type = QuestionType.Number,
                                     Optional = false
@@ -107,21 +107,21 @@ public class WhenPercentageUpdateIsRequested
                             {
                                 new()
                                 {
-                                    Id = "atStart",
+                                    Id = QuestionIdentities.AtStart,
                                     Answer = "250",
                                     Type = QuestionType.Number,
                                     Optional = false
                                 },
                                 new()
                                 {
-                                    Id = "atEnd",
+                                    Id = QuestionIdentities.AtEnd,
                                     Answer = "300",
                                     Type = QuestionType.Number,
                                     Optional = false
                                 },
                                 new()
                                 {
-                                    Id = "newThisPeriod",
+                                    Id = QuestionIdentities.NewThisPeriod,
                                     Answer = "50",
                                     Type = QuestionType.Number,
                                     Optional = false
@@ -152,21 +152,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -176,21 +176,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -262,21 +262,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -286,21 +286,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -371,21 +371,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -395,21 +395,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "100",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
@@ -480,21 +480,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -505,21 +505,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "100",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -589,21 +589,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
@@ -613,21 +613,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "100",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false
@@ -700,21 +700,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "20",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "35",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "18",
                 Type = QuestionType.Number,
                 Optional = false
@@ -725,21 +725,21 @@ public class WhenPercentageUpdateIsRequested
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false

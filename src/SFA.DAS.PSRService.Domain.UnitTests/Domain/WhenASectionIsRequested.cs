@@ -18,40 +18,40 @@ public class WhenASectionIsRequested
         {
             new()
             {
-                Id = "atStart",
-                Answer = "0",
-                Type = QuestionType.Number,
-                Optional = false
-            }
-            ,new()
-            {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtStart,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.AtEnd,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             }
-
         };
 
         var sectionOne = new Section
         {
             Id = "SectionOne",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionOne",
-                Questions = questions,
-                Title = "SubSectionOne",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionOne",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionOne"
         };
@@ -60,14 +60,15 @@ public class WhenASectionIsRequested
         {
             Id = "SectionTwo",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionTwo",
-                Questions = questions,
-                Title = "SubSectionTwo",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionTwo",
+                    Questions = questions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionTwo"
         };
@@ -76,23 +77,26 @@ public class WhenASectionIsRequested
         {
             Id = "SectionThree",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionThree",
-                Questions = questions,
-                Title = "SubSectionThree",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionThree",
+                    Questions = questions,
+                    Title = "SubSectionThree",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionThree"
         };
 
-        IList<Section> sections = new List<Section>();
+        var sections = new List<Section>
+        {
+            sectionOne,
+            sectionTwo,
+            sectionThree
+        };
 
-        sections.Add(sectionOne);
-        sections.Add(sectionTwo);
-        sections.Add(sectionThree);
         var report = new Report
         {
             Sections = sections
@@ -100,11 +104,11 @@ public class WhenASectionIsRequested
 
         // act
         var result = report.GetQuestionSection("SubSectionTwo");
-        
+
         result.Should().NotBeNull();
-        
+
         result.Id.Should().Be("SubSectionTwo");
-        result.Title.Should().Be( "SubSectionTwo");
+        result.Title.Should().Be("SubSectionTwo");
         result.Questions.Should().NotBeNull();
         result.Questions.Should().NotBeEmpty();
     }
@@ -123,40 +127,40 @@ public class WhenASectionIsRequested
         {
             new()
             {
-                Id = "atStart",
-                Answer = "0",
-                Type = QuestionType.Number,
-                Optional = false
-            }
-            ,new()
-            {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtStart,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.AtEnd,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             }
-
         };
 
         var sectionOne = new Section
         {
             Id = "SectionOne",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionOne",
-                Questions = questions,
-                Title = "SubSectionOne",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionOne",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionOne"
         };
@@ -165,14 +169,15 @@ public class WhenASectionIsRequested
         {
             Id = "SectionTwo",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionOne",
-                Questions = questions,
-                Title = "SubSectionTwo",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionTwo"
         };
@@ -181,14 +186,15 @@ public class WhenASectionIsRequested
         {
             Id = "SectionOne",
             SubSections = new List<Section>
-            { new()
             {
-                Id = "SubSectionThree",
-                Questions = questions,
-                Title = "SubSectionThree",
-                SummaryText = ""
-
-            }},
+                new()
+                {
+                    Id = "SubSectionThree",
+                    Questions = questions,
+                    Title = "SubSectionThree",
+                    SummaryText = ""
+                }
+            },
             Questions = null,
             Title = "SectionThree"
         };
@@ -204,10 +210,10 @@ public class WhenASectionIsRequested
         {
             Sections = sections
         };
-        
+
         // act
         var action = () => report.GetQuestionSection("SectionOne");
-        
+
         // assert
         action.Should().Throw<InvalidOperationException>();
     }

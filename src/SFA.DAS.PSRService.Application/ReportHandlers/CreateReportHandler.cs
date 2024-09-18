@@ -19,7 +19,7 @@ public class CreateReportHandler(IReportRepository reportRepository, IMapper map
     {
         if (string.IsNullOrWhiteSpace(request.Period))
         {
-            throw new ApplicationException("Period must be supplied");
+            throw new Exception("Period must be supplied");
         }
 
         var reportDto = new ReportDto

@@ -2,6 +2,7 @@
 using System.Threading;
 using MediatR;
 using SFA.DAS.PSRService.Application.ReportHandlers;
+using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -38,21 +39,21 @@ public class GivenISaveAReport
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "0",
                 Type = QuestionType.Number,
                 Optional = false

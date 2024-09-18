@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
@@ -75,21 +76,21 @@ public sealed class ReportBuilder
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "123",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "123",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "123",
                 Type = QuestionType.Number,
                 Optional = false
@@ -162,21 +163,21 @@ public sealed class ReportBuilder
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "",
                 Type = QuestionType.Number,
                 Optional = false
             }
             ,new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "1,000",
                 Type = QuestionType.Number,
                 Optional = false

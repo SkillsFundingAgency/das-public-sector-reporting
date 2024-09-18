@@ -21,7 +21,7 @@ public class UpdateReportHandler(IMapper mapper, IReportRepository reportReposit
 
         if (oldVersion == null)
         {
-            throw new ApplicationException("Failed to get old version of report");
+            throw new Exception("Failed to get old version of report");
         }
 
         request.Report.UpdatePercentages();

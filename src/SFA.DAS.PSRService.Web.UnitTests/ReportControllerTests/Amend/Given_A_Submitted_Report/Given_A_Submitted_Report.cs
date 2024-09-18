@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
@@ -17,21 +18,21 @@ public abstract class GivenASubmittedReport : GivenAReportController
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "20",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "35",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "18",
                 Type = QuestionType.Number,
                 Optional = false
@@ -41,21 +42,21 @@ public abstract class GivenASubmittedReport : GivenAReportController
         {
             new()
             {
-                Id = "atStart",
+                Id = QuestionIdentities.AtStart,
                 Answer = "250",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "atEnd",
+                Id = QuestionIdentities.AtEnd,
                 Answer = "300",
                 Type = QuestionType.Number,
                 Optional = false
             },
             new()
             {
-                Id = "newThisPeriod",
+                Id = QuestionIdentities.NewThisPeriod,
                 Answer = "50",
                 Type = QuestionType.Number,
                 Optional = false

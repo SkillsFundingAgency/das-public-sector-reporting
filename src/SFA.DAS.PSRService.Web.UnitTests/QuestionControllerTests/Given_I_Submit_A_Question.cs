@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
@@ -144,12 +145,12 @@ public class Given_I_Submit_A_Question
             [
                 new QuestionViewModel
                 {
-                    Id = "atEnd",
+                    Id = QuestionIdentities.AtEnd,
                     Answer = "123,000"
                 },
                 new QuestionViewModel
                 {
-                    Id = "atStart",
+                    Id = QuestionIdentities.AtStart,
                     Answer = "123"
                 }
             ]
@@ -174,16 +175,16 @@ public class Given_I_Submit_A_Question
 
         section.Should().NotBeNull();
         section.Questions.Count().Should().Be(3);
-        section.Questions.Single(q => q.Id == "atStart").Answer.Should().Be("123");
-        section.Questions.Single(q => q.Id == "atEnd").Answer.Should().Be("123000");
+        section.Questions.Single(q => q.Id == QuestionIdentities.AtStart).Answer.Should().Be("123");
+        section.Questions.Single(q => q.Id == QuestionIdentities.AtEnd).Answer.Should().Be("123000");
 
         var originalNewThisPeriodAnswer = _currentValidAndNotSubmittedReport
             .GetQuestionSection("SubSectionOne")
             .Questions
-            .Single(q => q.Id == "newThisPeriod")
+            .Single(q => q.Id == QuestionIdentities.NewThisPeriod)
             .Answer;
 
-        section.Questions.Single(q => q.Id == "newThisPeriod").Answer.Should().Be(originalNewThisPeriodAnswer);
+        section.Questions.Single(q => q.Id == QuestionIdentities.NewThisPeriod).Answer.Should().Be(originalNewThisPeriodAnswer);
     }
 
     [Test]
@@ -217,12 +218,12 @@ public class Given_I_Submit_A_Question
             [
                 new QuestionViewModel
                 {
-                    Id = "atEnd",
+                    Id = QuestionIdentities.AtEnd,
                     Answer = "123,000"
                 },
                 new QuestionViewModel
                 {
-                    Id = "atStart",
+                    Id = QuestionIdentities.AtStart,
                     Answer = ""
                 }
             ]

@@ -104,29 +104,29 @@ public class Report
 
         decimal employmentPeriod = 0, apprenticePeriod = 0, employmentEnd = 0, apprenticeEnd = 0, employmentStart = 0;
 
-        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
+        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer) == false)
         {
-            employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+            employmentPeriod = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer) == false)
+        if (string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer) == false)
         {
-            apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "newThisPeriod").Answer);
+            apprenticePeriod = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.NewThisPeriod).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
+        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer) == false)
         {
-            employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+            employmentEnd = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer) == false)
+        if (string.IsNullOrWhiteSpace(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer) == false)
         {
-            apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == "atEnd").Answer);
+            apprenticeEnd = decimal.Parse(apprenticeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtEnd).Answer);
         }
 
-        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer) == false)
+        if (string.IsNullOrWhiteSpace(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtStart).Answer) == false)
         {
-            employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == "atStart").Answer);
+            employmentStart = decimal.Parse(employeeQuestions.Questions.Single(w => w.Id == QuestionIdentities.AtStart).Answer);
         }
 
         if (apprenticePeriod != 0 & employmentPeriod != 0)

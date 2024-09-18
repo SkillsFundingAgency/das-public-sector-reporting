@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.PSRService.Domain.Entities.Section
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.PSRService.Domain
+@model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-your-employees";
@@ -12,7 +14,7 @@
         <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
             <td class="govuk-table__cell">Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.StartYear.AsFourDigitString</td>
-            <td id="your-employees-at-start" class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold js-addcommas">@questionList["atStart"].Answer</td>
+            <td id="your-employees-at-start" class="govuk-table__cell govuk-table__cell--numeric govuk-!-font-weight-bold js-addcommas">@questionList[QuestionIdentities.AtStart].Answer</td>
             @if (canBeEdited)
             {
                 <td class="govuk-table__cell govuk-table__cell--numeric">
@@ -22,7 +24,7 @@
         </tr>
         <tr class="govuk-table__row">
             <td class="govuk-table__cell">Number of employees who were working in England on 31 March @ViewBag.CurrentPeriod.EndYear.AsFourDigitString</td>
-            <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList["atEnd"].Answer</td>
+            <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList[QuestionIdentities.AtEnd].Answer</td>
             @if (canBeEdited)
             {
                 <td class="govuk-table__cell govuk-table__cell--numeric">
@@ -32,7 +34,7 @@
         </tr>
         <tr class="govuk-table__row">
             <td class="govuk-table__cell">Number of new employees who started working for you in England between @ViewBag.CurrentPeriod.FullString</td>
-            <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList["newThisPeriod"].Answer</td>
+            <td class="govuk-table__cell govuk-table__cell--numeric  govuk-!-font-weight-bold js-addcommas">@questionList[QuestionIdentities.NewThisPeriod].Answer</td>
             @if (canBeEdited)
             {
                 <td class="govuk-table__cell govuk-table__cell--numeric">

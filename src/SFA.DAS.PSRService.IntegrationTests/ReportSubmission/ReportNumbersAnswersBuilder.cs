@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.ViewModels;
@@ -12,12 +13,12 @@ public  class ReportNumbersAnswersBuilder
 
     public ReportNumbersAnswersBuilder()
     {
-        validAnswers = new List<QuestionViewModel>
-        {
-            new QuestionViewModel {Id = "atStart", Answer = "1"},
-            new QuestionViewModel {Id = "atEnd", Answer = "300"},
-            new QuestionViewModel {Id = "newThisPeriod", Answer = "1"}
-        };
+        validAnswers =
+        [
+            new() { Id = QuestionIdentities.AtStart, Answer = "1" },
+            new() { Id = QuestionIdentities.AtEnd, Answer = "300" },
+            new() { Id = QuestionIdentities.NewThisPeriod, Answer = "1" }
+        ];
     }
     public ReportNumbersAnswersBuilder BuildValidYourEmployeesAnswers()
     {
