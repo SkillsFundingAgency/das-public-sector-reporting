@@ -1,9 +1,9 @@
 ﻿namespace SFA.DAS.PSRService.IntegrationTests;
 
 [ExcludeFromCodeCoverage]
-public abstract class GivenWhenThen<TypeOfSUT>
+public abstract class GivenWhenThen<TSut>
 {
-    protected TypeOfSUT Sut;
+    protected TSut Sut;
 
     [SetUp]
     public async Task GivenWhen()
@@ -12,11 +12,13 @@ public abstract class GivenWhenThen<TypeOfSUT>
         await When();
     }
 
-    protected virtual async Task Given()
+    protected virtual Task Given()
     {
+        return Task.CompletedTask;
     }
 
-    protected virtual async Task When()
+    protected virtual Task When()
     {
+        return Task.CompletedTask;
     }
 }
