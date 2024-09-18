@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -17,9 +18,9 @@ using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web;
 using SFA.DAS.PSRService.Web.Configuration;
+using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
-using StructureMap;
 
 namespace SFA.DAS.PSRService.IntegrationTests;
 
@@ -62,47 +63,35 @@ internal static class TestHelper
         }
     }
 
-    public static Action<ConfigurationExpression> ConfigureIoc()
+    public static IServiceCollection ConfigureTestServices(this IServiceCollection services)
     {
-        return config =>
+        services.AddSingleton<IWebConfiguration>(new WebConfiguration
         {
-            config.Scan(_ =>
-            {
-                _.AssemblyContainingType(typeof(Startup));
-                _.WithDefaultConventions();
-                _.SingleImplementationsOfInterface();
-            });
+            SqlConnectionString = ConnectionString,
+        });
 
-            config.For<IWebConfiguration>().Use(new WebConfiguration
-            {
-                SqlConnectionString = ConnectionString,
-            });
+        services.AddSingleton<IReportService, ReportService>();
+        services.AddSingleton<IReportRepository>(new Data.SqlReportRepository(new SqlConnection(ConnectionString)));
+        services.AddSingleton<IEmployerAccountService, EmployerAccountService>();
+        services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
-            config.For<IReportService>().Use<ReportService>();
-            config.For<IReportRepository>().Use<Data.SqlReportRepository>().Ctor<string>().Is(ConnectionString);
-            config.For<IEmployerAccountService>().Use<EmployerAccountService>();
-            config.For<IFileProvider>().Singleton().Use(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
+        services.AddTransient<IMediator, Mediator>();
+        services.AddTransient(_ => Mock.Of<ILogger<UserService>>());
+        services.AddTransient(_ => Mock.Of<IAuthorizationService>());
 
-            config.Scan(scanner =>
-            {
-                scanner.AssemblyContainingType<GetReportRequest>(); // Our assembly with requests & handlers
-                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>)); // Handlers with no response
-                scanner.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>)); // Handlers with a response
-                scanner.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-            });
+        var mockEmployerAccountService = new Mock<IEmployerAccountService>();
+        var employerIdentifier = new EmployerIdentifier { AccountId = "111", EmployerName = "222" };
+        mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
+        services.AddTransient(_ => mockEmployerAccountService.Object);
 
-            config.For<IMediator>().Use<Mediator>();
-            config.For(typeof(ILogger<UserService>)).Use(Mock.Of<ILogger<UserService>>());
-            config.For<IAuthorizationService>().Use(Mock.Of<IAuthorizationService>());
+        var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
+        services.AddTransient(_ => mapConfig.CreateMapper());
 
-            var mockEmployerAccountService = new Mock<IEmployerAccountService>();
-            var employerIdentifier = new EmployerIdentifier { AccountId = "111", EmployerName = "222" };
-            mockEmployerAccountService.Setup(e => e.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(employerIdentifier);
-            config.For<IEmployerAccountService>().Use(mockEmployerAccountService.Object);
+        services.AddSingleton<HomeController>();
+        services.AddSingleton<QuestionController>();
+        services.AddSingleton<ReportController>();
+        services.AddSingleton<ServiceController>();
 
-            var mapConfig = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
-            var mapper = mapConfig.CreateMapper();
-            config.For<IMapper>().Use(mapper);
-        };
+        return services;
     }
 }

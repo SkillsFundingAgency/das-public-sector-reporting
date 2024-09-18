@@ -1,58 +1,62 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Moq;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
-using StructureMap;
 
 namespace SFA.DAS.PSRService.IntegrationTests.Web;
 
 [TestFixture]
 public class WhenUserEntersSite
 {
-    private static Container _container;
+    private static IHost _host;
     private HomeController _homeController;
 
     [SetUp]
     public void SetUp()
     {
         TestHelper.ClearData();
-        _homeController = _container.GetInstance<HomeController>();
+        _homeController = _host.Services.GetService<HomeController>();
     }
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _container = new Container();
-        _container.Configure(TestHelper.ConfigureIoc());
+        var builder = Host.CreateApplicationBuilder();
+        builder.Services.ConfigureTestServices();
 
         //Replace authorization service with one tailored to this test
-        //TODO: Refactor test to Geiven-Then-When style and find a better way of onfiguring authorization
-        _container.Inject<IAuthorizationService>(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
+        builder.Services.AddSingleton(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
+        _host = builder.Build();
     }
 
     [OneTimeTearDown]
-    public void OneTimeTearDown() => _container?.Dispose();
+    public void OneTimeTearDown()
+    {
+        _host?.Dispose();
+    }
 
     [TearDown]
-    public void TearDown() => _homeController?.Dispose();
+    public void TearDown()
+    {
+        _homeController?.Dispose();
+    }
 
     private static IAuthorizationService BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit()
     {
         var policyNames = new[] { PolicyNames.CanEditReport, PolicyNames.CanSubmitReport };
 
         var service = new Mock<IAuthorizationService>();
-        service
-            .Setup(
-                m => m.AuthorizeAsync(
+        service.Setup(m => m.AuthorizeAsync(
                     It.IsAny<ClaimsPrincipal>(),
                     It.IsAny<object>(),
                     It.Is<string>(x => policyNames.Contains(x))))
-            .Returns(
-                Task.FromResult(AuthorizationResult.Success()));
+            .Returns(Task.FromResult(AuthorizationResult.Success()));
 
         return service.Object;
     }

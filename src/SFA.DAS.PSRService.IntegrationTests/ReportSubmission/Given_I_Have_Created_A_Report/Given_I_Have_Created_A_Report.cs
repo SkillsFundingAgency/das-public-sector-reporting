@@ -2,33 +2,36 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Moq;
 using SFA.DAS.PSRService.IntegrationTests.Web;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.ViewModels;
-using StructureMap;
 
 namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report;
 
 [ExcludeFromCodeCoverage]
 public abstract class Given_I_Have_Created_A_Report(bool isLocalAuthority) : GivenWhenThen<ReportController>
 {
-    private static Container _container;
     protected QuestionController QuestionController;
     private Mock<IUrlHelper> _mockUrlHelper;
+    private IHost _host;
 
     protected override async Task Given()
     {
-        _container = new Container();
-        _container.Configure(TestHelper.ConfigureIoc());
+        var builder = Host.CreateApplicationBuilder();
+        builder.Services.ConfigureTestServices();
+        _host = builder.Build();
+        
         _mockUrlHelper = new Mock<IUrlHelper>();
         _mockUrlHelper.Setup(u => u.Action(It.IsAny<UrlActionContext>())).Returns("!");
 
-        QuestionController = _container.GetInstance<QuestionController>();
+        QuestionController = _host.Services.GetService<QuestionController>();
 
         QuestionController.Url = _mockUrlHelper.Object;
 
-        Sut = _container.GetInstance<ReportController>();
+        Sut = _host.Services.GetService<ReportController>();
         Sut.Url = _mockUrlHelper.Object;
         Sut.ObjectValidator = Mock.Of<IObjectModelValidator>();
 
@@ -46,6 +49,6 @@ public abstract class Given_I_Have_Created_A_Report(bool isLocalAuthority) : Giv
     public void TearDown()
     {
         QuestionController?.Dispose();
-        _container?.Dispose();
+        _host?.Dispose();
     }
 }
