@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Web.Controllers;
+using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests;
 
@@ -20,6 +22,17 @@ public class WhenAddingServicesToTheContainer
         RunTestForType(toResolve);
     }
 
+    [TestCase(typeof(IEmployerAccountService))]
+    [TestCase(typeof(IReportService))]
+    [TestCase(typeof(IPeriodService))]
+    [TestCase(typeof(IDateTimeService))]
+    [TestCase(typeof(IUserService))]
+    [TestCase(typeof(IEmployerUserAccountsService))]
+    public void Then_The_Dependencies_Are_Correctly_Resolved_For_Services(Type toResolve)
+    {
+        RunTestForType(toResolve);
+    }
+    
     private static void RunTestForType(Type toResolve)
     {
         var mockHostEnvironment = new Mock<IHostEnvironment>();
@@ -32,14 +45,14 @@ public class WhenAddingServicesToTheContainer
 
         var mockHostingEnvironment = new Mock<IHostingEnvironment>();
         mockHostingEnvironment.Setup(x => x.EnvironmentName).Returns("Test");
-        
+
         serviceCollection.AddSingleton(_ => mockHostingEnvironment.Object);
         serviceCollection.AddTransient<ContentPolicyReportController>();
         serviceCollection.AddTransient<HomeController>();
         serviceCollection.AddTransient<QuestionController>();
         serviceCollection.AddTransient<ReportController>();
         serviceCollection.AddTransient<ServiceController>();
-        
+
         var provider = serviceCollection.BuildServiceProvider();
 
         var type = provider.GetService(toResolve);
