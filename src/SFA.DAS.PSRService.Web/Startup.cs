@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EAS.Account.Api.Client;
@@ -71,6 +73,12 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IAccountApiClient, AccountApiClient>();
             services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
             services.AddSingleton<IAccountApiConfiguration>(Configuration.AccountsApi);
+            
+            services.AddLogging(builder =>
+            {
+                builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
+                builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+            });
 
             services.AddSingleton(Configuration.OuterApiConfiguration);
             services.AddHttpClient<IOuterApiClient, OuterApiClient>();
@@ -101,6 +109,8 @@ namespace SFA.DAS.PSRService.Web
             services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
             services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
             services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
+
+            services.AddApplicationInsightsTelemetry();
 
             return ConfigureIOC(services);
         }
