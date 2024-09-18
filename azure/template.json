@@ -92,7 +92,7 @@
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
         "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]",
-        "configNames": "SFA.DAS.PSRService:WebConfiguration,SFA.DAS.Employer.GovSignIn"
+        "configNames": "SFA.DAS.PSRService,SFA.DAS.Employer.GovSignIn"
     },
     "resources": [
         {
