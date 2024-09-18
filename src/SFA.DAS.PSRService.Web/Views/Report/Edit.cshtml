@@ -38,16 +38,14 @@
             </div>
         }
         <ol class="das-task-list">
-            <partial name="Sections/OrganisationName" model="@Model)"/>
+            <partial name="Sections/OrganisationName" model="@Model"/>
 
             @if (Model.Report.Sections != null)
             {
                 foreach (var sectionItem in Model.Report.Sections)
                 {
-                    @{
-                        var sectionName = $"Sections/{sectionItem.Id}";
-                        <partial name="@sectionName" model="@sectionItem"/>
-                    }
+                    var sectionName = $"Sections/{sectionItem.Id}";
+                    <partial name="@sectionName" model="@sectionItem"/>
                 }
             }
 

@@ -34,8 +34,7 @@
                     <span class="govuk-details__summary-text">Edit by @edit.UpdatedBy.Name, saved on @edit.UpdatedLocal.ToString("dddd dd MMMM yyyy") at @edit.UpdatedLocal.ToString("HH:mm")</span>
                 </summary>
                 <div>
-
-                    <partial name="Question/Organisation" model="@new OrganisationReviewViewModel { OrganisationName = edit.OrganisationName, HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount, IsLocalAuthority = edit.IsLocalAuthority })"/>
+                    <partial name="Question/Organisation" model="@(new OrganisationReviewViewModel { OrganisationName = edit.OrganisationName, HasMinimumEmployeeHeadcount = edit.HasMinimumEmployeeHeadcount, IsLocalAuthority = edit.IsLocalAuthority })"/>
 
                     <partial name="Question/ReportNumbers" model="@edit.Sections.Single(w => w.Id == "ReportNumbers")"/>
                     @if (edit.Sections.SingleOrDefault(w => w.Id == "ReportNumbersSchools") != null)
