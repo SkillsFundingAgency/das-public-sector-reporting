@@ -9,6 +9,12 @@ using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Services;
 
+public interface IEmployerAccountService
+{
+    EmployerIdentifier GetCurrentEmployerAccountId(HttpContext routeData);
+    Task<Claim> GetClaim(string userId);
+}
+
 public class EmployerAccountService(ILogger<EmployerAccountService> logger, IAccountApiClient accountApiClient) : IEmployerAccountService
 {
     private readonly ILogger<EmployerAccountService> _logger = logger;

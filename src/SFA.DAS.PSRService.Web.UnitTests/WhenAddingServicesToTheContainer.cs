@@ -1,0 +1,74 @@
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Memory;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using SFA.DAS.PSRService.Web.Controllers;
+
+namespace SFA.DAS.PSRService.Web.UnitTests;
+
+public class WhenAddingServicesToTheContainer
+{
+    [TestCase(typeof(ContentPolicyReportController))]
+    [TestCase(typeof(HomeController))]
+    [TestCase(typeof(QuestionController))]
+    [TestCase(typeof(ReportController))]
+    [TestCase(typeof(ServiceController))]
+    public void Then_The_Dependencies_Are_Correctly_Resolved_For_Controllers(Type toResolve)
+    {
+        RunTestForType(toResolve);
+    }
+
+    private static void RunTestForType(Type toResolve)
+    {
+        var mockHostEnvironment = new Mock<IHostEnvironment>();
+        mockHostEnvironment.Setup(x => x.EnvironmentName).Returns("Test");
+        mockHostEnvironment.Setup(x => x.ContentRootFileProvider).Returns(Mock.Of<IFileProvider>());
+
+        var startup = new Startup(GenerateStubConfiguration(), mockHostEnvironment.Object, buildConfig: false);
+        var serviceCollection = new ServiceCollection();
+        startup.ConfigureServices(serviceCollection);
+
+        var mockHostingEnvironment = new Mock<IHostingEnvironment>();
+        mockHostingEnvironment.Setup(x => x.EnvironmentName).Returns("Test");
+        
+        serviceCollection.AddSingleton(_ => mockHostingEnvironment.Object);
+        serviceCollection.AddTransient<ContentPolicyReportController>();
+        serviceCollection.AddTransient<HomeController>();
+        serviceCollection.AddTransient<QuestionController>();
+        serviceCollection.AddTransient<ReportController>();
+        serviceCollection.AddTransient<ServiceController>();
+        
+        var provider = serviceCollection.BuildServiceProvider();
+
+        var type = provider.GetService(toResolve);
+        type.Should().NotBeNull();
+    }
+
+    private static IConfigurationRoot GenerateStubConfiguration()
+    {
+        var configSource = new MemoryConfigurationSource
+        {
+            InitialData = new List<KeyValuePair<string, string>>
+            {
+                new("SFA.DAS.Encoding", "{\"Encodings\": [{\"EncodingType\": \"AccountId\",\"Salt\": \"and vinegar\",\"MinHashLength\": 32,\"Alphabet\": \"46789BCDFGHJKLMNPRSTVWXY\"}]}"),
+                new("Environment", "test"),
+                new("EnvironmentName", "test"),
+                new("ResourceEnvironmentName", "test"),
+                new("AccountsApi:ApiBaseUrl", "https://test.test"),
+                new("AccountsApi:IdentifierUri", "https://test.test"),
+                new("OuterApiConfiguration:Key", "ABC123"),
+                new("OuterApiConfiguration:BaseUrl", "https://test.test"),
+                new("Identity:ClientID", "PSRTEST"),
+                new("DataProtectionKeysDatabase", "TESTDATABASE"),
+                new("SessionStore:Type", "Redis"),
+                new("SessionStore:ConnectionString", "TEST"),
+            }
+        };
+
+        var provider = new MemoryConfigurationProvider(configSource);
+
+        return new ConfigurationRoot(new List<IConfigurationProvider> { provider });
+    }
+}

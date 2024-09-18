@@ -30,15 +30,18 @@ public class Startup
     private readonly IHostEnvironment _hostingEnvironment;
     private readonly IWebConfiguration _webConfiguration;
 
-    public Startup(IConfiguration configuration, IHostEnvironment env)
+    public Startup(IConfiguration configuration, IHostEnvironment env, bool buildConfig = true)
     {
         _hostingEnvironment = env;
-        _configuration = configuration.BuildDasConfiguration();
-        _webConfiguration = _configuration.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
+        _configuration = buildConfig ? configuration.BuildDasConfiguration() : configuration;
+        _webConfiguration = _configuration.Get<WebConfiguration>();
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddConfigurationOptions(_configuration);
+        services.AddSingleton(_configuration);
+        
         services.AddTransient<IEmployerAccountService, EmployerAccountService>();
         services.AddTransient<IAccountApiClient, AccountApiClient>();
         services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
@@ -81,17 +84,26 @@ public class Startup
         services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
         services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
         services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
-        
+
         services.AddSingleton(_webConfiguration);
         services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
         services.AddScoped<IReportRepository, SqlReportRepository>();
+        services.AddTransient<IReportService, ReportService>();
+        services.AddTransient<IPeriodService, PeriodService>();
+        services.AddTransient<IDateTimeService, SystemDateTimeService>();
+        services.AddTransient<IUserService, UserService>();
         
+        services.AddHttpContextAccessor();
+
         var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
         services.AddSingleton(physicalProvider);
-        
-        services.AddApplicationInsightsTelemetry();
+
+        if (!_hostingEnvironment.EnvironmentName.Equals("Test", StringComparison.CurrentCultureIgnoreCase))
+        {
+            services.AddApplicationInsightsTelemetry();
+        }
     }
-    
+
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())

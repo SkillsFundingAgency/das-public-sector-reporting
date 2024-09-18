@@ -10,7 +10,10 @@ public static class DataProtectionStartupExtensions
 {
     public static IServiceCollection AddDataProtectionSettings(this IServiceCollection services, IHostEnvironment environment, IWebConfiguration config)
     {
-        if (environment.IsDevelopment() || config == null) return services;
+        if (environment.IsDevelopment() || config == null || config.SessionStore.Connectionstring == "TEST")
+        {
+            return services;
+        }
 
         var redisConnectionString = config.SessionStore.Connectionstring;
         var dataProtectionKeysDatabase = config.DataProtectionKeysDatabase;
