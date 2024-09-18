@@ -13,17 +13,7 @@ public class WebConfiguration : IWebConfiguration
     [JsonRequired]
     public string SqlConnectionString { get; set; }
     [JsonRequired]
-    public DateTime SubmissionClose { get; set; }
-    [JsonRequired]
-    public string ApplicationUrl { get; set; }
-    [JsonRequired]
     public string RootDomainUrl { get; set; }
-    [JsonRequired]
-    public string EmployerAccountsBaseUrl { get; set; }
-    [JsonRequired]
-    public string EmployerFinanceBaseUrl { get; set; }
-    [JsonRequired]
-    public string EmployerRecruitBaseUrl { get; set; }
     [JsonRequired]
     public string EmployerCommitmentsV2BaseUrl { get; set; }
     [JsonRequired]
@@ -34,6 +24,5 @@ public class WebConfiguration : IWebConfiguration
     public ZenDeskConfiguration ZenDeskConfig { get; set; }      
     [JsonRequired]
     public OuterApiConfiguration OuterApiConfiguration { get; set; }
-
     public bool UseGovSignIn { get; set; }
 }
