@@ -50,11 +50,7 @@ public class WhenAddingServicesToTheContainer
         var startup = new Startup(GenerateStubConfiguration(), mockHostEnvironment.Object, buildConfig: false);
         var serviceCollection = new ServiceCollection();
         startup.ConfigureServices(serviceCollection);
-
-        var mockHostingEnvironment = new Mock<IHostingEnvironment>();
-        mockHostingEnvironment.Setup(x => x.EnvironmentName).Returns("Test");
-
-        serviceCollection.AddSingleton(_ => mockHostingEnvironment.Object);
+        
         serviceCollection.AddTransient<ContentPolicyReportController>();
         serviceCollection.AddTransient<HomeController>();
         serviceCollection.AddTransient<QuestionController>();
@@ -67,7 +63,7 @@ public class WhenAddingServicesToTheContainer
         type.Should().NotBeNull();
     }
 
-    private static IConfigurationRoot GenerateStubConfiguration()
+    private static ConfigurationRoot GenerateStubConfiguration()
     {
         var configSource = new MemoryConfigurationSource
         {

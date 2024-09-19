@@ -18,7 +18,7 @@ public class GoogleAnalyticsFilter : ActionFilterAttribute
         if (filterContext.Controller is Controller controller)
         {
             var user = filterContext.HttpContext.User;
-            var accountIdFromUrl = filterContext.RouteData.Values[RouteValues.HashedEmployerAccountId]?.ToString()?.ToUpper(); ;
+            var accountIdFromUrl = filterContext.RouteData.Values[RouteValues.HashedEmployerAccountId]?.ToString()?.ToUpper();
             controller.ViewBag.GaData = new GaData
             {
                 UserId = user.Claims.FirstOrDefault(c => c.Type.Equals(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier))?.Value,

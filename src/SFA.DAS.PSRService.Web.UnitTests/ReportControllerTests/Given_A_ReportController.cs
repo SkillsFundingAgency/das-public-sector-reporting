@@ -9,7 +9,6 @@ using SFA.DAS.PSRService.Web.Services;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
 
-[TestFixture]
 public class GivenAReportController
 {
     protected readonly ReportController Controller;

@@ -35,7 +35,7 @@ public class CustomAnswerValidationAttribute : ValidationAttribute, IClientModel
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(questionType));
+                throw new NotImplementedException();
         }
         
         return ValidationResult.Success;
@@ -72,7 +72,7 @@ public class CustomAnswerValidationAttribute : ValidationAttribute, IClientModel
                 MergeAttribute(context.Attributes, "data-val-maxwords-wordcount", "500");
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(questionType));
+                throw new NotImplementedException();
         }
     }
 
@@ -108,7 +108,7 @@ public class CustomAnswerValidationAttribute : ValidationAttribute, IClientModel
             QuestionType.Number => "Must be a whole number",
             QuestionType.ShortText => "Text cannot be longer than 100 words",
             QuestionType.LongText => "Text cannot be longer than 500 words",
-            _ => throw new ArgumentOutOfRangeException(nameof(questionType))
+            _ => throw new NotImplementedException()
         };
     }
 
