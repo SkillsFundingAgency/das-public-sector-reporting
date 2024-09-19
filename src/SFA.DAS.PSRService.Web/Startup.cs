@@ -95,7 +95,6 @@ public class Startup
 
         app.UseStaticFiles()
             .UseHttpsRedirection()
-            .UseErrorLoggingMiddleware()
             .UseSession()
             .UseAuthentication()
             .UseHealthChecks("/ping");
