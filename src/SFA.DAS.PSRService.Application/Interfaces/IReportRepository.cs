@@ -9,7 +9,7 @@ public interface IReportRepository
 {
     Task<ReportDto> Get(string period, string employerId);
     Task<ReportDto> Get(Guid id);
-    Task<IList<ReportDto>> GetSubmitted(string employerId);
+    Task<List<ReportDto>> GetSubmitted(string employerId);
     Task Create(ReportDto reportDto);
     Task Update(ReportDto reportDto);
     Task SaveAuditRecord(AuditRecordDto auditRecordDto);

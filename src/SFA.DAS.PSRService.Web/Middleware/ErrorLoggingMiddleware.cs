@@ -15,7 +15,7 @@ namespace SFA.DAS.PSRService.Web.Middleware
             }
             catch (Exception ex)
             {
-                //If any other middleware has thrown an error and it hasnt been dealt with we will end up here
+                //If any other middleware has thrown an error and it hasn't been dealt with we will end up here
                 try
                 {
                     logger.LogError(ex, "Unhandled Exception in {RequestPath}.", context.Request.Path);

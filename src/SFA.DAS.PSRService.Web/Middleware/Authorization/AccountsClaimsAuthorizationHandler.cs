@@ -60,11 +60,11 @@ public abstract class AccountsClaimsAuthorizationHandler<TRequirement> : Authori
 
     private static bool UserDoesNotHaveAccountsClaim(AuthorizationHandlerContext context)
     {
-        return context.User.HasClaim(claim => claim.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, StringComparison.OrdinalIgnoreCase)) == false;
+        return !context.User.HasClaim(claim => claim.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool RouteDataDoesNotContainAccountId(RouteData routeData)
     {
-        return routeData.Values.ContainsKey(RouteValues.HashedEmployerAccountId) == false;
+        return !routeData.Values.ContainsKey(RouteValues.HashedEmployerAccountId);
     }
 }

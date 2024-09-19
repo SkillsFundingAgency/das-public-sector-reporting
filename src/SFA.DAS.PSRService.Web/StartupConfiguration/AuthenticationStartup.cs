@@ -116,7 +116,7 @@ public static class AuthenticationStartup
     {
         var routeData = context.HttpContext.GetRouteData();
         var path = context.Request.Path.Value;
-        path = path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+        path = path.EndsWith('/') ? path.Substring(0, path.Length - 1) : path;
 
         if (path.Contains("Home/Index") || path.Equals($"/Accounts/{routeData.Values["hashedEmployerAccountId"]}"))
         {

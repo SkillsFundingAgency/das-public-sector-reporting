@@ -29,7 +29,7 @@ public class HomeController : BaseController
 
     private readonly Period _currentPeriod;
 
-    private readonly IReadOnlyDictionary<string, SubmitAction> _submitLookup;
+    private readonly ReadOnlyDictionary<string, SubmitAction> _submitLookup;
 
     public HomeController(IReportService reportService, 
         IEmployerAccountService employerAccountService,
@@ -165,11 +165,11 @@ public class HomeController : BaseController
     private async Task PopulateModelBasedOnReportStateAndUserAuthorization(IndexViewModel model, Report report)
     {
         var reportExists = report != null;
-        var reportDoesNotExist = reportExists == false;
+        var reportDoesNotExist = !reportExists;
         var reportIsAlreadySubmitted = report?.Submitted ?? false;
-        var reportIsNotYetSubmitted = reportIsAlreadySubmitted == false;
+        var reportIsNotYetSubmitted = !reportIsAlreadySubmitted;
         var userIsAuthorizedForReportEdit = await UserIsAuthorizedForReportEdit();
-        var userIsNotAuthorizedForReportEdit = userIsAuthorizedForReportEdit == false;
+        var userIsNotAuthorizedForReportEdit = !userIsAuthorizedForReportEdit;
 
         // TODO: take submission period close date into account
         model.CanCreateReport = reportDoesNotExist && userIsAuthorizedForReportEdit;

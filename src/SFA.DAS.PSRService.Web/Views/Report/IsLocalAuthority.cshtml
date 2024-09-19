@@ -39,7 +39,7 @@
                             <label class="govuk-label govuk-radios__label" for="islocalauthority-action-yes">Yes</label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model.IsLocalAuthority == false ? "checked" : "")>
+                            <input class="govuk-radios__input" id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(!Model.IsLocalAuthority.GetValueOrDefault() ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="islocalauthority-action-no">No</label>
                         </div>
                     </div>

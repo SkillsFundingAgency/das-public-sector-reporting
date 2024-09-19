@@ -1,7 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -15,10 +14,8 @@ public interface IEmployerAccountService
     Task<Claim> GetClaim(string userId);
 }
 
-public class EmployerAccountService(ILogger<EmployerAccountService> logger, IAccountApiClient accountApiClient) : IEmployerAccountService
+public class EmployerAccountService(IAccountApiClient accountApiClient) : IEmployerAccountService
 {
-    private readonly ILogger<EmployerAccountService> _logger = logger;
-
     private async Task<IEnumerable<EmployerIdentifier>> GetEmployerIdentifiersAsync(string userId)
     {
         var accounts = await accountApiClient.GetUserAccounts(userId);
@@ -76,8 +73,7 @@ public class EmployerAccountService(ILogger<EmployerAccountService> logger, IAcc
         accounts = await GetUserRoles(accounts.ToList(), userId);
 
         var accountsAsJson = JsonConvert.SerializeObject(accounts.ToDictionary(k => k.AccountId));
-        var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
-            JsonClaimValueTypes.Json);
-        return associatedAccountsClaim;
+        
+        return new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
     }
 }

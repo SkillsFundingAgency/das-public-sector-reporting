@@ -46,7 +46,7 @@ public abstract class Given_User_Has_Transactor_Role_For_Account : GivenWhenThen
         return resourceContext;
     }
 
-    private ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
+    private static ClaimsPrincipal BuildUserWithRequiredRoleForAccount()
     {
         return new ClaimsPrincipal(new ClaimsIdentity(
         [

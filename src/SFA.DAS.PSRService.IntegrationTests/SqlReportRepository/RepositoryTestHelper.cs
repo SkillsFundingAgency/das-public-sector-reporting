@@ -15,7 +15,7 @@ internal static class RepositoryTestHelper
         ConnectionString = config["ConnectionString"];
     }
 
-    public static IList<ReportDto> GetAllReports()
+    public static List<ReportDto> GetAllReports()
     {
         using var connection = new SqlConnection(ConnectionString);
         return connection.Query<ReportDto>("select * from Report").ToList();

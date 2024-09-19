@@ -47,7 +47,7 @@ internal static class TestHelper
         }
     }
 
-    public static IList<ReportDto> GetAllReports()
+    public static List<ReportDto> GetAllReports()
     {
         using (var connection = new SqlConnection(ConnectionString))
         {

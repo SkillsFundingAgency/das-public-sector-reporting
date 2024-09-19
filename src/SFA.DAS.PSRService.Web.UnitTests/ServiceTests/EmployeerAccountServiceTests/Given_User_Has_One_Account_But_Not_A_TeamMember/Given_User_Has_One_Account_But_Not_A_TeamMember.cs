@@ -19,8 +19,8 @@ public abstract class Given_User_Has_One_Account_But_Not_A_TeamMember : GivenWhe
     private const string AccountIdOne = "MR66J4";
     private static readonly string[] AccountId = [AccountIdOne];
 
-    private readonly IList<TeamMemberViewModel> _teamMembers = new List<TeamMemberViewModel> { new(), new() };
-    protected static IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
+    private readonly List<TeamMemberViewModel> _teamMembers = [new(), new()];
+    protected static List<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
     protected override void Given()
     {
@@ -28,10 +28,10 @@ public abstract class Given_User_Has_One_Account_But_Not_A_TeamMember : GivenWhe
         _accountApiClientMock = new Mock<IAccountApiClient>(MockBehavior.Strict);
         _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdOne)).ReturnsAsync(_teamMembers);
 
-        Sut = new EmployerAccountService(_loggerMock.Object, _accountApiClientMock.Object);
+        Sut = new EmployerAccountService(_accountApiClientMock.Object);
     }
 
-    private static IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
+    private static List<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
     {
         return accountIds.Select(EmployerIdentifierWitNoRoleForAccount).ToList();
     }

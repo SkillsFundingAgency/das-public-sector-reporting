@@ -32,8 +32,8 @@ public class ReportController : BaseController
     {
         _reportService = reportService;
         _userService = userService;
-        _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
-        _mediatr = mediatr ?? throw new ArgumentNullException(nameof(mediatr));
+        _authorizationService = authorizationService;
+        _mediatr = mediatr;
         _currentPeriod = periodService.GetCurrentPeriod();
     }
 
@@ -62,7 +62,7 @@ public class ReportController : BaseController
             UserCanSubmitReports = await UserIsAuthorizedForReportSubmission()
         };
 
-        return View("Edit", viewModel);
+        return View(nameof(Edit), viewModel);
     }
 
     [HttpGet]
@@ -71,7 +71,7 @@ public class ReportController : BaseController
     public IActionResult Create()
     {
         ViewBag.CurrentPeriod = _currentPeriod;
-        return View("Create");
+        return View(nameof(Create));
     }
 
     [HttpPost]
@@ -133,7 +133,7 @@ public class ReportController : BaseController
             {
                 if (isLocalAuthorityViewModel.IsLocalAuthority == report.IsLocalAuthority)
                 {
-                    return RedirectToAction("Edit", "Report");
+                    return RedirectToAction(nameof(Edit), "Report");
                 }
 
                 if (!_reportService.CanBeEdited(report))
@@ -217,7 +217,7 @@ public class ReportController : BaseController
 
         foreach (var submittedReport in reportListViewmodel.SubmittedReports)
         {
-            if (reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod) == false)
+            if (!reportListViewmodel.Periods.ContainsKey(submittedReport.ReportingPeriod))
             {
                 reportListViewmodel.Periods.Add(submittedReport.ReportingPeriod, Period.ParsePeriodString(submittedReport.ReportingPeriod));
             }
@@ -243,13 +243,10 @@ public class ReportController : BaseController
     [Route("Summary")]
     public async Task<IActionResult> Summary([FromRoute] string hashedEmployerAccountId, string period)
     {
+        period ??= _currentPeriod.PeriodString;
+
         try
         {
-            if (period == null)
-            {
-                period = _currentPeriod.PeriodString;
-            }
-
             var report = await _reportService.GetReport(period, EmployerAccount.AccountId);
 
             var reportViewModel = new ReportViewModel
@@ -259,7 +256,7 @@ public class ReportController : BaseController
                 CanBeEdited = _reportService.CanBeEdited(report) && await UserIsAuthorizedForReportEdit(),
                 UserCanEditReports = await UserIsAuthorizedForReportEdit(),
                 UserCanSubmitReports = await UserIsAuthorizedForReportSubmission(),
-                IsReadOnly = await UserIsAuthorizedForReportEdit() == false
+                IsReadOnly = !await UserIsAuthorizedForReportEdit()
             };
 
             if (reportViewModel.Report != null)
@@ -309,7 +306,7 @@ public class ReportController : BaseController
             return RedirectToAction("Index", "Home");
         }
 
-        if (report.IsValidForSubmission() == false)
+        if (!report.IsValidForSubmission())
         {
             return RedirectToAction("Summary", "Report");
         }
@@ -425,7 +422,7 @@ public class ReportController : BaseController
     [Authorize(Policy = PolicyNames.CanEditReport)]
     public async Task<IActionResult> PostTotalEmployees(bool? hasMinimumEmployeeHeadcount)
     {
-        if (hasMinimumEmployeeHeadcount == false)
+        if (!hasMinimumEmployeeHeadcount.GetValueOrDefault())
         {
             return RedirectToAction("ReportNotRequired");
         }

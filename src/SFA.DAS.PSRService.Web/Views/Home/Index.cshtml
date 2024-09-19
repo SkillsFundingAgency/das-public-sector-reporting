@@ -28,13 +28,13 @@
                         @if (Model.Readonly)
                         {
                             <div class="govuk-radios__item">
-                                if (Model.CurrentReportAlreadySubmitted == false)
+                                @if (!Model.CurrentReportAlreadySubmitted)
                                 {
-                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" class="govuk-radios__input">
+                                    <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.View.SubmitValue" class="govuk-radios__input">
                                 }
                                 else
                                 {
-                                <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue" class="govuk-radios__input">
+                                    <input id="home-action-view" type="radio" name="action" value="@SFA.DAS.PSRService.Web.SubmitActions.Home.AlreadySubmitted.SubmitValue" class="govuk-radios__input">
                                 }
 
                                 <label for="home-action-view" class="govuk-label govuk-radios__label">View report</label>

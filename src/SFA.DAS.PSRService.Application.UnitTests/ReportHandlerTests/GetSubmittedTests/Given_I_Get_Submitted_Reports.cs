@@ -101,7 +101,7 @@ public class Given_I_Get_Submitted_Reports
     public async Task When_An_Employer_Id_Is_Not_Supplied_Then_Return_Empty_Collection()
     {
         //arrange
-        _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).ReturnsAsync((IList<ReportDto>)null);
+        _reportRepositoryMock.Setup(s => s.GetSubmitted(It.IsAny<string>())).ReturnsAsync((List<ReportDto>)null);
 
         var getSubmittedRequest = new GetSubmittedRequest { EmployerId = string.Empty };
 

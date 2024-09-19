@@ -21,7 +21,7 @@ public abstract class Given_User_Has_No_Accounts : GivenWhenThen<EmployerAccount
 
     private static readonly string[] AccountId = [AccountIdOne, AccountIdTwo];
 
-    protected static IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
+    protected static List<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
     protected override void Given()
     {
@@ -31,7 +31,7 @@ public abstract class Given_User_Has_No_Accounts : GivenWhenThen<EmployerAccount
         _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdOne)).ReturnsAsync((IList<TeamMemberViewModel>)null);
         _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdTwo)).ReturnsAsync(new List<TeamMemberViewModel>());
 
-        Sut = new EmployerAccountService(_loggerMock.Object, _accountApiClientMock.Object);
+        Sut = new EmployerAccountService(_accountApiClientMock.Object);
     }
 
     private static List<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)

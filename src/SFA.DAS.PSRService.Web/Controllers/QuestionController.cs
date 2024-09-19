@@ -11,6 +11,7 @@ using SFA.DAS.PSRService.Web.ViewModels;
 namespace SFA.DAS.PSRService.Web.Controllers;
 
 [Authorize(Policy = PolicyNames.CanEditReport)]
+[Route("accounts/{hashedEmployerAccountId}/[controller]")]
 public class QuestionController(
     IReportService reportService,
     IEmployerAccountService employerAccountService,
@@ -18,7 +19,7 @@ public class QuestionController(
     IPeriodService periodService,
     IUserService userService) : BaseController(webConfiguration, employerAccountService)
 {
-    [Route("accounts/{hashedEmployerAccountId}/[controller]/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> Index(string id)
     {
         var currentPeriod = periodService.GetCurrentPeriod();
@@ -54,11 +55,11 @@ public class QuestionController(
             }).ToList();
         }
 
-        return View("Index", sectionViewModel);
+        return View(nameof(Index), sectionViewModel);
     }
 
-    [Route("accounts/{hashedEmployerAccountId}/[controller]/{id}")]
     [HttpPost]
+    [Route("{id}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Submit(SectionModel section)
     {
@@ -66,7 +67,7 @@ public class QuestionController(
 
         if (!reportService.CanBeEdited(report))
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         var currentSection = report.GetQuestionSection(section.Id);
@@ -110,6 +111,6 @@ public class QuestionController(
             Questions = section.Questions
         };
 
-        return View("Index", viewModel);
+        return View(nameof(Index), viewModel);
     }
 }

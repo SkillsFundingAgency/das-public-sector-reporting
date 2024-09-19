@@ -20,7 +20,7 @@ public class ReportControllerTestBase
     private Mock<IEmployerAccountService> _employeeAccountServiceMock;
     private Mock<IUserService> _userServiceMock;
     private Mock<IPeriodService> _periodServiceMock;
-    protected IList<Report> ReportList;
+    protected List<Report> ReportList;
     private EmployerIdentifier _employerIdentifier;
 
     protected Report CurrentValidNotSubmittedReport;

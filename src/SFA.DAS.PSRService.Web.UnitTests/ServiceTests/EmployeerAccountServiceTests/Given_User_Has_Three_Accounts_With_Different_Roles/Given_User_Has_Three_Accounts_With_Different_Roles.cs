@@ -26,18 +26,18 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
     private static readonly TeamMemberViewModel TeamMemberTransactor = new() { Role = EmployerPsrsRoleNames.Transactor, UserRef = UserId };
     private static readonly TeamMemberViewModel TeamMemberViewer = new() { Role = EmployerPsrsRoleNames.Viewer, UserRef = UserId };
 
-    private readonly IList<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel> { TeamMemberOwner };
-    private readonly IList<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel> { TeamMemberTransactor };
-    private readonly IList<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel> { TeamMemberViewer };
+    private readonly List<TeamMemberViewModel> _teamMembersOwner = new List<TeamMemberViewModel> { TeamMemberOwner };
+    private readonly List<TeamMemberViewModel> _teamMembersTransactor = new List<TeamMemberViewModel> { TeamMemberTransactor };
+    private readonly List<TeamMemberViewModel> _teamMembersViewer = new List<TeamMemberViewModel> { TeamMemberViewer };
 
-    protected static IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
+    protected static List<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
-    private static readonly IList<AccountDetailViewModel> AccountDetailViewModel = new List<AccountDetailViewModel>
-    {
+    private static readonly List<AccountDetailViewModel> AccountDetailViewModel =
+    [
         new() { HashedAccountId = AccountIdOne },
         new() { HashedAccountId = AccountIdTwo },
         new() { HashedAccountId = AccountIdThree }
-    };
+    ];
 
     protected override void Given()
     {
@@ -50,10 +50,10 @@ public abstract class GivenUserHasThreeAccountsWithDifferentRoles : GivenWhenThe
 
         _accountApiClientMock.Setup(s => s.GetUserAccounts(UserId)).ReturnsAsync(AccountDetailViewModel);
 
-        Sut = new EmployerAccountService(_loggerMock.Object, _accountApiClientMock.Object);
+        Sut = new EmployerAccountService(_accountApiClientMock.Object);
     }
 
-    private static IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
+    private static List<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
     {
         return accountIds.Select(EmployerIdentifierWitNoRoleForAccount).ToList();
     }

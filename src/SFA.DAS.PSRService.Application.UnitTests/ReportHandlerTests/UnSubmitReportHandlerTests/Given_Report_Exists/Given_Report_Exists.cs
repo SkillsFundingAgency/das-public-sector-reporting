@@ -36,7 +36,7 @@ public class Given_Report_Exists : GivenWhenThen<UnSubmitReportHandler>
     [Test]
     public void Then_Dto_Passed_To_RepositoryUpdate_Has_UnSubmitted_Status()
     {
-        _mockRepository.Verify(m => m.Update(It.Is<ReportDto>( r => r.Submitted == false)));
+        _mockRepository.Verify(m => m.Update(It.Is<ReportDto>( r => !r.Submitted)));
     }
 
     [Test]

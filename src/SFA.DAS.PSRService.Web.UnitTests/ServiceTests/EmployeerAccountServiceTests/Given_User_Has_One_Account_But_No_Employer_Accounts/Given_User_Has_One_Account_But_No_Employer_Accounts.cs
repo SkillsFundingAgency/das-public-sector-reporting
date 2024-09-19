@@ -19,8 +19,8 @@ public abstract class Given_User_Has_One_Account_But_No_Employer_Accounts : Give
     private const string AccountIdOne = "MR66J4";
     private static readonly string[] AccountId = [AccountIdOne];
 
-    private readonly IList<TeamMemberViewModel> _teamMembers = null;
-    protected static IList<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
+    private readonly List<TeamMemberViewModel> _teamMembers = null;
+    protected static List<EmployerIdentifier> EmployerIdentifiers => BuildEmployerIdentifierList(AccountId);
 
     protected override void Given()
     {
@@ -29,10 +29,10 @@ public abstract class Given_User_Has_One_Account_But_No_Employer_Accounts : Give
 
         _accountApiClientMock.Setup(s => s.GetAccountUsers(AccountIdOne)).ReturnsAsync(_teamMembers);
 
-        Sut = new EmployerAccountService(_loggerMock.Object, _accountApiClientMock.Object);
+        Sut = new EmployerAccountService(_accountApiClientMock.Object);
     }
 
-    private static IList<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
+    private static List<EmployerIdentifier> BuildEmployerIdentifierList(string[] accountIds)
     {
         return accountIds.Select(EmployerIdentifierWitNoRoleForAccount).ToList();
     }

@@ -7,7 +7,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_One_Subm
 [TestFixture]
 public class When_I_Call_GetSubmitted_For_EmployerId : And_One_NonSubmitted_Report
 {
-    private IList<ReportDto> _submittedReports;
+    private List<ReportDto> _submittedReports;
 
     protected override async Task When()
     {

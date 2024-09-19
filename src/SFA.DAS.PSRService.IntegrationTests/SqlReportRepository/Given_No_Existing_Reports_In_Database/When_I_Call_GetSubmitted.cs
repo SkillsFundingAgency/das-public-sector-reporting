@@ -7,7 +7,7 @@ namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository.Given_No_Exist
 public sealed class When_I_Call_GetSubmitted
     : Given_No_Existing_Reports_In_Database
 {
-    private IList<ReportDto> _retrievedSubmittedReports;
+    private List<ReportDto> _retrievedSubmittedReports;
 
     protected override async Task When()
     {

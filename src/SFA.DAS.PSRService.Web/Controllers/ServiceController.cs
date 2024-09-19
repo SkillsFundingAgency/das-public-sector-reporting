@@ -28,7 +28,7 @@ public class ServiceController(IWebConfiguration webConfiguration) : Controller
 
     private string BaseUrl()
     {
-        var baseUrl = webConfiguration.RootDomainUrl.EndsWith("/")
+        var baseUrl = webConfiguration.RootDomainUrl.EndsWith('/')
             ? webConfiguration.RootDomainUrl
             : webConfiguration.RootDomainUrl + "/";
         

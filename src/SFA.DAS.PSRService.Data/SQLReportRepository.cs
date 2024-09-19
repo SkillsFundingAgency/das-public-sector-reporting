@@ -23,7 +23,7 @@ public class SqlReportRepository(IDbConnection connection) : IReportRepository
         return await connection.QuerySingleOrDefaultAsync<ReportDto>("select * from Report where Id = @id", new { id });
     }
 
-    public async Task<IList<ReportDto>> GetSubmitted(string employerId)
+    public async Task<List<ReportDto>> GetSubmitted(string employerId)
     {
         var reportData = await connection.QueryAsync<ReportDto>(
             "select * from dbo.Report where EmployerID = @employerId and Submitted = 1",
