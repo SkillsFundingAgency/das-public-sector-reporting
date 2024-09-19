@@ -13,13 +13,13 @@ public class ServiceController(IWebConfiguration webConfiguration) : Controller
         var baseUrl = BaseUrl();
         return Redirect($"{baseUrl}Service/Password/change");
     }
-        
+
     public IActionResult ChangeEmail(string employerId)
     {
         var baseUrl = BaseUrl();
         return Redirect($"{baseUrl}Service/Email/change");
     }
-    
+
     [AllowAnonymous]
     public IActionResult AccessDenied(string action)
     {
@@ -28,10 +28,8 @@ public class ServiceController(IWebConfiguration webConfiguration) : Controller
 
     private string BaseUrl()
     {
-        var baseUrl = webConfiguration.RootDomainUrl.EndsWith('/')
+        return webConfiguration.RootDomainUrl.EndsWith('/')
             ? webConfiguration.RootDomainUrl
-            : webConfiguration.RootDomainUrl + "/";
-        
-        return baseUrl;
+            : $"{webConfiguration.RootDomainUrl}/";
     }
 }
