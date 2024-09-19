@@ -15,7 +15,6 @@ public abstract class Given_Report_Cannot_Be_Edited : GivenWhenThen<ReportContro
     private Mock<IReportService> _mockReportService;
     private Mock<IUrlHelper> _mockUrlHelper;
     private Mock<IEmployerAccountService> _employeeAccountServiceMock;
-    private Mock<IUserService> _userServiceMock;
     private Mock<IPeriodService> _periodServiceMock;
     private EmployerIdentifier _employerIdentifier;
     private Mock<IAuthorizationService> MockAuthorizationService;
@@ -28,7 +27,6 @@ public abstract class Given_Report_Cannot_Be_Edited : GivenWhenThen<ReportContro
         _mockUrlHelper = new Mock<IUrlHelper>();
         _mockReportService = new Mock<IReportService>();
         _employeeAccountServiceMock = new Mock<IEmployerAccountService>();
-        _userServiceMock = new Mock<IUserService>();
         _periodServiceMock = new Mock<IPeriodService>();
 
         MockAuthorizationService = new Mock<IAuthorizationService>();
@@ -50,7 +48,6 @@ public abstract class Given_Report_Cannot_Be_Edited : GivenWhenThen<ReportContro
         Sut = new ReportController(
             _mockReportService.Object,
             _employeeAccountServiceMock.Object,
-            _userServiceMock.Object,
             null,
             _periodServiceMock.Object,
             MockAuthorizationService.Object,
@@ -66,7 +63,5 @@ public abstract class Given_Report_Cannot_Be_Edited : GivenWhenThen<ReportContro
         
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
-
-        _userServiceMock.Setup(s => s.GetUserModel(null)).Returns(new UserModel());
     }
 }

@@ -17,7 +17,6 @@ public class Given_I_Request_A_Question
     private Mock<IReportService> _reportService;
     private Mock<IEmployerAccountService> _employerAccountServiceMock;
     private Mock<IUrlHelper> _mockUrlHelper;
-    private Mock<IUserService> _mockUserService;
     private Mock<IPeriodService> _periodServiceMock;
     private EmployerIdentifier _employerIdentifier;
 
@@ -31,14 +30,11 @@ public class Given_I_Request_A_Question
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-        _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
-
         _controller = new QuestionController(
                 _reportService.Object,
                 _employerAccountServiceMock.Object,
                 null,
-                _periodServiceMock.Object,
-                _mockUserService.Object)
+                _periodServiceMock.Object)
             { Url = _mockUrlHelper.Object };
 
         _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };

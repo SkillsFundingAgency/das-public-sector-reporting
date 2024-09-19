@@ -18,7 +18,6 @@ public class ReportControllerTestBase
     protected Mock<IReportService> MockReportService;
     protected Mock<IUrlHelper> MockUrlHelper;
     private Mock<IEmployerAccountService> _employeeAccountServiceMock;
-    private Mock<IUserService> _userServiceMock;
     private Mock<IPeriodService> _periodServiceMock;
     protected List<Report> ReportList;
     private EmployerIdentifier _employerIdentifier;
@@ -56,7 +55,6 @@ public class ReportControllerTestBase
         MockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
         MockReportService = new Mock<IReportService>(MockBehavior.Strict);
         _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
@@ -64,7 +62,6 @@ public class ReportControllerTestBase
         Controller = new ReportController(
             MockReportService.Object,
             _employeeAccountServiceMock.Object,
-            _userServiceMock.Object,
             null,
             _periodServiceMock.Object,
             BuildAlwaysSuccessMockAuthorizationService(),
@@ -81,8 +78,6 @@ public class ReportControllerTestBase
 
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
-
-        _userServiceMock.Setup(s => s.GetUserModel(null)).Returns(new UserModel());
     }
 
     [TearDown]

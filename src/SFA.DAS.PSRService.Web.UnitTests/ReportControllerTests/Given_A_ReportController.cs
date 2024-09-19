@@ -15,7 +15,6 @@ public class GivenAReportController
     protected readonly Mock<IReportService> MockReportService;
     protected readonly Mock<IUrlHelper> MockUrlHelper;
     private readonly Mock<IEmployerAccountService> _employeeAccountServiceMock;
-    private readonly Mock<IUserService> _userServiceMock;
     private readonly Mock<IPeriodService> _periodServiceMock;
     private readonly EmployerIdentifier _employerIdentifier;
     protected readonly Mock<IAuthorizationService> MockAuthorizationService;
@@ -26,7 +25,6 @@ public class GivenAReportController
         MockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
         MockReportService = new Mock<IReportService>(MockBehavior.Strict);
         _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-        _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
         MockAuthorizationService = new Mock<IAuthorizationService>();
@@ -38,7 +36,6 @@ public class GivenAReportController
         Controller = new ReportController(
             MockReportService.Object, 
             _employeeAccountServiceMock.Object,
-            _userServiceMock.Object, 
             null, 
             _periodServiceMock.Object,
             MockAuthorizationService.Object,
@@ -54,8 +51,6 @@ public class GivenAReportController
         
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
-
-        _userServiceMock.Setup(s => s.GetUserModel(null)).Returns(new UserModel());
     }
     
     [OneTimeTearDown]

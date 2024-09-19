@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -19,8 +20,6 @@ public class Given_I_Submit_A_Question
     private Mock<IReportService> _reportService;
     private Mock<IEmployerAccountService> _employerAccountServiceMock;
     private Mock<IUrlHelper> _mockUrlHelper;
-    private Mock<IUserService> _mockUserService;
-
     private EmployerIdentifier _employerIdentifier;
     private Mock<IPeriodService> _periodServiceMock;
     private Report _currentValidAndNotSubmittedReport;
@@ -32,9 +31,7 @@ public class Given_I_Submit_A_Question
         _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
         _reportService = new Mock<IReportService>(MockBehavior.Strict);
         _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-        _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
-
-
+        
         _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
@@ -42,7 +39,7 @@ public class Given_I_Submit_A_Question
         _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
 
-        _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null, _periodServiceMock.Object, _mockUserService.Object) { Url = _mockUrlHelper.Object };
+        _controller = new QuestionController(_reportService.Object, _employerAccountServiceMock.Object, null, _periodServiceMock.Object) { Url = _mockUrlHelper.Object };
 
         _currentValidAndNotSubmittedReport =
             new ReportBuilder()
@@ -120,8 +117,7 @@ public class Given_I_Submit_A_Question
         _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(_currentValidAndNotSubmittedReport).Verifiable();
         _reportService.Setup(s => s.SaveReport(It.IsAny<Report>(), It.IsAny<UserModel>(), null)).Callback<Report, UserModel, bool?>((r, u, s) => actualReport = r).Returns(() => Task.CompletedTask).Verifiable("Report was not saved");
         _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true);
-        _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(new UserModel()).Verifiable();
-
+        
         var sectionModel = new SectionModel
         {
             Id = "SubSectionOne",
@@ -146,8 +142,7 @@ public class Given_I_Submit_A_Question
 
         // assert
         _reportService.VerifyAll();
-        _mockUserService.VerifyAll();
-
+        
         var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
         redirectResult.ActionName.Should().Be("Edit");
@@ -184,11 +179,9 @@ public class Given_I_Submit_A_Question
             .WhereReportIsNotAlreadySubmitted()
             .Build();
         
-        var userModel = new UserModel();
-        _mockUserService.Setup(s => s.GetUserModel(It.IsAny<ClaimsPrincipal>())).Returns(userModel).Verifiable();
         _reportService.Setup(s => s.GetReport("222", It.IsAny<string>())).ReturnsAsync(report).Verifiable();
         _reportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
-        _reportService.Setup(s => s.SaveReport(report, userModel, null)).Callback<Report, UserModel, bool?>((r, u, k) => actualReport = r).Returns(() => Task.CompletedTask).Verifiable("Report was not saved");
+        _reportService.Setup(s => s.SaveReport(report, It.IsAny<UserModel>(), null)).Callback<Report, UserModel, bool?>((r, u, k) => actualReport = r).Returns(() => Task.CompletedTask).Verifiable("Report was not saved");
 
         var sectionModel = new SectionModel
         {
@@ -215,8 +208,7 @@ public class Given_I_Submit_A_Question
         // assert
         _mockUrlHelper.VerifyAll();
         _reportService.VerifyAll();
-        _mockUserService.VerifyAll();
-
+        
         var redirectResult = result as RedirectToActionResult;
         redirectResult.Should().NotBeNull();
         redirectResult.ActionName.Should().Be("Edit");

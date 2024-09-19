@@ -22,7 +22,6 @@ public static class ApplicationServiceRegistrations
         services.AddTransient<IReportService, ReportService>();
         services.AddTransient<IPeriodService, PeriodService>();
         services.AddTransient<IDateTimeService, SystemDateTimeService>();
-        services.AddTransient<IUserService, UserService>();
         
         return services;
     }

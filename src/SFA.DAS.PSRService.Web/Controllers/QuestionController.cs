@@ -16,8 +16,7 @@ public class QuestionController(
     IReportService reportService,
     IEmployerAccountService employerAccountService,
     IWebConfiguration webConfiguration,
-    IPeriodService periodService,
-    IUserService userService) : BaseController(webConfiguration, employerAccountService)
+    IPeriodService periodService) : BaseController(webConfiguration, employerAccountService)
 {
     [Route("{id}")]
     public async Task<IActionResult> Index(string id)
@@ -97,7 +96,7 @@ public class QuestionController(
                 }
             }
 
-            var userModel = userService.GetUserModel(User);
+            var userModel = UserModel.From(User);
             await reportService.SaveReport(report, userModel, null);
 
             return RedirectToAction("Edit", "Report");

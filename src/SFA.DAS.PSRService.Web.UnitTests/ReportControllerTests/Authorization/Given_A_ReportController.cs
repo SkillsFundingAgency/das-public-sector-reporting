@@ -19,6 +19,6 @@ public abstract class Given_A_ReportController : GivenWhenThen<ReportController>
 
         _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-        Sut = new ReportController(null,null,null,null,_periodServiceMock.Object,_authorizationServiceMock.Object, Mock.Of<IMediator>());
+        Sut = new ReportController(null, null, null, _periodServiceMock.Object, _authorizationServiceMock.Object, Mock.Of<IMediator>());
     }
 }

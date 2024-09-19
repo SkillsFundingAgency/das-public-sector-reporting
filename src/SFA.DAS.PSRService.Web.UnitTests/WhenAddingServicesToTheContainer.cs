@@ -34,7 +34,6 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IReportService))]
     [TestCase(typeof(IPeriodService))]
     [TestCase(typeof(IDateTimeService))]
-    [TestCase(typeof(IUserService))]
     [TestCase(typeof(IEmployerUserAccountsService))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_Services(Type toResolve)
     {

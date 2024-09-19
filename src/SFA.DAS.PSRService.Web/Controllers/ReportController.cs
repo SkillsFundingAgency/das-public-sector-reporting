@@ -6,6 +6,7 @@ using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.DisplayText;
+using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
@@ -16,14 +17,12 @@ namespace SFA.DAS.PSRService.Web.Controllers;
 public class ReportController : BaseController
 {
     private readonly IReportService _reportService;
-    private readonly IUserService _userService;
     private readonly IAuthorizationService _authorizationService;
     private readonly IMediator _mediatr;
     private readonly Period _currentPeriod;
 
     public ReportController(IReportService reportService,
         IEmployerAccountService employerAccountService,
-        IUserService userService,
         IWebConfiguration webConfiguration,
         IPeriodService periodService,
         IAuthorizationService authorizationService,
@@ -31,7 +30,6 @@ public class ReportController : BaseController
         : base(webConfiguration, employerAccountService)
     {
         _reportService = reportService;
-        _userService = userService;
         _authorizationService = authorizationService;
         _mediatr = mediatr;
         _currentPeriod = periodService.GetCurrentPeriod();
@@ -126,7 +124,7 @@ public class ReportController : BaseController
 
             if (report == null)
             {
-                var user = _userService.GetUserModel(User);
+                var user = UserModel.From(User);
                 await _reportService.CreateReport(EmployerAccount.AccountId, user, isLocalAuthorityViewModel.IsLocalAuthority);
             }
             else
@@ -187,7 +185,7 @@ public class ReportController : BaseController
                 return RedirectToAction("Edit", "Report");
             }
 
-            await _reportService.SaveReport(report, _userService.GetUserModel(User), dataLossWarning.IsLocalAuthority);
+            await _reportService.SaveReport(report, UserModel.From(User), dataLossWarning.IsLocalAuthority);
 
             return RedirectToAction("Edit", "Report");
         }
@@ -355,7 +353,7 @@ public class ReportController : BaseController
             return RedirectToAction("Summary", "Report");
         }
 
-        var user = _userService.GetUserModel(User);
+        var user = UserModel.From(User);
 
         report.SubmittedDetails = new Submitted
         {
@@ -436,7 +434,7 @@ public class ReportController : BaseController
 
         report.HasMinimumEmployeeHeadcount = hasMinimumEmployeeHeadcount;
 
-        await _reportService.SaveReport(report, _userService.GetUserModel(User), null);
+        await _reportService.SaveReport(report, UserModel.From(User), null);
 
         return RedirectToAction("Edit", "Report");
     }
@@ -466,7 +464,7 @@ public class ReportController : BaseController
 
         reportViewModel.Report.OrganisationName = organisationVm.Report.OrganisationName;
 
-        await _reportService.SaveReport(reportViewModel.Report, _userService.GetUserModel(User), null);
+        await _reportService.SaveReport(reportViewModel.Report, UserModel.From(User), null);
 
         return RedirectToAction("Edit", "Report");
     }

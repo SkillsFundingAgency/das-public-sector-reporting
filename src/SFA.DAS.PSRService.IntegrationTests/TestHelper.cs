@@ -76,7 +76,6 @@ internal static class TestHelper
         services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
 
         services.AddTransient<IMediator, Mediator>();
-        services.AddTransient(_ => Mock.Of<ILogger<UserService>>());
         services.AddTransient(_ => Mock.Of<IAuthorizationService>());
 
         var mockEmployerAccountService = new Mock<IEmployerAccountService>();

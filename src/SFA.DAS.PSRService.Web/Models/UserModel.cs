@@ -5,18 +5,22 @@ namespace SFA.DAS.PSRService.Web.Models;
 
 public class UserModel
 {
-    public string Email { get; set; }
-    public string DisplayName { get; set; }
-    public Guid Id { get; set; }
-
-    public UserModel()
+    public string Email { get; init; }
+    public string DisplayName { get; init; }
+    public Guid Id { get; init; }
+    
+    public static UserModel From(ClaimsPrincipal identity)
     {
-    }
+        if (identity == null)
+        {
+            return new UserModel();
+        }
 
-    public UserModel(ClaimsPrincipal identity)
-    {
-        Email = identity.FindFirst(EmployerPsrsClaims.EmailClaimsTypeIdentifier)?.Value;
-        DisplayName = identity.FindFirst(EmployerPsrsClaims.NameClaimsTypeIdentifier)?.Value;
-        Id = Guid.Parse(identity.FindFirst(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)?.Value);
+        return new UserModel
+        {
+            Email = identity.FindFirst(EmployerPsrsClaims.EmailClaimsTypeIdentifier)?.Value,
+            DisplayName = identity.FindFirst(EmployerPsrsClaims.NameClaimsTypeIdentifier)?.Value,
+            Id = Guid.Parse(identity.FindFirst(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)?.Value)
+        };
     }
 }
