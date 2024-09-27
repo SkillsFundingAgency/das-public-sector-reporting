@@ -80,14 +80,8 @@ namespace SFA.DAS.PSRService.Web
             services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
 
             services.AddAndConfigureAuthentication(Configuration, _config);
-            if (Configuration.UseGovSignIn)
-            {
-                services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);   
-            }
-            else
-            {
-                services.AddMaMenuConfiguration("SignOut", Configuration.Identity.ClientId, _config["ResourceEnvironmentName"]);    
-            }
+            services.AddMaMenuConfiguration("SignOut", _config["ResourceEnvironmentName"]);
+            
             services.AddAuthorizationService();
             services.AddHealthChecks();
             services.AddDataProtectionSettings(_hostingEnvironment, Configuration);
@@ -181,20 +175,6 @@ namespace SFA.DAS.PSRService.Web
                         pattern: "Service/{action}",
                         defaults: new { controller = "Service" });
             });
-        }
-
-        public class Constants
-        {
-            private readonly IdentityServerConfiguration _configuration;
-
-            public Constants(IdentityServerConfiguration configuration)
-            {
-                _configuration = configuration;
-            }
-
-            public string ChangeEmailLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangeEmailLink, _configuration.ClientId);
-            public string ChangePasswordLink() => _configuration.Authority.Replace("/identity", "") + string.Format(_configuration.ChangePasswordLink, _configuration.ClientId);
-
         }
     }
 }

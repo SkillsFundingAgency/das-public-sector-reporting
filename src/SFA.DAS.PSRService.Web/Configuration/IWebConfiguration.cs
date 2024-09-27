@@ -6,7 +6,6 @@ namespace SFA.DAS.PSRService.Web.Configuration
 {
     public interface IWebConfiguration
     {
-        IdentityServerConfiguration Identity { get; set; }
         AccountApiConfiguration AccountsApi { get; set; }
         string SqlConnectionString { get; set; }
         DateTime SubmissionClose { get; set; }
@@ -21,6 +20,5 @@ namespace SFA.DAS.PSRService.Web.Configuration
         TimeSpan? AuditWindowSize { get; set; }
         ZenDeskConfiguration ZenDeskConfig { get; set; }
         OuterApiConfiguration OuterApiConfiguration { get; set; }
-        bool UseGovSignIn { get; set; }
     }
 }
