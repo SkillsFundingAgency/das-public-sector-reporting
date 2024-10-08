@@ -7,8 +7,6 @@ namespace SFA.DAS.PSRService.Web.Configuration;
 public class WebConfiguration : IWebConfiguration
 {
     [JsonRequired]
-    public IdentityServerConfiguration Identity { get; set; }
-    [JsonRequired]
     public AccountApiConfiguration AccountsApi { get; set; }
     [JsonRequired]
     public string SqlConnectionString { get; set; }
@@ -24,5 +22,4 @@ public class WebConfiguration : IWebConfiguration
     public ZenDeskConfiguration ZenDeskConfig { get; set; }      
     [JsonRequired]
     public OuterApiConfiguration OuterApiConfiguration { get; set; }
-    public bool UseGovSignIn { get; set; }
 }

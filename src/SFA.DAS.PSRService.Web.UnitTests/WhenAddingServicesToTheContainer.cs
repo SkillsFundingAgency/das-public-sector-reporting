@@ -80,6 +80,8 @@ public class WhenAddingServicesToTheContainer
                 new("DataProtectionKeysDatabase", "TESTDATABASE"),
                 new("SessionStore:Type", "Redis"),
                 new("SessionStore:ConnectionString", "TEST"),
+                new("GovUkOidcConfiguration:BaseUrl", "https://test.test"),
+                new("GovUkOidcConfiguration:KeyVaultIdentifier", "DSSJGHSD"),
             }
         };
 

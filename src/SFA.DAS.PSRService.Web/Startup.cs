@@ -48,15 +48,7 @@ public class Startup
         services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
         services.AddHttpClient<IOuterApiClient, OuterApiClient>();
         services.AddAndConfigureAuthentication(_webConfiguration, _configuration);
-        
-        if (_webConfiguration.UseGovSignIn)
-        {
-            services.AddMaMenuConfiguration("SignOut", _configuration["ResourceEnvironmentName"]);
-        }
-        else
-        {
-            services.AddMaMenuConfiguration("SignOut", _webConfiguration.Identity.ClientId, _configuration["ResourceEnvironmentName"]);
-        }
+        services.AddMaMenuConfiguration("SignOut", _configuration["ResourceEnvironmentName"]);
 
         services.AddAuthorizationService();
         services.AddHealthChecks();
