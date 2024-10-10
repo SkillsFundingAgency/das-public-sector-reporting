@@ -12,12 +12,12 @@ public class EmployerAccountHandler(IHttpContextAccessor httpContextAccessor) : 
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerAccountRequirement requirement)
     {
-        if (!httpContextAccessor.HttpContext.Request.RouteValues.ContainsKey(RouteValues.HashedEmployerAccountId))
+        if (!httpContextAccessor.HttpContext.Request.RouteValues.TryGetValue(RouteValues.HashedEmployerAccountId, out var hashedAccountId))
         {
             return Task.CompletedTask;
         }
 
-        var accountIdFromUrl = httpContextAccessor.HttpContext.Request.RouteValues[RouteValues.HashedEmployerAccountId].ToString().ToUpper();
+        var accountIdFromUrl = hashedAccountId.ToString().ToUpper();
 
         if (!context.User.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
         {
