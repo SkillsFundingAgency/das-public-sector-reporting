@@ -1,9 +1,8 @@
-﻿namespace SFA.DAS.PSRService.Domain.Enums
+﻿namespace SFA.DAS.PSRService.Domain.Enums;
+
+public enum QuestionType
 {
-    public enum QuestionType
-    {
-        Number = 0,
-       ShortText = 1,
-        LongText = 2
-    }
+    Number = 0,
+    ShortText = 1,
+    LongText = 2
 }

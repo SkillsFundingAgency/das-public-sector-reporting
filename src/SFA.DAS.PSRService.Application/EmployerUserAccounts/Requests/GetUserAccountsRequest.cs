@@ -1,19 +1,11 @@
-using System.Web;
-using SFA.DAS.PSRService.Application.OuterApi.Requests;
+using System.Net;
+using SFA.DAS.PSRService.Application.OuterApi;
 
-namespace SFA.DAS.PSRService.Application.EmployerUserAccounts.Requests
+namespace SFA.DAS.PSRService.Application.EmployerUserAccounts.Requests;
+
+public class GetUserAccountsRequest(string userId, string email) : IGetApiRequest
 {
-    public class GetUserAccountsRequest : IGetApiRequest
-    {
-        private readonly string _userId;
-        private readonly string _email;
+    private readonly string _email = WebUtility.UrlEncode(email);
 
-        public GetUserAccountsRequest(string userId, string email)
-        {
-            _userId = userId;
-            _email = HttpUtility.UrlEncode(email);
-        }
-
-        public string GetUrl => $"accountusers/{_userId}/accounts?email={_email}";
-    }
+    public string GetUrl => $"accountusers/{userId}/accounts?email={_email}";
 }

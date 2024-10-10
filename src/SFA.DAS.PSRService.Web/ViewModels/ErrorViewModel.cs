@@ -1,9 +1,8 @@
-namespace SFA.DAS.PSRService.Web.ViewModels
-{
-    public class ErrorViewModel
-    {
-        public string RequestId { get; set; }
+namespace SFA.DAS.PSRService.Web.ViewModels;
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-    }
+public class ErrorViewModel
+{
+    public string RequestId { get; set; }
+
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }

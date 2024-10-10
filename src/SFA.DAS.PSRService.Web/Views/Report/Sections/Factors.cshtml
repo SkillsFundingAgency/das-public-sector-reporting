@@ -15,16 +15,18 @@
             foreach (var subSection in Model.SubSections)
             {
                 <li class="das-task-list__item">
-                    <a class="govuk-link" 
-                    asp-controller="Question" 
-                    asp-action="Index" 
-                    asp-route-id="@subSection.Id" 
-                    asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" aria-describedby="@($"{subSection.Id}-complete")">@subSection.SummaryText</a>
+                    <a class="govuk-link"
+                       asp-controller="Question"
+                       asp-action="Index"
+                       asp-route-id="@subSection.Id"
+                       asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]" aria-describedby="@($"{subSection.Id}-complete")">
+                        @subSection.SummaryText
+                    </a>
                     @if (subSection.IsComplete())
                     {
                         <span id="@($"{subSection.Id}-task-completed")" class="das-tag das-task-list__task-tag">Complete</span>
                     }
-                </li>   
+                </li>
             }
         }
     </ul>

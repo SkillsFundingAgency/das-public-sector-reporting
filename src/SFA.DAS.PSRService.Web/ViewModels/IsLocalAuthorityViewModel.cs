@@ -1,7 +1,6 @@
-﻿namespace SFA.DAS.PSRService.Web.ViewModels
+﻿namespace SFA.DAS.PSRService.Web.ViewModels;
+
+public class IsLocalAuthorityViewModel
 {
-    public class IsLocalAuthorityViewModel
-    {
-        public bool? IsLocalAuthority { get; set; }
-    }
+    public bool? IsLocalAuthority { get; set; }
 }

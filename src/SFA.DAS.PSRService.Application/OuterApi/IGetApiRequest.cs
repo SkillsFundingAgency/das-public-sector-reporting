@@ -1,10 +1,9 @@
 using Newtonsoft.Json;
 
-namespace SFA.DAS.PSRService.Application.OuterApi.Requests
+namespace SFA.DAS.PSRService.Application.OuterApi;
+
+public interface IGetApiRequest 
 {
-    public interface IGetApiRequest 
-    {
-        [JsonIgnore]
-        string GetUrl { get; }
-    }
+    [JsonIgnore]
+    string GetUrl { get; }
 }

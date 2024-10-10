@@ -1,839 +1,806 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.Domain
+namespace SFA.DAS.PSRService.Domain.UnitTests.Domain;
+
+[TestFixture]
+public class WhenPercentageUpdateIsRequested
 {
-    [TestFixture]
-    public class WhenPercentageUpdateIsRequested
+    private Report _report;
+
+    [Test]
+    public void And_report_sections_Is_null_Then_error()
     {
-        private Report _report;
+        // Arrange
+        _report = new Report();
 
-        [Test]
-        public void And_report_sections_Is_null_Then_error()
+        // Act
+        _report.UpdatePercentages();
+
+        // Assert
+        _report.ReportingPercentages.Should().BeNull();
+    }
+
+    [Test]
+    public void And_Employee_Section_Is_null_Then_error()
+    {
+        // Arrange
+        _report = new Report
         {
-            // Arrange
-            _report = new Report();
-
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNull(_report.ReportingPercentages);
-        }
-
-        [Test]
-        public void And_Employee_Section_Is_null_Then_error()
-        {
-            // Arrange
-            _report = new Report
-            {
-                ReportingPeriod = "1617",
-                SubmittedDetails = new Submitted(),
-                Submitted = true,
-                Sections = new[]
+            ReportingPeriod = "1617",
+            SubmittedDetails = new Submitted(),
+            Submitted = true,
+            Sections =
+            [
+                new Section
                 {
-                    new Section
+                    Id = "YourApprentices",
+                    SubSections = new List<Section>
                     {
-                        Id = "YourApprentices",
-                        SubSections = new List<Section>()
+                        new()
                         {
-                            new Section
-                            {
-                                Id = "SubSectionTwo",
-                                Questions = new[]
+                            Id = "SubSectionTwo",
+                            Questions =
+                            [
+                                new Question
                                 {
-                                    new Question()
-                                    {
-                                        Id = "atStart",
-                                        Answer = "250",
-                                        Type = QuestionType.Number,
-                                        Optional = false
-                                    },
-                                    new Question()
-                                    {
-                                        Id = "atEnd",
-                                        Answer = "300",
-                                        Type = QuestionType.Number,
-                                        Optional = false
-                                    },
-                                    new Question()
-                                    {
-                                        Id = "newThisPeriod",
-                                        Answer = "50",
-                                        Type = QuestionType.Number,
-                                        Optional = false
-                                    }
+                                    Id = QuestionIdentities.AtStart,
+                                    Answer = "250",
+                                    Type = QuestionType.Number,
+                                    Optional = false
                                 },
-                                Title = "SubSectionTwo",
-                                SummaryText = ""
-
-                            }
-                        },
-                        Questions = null,
-                        Title = "SectionTwo"
-
-                    }
+                                new Question
+                                {
+                                    Id = QuestionIdentities.AtEnd,
+                                    Answer = "300",
+                                    Type = QuestionType.Number,
+                                    Optional = false
+                                },
+                                new Question
+                                {
+                                    Id = QuestionIdentities.NewThisPeriod,
+                                    Answer = "50",
+                                    Type = QuestionType.Number,
+                                    Optional = false
+                                }
+                            ],
+                            Title = "SubSectionTwo",
+                            SummaryText = ""
+                        }
+                    },
+                    Questions = null,
+                    Title = "SectionTwo"
                 }
-            };
+            ]
+        };
 
-            // Act
-            _report.UpdatePercentages();
+        // Act
+        _report.UpdatePercentages();
 
-            // Assert
-            Assert.IsNull(_report.ReportingPercentages);            
-        }
+        // Assert
+        _report.ReportingPercentages.Should().BeNull();
+    }
 
-        [Test]
-        public void And_Apprentice_Section_Is_null_Then_error()
+    [Test]
+    public void And_Apprentice_Section_Is_null_Then_error()
+    {
+        // Arrange
+        _report = new Report
         {
-            // Arrange
-            _report = new Report
-            {
-                ReportingPeriod = "1617",
-                SubmittedDetails = new Submitted(),
-                Submitted = true,
-                Sections = new[]
+            ReportingPeriod = "1617",
+            SubmittedDetails = new Submitted(),
+            Submitted = true,
+            Sections =
+            [
+                new Section
                 {
-                    new Section
+                    Id = "YourEmployees",
+                    SubSections = new List<Section>
                     {
-                        Id = "YourEmployees",
-                        SubSections = new List<Section>()
+                        new()
                         {
-                            new Section
+                            Id = "SubSectionTwo",
+                            Questions = new List<Question>
                             {
-                                Id = "SubSectionTwo",
-                                Questions = new List<Question>()
+                                new()
                                 {
-                                    new Question()
-                                    {
-                                        Id = "atStart",
-                                        Answer = "250",
-                                        Type = QuestionType.Number,
-                                        Optional = false
-                                    },
-                                    new Question()
-                                    {
-                                        Id = "atEnd",
-                                        Answer = "300",
-                                        Type = QuestionType.Number,
-                                        Optional = false
-                                    },
-                                    new Question()
-                                    {
-                                        Id = "newThisPeriod",
-                                        Answer = "50",
-                                        Type = QuestionType.Number,
-                                        Optional = false
-                                    }
-
+                                    Id = QuestionIdentities.AtStart,
+                                    Answer = "250",
+                                    Type = QuestionType.Number,
+                                    Optional = false
                                 },
-                                Title = "SubSectionTwo",
-                                SummaryText = ""
-
-                            }
-                        },
-                        Questions = null,
-                        Title = "SectionTwo"
-
-                    }
+                                new()
+                                {
+                                    Id = QuestionIdentities.AtEnd,
+                                    Answer = "300",
+                                    Type = QuestionType.Number,
+                                    Optional = false
+                                },
+                                new()
+                                {
+                                    Id = QuestionIdentities.NewThisPeriod,
+                                    Answer = "50",
+                                    Type = QuestionType.Number,
+                                    Optional = false
+                                }
+                            },
+                            Title = "SubSectionTwo",
+                            SummaryText = ""
+                        }
+                    },
+                    Questions = null,
+                    Title = "SectionTwo"
                 }
-            };
+            ]
+        };
 
-         
+        // Act
+        _report.UpdatePercentages();
 
-            // Act
-            _report.UpdatePercentages();
+        // Assert
+        _report.ReportingPercentages.Should().BeNull();
+    }
 
-            // Assert
-            Assert.IsNull(_report.ReportingPercentages);
-        }
-
-        [Test]
-        public void And_Employee_AtStart_Is_zero_Then_zeror()
+    [Test]
+    public void And_Employee_AtStart_Is_zero_Then_zeror()
+    {
+        //Arrange
+        var apprenticeQuestions = new List<Question>
         {
-            //Arrange
-            var apprenticeQuestions = new List<Question>()
+            new()
             {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-            var employeeQuestions = new List<Question>()
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
             {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-
-
-            var yourEmployees = new Section()
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
             {
-                Id = "YourEmployeesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourEmployees",
-                        Questions = employeeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var yourApprentices = new Section()
-            {
-                Id = "YourApprenticeSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourApprentices",
-                        Questions = apprenticeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(yourEmployees);
-            sections.Add(yourApprentices);
-            _report = new Report()
-            {
-                ReportingPeriod = "1617",
-                Sections = sections,
-                SubmittedDetails = new Submitted(),
-                Submitted = true
-            };
-
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0.00", _report.ReportingPercentages.NewThisPeriod);
-        }
-
-        [Test]
-        public void And_Employee_Atend_Is_zero_Then_zero()
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+        var employeeQuestions = new List<Question>
         {
-            //Arrange
-            var apprenticeQuestions = new List<Question>()
+            new()
             {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-            var employeeQuestions = new List<Question>()
+                Id = QuestionIdentities.AtStart,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
             {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-
-
-            var yourEmployees = new Section()
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
             {
-                Id = "YourEmployeesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourEmployees",
-                        Questions = employeeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
 
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var yourApprentices = new Section()
-            {
-                Id = "YourApprenticesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourApprentices",
-                        Questions = apprenticeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(yourEmployees);
-            sections.Add(yourApprentices);
-            _report = new Report()
-            {
-                ReportingPeriod = "1617",
-                Sections = sections,
-                SubmittedDetails = new Submitted(),
-                Submitted = true
-            };
-
-
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0.00", _report.ReportingPercentages.TotalHeadCount);
-        }
-
-        [Test]
-        public void And_Employee_newPeriod_Is_zero_Then_zero()
+        var yourEmployees = new Section
         {
-            var apprenticeQuestions = new List<Question>()
+            Id = "YourEmployeesSection",
+            SubSections = new List<Section>
             {
-                new Question()
+                new()
                 {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
                 }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
-            };
-            var employeeQuestions = new List<Question>()
-            {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "100",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-
-
-            var yourEmployees = new Section()
-            {
-                Id = "YourEmployeesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourEmployees",
-                        Questions = employeeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var yourApprentices = new Section()
-            {
-                Id = "YourApprenticesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourApprentices",
-                        Questions = apprenticeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(yourEmployees);
-            sections.Add(yourApprentices);
-            _report = new Report()
-            {
-                ReportingPeriod = "1617",
-                Sections = sections,
-                SubmittedDetails = new Submitted(),
-                Submitted = true
-            };
-
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0.00", _report.ReportingPercentages.EmploymentStarts);
-        }
-
-        [Test]
-        public void And_Apprentice_Atend_Is_zero_Then_zero()
+        var yourApprentices = new Section
         {
-            var apprenticeQuestions = new List<Question>()
+            Id = "YourApprenticeSection",
+            SubSections = new List<Section>
             {
-                new Question()
+                new()
                 {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
                 }
-
-            };
-            var employeeQuestions = new List<Question>()
-            {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "100",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
 
-
-            var yourEmployees = new Section()
-            {
-                Id = "YourEmployeesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourEmployees",
-                        Questions = employeeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var yourApprentices = new Section()
-            {
-                Id = "YourApprenticesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourApprentices",
-                        Questions = apprenticeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(yourEmployees);
-            sections.Add(yourApprentices);
-            _report = new Report()
-            {
-                ReportingPeriod = "1617",
-                Sections = sections,
-                SubmittedDetails = new Submitted(),
-                Submitted = true
-            };
-
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0.00", _report.ReportingPercentages.TotalHeadCount);
-        }
-
-        [Test]
-        public void And_Apprentice_newPeriod_Is_zero_Then_zero()
+        var sections = new List<Section>
         {
-            var apprenticeQuestions = new List<Question>()
-            {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "0",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
+            yourEmployees,
+            yourApprentices
+        };
 
-            };
-            var employeeQuestions = new List<Question>()
-            {
-                new Question()
-                {
-                    Id = "atStart",
-                    Answer = "100",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
-
-            };
-
-
-
-            var yourEmployees = new Section()
-            {
-                Id = "YourEmployeesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourEmployees",
-                        Questions = employeeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var yourApprentices = new Section()
-            {
-                Id = "YourApprenticesSection",
-                SubSections = new List<Section>()
-                {
-                    new Section
-                    {
-                        Id = "YourApprentices",
-                        Questions = apprenticeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-
-            IList<Section> sections = new List<Section>();
-
-            sections.Add(yourEmployees);
-            sections.Add(yourApprentices);
-            _report = new Report()
-            {
-                ReportingPeriod = "1617",
-                Sections = sections,
-                SubmittedDetails = new Submitted(),
-                Submitted = true
-            };
-
-            // Act
-            _report.UpdatePercentages();
-
-            // Assert
-            Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("0.00", _report.ReportingPercentages.EmploymentStarts);
-            Assert.AreEqual("0.00", _report.ReportingPercentages.NewThisPeriod );
-        }
-
-        [Test]
-        public void And_required_Answers_Are_Answered_Then_Percentages_Calculated()
+        _report = new Report
         {
-            //Arrange
-            var apprenticeQuestions = new List<Question>()
+            ReportingPeriod = "1617",
+            Sections = sections,
+            SubmittedDetails = new Submitted(),
+            Submitted = true
+        };
+
+        // Act
+        _report.UpdatePercentages();
+
+        // Assert
+        _report.ReportingPercentages.Should().NotBeNull();
+        _report.ReportingPercentages.NewThisPeriod.Should().Be("0.00");
+    }
+
+    [Test]
+    public void And_Employee_Attend_Is_zero_Then_zero()
+    {
+        //Arrange
+        var apprenticeQuestions = new List<Question>
+        {
+            new()
             {
-                new Question()
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+        var employeeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+
+        var yourEmployees = new Section
+        {
+            Id = "YourEmployeesSection",
+            SubSections = new List<Section>
+            {
+                new()
                 {
-                    Id = "atStart",
-                    Answer = "20",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "35",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "18",
-                    Type = QuestionType.Number,
-                    Optional = false
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
                 }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
-            };
-            var employeeQuestions = new List<Question>()
+        var yourApprentices = new Section
+        {
+            Id = "YourApprenticesSection",
+            SubSections = new List<Section>
             {
-                new Question()
+                new()
                 {
-                    Id = "atStart",
-                    Answer = "250",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "300",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "50",
-                    Type = QuestionType.Number,
-                    Optional = false
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
                 }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
-            };
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
+
+        _report = new Report
+        {
+            ReportingPeriod = "1617",
+            Sections = sections,
+            SubmittedDetails = new Submitted(),
+            Submitted = true
+        };
 
 
+        // Act
+        _report.UpdatePercentages();
 
-            var yourEmployees = new Section()
+        // Assert
+        _report.ReportingPercentages.Should().NotBeNull();
+        _report.ReportingPercentages.TotalHeadCount.Should().Be("0.00");
+    }
+
+    [Test]
+    public void And_Employee_newPeriod_Is_zero_Then_zero()
+    {
+        var apprenticeQuestions = new List<Question>
+        {
+            new()
             {
-                Id = "YourEmployeesSection",
-                SubSections = new List<Section>()
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+        var employeeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "100",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+
+        var yourEmployees = new Section
+        {
+            Id = "YourEmployeesSection",
+            SubSections = new List<Section>
+            {
+                new()
                 {
-                    new Section
-                    {
-                        Id = "YourEmployees",
-                        Questions = employeeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var yourApprentices = new Section()
+        var yourApprentices = new Section
+        {
+            Id = "YourApprenticesSection",
+            SubSections = new List<Section>
             {
-                Id = "YourApprenticeSection",
-                SubSections = new List<Section>()
+                new()
                 {
-                    new Section
-                    {
-                        Id = "YourApprentices",
-                        Questions = apprenticeQuestions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
 
-            IList<Section> sections = new List<Section>();
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
 
-            sections.Add(yourEmployees);
-            sections.Add(yourApprentices);
-            _report = new Report()
+        _report = new Report
+        {
+            ReportingPeriod = "1617",
+            Sections = sections,
+            SubmittedDetails = new Submitted(),
+            Submitted = true
+        };
+
+        // Act
+        _report.UpdatePercentages();
+
+        // Assert
+        _report.ReportingPercentages.Should().NotBeNull();
+        _report.ReportingPercentages.EmploymentStarts.Should().Be("0.00");
+    }
+
+    [Test]
+    public void And_Apprentice_Attend_Is_zero_Then_zero()
+    {
+        var apprenticeQuestions = new List<Question>
+        {
+            new()
             {
-                ReportingPeriod = "1617",
-                Sections = sections,
-                SubmittedDetails = new Submitted(),
-                Submitted = true
-            };
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
 
-            // Act
-            _report.UpdatePercentages();
+        var employeeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "100",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
 
-            // Assert
-            Assert.IsNotNull(_report.ReportingPercentages);
-            Assert.AreEqual("11.67", _report.ReportingPercentages.TotalHeadCount);
-            Assert.AreEqual("36.00", _report.ReportingPercentages.EmploymentStarts);
-            Assert.AreEqual("7.20", _report.ReportingPercentages.NewThisPeriod);
-        }
+        var yourEmployees = new Section
+        {
+            Id = "YourEmployeesSection",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
+
+        var yourApprentices = new Section
+        {
+            Id = "YourApprenticesSection",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
+
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
+
+        _report = new Report
+        {
+            ReportingPeriod = "1617",
+            Sections = sections,
+            SubmittedDetails = new Submitted(),
+            Submitted = true
+        };
+
+        // Act
+        _report.UpdatePercentages();
+
+        // Assert
+        _report.ReportingPercentages.Should().NotBeNull();
+        _report.ReportingPercentages.TotalHeadCount.Should().Be("0.00");
+    }
+
+    [Test]
+    public void And_Apprentice_newPeriod_Is_zero_Then_zero()
+    {
+        var apprenticeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "0",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+        var employeeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "100",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+
+        var yourEmployees = new Section
+        {
+            Id = "YourEmployeesSection",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
+
+        var yourApprentices = new Section
+        {
+            Id = "YourApprenticesSection",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
+
+
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
+
+        _report = new Report
+        {
+            ReportingPeriod = "1617",
+            Sections = sections,
+            SubmittedDetails = new Submitted(),
+            Submitted = true
+        };
+
+        // Act
+        _report.UpdatePercentages();
+
+        // Assert
+        _report.ReportingPercentages.Should().NotBeNull();
+        _report.ReportingPercentages.EmploymentStarts.Should().Be("0.00");
+        _report.ReportingPercentages.NewThisPeriod.Should().Be("0.00");
+    }
+
+    [Test]
+    public void And_required_Answers_Are_Answered_Then_Percentages_Calculated()
+    {
+        //Arrange
+        var apprenticeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "20",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "35",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "18",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+        
+        var employeeQuestions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "250",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "300",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "50",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+
+        var yourEmployees = new Section
+        {
+            Id = "YourEmployeesSection",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "YourEmployees",
+                    Questions = employeeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
+
+        var yourApprentices = new Section
+        {
+            Id = "YourApprenticeSection",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "YourApprentices",
+                    Questions = apprenticeQuestions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
+
+        var sections = new List<Section>
+        {
+            yourEmployees,
+            yourApprentices
+        };
+
+        _report = new Report
+        {
+            ReportingPeriod = "1617",
+            Sections = sections,
+            SubmittedDetails = new Submitted(),
+            Submitted = true
+        };
+
+        // Act
+        _report.UpdatePercentages();
+
+        // Assert
+        _report.ReportingPercentages.Should().NotBeNull();
+        _report.ReportingPercentages.TotalHeadCount.Should().Be("11.67");
+        _report.ReportingPercentages.EmploymentStarts.Should().Be("36.00");
+        _report.ReportingPercentages.NewThisPeriod.Should().Be("7.20");
     }
 }

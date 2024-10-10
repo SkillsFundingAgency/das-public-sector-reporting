@@ -1,36 +1,29 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.OrganisationName.Given_A_Submitted_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.OrganisationName.Given_A_Submitted_Report;
+
+[ExcludeFromCodeCoverage]
+[TestFixture]
+public sealed class WhenICallOrganisationName : Given_Report_Cannot_Be_Edited
 {
-    [ExcludeFromCodeCoverage]
-    [TestFixture]
-    public sealed class When_I_Call_OrganisationName
-        : Given_Report_Cannot_Be_Edited
+    private IActionResult _result;
+
+    protected override async Task When()
     {
-        private IActionResult result;
+        await base.When();
 
-        protected override void When()
-        {
-            base.When();
+        _result = await Sut.OrganisationName(string.Empty);
+    }
 
-            result = SUT.OrganisationName(string.Empty);
-        }
+    [Test]
+    public void Then_I_Am_Redirected_To_HomePage()
+    {
+        _result
+            .Should()
+            .BeAssignableTo<RedirectToActionResult>();
 
-        [Test]
-        public void Then_I_Am_Redirected_To_HomePage()
-        {
-            result
-                .Should()
-                .BeAssignableTo<RedirectResult>();
-
-            ((RedirectResult) result)
-                .Url
-                .Should()
-                .BeEquivalentTo(ExpectedUrl);
-        }
+        var actionResult = _result as RedirectToActionResult;
+        actionResult.ControllerName.Should().Be("Home");
+        actionResult.ActionName.Should().Be("Index");
     }
 }

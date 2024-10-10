@@ -1,27 +1,22 @@
-﻿using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
-using SFA.DAS.PSRService.Application.Interfaces;
-using SFA.DAS.PSRService.Data;
+﻿using SFA.DAS.PSRService.Application.Interfaces;
 
-namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository
+namespace SFA.DAS.PSRService.IntegrationTests.SqlReportRepository;
+
+[ExcludeFromCodeCoverage]
+public class Given_A_SQLReportRepository : GivenWhenThen<IReportRepository>
 {
-    [ExcludeFromCodeCoverage]
-    public class Given_A_SQLReportRepository : GivenWhenThen<IReportRepository>
+    protected override Task Given()
     {
-        protected override void Given()
-        {
-            RepositoryTestHelper
-                .ClearData();
+        RepositoryTestHelper.ClearData();
 
-            SUT = new SQLReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
-        }
+        Sut = new Data.SqlReportRepository(new SqlConnection(RepositoryTestHelper.ConnectionString));
 
-        [TearDown]
-        public void ClearDatabase()
-        {
-            RepositoryTestHelper
-                .ClearData();
-        }
+        return Task.CompletedTask;
+    }
+
+    [TearDown]
+    public void ClearDatabase()
+    {
+        RepositoryTestHelper.ClearData();
     }
 }

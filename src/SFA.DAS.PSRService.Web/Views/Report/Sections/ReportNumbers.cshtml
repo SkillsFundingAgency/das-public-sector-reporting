@@ -1,11 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Routing
-@using SFA.DAS.PSRService.Domain.Enums
-@using SFA.DAS.PSRService.Web.ViewModels
 @model SFA.DAS.PSRService.Domain.Entities.Section
 
 @{
     ViewData["Title"] = "Public sector reporting";
-    var employerId = Context.GetRouteData().Values["hashedEmployerAccountId"];
     ViewBag.GaData.Vpv = "/public-sector-reporting/sections/page-report-numbers";
     var SerialNo = (!string.IsNullOrEmpty(@Model.SerialNo)) ? @Model.SerialNo : "2";
 }
@@ -20,13 +17,12 @@
         {
             foreach (var subSection in Model.SubSections)
             {
-
                 <li class="das-task-list__item">
                     <a class="govuk-link"
-               asp-controller="Question"
-               asp-action="Index"
-               asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]"
-               asp-route-id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">
+                       asp-controller="Question"
+                       asp-action="Index"
+                       asp-route-hashedEmployerAccountId="@ViewData[RouteValues.HashedEmployerAccountId]"
+                       asp-route-id="@subSection.Id" aria-describedby="@($"{subSection.Id}-complete")">
 
                         @if (subSection.Id != "FullTimeEquivalent")
                         {
@@ -43,7 +39,6 @@
                         <span id="@($"{subSection.Id}-task-completed")" class="das-tag das-task-list__task-tag">Complete</span>
                     }
                 </li>
-
             }
         }
     </ul>

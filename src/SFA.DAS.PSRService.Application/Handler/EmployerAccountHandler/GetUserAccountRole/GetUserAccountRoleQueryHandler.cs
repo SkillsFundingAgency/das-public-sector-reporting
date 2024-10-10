@@ -5,35 +5,21 @@ using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.EAS.Account.Api.Client;
 
-namespace SFA.DAS.PSRService.Application.Handler.EmployerAccountHandler.GetUserAccountRole
+namespace SFA.DAS.PSRService.Application.Handler.EmployerAccountHandler.GetUserAccountRole;
+
+public class GetUserAccountRoleQueryHandler(IAccountApiClient client) : IRequestHandler<GetUserAccountRoleQuery, GetUserAccountRoleResponse>
 {
-    public class GetUserAccountRoleQueryHandler : IRequestHandler<GetUserAccountRoleQuery, GetUserAccountRoleResponse>
+    public async Task<GetUserAccountRoleResponse> Handle(GetUserAccountRoleQuery request, CancellationToken cancellationToken)
     {
-        private IAccountApiClient _client;
+        var accounts = await client.GetAccountUsers(request.HashedAccountId);
 
-        public GetUserAccountRoleQueryHandler(IAccountApiClient client)
+        if (accounts == null || accounts.Count == 0)
         {
-            _client = client;
+            return null;
         }
 
+        var teamMember = accounts.FirstOrDefault(c => c.UserRef.Equals(request.UserId, StringComparison.CurrentCultureIgnoreCase));
 
-        public async Task<GetUserAccountRoleResponse> Handle(GetUserAccountRoleQuery request, CancellationToken cancellationToken)
-        {
-            var accounts = await _client.GetAccountUsers(request.HashedAccountId);
-
-            if (accounts == null || !accounts.Any())
-            {
-                return null;
-            }
-
-            var teamMember = accounts.FirstOrDefault(c => c.UserRef.Equals(request.UserId, StringComparison.CurrentCultureIgnoreCase));
-
-            if (teamMember == null)
-            {
-                return null;
-            }
-
-            return new GetUserAccountRoleResponse(){Role = teamMember.Role};
-        }
+        return teamMember == null ? null : new GetUserAccountRoleResponse {Role = teamMember.Role};
     }
 }

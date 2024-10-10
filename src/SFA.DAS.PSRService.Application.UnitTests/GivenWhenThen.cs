@@ -1,27 +1,27 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace SFA.DAS.PSRService.Application.UnitTests
+namespace SFA.DAS.PSRService.Application.UnitTests;
+
+[ExcludeFromCodeCoverage]
+public abstract class GivenWhenThen<T>
 {
-    [ExcludeFromCodeCoverage]
-    public abstract class GivenWhenThen<TypeOfSUT>
+    protected T Sut;
+
+    [SetUp]
+    public async Task GivenWhen()
     {
+        Given();
+        await When();
+    }
 
-        protected TypeOfSUT SUT;
+    protected virtual void Given()
+    {
+    }
 
-        [SetUp]
-        public void GivenWhen()
-        {
-            Given();
-            When();
-        }
-
-        protected virtual void Given()
-        {
-        }
-
-        protected virtual void When()
-        {
-        }
+    protected virtual Task When()
+    {
+        return Task.CompletedTask;
     }
 }

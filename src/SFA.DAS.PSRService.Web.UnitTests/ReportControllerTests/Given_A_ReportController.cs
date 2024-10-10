@@ -1,79 +1,74 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
+
+public class GivenAReportController
 {
-    [TestFixture]
-    public class Given_A_ReportController
+    protected readonly ReportController Controller;
+    protected readonly Mock<IReportService> MockReportService;
+    protected readonly Mock<IUrlHelper> MockUrlHelper;
+    private readonly Mock<IEmployerAccountService> _employeeAccountServiceMock;
+    private readonly Mock<IPeriodService> _periodServiceMock;
+    private readonly EmployerIdentifier _employerIdentifier;
+    protected readonly Mock<IAuthorizationService> MockAuthorizationService;
+    protected readonly Mock<IMediator> MockMediatr;
+
+    public GivenAReportController()
     {
-        protected ReportController _controller;
-        protected Mock<IReportService> _mockReportService;
-        protected Mock<IUrlHelper> MockUrlHelper;
-        private Mock<IEmployerAccountService> _employeeAccountServiceMock;
-        public Mock<IUserService> _userServiceMock;
-        private Mock<IPeriodService> _periodServiceMock;
-        private EmployerIdentifier _employerIdentifier;
-        protected Mock<IAuthorizationService> MockAuthorizationService;
-        protected Mock<IMediator> MockMediatr;
+        MockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
+        MockReportService = new Mock<IReportService>(MockBehavior.Strict);
+        _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+        _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
 
-        public Given_A_ReportController()
-        {
-            MockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-            _mockReportService = new Mock<IReportService>(MockBehavior.Strict);
-            _employeeAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _userServiceMock = new Mock<IUserService>(MockBehavior.Strict);
-            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-
-            MockAuthorizationService = new Mock<IAuthorizationService>();
+        MockAuthorizationService = new Mock<IAuthorizationService>();
             
-            MockMediatr = new Mock<IMediator>();
+        MockMediatr = new Mock<IMediator>();
 
-            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
+        _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-            _controller = new ReportController(
-                _mockReportService.Object, 
-                _employeeAccountServiceMock.Object,
-                _userServiceMock.Object, 
-                null, 
-                _periodServiceMock.Object,
-                MockAuthorizationService.Object,
-                MockMediatr.Object)
-            {
-                Url = MockUrlHelper.Object
-            };
-
-            _employerIdentifier = new EmployerIdentifier() {AccountId = "ABCDE", EmployerName = "EmployerName"};
-
-            _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
-                .Returns(_employerIdentifier);
-            _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
-                .Returns(_employerIdentifier);
-
-            _userServiceMock.Setup(s => s.GetUserModel(null)).Returns(new UserModel());
-        }
-
-        [SetUp]
-        public void GivenAndWhen()
+        Controller = new ReportController(
+            MockReportService.Object, 
+            _employeeAccountServiceMock.Object,
+            null, 
+            _periodServiceMock.Object,
+            MockAuthorizationService.Object,
+            MockMediatr.Object)
         {
-            Given();
-            When();
-        }
+            Url = MockUrlHelper.Object
+        };
 
-        protected virtual void When()
-        {
-        }
+        _employerIdentifier = new EmployerIdentifier {AccountId = "ABCDE", EmployerName = "EmployerName"};
 
-        protected virtual void Given()
-        {
-        }
+        _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>()))
+            .Returns(_employerIdentifier);
+        
+        _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
+            .Returns(_employerIdentifier);
+    }
+    
+    [OneTimeTearDown]
+    public void TearDown() => Controller?.Dispose();
+
+    [SetUp]
+    public async Task GivenAndWhen()
+    {
+        Given();
+        await When();
+    }
+
+    protected virtual Task When()
+    {
+        return Task.CompletedTask;
+    }
+
+    protected virtual void Given()
+    {
     }
 }

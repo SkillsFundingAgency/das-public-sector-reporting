@@ -1,215 +1,210 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests
+namespace SFA.DAS.PSRService.Application.UnitTests.MappingTests;
+
+[TestFixture]
+public class Given_I_Want_To_Map_Report_Object
 {
-    [TestFixture]
-    public class Given_I_Want_To_Map_Report_Object
+    private IMapper _mapper;
+
+    [SetUp]
+    public void Setup()
     {
-        private IMapper _mapper;
+        var config = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
+        _mapper = config.CreateMapper();
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<ReportMappingProfile>());
-            _mapper = config.CreateMapper();
-        }
+    [Test]
+    public void When_The_Mapping_Is_Registered_Then_Is_Valid()
+    {
+        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
+    }
 
-        [Test]
-        public void When_The_Mapping_Is_Registered_Then_Is_Valid()
+    [Test]
+    public void ReportCanSerialiseToAndFro()
+    {
+        var period = Period.FromInstantInPeriod(DateTime.UtcNow);
+        var report = new Report
         {
-            _mapper.ConfigurationProvider.AssertConfigurationIsValid();
-        }
-
-        [Test]
-        public void ReportCanSerialiseToAndFro()
-        {
-            var period = Period.FromInstantInPeriod(DateTime.UtcNow);
-            var report = new Report
+            EmployerId = "11",
+            OrganisationName = "12",
+            HasMinimumEmployeeHeadcount = true,
+            IsLocalAuthority = true,
+            SerialNo = "1",
+            Id = Guid.NewGuid(),
+            ReportingPeriod = period.PeriodString,
+            Period = period,
+            Submitted = true,
+            SubmittedDetails = new Submitted
             {
-                EmployerId = "11",
-                OrganisationName = "12",
-                HasMinimumEmployeeHeadcount = true,
-                IsLocalAuthority = true,
-                SerialNo="1",
-                Id = Guid.NewGuid(),
-                ReportingPeriod = period.PeriodString,
-                Period = period,
-                Submitted = true,
-                SubmittedDetails = new Submitted
+                SubmittedAt = DateTime.UtcNow,
+                SubmittedEmail = "email",
+                SubmittedName = "SN",
+                SubmttedBy = "Dr Who",
+                UniqueReference = "BBQ"
+            },
+            ReportingPercentages = new ReportingPercentages
+            {
+                EmploymentStarts = "11",
+                TotalHeadCount = "22",
+                NewThisPeriod = "33"
+            },
+            Sections =
+            [
+                new Section
                 {
-                    SubmittedAt = DateTime.UtcNow,
-                    SubmittedEmail = "email",
-                    SubmittedName = "SN",
-                    SubmttedBy = "Dr Who",
-                    UniqueReference = "BBQ"
-                },
-                ReportingPercentages = new ReportingPercentages
-                {
-                    EmploymentStarts = "11",
-                    TotalHeadCount = "22",
-                    NewThisPeriod = "33"
-                },
-                Sections = new[]
-                {
-                    new Section
-                    {
-                        Id = "s1",
-                        Title = "t1",
-                        SummaryText = "s1s",
-                        Questions = new[]
+                    Id = "s1",
+                    Title = "t1",
+                    SummaryText = "s1s",
+                    Questions =
+                    [
+                        new Question
                         {
-                            new Question
-                            {
-                                Id = "s1q1",
-                                Answer = "s1q1a",
-                                Optional = true,
-                                Type = QuestionType.LongText
-                            },
-                            new Question
-                            {
-                                Id = "s1q2",
-                                Answer = "s1q2a",
-                                Optional = false,
-                                Type = QuestionType.ShortText
-                            }
+                            Id = "s1q1",
+                            Answer = "s1q1a",
+                            Optional = true,
+                            Type = QuestionType.LongText
                         },
-                        SubSections = null
-                    },
-                    new Section
-                    {
-                        Id = "s2",
-                        Title = "t2",
-                        SummaryText = "s2s",
-                        Questions = null,
-                        SubSections = new[]
+                        new Question
                         {
-                            new Section
-                            {
-                                Id = "s2s1",
-                                Title = "s2t1",
-                                SummaryText = "s2s1s",
-                                Questions = new[]
-                                {
-                                    new Question
-                                    {
-                                        Id = "s2s1q1",
-                                        Answer = "1",
-                                        Optional = true,
-                                        Type = QuestionType.Number
-                                    }
-                                }
-                            }
+                            Id = "s1q2",
+                            Answer = "s1q2a",
+                            Optional = false,
+                            Type = QuestionType.ShortText
                         }
-                    }
-                }
-            };
-
-            // Act
-            var dto = _mapper.Map<ReportDto>(report);
-            var newReport = _mapper.Map<Report>(dto);
-
-            // Assert
-            Assert.AreEqual(report.EmployerId, newReport.EmployerId);
-            Assert.AreEqual(report.OrganisationName, newReport.OrganisationName);
-            Assert.AreEqual(report.HasMinimumEmployeeHeadcount, newReport.HasMinimumEmployeeHeadcount);
-            Assert.AreEqual(report.IsLocalAuthority, newReport.IsLocalAuthority);
-            Assert.AreEqual(report.SerialNo, newReport.SerialNo);
-            Assert.AreEqual(report.Id, newReport.Id);
-            Assert.AreEqual(report.ReportingPeriod, newReport.ReportingPeriod);
-            Assert.AreEqual(report.Submitted, newReport.Submitted);
-
-            Assert.AreEqual(report.SubmittedDetails.SubmittedAt, newReport.SubmittedDetails.SubmittedAt);
-            Assert.AreEqual(report.SubmittedDetails.SubmittedEmail, newReport.SubmittedDetails.SubmittedEmail);
-            Assert.AreEqual(report.SubmittedDetails.SubmittedName, newReport.SubmittedDetails.SubmittedName);
-            Assert.AreEqual(report.SubmittedDetails.SubmttedBy, newReport.SubmittedDetails.SubmttedBy);
-            Assert.AreEqual(report.SubmittedDetails.UniqueReference, newReport.SubmittedDetails.UniqueReference);
-
-            Assert.AreEqual(report.ReportingPercentages.EmploymentStarts, newReport.ReportingPercentages.EmploymentStarts);
-            Assert.AreEqual(report.ReportingPercentages.TotalHeadCount, newReport.ReportingPercentages.TotalHeadCount);
-            Assert.AreEqual(report.ReportingPercentages.NewThisPeriod, newReport.ReportingPercentages.NewThisPeriod);
-
-            Assert.AreEqual(report.Sections.Count(), newReport.Sections.Count());
-            var expectedSection = report.Sections.First();
-            var actualSection = newReport.Sections.First();
-            Assert.AreEqual(expectedSection.Id, actualSection.Id);
-            Assert.AreEqual(expectedSection.SummaryText, actualSection.SummaryText);
-            Assert.AreEqual(expectedSection.Title, actualSection.Title);
-            Assert.AreEqual(expectedSection.Questions.Count(), actualSection.Questions.Count());
-        }
-
-        [Test]
-        public void When_I_Map_From_ReportDto_And_Json_is_Valid_Then_Return_Report()
-        {
-            //Mapper.AssertConfigurationIsValid();
-
-            var reportDto = new ReportDto()
-            {
-                EmployerId = "ABCDE",
-                ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"HasMinimumEmployeeHeadcount\":true,\"IsLocalAuthority\":true,\"SerialNo\":\"2\",\"Questions\":\"\",\"Submitted\":null,ReportingPercentages:{EmploymentStarts: 11, NewThisPeriod: 22, TotalHeadCount: 33}}",
-                ReportingPeriod = "1617",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Submitted = true
-            };
-
-            var mappedReport = _mapper.Map<ReportDto, Report>(reportDto);
-
-            Assert.AreEqual(mappedReport.OrganisationName, "Organisation 1");
-            Assert.AreEqual(mappedReport.HasMinimumEmployeeHeadcount, true);
-            Assert.AreEqual(mappedReport.IsLocalAuthority, true);
-            Assert.AreEqual(mappedReport.SerialNo, "2");
-
-            Assert.AreEqual(mappedReport.Submitted, reportDto.Submitted);
-            Assert.AreEqual(mappedReport.EmployerId, reportDto.EmployerId);
-            Assert.AreEqual(mappedReport.Id, reportDto.Id);
-            Assert.AreEqual(mappedReport.ReportingPeriod, reportDto.ReportingPeriod);
-            Assert.IsNotNull(mappedReport.ReportingPercentages);
-            Assert.AreEqual("11", mappedReport.ReportingPercentages.EmploymentStarts);
-            Assert.AreEqual("22", mappedReport.ReportingPercentages.NewThisPeriod);
-            Assert.AreEqual("33", mappedReport.ReportingPercentages.TotalHeadCount);
-        }
-
-
-        [Test]
-        public void When_I_Map_From_Report_Then_Return_ReportDto()
-        {
-            //Mapper.AssertConfigurationIsValid();
-
-            var report = new Report()
-            {
-                EmployerId = "ABCDE",
-                OrganisationName = "Organisation 1",
-                ReportingPeriod = "1617",
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Submitted = true,
-                HasMinimumEmployeeHeadcount = true,
-                IsLocalAuthority = true,
-                SerialNo = "2",
-                ReportingPercentages = new ReportingPercentages
+                    ],
+                    SubSections = null
+                },
+                new Section
                 {
-                    EmploymentStarts = "11.00",
-                    TotalHeadCount = "22.00",
-                    NewThisPeriod = "33.00",
-                    Title = "ReportingPercentages"
+                    Id = "s2",
+                    Title = "t2",
+                    SummaryText = "s2s",
+                    Questions = null,
+                    SubSections =
+                    [
+                        new Section
+                        {
+                            Id = "s2s1",
+                            Title = "s2t1",
+                            SummaryText = "s2s1s",
+                            Questions =
+                            [
+                                new Question
+                                {
+                                    Id = "s2s1q1",
+                                    Answer = "1",
+                                    Optional = true,
+                                    Type = QuestionType.Number
+                                }
+                            ]
+                        }
+                    ]
                 }
-            };
+            ]
+        };
 
-            var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
+        // Act
+        var dto = _mapper.Map<ReportDto>(report);
+        var newReport = _mapper.Map<Report>(dto);
 
-            var expectedSerializedReportingData =
-                "{\"OrganisationName\":\"Organisation 1\",\"HasMinimumEmployeeHeadcount\":true,\"IsLocalAuthority\":true,\"Questions\":null,\"SerialNo\":\"2\",\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":\"11.00\",\"TotalHeadCount\":\"22.00\",\"NewThisPeriod\":\"33.00\",\"Title\":\"ReportingPercentages\"},\"ReportingPercentagesSchools\":null}";
+        // Assert
+        report.EmployerId.Should().Be(newReport.EmployerId);
+        report.OrganisationName.Should().Be(newReport.OrganisationName);
+        report.HasMinimumEmployeeHeadcount.Should().Be(newReport.HasMinimumEmployeeHeadcount);
+        report.IsLocalAuthority.Should().Be(newReport.IsLocalAuthority);
+        report.SerialNo.Should().Be(newReport.SerialNo);
+        report.Id.Should().Be(newReport.Id);
+        report.ReportingPeriod.Should().Be(newReport.ReportingPeriod);
+        report.Submitted.Should().Be(newReport.Submitted);
 
-            Assert.AreEqual(expectedSerializedReportingData, mappedReportDto.ReportingData);
-            Assert.AreEqual(report.Submitted, mappedReportDto.Submitted);
-            Assert.AreEqual(report.EmployerId, mappedReportDto.EmployerId);
-            Assert.AreEqual(report.Id, mappedReportDto.Id);
-            Assert.AreEqual(report.ReportingPeriod, mappedReportDto.ReportingPeriod);
-        }
+        report.SubmittedDetails.SubmittedAt.Should().Be(newReport.SubmittedDetails.SubmittedAt);
+        report.SubmittedDetails.SubmittedEmail.Should().Be(newReport.SubmittedDetails.SubmittedEmail);
+        report.SubmittedDetails.SubmittedName.Should().Be(newReport.SubmittedDetails.SubmittedName);
+        report.SubmittedDetails.SubmttedBy.Should().Be(newReport.SubmittedDetails.SubmttedBy);
+        report.SubmittedDetails.UniqueReference.Should().Be(newReport.SubmittedDetails.UniqueReference);
+
+        report.ReportingPercentages.EmploymentStarts.Should().Be(newReport.ReportingPercentages.EmploymentStarts);
+        report.ReportingPercentages.TotalHeadCount.Should().Be(newReport.ReportingPercentages.TotalHeadCount);
+        report.ReportingPercentages.NewThisPeriod.Should().Be(newReport.ReportingPercentages.NewThisPeriod);
+
+        report.Sections.Count().Should().Be(newReport.Sections.Count());
+        var expectedSection = report.Sections.First();
+        var actualSection = newReport.Sections.First();
+        expectedSection.Id.Should().Be(actualSection.Id);
+        expectedSection.SummaryText.Should().Be(actualSection.SummaryText);
+        expectedSection.Title.Should().Be(actualSection.Title);
+        expectedSection.Questions.Count().Should().Be(actualSection.Questions.Count());
+    }
+
+    [Test]
+    public void When_I_Map_From_ReportDto_And_Json_is_Valid_Then_Return_Report()
+    {
+        var reportDto = new ReportDto
+        {
+            EmployerId = "ABCDE",
+            ReportingData = "{\"OrganisationName\":\"Organisation 1\",\"HasMinimumEmployeeHeadcount\":true,\"IsLocalAuthority\":true,\"SerialNo\":\"2\",\"Questions\":\"\",\"Submitted\":null,ReportingPercentages:{EmploymentStarts: 11, NewThisPeriod: 22, TotalHeadCount: 33}}",
+            ReportingPeriod = "1617",
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Submitted = true
+        };
+
+        var mappedReport = _mapper.Map<ReportDto, Report>(reportDto);
+
+        mappedReport.ReportingPercentages.Should().NotBeNull();
+
+        mappedReport.OrganisationName.Should().Be("Organisation 1");
+        mappedReport.HasMinimumEmployeeHeadcount.Should().Be(true);
+        mappedReport.IsLocalAuthority.Should().Be(true);
+        mappedReport.SerialNo.Should().Be("2");
+
+        mappedReport.Submitted.Should().Be(reportDto.Submitted);
+        mappedReport.EmployerId.Should().Be(reportDto.EmployerId);
+        mappedReport.Id.Should().Be(reportDto.Id);
+        mappedReport.ReportingPeriod.Should().Be(reportDto.ReportingPeriod);
+        mappedReport.ReportingPercentages.EmploymentStarts.Should().Be("11");
+        mappedReport.ReportingPercentages.NewThisPeriod.Should().Be("22");
+        mappedReport.ReportingPercentages.TotalHeadCount.Should().Be("33");
+    }
+
+    [Test]
+    public void When_I_Map_From_Report_Then_Return_ReportDto()
+    {
+        var report = new Report
+        {
+            EmployerId = "ABCDE",
+            OrganisationName = "Organisation 1",
+            ReportingPeriod = "1617",
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Submitted = true,
+            HasMinimumEmployeeHeadcount = true,
+            IsLocalAuthority = true,
+            SerialNo = "2",
+            ReportingPercentages = new ReportingPercentages
+            {
+                EmploymentStarts = "11.00",
+                TotalHeadCount = "22.00",
+                NewThisPeriod = "33.00",
+                Title = "ReportingPercentages"
+            }
+        };
+
+        var mappedReportDto = _mapper.Map<Report, ReportDto>(report);
+
+        const string expectedSerializedReportingData = "{\"OrganisationName\":\"Organisation 1\",\"HasMinimumEmployeeHeadcount\":true,\"IsLocalAuthority\":true,\"Questions\":null,\"SerialNo\":\"2\",\"Submitted\":null,\"ReportingPercentages\":{\"EmploymentStarts\":\"11.00\",\"TotalHeadCount\":\"22.00\",\"NewThisPeriod\":\"33.00\",\"Title\":\"ReportingPercentages\"},\"ReportingPercentagesSchools\":null}";
+
+        expectedSerializedReportingData.Should().Be(mappedReportDto.ReportingData);
+        report.Submitted.Should().Be(mappedReportDto.Submitted);
+        report.EmployerId.Should().Be(mappedReportDto.EmployerId);
+        report.Id.Should().Be(mappedReportDto.Id);
+        report.ReportingPeriod.Should().Be(mappedReportDto.ReportingPeriod);
     }
 }

@@ -3,64 +3,63 @@ using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission
+namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission;
+
+public class FactorsAnswersBuilder
 {
-    public class FactorsAnswersBuilder
+    private List<QuestionViewModel> validAnswers = new List<QuestionViewModel>(1);
+    private string currentSectionId;
+
+    public FactorsAnswersBuilder BuildValidOutlineActionsAnswer()
     {
-        private List<QuestionViewModel> validAnswers = new List<QuestionViewModel>(1);
-        private string currentSectionId;
+        currentSectionId = "OutlineActions";
 
-        public FactorsAnswersBuilder BuildValidOutlineActionsAnswer()
+        ClearAnswersAndAddNewAnswerForId(
+            currentSectionId);
+
+        return this;
+    }
+
+    public FactorsAnswersBuilder BuildValidChallengesAnswer()
+    {
+        currentSectionId = "Challenges";
+
+        ClearAnswersAndAddNewAnswerForId(
+            currentSectionId);
+
+        return this;
+    }
+
+    public FactorsAnswersBuilder BuildValidTargetPlansAnswer()
+    {
+        currentSectionId = "TargetPlans";
+
+        ClearAnswersAndAddNewAnswerForId(
+            currentSectionId);
+
+        return this;
+    }
+
+    public SectionModel ForReportingPeriod(Period reportingPeriod)
+    {
+        return new SectionModel
         {
-            currentSectionId = "OutlineActions";
+            Id = currentSectionId,
+            ReportingPeriod = reportingPeriod.PeriodString,
+            Questions = validAnswers
+        };
+    }
 
-            ClearAnswersAndAddNewAnswerForId(
-                currentSectionId);
+    private void ClearAnswersAndAddNewAnswerForId(string answerId)
+    {
+        validAnswers.Clear();
 
-            return this;
-        }
-
-        public FactorsAnswersBuilder BuildValidChallengesAnswer()
-        {
-            currentSectionId = "Challenges";
-
-            ClearAnswersAndAddNewAnswerForId(
-                currentSectionId);
-
-            return this;
-        }
-
-        public FactorsAnswersBuilder BuildValidTargetPlansAnswer()
-        {
-            currentSectionId = "TargetPlans";
-
-            ClearAnswersAndAddNewAnswerForId(
-                currentSectionId);
-
-            return this;
-        }
-
-        public SectionModel ForReportingPeriod(Period reportingPeriod)
-        {
-            return new SectionModel
-            {
-                Id = currentSectionId,
-                ReportingPeriod = reportingPeriod.PeriodString,
-                Questions = validAnswers
-            };
-        }
-
-        private void ClearAnswersAndAddNewAnswerForId(string answerId)
-        {
-            validAnswers.Clear();
-
-            validAnswers
-                .Add(
-                    new QuestionViewModel
-                    {
-                        Id = answerId,
-                        Answer = $"Some valid text for {answerId}"
-                    });
-        }
+        validAnswers
+            .Add(
+                new QuestionViewModel
+                {
+                    Id = answerId,
+                    Answer = $"Some valid text for {answerId}"
+                });
     }
 }

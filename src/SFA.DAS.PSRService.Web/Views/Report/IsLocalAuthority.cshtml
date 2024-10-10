@@ -5,6 +5,7 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/page-islocalauthority";
     ViewBag.ZenDeskLabel = "reporting-islocalauthority";
 }
+
 @section breadcrumb {
     @if (Model.IsLocalAuthority.HasValue)
     {
@@ -19,7 +20,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-action="IsLocalAuthority">
-            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "":"govuk-form-group--error")">
+            <div class="govuk-form-group @(ViewData.ModelState.IsValid ? "" : "govuk-form-group--error")">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
@@ -28,9 +29,9 @@
                     </legend>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("confirm-yes"))
                     {
-                    <p id="confirm-error" class="govuk-error-message">
-                        <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
-                    </p>
+                        <p id="confirm-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["confirm-yes"].Errors.First().ErrorMessage
+                        </p>
                     }
                     <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
                         <div class="govuk-radios__item">
@@ -38,7 +39,7 @@
                             <label class="govuk-label govuk-radios__label" for="islocalauthority-action-yes">Yes</label>
                         </div>
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(Model.IsLocalAuthority == false ? "checked" : "")>
+                            <input class="govuk-radios__input" id="islocalauthority-action-no" type="radio" name="isLocalAuthority" value="False" @(!Model.IsLocalAuthority.GetValueOrDefault() ? "checked" : "")>
                             <label class="govuk-label govuk-radios__label" for="islocalauthority-action-no">No</label>
                         </div>
                     </div>

@@ -11,8 +11,8 @@ public class WhenMappingFromGetUserAccountsResponseToEmployerUserAccounts
     public void Then_The_Values_Are_Mapped(GetUserAccountsResponse source)
     {
         source.IsSuspended = true;
-        
-        var actual = (Application.EmployerUserAccounts.EmployerUserAccounts) source;
+
+        var actual = (Application.EmployerUserAccounts.EmployerUserAccounts)source;
 
         actual.EmployerAccounts.Should().BeEquivalentTo(source.UserAccounts);
         actual.IsSuspended.Should().Be(source.IsSuspended);
@@ -21,7 +21,7 @@ public class WhenMappingFromGetUserAccountsResponseToEmployerUserAccounts
     [Test]
     public void Then_If_Null_Then_Empty_Returned()
     {
-        var actual = (Application.EmployerUserAccounts.EmployerUserAccounts) (GetUserAccountsResponse)null;
+        var actual = (Application.EmployerUserAccounts.EmployerUserAccounts)(GetUserAccountsResponse)null;
 
         actual.EmployerAccounts.Should().BeEmpty();
         actual.IsSuspended.Should().BeFalse();

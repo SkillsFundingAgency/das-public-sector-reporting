@@ -1,9 +1,11 @@
-﻿using System;
+namespace SFA.DAS.PSRService.Web.Services;
 
-namespace SFA.DAS.PSRService.Web.Services
+public interface IDateTimeService
 {
-    public class SystemDateTimeService : IDateTimeService
-    {
-        public DateTime UtcNow => DateTime.UtcNow;
-    }
+    DateTime UtcNow { get; }
+}
+
+public class SystemDateTimeService : IDateTimeService
+{
+    public DateTime UtcNow => DateTime.UtcNow;
 }

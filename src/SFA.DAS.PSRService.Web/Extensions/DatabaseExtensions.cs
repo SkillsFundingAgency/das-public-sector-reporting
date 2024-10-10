@@ -1,43 +1,38 @@
 ﻿using System.Data;
 using Azure.Core;
 using Azure.Identity;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Data.SqlClient;
-using StructureMap;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace SFA.DAS.PSRService.Web.Extensions
+namespace SFA.DAS.PSRService.Web.Extensions;
+
+public static class DatabaseExtensions
 {
-    public static class DatabaseExtensions
+    private const string AzureResource = "https://database.windows.net/";
+
+    private static readonly ChainedTokenCredential AzureServiceTokenProvider = new(
+        new ManagedIdentityCredential(),
+        new AzureCliCredential(),
+        new VisualStudioCodeCredential(),
+        new VisualStudioCredential());
+
+    public static void AddDatabaseRegistration(this IServiceCollection services, string sqlConnectionString)
     {
-        private const string AzureResource = "https://database.windows.net/";
-
-        public static void AddDatabaseRegistration(this ConfigurationExpression config, IWebHostEnvironment environment, string sqlConnectionString)
+        services.AddScoped<IDbConnection>(_ =>
         {
-            config.For<IDbConnection>().Use($"Build IDbConnection", c => {
+            var connectionStringBuilder = new SqlConnectionStringBuilder(sqlConnectionString);
+            var useManagedIdentity = !connectionStringBuilder.IntegratedSecurity && string.IsNullOrEmpty(connectionStringBuilder.UserID);
 
-                var connectionStringBuilder = new SqlConnectionStringBuilder(sqlConnectionString);
-                bool useManagedIdentity = !connectionStringBuilder.IntegratedSecurity && string.IsNullOrEmpty(connectionStringBuilder.UserID);
-                if (useManagedIdentity)
-                {
-                    var azureServiceTokenProvider = new ChainedTokenCredential(
-                        new ManagedIdentityCredential(),
-                        new AzureCliCredential(),
-                        new VisualStudioCodeCredential(),
-                        new VisualStudioCredential());
+            if (!useManagedIdentity)
+            {
+                return new SqlConnection(sqlConnectionString);
+            }
 
-                    return new SqlConnection
-                    {
-                        ConnectionString = sqlConnectionString,
-                        AccessToken = azureServiceTokenProvider.GetToken(new TokenRequestContext(scopes: new string[] { AzureResource })).Token
-                    };
-                    
-                }
-                else
-                {
-                    return new SqlConnection(sqlConnectionString);
-                }
-            });
-        }
+            return new SqlConnection
+            {
+                ConnectionString = sqlConnectionString,
+                AccessToken = AzureServiceTokenProvider.GetToken(new TokenRequestContext(scopes: [AzureResource])).Token
+            };
+        });
     }
 }

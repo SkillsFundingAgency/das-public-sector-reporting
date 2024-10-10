@@ -1,23 +1,26 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using SFA.DAS.PSRService.Web.Configuration;
 
-namespace SFA.DAS.PSRService.Web.Models
+namespace SFA.DAS.PSRService.Web.Models;
+
+public class UserModel
 {
-    public class UserModel
+    public string Email { get; init; }
+    public string DisplayName { get; init; }
+    public Guid Id { get; init; }
+    
+    public static UserModel From(ClaimsPrincipal identity)
     {
-        public string Email { get; set; }
-        public string DisplayName { get; set; }
-        public Guid Id { get; set; }
-
-        public UserModel() { }
-        public UserModel(ClaimsPrincipal identity)
+        if (identity == null)
         {
-            Email = identity.FindFirst( EmployerPsrsClaims.EmailClaimsTypeIdentifier).Value;
-            DisplayName = identity.FindFirst(EmployerPsrsClaims.NameClaimsTypeIdentifier).Value;
-            Id = Guid.Parse( identity.FindFirst(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier).Value);
+            return new UserModel();
         }
+
+        return new UserModel
+        {
+            Email = identity.FindFirst(EmployerPsrsClaims.EmailClaimsTypeIdentifier)?.Value,
+            DisplayName = identity.FindFirst(EmployerPsrsClaims.NameClaimsTypeIdentifier)?.Value,
+            Id = Guid.Parse(identity.FindFirst(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier)?.Value)
+        };
     }
-
-
 }

@@ -1,8 +1,7 @@
-﻿namespace SFA.DAS.PSRService.Web.Configuration
+﻿namespace SFA.DAS.PSRService.Web.Configuration;
+
+public class SessionStoreConfiguration
 {
-    public class SessionStoreConfiguration
-    {
-        public string Type { get; set; }
-        public string Connectionstring { get; set; }
-    }
+    public string Type { get; set; }
+    public string Connectionstring { get; set; }
 }

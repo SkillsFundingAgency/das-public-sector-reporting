@@ -1,46 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report
+namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report;
+
+public sealed class When_I_Call_List() : Given_I_Have_Created_A_Report(false)
 {
-    public sealed class When_I_Call_List
-        : Given_I_Have_Created_A_Report
+    private IActionResult _response;
+
+    protected override async Task When()
     {
-        private IActionResult response;
+        const string hashedAccountId = "ABC123";
+        _response = await Sut.List(hashedAccountId);
+    }
 
-        public When_I_Call_List() : base(false){}
+    [Test]
+    public void Then_Response_Is_Not_Null()
+    {
+        _response.Should().NotBeNull();
+    }
 
-        protected override void When()
-        {
-            var hashedAccountId = "ABC123";
-            response = SUT.List(hashedAccountId);
-        }
+    [Test]
+    public void Then_Response_Is_A_ViewResult()
+    {
+        _response.Should().BeOfType<ViewResult>();
+    }
 
-        [Test]
-        public void Then_Response_Is_Not_Null()
-        {
-            Assert.IsNotNull(response);
-        }
+    [Test]
+    public void Then_Response_Model_Is_A_ReportListViewModel()
+    {
+        ((ViewResult)_response).Model.Should().BeOfType<ReportListViewModel>();
+    }
 
-        [Test]
-        public void Then_Response_Is_A_ViewResult()
-        {
-            Assert.IsInstanceOf<ViewResult>(response);
-        }
-
-        [Test]
-        public void Then_Response_Model_Is_A_ReportListViewModel()
-        {
-            Assert.IsInstanceOf<ReportListViewModel>(((ViewResult) response).Model);
-        }
-
-        [Test]
-        public void Then_There_Are_No_Submitted_Reports()
-        {
-            var model = ((ViewResult) response).Model as ReportListViewModel;
-
-            Assert.IsEmpty(model.SubmittedReports);
-        }
+    [Test]
+    public void Then_There_Are_No_Submitted_Reports()
+    {
+        var model = ((ViewResult)_response).Model as ReportListViewModel;
+        model.SubmittedReports.Should().BeEmpty();
     }
 }

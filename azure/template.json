@@ -92,7 +92,7 @@
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
         "databaseName": "[concat(variables('resourceNamePrefix'),'-db')]",
-        "configNames": "SFA.DAS.PSRService:WebConfiguration,SFA.DAS.Employer.GovSignIn"
+        "configNames": "SFA.DAS.PSRService,SFA.DAS.Employer.GovSignIn"
     },
     "resources": [
         {
@@ -101,8 +101,7 @@
             "type": "Microsoft.Resources/resourceGroups",
             "location": "[parameters('resourceGroupLocation')]",
             "tags": "[parameters('tags')]",
-            "properties": {
-            }
+            "properties": {}
         },
         {
             "condition": "[greater(length(parameters('customHostname')), 0)]",
@@ -157,8 +156,8 @@
                         "value": {
                             "array": [
                                 {
-                                    "name": "ApplicationInsights:InstrumentationKey",
-                                    "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.InstrumentationKey.value]"
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat('application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
                                 },
                                 {
                                     "name": "ConfigurationStorageConnectionString",
@@ -241,8 +240,7 @@
                     }
                 }
             },
-            "dependsOn": [
-            ]
+            "dependsOn": []
         },
         {
             "apiVersion": "2020-06-01",

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -9,86 +10,79 @@ using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class UpdateReportHandler(IMapper mapper, IReportRepository reportRepository, IFileProvider fileProvider)
+    : IRequestHandler<UpdateReportRequest>
 {
-    public class UpdateReportHandler : RequestHandler<UpdateReportRequest>
+    public async Task Handle(UpdateReportRequest request, CancellationToken cancellationToken)
     {
-        private readonly IMapper _mapper;
-        private readonly IReportRepository _reportRepository;
-        private readonly IFileProvider _fileProvider;
+        var oldVersion = await reportRepository.Get(request.Report.Id);
 
-        public UpdateReportHandler(IMapper mapper, IReportRepository reportRepository, IFileProvider fileProvider)
+        if (oldVersion == null)
         {
-            _mapper = mapper;
-            _reportRepository = reportRepository;
-            _fileProvider = fileProvider;
+            throw new Exception("Failed to get old version of report");
         }
 
-        protected override void HandleCore(UpdateReportRequest request)
+        request.Report.UpdatePercentages();
+
+        var reportDto = mapper.Map<ReportDto>(request.Report);
+
+        if (request.IsLocalAuthority.HasValue)
         {
-            var oldVersion = _reportRepository.Get(request.Report.Id);
+            if (request.IsLocalAuthority != request.Report.IsLocalAuthority)
+                reportDto.ReportingData = await GetQuestionConfig(request.IsLocalAuthority.Value);
+        }
 
-            if (oldVersion == null)
-                throw new Exception("Failed to get old version of report");
+        reportDto.UpdatedUtc = DateTime.UtcNow;
+        reportDto.UpdatedBy = JsonConvert.SerializeObject(new User { Id = request.User.Id, Name = request.User.Name });
+        
+        reportDto.AuditWindowStartUtc ??= reportDto.UpdatedUtc;
 
-            request.Report.UpdatePercentages();
-
-            var reportDto = _mapper.Map<ReportDto>(request.Report);
-
-            if (request.IsLocalAuthority.HasValue)
+        if (RequiresAuditRecord(oldVersion, reportDto, request.AuditWindowSize))
+        {
+            var auditRecord = new AuditRecordDto
             {
-                if (request.IsLocalAuthority != request.Report.IsLocalAuthority)
-                    reportDto.ReportingData = GetQuestionConfig(request.IsLocalAuthority.Value).Result;
-            }
+                ReportId = reportDto.Id,
+                ReportingData = oldVersion.ReportingData,
+                UpdatedBy = oldVersion.UpdatedBy,
+                UpdatedUtc = oldVersion.UpdatedUtc.Value
+            };
 
-            reportDto.UpdatedUtc = DateTime.UtcNow;
-            reportDto.UpdatedBy = JsonConvert.SerializeObject(new User { Id = request.User.Id, Name = request.User.Name });
-            if (!reportDto.AuditWindowStartUtc.HasValue)
-                reportDto.AuditWindowStartUtc = reportDto.UpdatedUtc;
+            await reportRepository.SaveAuditRecord(auditRecord);
 
-            if (RequiresAuditRecord(oldVersion, reportDto, request.AuditWindowSize))
-            {
-                var auditRecord = new AuditRecordDto
-                {
-                    ReportId = reportDto.Id,
-                    ReportingData = oldVersion.ReportingData,
-                    UpdatedBy = oldVersion.UpdatedBy,
-                    UpdatedUtc = oldVersion.UpdatedUtc.Value
-                };
-
-                _reportRepository.SaveAuditRecord(auditRecord);
-
-                reportDto.AuditWindowStartUtc = reportDto.UpdatedUtc.Value;
-            }
-
-            _reportRepository.Update(reportDto);
+            reportDto.AuditWindowStartUtc = reportDto.UpdatedUtc.Value;
         }
 
-        private static bool RequiresAuditRecord(ReportDto oldVersion, ReportDto newVersion, TimeSpan requestAuditWindowSize)
+        await reportRepository.Update(reportDto);
+    }
+
+    private static bool RequiresAuditRecord(ReportDto oldVersion, ReportDto newVersion, TimeSpan requestAuditWindowSize)
+    {
+        if (IsPreAudit(oldVersion)) // report could have been saved before we rolled out audit history
         {
-            if (IsPreAudit(oldVersion)) // report could have been saved before we rolled out audit history
-                return false;
-
-            var oldUser = JsonConvert.DeserializeObject<User>(oldVersion.UpdatedBy);
-            var newUser = JsonConvert.DeserializeObject<User>(newVersion.UpdatedBy);
-            var timeSinceLastUpdate = DateTime.UtcNow.Subtract(oldVersion.AuditWindowStartUtc.Value);
-
-            return timeSinceLastUpdate > requestAuditWindowSize // updated more than X minutes ago
-                   || oldUser.Id != newUser.Id;                  // or by another uer
+            return false;
         }
 
-        private static bool IsPreAudit(ReportDto oldVersion)
-        {
-            return !oldVersion.AuditWindowStartUtc.HasValue || !oldVersion.UpdatedUtc.HasValue || oldVersion.UpdatedBy == null;
-        }
+        var oldUser = JsonConvert.DeserializeObject<User>(oldVersion.UpdatedBy);
+        var newUser = JsonConvert.DeserializeObject<User>(newVersion.UpdatedBy);
+        var timeSinceLastUpdate = DateTime.UtcNow.Subtract(oldVersion.AuditWindowStartUtc.Value);
 
-        private Task<string> GetQuestionConfig(bool isLocalAuthority)
-        {
-            var questionsConfig = _fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
+        return timeSinceLastUpdate > requestAuditWindowSize // updated more than X minutes ago
+               || oldUser.Id != newUser.Id;                  // or by another uer
+    }
 
-            using var jsonContents = questionsConfig.CreateReadStream();
-            using StreamReader sr = new StreamReader(jsonContents);
-            return Task.FromResult(sr.ReadToEnd());
-        }
+    private static bool IsPreAudit(ReportDto oldVersion)
+    {
+        return !oldVersion.AuditWindowStartUtc.HasValue || !oldVersion.UpdatedUtc.HasValue || oldVersion.UpdatedBy == null;
+    }
+
+    private async Task<string> GetQuestionConfig(bool isLocalAuthority)
+    {
+        var questionsConfig = fileProvider.GetFileInfo(isLocalAuthority ? "/LocalAuthorityQuestionConfig.json" : "/QuestionConfig.json");
+
+        await using var jsonContents = questionsConfig.CreateReadStream();
+        using var streamReader = new StreamReader(jsonContents);
+        return await streamReader.ReadToEndAsync();
     }
 }

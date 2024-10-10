@@ -1,90 +1,68 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Submitted_Report.
-    And_User_Has_View_Only_Access
+    And_User_Has_View_Only_Access;
+
+[ExcludeFromCodeCoverage]
+[TestFixture]
+public class WhenSummaryIsCalled : And_User_Has_View_Only_Access
 {
-    [ExcludeFromCodeCoverage]
-    [TestFixture]
-    public class When_Summary_Is_Called
-        : And_User_Has_View_Only_Access
+    private IActionResult _result;
+    private ReportViewModel _model;
+
+    protected override async Task  When()
     {
-        private IActionResult result;
-        private ReportViewModel model;
+        const string hashedAccountId = "ABC123";
+        _result = await Controller.Summary(hashedAccountId, "1718");
 
-        protected override void When()
-        {
-            var hashedAccountId = "ABC123";
-            result = _controller.Summary(hashedAccountId, "1718");
+        var viewResult = _result as ViewResult;
+        _model = viewResult?.Model as ReportViewModel;
+    }
 
-            var viewResult = result as ViewResult;
+    [Test]
+    public void Then_ViewModel_UserCanSubmitReports_Is_False()
+    {
+        var reportViewModel = ((ViewResult)_result).Model as ReportViewModel;
 
-            model = viewResult?.Model as ReportViewModel;
-        }
+        reportViewModel.UserCanSubmitReports.Should().BeFalse();
+    }
 
-        [Test]
-        public void Then_ViewModel_UserCanSubmitReports_Is_False()
-        {
-            var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+    [Test]
+    public void Then_ViewModel_UserCanEditReports_Is_False()
+    {
+        _model.UserCanEditReports.Should().BeFalse();
+    }
 
-            Assert
-                .IsFalse(reportViewModel.UserCanSubmitReports);
-        }
+    [Test]
+    public void Then_Result_Is_ViewResult()
+    {
+        _result.Should().NotBeNull();
+        _result.Should().BeOfType<ViewResult>();
+    }
 
-        [Test]
-        public void Then_ViewModel_UserCanEditReports_Is_False()
-        {
-            model
-                .UserCanEditReports
-                .Should()
-                .BeFalse();
-        }
-        [Test]
-        public void Then_Result_Is_ViewResult()
-        {
-            Assert
-                .IsNotNull(result);
+    [Test]
+    public void Then_ViewName_Is_Summary()
+    {
+        ((ViewResult)_result).ViewName.Should().Be("Summary", "View name does not match, should be: Summary");
+    }
 
-            Assert
-                .IsInstanceOf<ViewResult>(result);
-        }
+    [Test]
+    public void Then_ViewModel_Is_ReportViewModel()
+    {
+        ((ViewResult)_result).Model.Should().NotBeNull();
+        ((ViewResult)_result).Model.Should().BeOfType<ReportViewModel>();
+    }
 
-        [Test]
-        public void Then_ViewName_Is_Summary()
-        {
-            Assert
-                .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
-        }
+    [Test]
+    public void Then_ViewModel_Has_Report()
+    {
+        _model.Report.Should().NotBeNull();
+    }
 
-        [Test]
-        public void Then_ViewModel_Is_ReportViewModel()
-        {
-            Assert
-                .IsNotNull(((ViewResult) result).Model);
-
-            Assert
-                .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
-        }
-
-        [Test]
-        public void Then_ViewModel_Has_Report()
-        {
-            model
-                .Report
-                .Should()
-                .NotBeNull();
-        }
-
-        [Test]
-        public void Then_ViewModel_IsReadOnly_Is_True()
-        {
-            model
-                .IsReadOnly
-                .Should()
-                .BeTrue();
-        }
+    [Test]
+    public void Then_ViewModel_IsReadOnly_Is_True()
+    {
+        _model.IsReadOnly.Should().BeTrue();
     }
 }

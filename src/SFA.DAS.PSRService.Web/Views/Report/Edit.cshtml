@@ -38,21 +38,22 @@
             </div>
         }
         <ol class="das-task-list">
-            @Html.Partial("Sections/OrganisationName", Model)
+            <partial name="Sections/OrganisationName" model="@Model"/>
 
             @if (Model.Report.Sections != null)
             {
                 foreach (var sectionItem in Model.Report.Sections)
                 {
-                    @Html.Partial("Sections/" + sectionItem.Id, sectionItem)
+                    var sectionName = $"Sections/{sectionItem.Id}";
+                    <partial name="@sectionName" model="@sectionItem"/>
                 }
             }
 
-            @Html.Partial("Sections/Review", Model)
+            <partial name="Sections/Review" model="@Model"/>
 
         </ol>
     </div>
     <div class="govuk-grid-column-one-third">
-        @Html.Partial("Sections/History")
+        <partial name="Sections/History"/>
     </div>
 </div>

@@ -1,26 +1,16 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
+﻿namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Transactor_Role_For_Account;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.Middleware.RoleRequierments.CanSubmit.Given_User_Has_Transactor_Role_For_Account
+[ExcludeFromCodeCoverage]
+public sealed class When_Requirement_Is_Handled : Given_User_Has_Transactor_Role_For_Account
 {
-    [ExcludeFromCodeCoverage]
-    public sealed class When_Requirement_Is_Handled
-        : Given_User_Has_Transactor_Role_For_Account
+    protected override async Task When()
     {
-        protected override void When()
-        {
-            SUT
-                .HandleAsync(
-                    HandlerContext);
-        }
+        await Sut.HandleAsync(HandlerContext);
+    }
 
-        [Test]
-        public void Then_Requirement_Is_Not_Satisfied()
-        {
-            Assert
-                .False(
-                    HandlerContext
-                        .HasSucceeded);
-        }
+    [Test]
+    public void Then_Requirement_Is_Not_Satisfied()
+    {
+        HandlerContext.HasSucceeded.Should().BeFalse();
     }
 }
