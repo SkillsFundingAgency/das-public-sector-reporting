@@ -30,6 +30,14 @@ public class EmployerAccountHandler(IHttpContextAccessor httpContextAccessor, IL
         var employerAccountClaim = context.User.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
         var employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(employerAccountClaim?.Value);
 
+        logger.LogInformation("EmployerAccountHandler claims {Data}", JsonConvert.SerializeObject(context.User.Claims.Select(x => new
+        {
+            x.Type,
+            x.Value
+        })));
+
+        logger.LogInformation("EmployerAccountHandler employerAccounts {Data}", JsonConvert.SerializeObject(employerAccounts));
+
         if (employerAccountClaim == null || !employerAccounts.ContainsKey(accountIdFromUrl))
         {
             if (employerAccountClaim == null)
@@ -40,10 +48,10 @@ public class EmployerAccountHandler(IHttpContextAccessor httpContextAccessor, IL
             {
                 logger.LogInformation("EmployerAccountHandler authorization failed because employerAccounts didn't contain key {Key}", accountIdFromUrl);
             }
-            
+
             return Task.CompletedTask;
         }
-            
+
         if (context.Resource is AuthorizationFilterContext mvcContext && !mvcContext.HttpContext.Items.ContainsKey(ContextItemKeys.EmployerIdentifier))
         {
             mvcContext.HttpContext.Items.Add(ContextItemKeys.EmployerIdentifier, employerAccounts.GetValueOrDefault(accountIdFromUrl));
