@@ -5,6 +5,7 @@ using AutoFixture.NUnit3;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Web.Configuration;
@@ -20,7 +21,7 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
         accountData.IsSuspended = false;
 
         var accountService = new Mock<IEmployerUserAccountsService>();
-        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object);
+        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object, Mock.Of<ILogger<EmployerAccountPostAuthenticationClaimsHandler>>());
 
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, emailAddress);
         accountService.Setup(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier)).ReturnsAsync(accountData);
@@ -45,7 +46,7 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
         accountData.IsSuspended = true;
 
         var accountService = new Mock<IEmployerUserAccountsService>();
-        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object);
+        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object, Mock.Of<ILogger<EmployerAccountPostAuthenticationClaimsHandler>>());
 
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, emailAddress);
         accountService.Setup(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier)).ReturnsAsync(accountData);

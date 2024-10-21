@@ -1,48 +1,48 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Web.Configuration;
 
-namespace SFA.DAS.PSRService.Web.StartupConfiguration
+namespace SFA.DAS.PSRService.Web.StartupConfiguration;
+
+public class EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccountsService employerUserAccountsService, ILogger<EmployerAccountPostAuthenticationClaimsHandler> logger) : ICustomClaims
 {
-    public class EmployerAccountPostAuthenticationClaimsHandler : ICustomClaims
+    public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
     {
-        private readonly IEmployerUserAccountsService _employerUserAccountsService;
+        var userId = tokenValidatedContext.Principal.Claims
+            .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
+            .Value;
 
-        public EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccountsService employerUserAccountsService)
-        {
-            _employerUserAccountsService = employerUserAccountsService;
-        }
-        public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
-        {
-            var userId = tokenValidatedContext.Principal.Claims
-                .First(c => c.Type.Equals(ClaimTypes.NameIdentifier))
-                .Value;
-            var email = tokenValidatedContext.Principal.Claims
-                .First(c => c.Type.Equals(ClaimTypes.Email))
-                .Value;
-            
-            var accounts = await _employerUserAccountsService.GetEmployerUserAccounts(email, userId);
-            var accountsAsJson = JsonConvert.SerializeObject(accounts.EmployerAccounts.ToDictionary(k => k.AccountId));
-            var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson,
-                JsonClaimValueTypes.Json);
-            var returnList = new List<Claim>
-            {
-                associatedAccountsClaim,
-                new Claim(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier, accounts.EmployerUserId),
-                new Claim(EmployerPsrsClaims.EmailClaimsTypeIdentifier, email),
-                new Claim(EmployerPsrsClaims.NameClaimsTypeIdentifier, $"{accounts.FirstName} {accounts.LastName}"),
-            };
+        var email = tokenValidatedContext.Principal.Claims
+            .First(c => c.Type.Equals(ClaimTypes.Email))
+            .Value;
 
-            if (accounts.IsSuspended)
-            {
-                returnList.Add(new Claim(ClaimTypes.AuthorizationDecision, "Suspended"));
-            }
-            
-            return returnList;
+        logger.LogInformation("EmployerAccountPostAuthenticationClaimsHandler userId: {Id}, email: {email}", userId, email);
+
+        var accounts = await employerUserAccountsService.GetEmployerUserAccounts(email, userId);
+        var accountsAsJson = JsonConvert.SerializeObject(accounts.EmployerAccounts.ToDictionary(k => k.AccountId));
+
+        logger.LogInformation("EmployerAccountPostAuthenticationClaimsHandler accounts {Data}", accountsAsJson);
+
+        var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
+
+        var returnList = new List<Claim>
+        {
+            associatedAccountsClaim,
+            new(EmployerPsrsClaims.IdamsUserIdClaimTypeIdentifier, accounts.EmployerUserId),
+            new(EmployerPsrsClaims.EmailClaimsTypeIdentifier, email),
+            new(EmployerPsrsClaims.NameClaimsTypeIdentifier, $"{accounts.FirstName} {accounts.LastName}"),
+        };
+
+        if (accounts.IsSuspended)
+        {
+            returnList.Add(new Claim(ClaimTypes.AuthorizationDecision, "Suspended"));
         }
+
+        return returnList;
     }
 }
