@@ -9,7 +9,7 @@ using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration;
 
-public class EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccountsService employerUserAccountsService, ILogger<EmployerAccountPostAuthenticationClaimsHandler> logger) : ICustomClaims
+public class EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccountsService employerUserAccountsService) : ICustomClaims
 {
     public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
     {
@@ -21,12 +21,8 @@ public class EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccount
             .First(c => c.Type.Equals(ClaimTypes.Email))
             .Value;
 
-        logger.LogInformation("EmployerAccountPostAuthenticationClaimsHandler userId: {Id}, email: {email}", userId, email);
-
         var accounts = await employerUserAccountsService.GetEmployerUserAccounts(email, userId);
         var accountsAsJson = JsonConvert.SerializeObject(accounts.EmployerAccounts.ToDictionary(k => k.AccountId));
-
-        logger.LogInformation("EmployerAccountPostAuthenticationClaimsHandler accounts {Data}", accountsAsJson);
 
         var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);
 

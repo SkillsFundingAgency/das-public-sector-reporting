@@ -21,7 +21,7 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
         accountData.IsSuspended = false;
 
         var accountService = new Mock<IEmployerUserAccountsService>();
-        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object, Mock.Of<ILogger<EmployerAccountPostAuthenticationClaimsHandler>>());
+        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object);
 
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, emailAddress);
         accountService.Setup(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier)).ReturnsAsync(accountData);
@@ -46,7 +46,7 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
         accountData.IsSuspended = true;
 
         var accountService = new Mock<IEmployerUserAccountsService>();
-        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object, Mock.Of<ILogger<EmployerAccountPostAuthenticationClaimsHandler>>());
+        var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object);
 
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, emailAddress);
         accountService.Setup(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier)).ReturnsAsync(accountData);

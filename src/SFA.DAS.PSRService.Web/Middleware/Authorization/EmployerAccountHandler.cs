@@ -9,13 +9,12 @@ using SFA.DAS.PSRService.Web.Models;
 
 namespace SFA.DAS.PSRService.Web.Middleware.Authorization;
 
-public class EmployerAccountHandler(IHttpContextAccessor httpContextAccessor, ILogger<EmployerAccountHandler> logger) : AuthorizationHandler<EmployerAccountRequirement>
+public class EmployerAccountHandler(IHttpContextAccessor httpContextAccessor) : AuthorizationHandler<EmployerAccountRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EmployerAccountRequirement requirement)
     {
         if (!httpContextAccessor.HttpContext.Request.RouteValues.TryGetValue(RouteValues.HashedEmployerAccountId, out var hashedAccountId))
         {
-            logger.LogInformation("EmployerAccountHandler authorization failed because no HashedEmployerAccountId was provided.");
             return Task.CompletedTask;
         }
 
@@ -23,32 +22,14 @@ public class EmployerAccountHandler(IHttpContextAccessor httpContextAccessor, IL
 
         if (!context.User.HasClaim(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)))
         {
-            logger.LogInformation("EmployerAccountHandler authorization failed because http://das/employer/identity/claims/associatedAccounts was empty");
             return Task.CompletedTask;
         }
 
         var employerAccountClaim = context.User.FindFirst(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
         var employerAccounts = JsonConvert.DeserializeObject<Dictionary<string, EmployerIdentifier>>(employerAccountClaim?.Value);
 
-        logger.LogInformation("EmployerAccountHandler claims {Data}", JsonConvert.SerializeObject(context.User.Claims.Select(x => new
-        {
-            x.Type,
-            x.Value
-        })));
-
-        logger.LogInformation("EmployerAccountHandler employerAccounts {Data}", JsonConvert.SerializeObject(employerAccounts));
-
         if (employerAccountClaim == null || !employerAccounts.ContainsKey(accountIdFromUrl))
         {
-            if (employerAccountClaim == null)
-            {
-                logger.LogInformation("EmployerAccountHandler authorization failed because employerAccountClaim was null");
-            }
-            else
-            {
-                logger.LogInformation("EmployerAccountHandler authorization failed because employerAccounts didn't contain key {Key}", accountIdFromUrl);
-            }
-
             return Task.CompletedTask;
         }
 
