@@ -1,5 +1,4 @@
-﻿@using SFA.DAS.PSRService.Domain.Enums
-@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
+﻿@model SFA.DAS.PSRService.Web.ViewModels.SectionViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, AuthoringTagHelpers
 
@@ -29,8 +28,8 @@
         Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.StartYear.AsFourDigitString
     </label>
     <p asp-validation-for="@Model.Questions.ToArray()[0].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[0].Answer"></p>
-    <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id" />
-    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" maxlength="11" />
+    <input type="hidden" name="Section.Questions[0].Id" value="@questionsList[0].Id"/>
+    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[0].Answer" name="Section.Questions[0].Answer" value="@questionsList[0].Answer" maxlength="11"/>
 </div>
 
 <div class="govuk-form-group">
@@ -38,8 +37,8 @@
         Number of apprentices who were working in England on 31 March @Model.CurrentPeriod.EndYear.AsFourDigitString
     </label>
     <p asp-validation-for="@Model.Questions.ToArray()[1].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[1].Answer"></p>
-    <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id" />
-    <input type="text"  class="govuk-input govuk-!-width-one-third js-addcommas"  asp-for="@Model.Questions.ToArray()[1].Answer"  name="Section.Questions[1].Answer" value="@questionsList[1].Answer" maxlength="11" />
+    <input type="hidden" name="Section.Questions[1].Id" value="@questionsList[1].Id"/>
+    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[1].Answer" name="Section.Questions[1].Answer" value="@questionsList[1].Answer" maxlength="11"/>
 </div>
 
 <div class="govuk-form-group">
@@ -48,6 +47,6 @@
     </label>
     <div class="govuk-hint">This includes both new hires and existing employees who started an apprenticeship</div>
     <p asp-validation-for="@Model.Questions.ToArray()[2].Answer" class="govuk-error-message" data-valmsg-for="Section.Questions[2].Answer"></p>
-    <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id" />
-    <input type="text"  class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[2].Answer"  name="Section.Questions[2].Answer" value="@questionsList[2].Answer" maxlength="11" />
+    <input type="hidden" name="Section.Questions[2].Id" value="@questionsList[2].Id"/>
+    <input type="text" class="govuk-input govuk-!-width-one-third js-addcommas" asp-for="@Model.Questions.ToArray()[2].Answer" name="Section.Questions[2].Answer" value="@questionsList[2].Answer" maxlength="11"/>
 </div>

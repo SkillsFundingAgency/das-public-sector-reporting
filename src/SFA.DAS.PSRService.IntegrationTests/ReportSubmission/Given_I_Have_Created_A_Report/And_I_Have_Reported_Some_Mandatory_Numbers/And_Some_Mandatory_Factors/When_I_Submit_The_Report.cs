@@ -1,36 +1,29 @@
-﻿using System;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.
+    And_I_Have_Reported_Some_Mandatory_Numbers.And_Some_Mandatory_Factors;
 
-namespace SFA.DAS.PSRService.IntegrationTests.ReportSubmission.Given_I_Have_Created_A_Report.
-    And_I_Have_Reported_Some_Mandatory_Numbers.And_Some_Mandatory_Factors
+public sealed class When_I_Submit_The_Report : And_Some_Mandatory_Factors
 {
-    public sealed class When_I_Submit_The_Report
-        : And_Some_Mandatory_Factors
+    public When_I_Submit_The_Report() : base(false){}
+
+    protected override Task When()
     {
-        private IActionResult submitResult;
-
-        public When_I_Submit_The_Report() : base(false){}
-
-        protected override void When()
+        try
         {
-            try
-            {
-                submitResult = SUT.Submit();
-            }
-            catch (Exception)
-            {
-            }
+            Sut.Submit();
         }
-
-        [Test]
-        public void Then_Report_Is_Not_Persisted_As_Submitted()
+        catch (Exception)
         {
-            TestHelper
-                .GetAllReports()
-                .Should()
-                .NotContain(report => report.Submitted == true);
         }
+        
+        return Task.CompletedTask;
+    }
+
+    [Test]
+    public void Then_Report_Is_Not_Persisted_As_Submitted()
+    {
+        TestHelper
+            .GetAllReports()
+            .Should()
+            .NotContain(report => report.Submitted == true);
     }
 }

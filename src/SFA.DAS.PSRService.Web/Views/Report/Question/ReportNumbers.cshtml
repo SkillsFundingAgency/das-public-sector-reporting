@@ -3,9 +3,9 @@
     ViewBag.GaData.Vpv = "/public-sector-reporting/report/question/page-report-numbers";
 }
 
-@Html.Partial("Question/YourEmployees", Model.SubSections.Single(w => w.Id =="YourEmployees"))
-@Html.Partial("Question/YourApprentices", Model.SubSections.Single(w => w.Id =="YourApprentices"))
+<partial name="Question/YourEmployees" model="@Model.SubSections.Single(w => w.Id == "YourEmployees")"/>
+<partial name="Question/YourApprentices" model="@Model.SubSections.Single(w => w.Id == "YourApprentices")"/>
 @if (Model.SubSections.SingleOrDefault(w => w.Id == "FullTimeEquivalent") != null)
 {
-    @Html.Partial("Question/FullTimeEquivalent", Model.SubSections.Single(w => w.Id =="FullTimeEquivalent"))
+    <partial name="Question/FullTimeEquivalent" model="@Model.SubSections.Single(w => w.Id == "FullTimeEquivalent")"/>
 }

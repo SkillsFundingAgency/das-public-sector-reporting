@@ -1,22 +1,24 @@
 ﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.ViewModels
-{
-    public class PercentagesViewModel
-    {
-        public PercentagesViewModel(ReportingPercentages percentages)
-        {
-            if (percentages == null)
-                return;
+namespace SFA.DAS.PSRService.Web.ViewModels;
 
-            EmploymentStarts = percentages.EmploymentStarts + "%";
-            TotalHeadCount = percentages.TotalHeadCount + "%";
-            NewThisPeriod = percentages.NewThisPeriod + "%";
-            Title = percentages.Title;
+public class PercentagesViewModel
+{
+    public string EmploymentStarts { get; }
+    public string TotalHeadCount { get; }
+    public string NewThisPeriod { get; }
+    public string Title { get; }
+    
+    public PercentagesViewModel(ReportingPercentages percentages)
+    {
+        if (percentages == null)
+        {
+            return;
         }
-        public string EmploymentStarts { get; }
-        public string TotalHeadCount { get; }
-        public string NewThisPeriod { get; }
-        public string Title { get; }
+
+        EmploymentStarts = percentages.EmploymentStarts + "%";
+        TotalHeadCount = percentages.TotalHeadCount + "%";
+        NewThisPeriod = percentages.NewThisPeriod + "%";
+        Title = percentages.Title;
     }
 }

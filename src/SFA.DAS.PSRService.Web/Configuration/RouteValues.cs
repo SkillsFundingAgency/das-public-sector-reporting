@@ -1,7 +1,6 @@
-﻿namespace SFA.DAS.PSRService.Web.Configuration
+﻿namespace SFA.DAS.PSRService.Web.Configuration;
+
+public static class RouteValues
 {
-    public static class RouteValues
-    {
-        public const string HashedEmployerAccountId = "hashedEmployerAccountId";
-    }
+    public const string HashedEmployerAccountId = "hashedEmployerAccountId";
 }

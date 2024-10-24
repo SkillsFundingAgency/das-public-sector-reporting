@@ -1,17 +1,17 @@
-﻿using NUnit.Framework;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.No_Report
+namespace SFA.DAS.PSRService.Web.UnitTests.HomeControllerTests.View_Only_Access.No_Report;
+
+[TestFixture]
+public class And_No_Current_Report_Exists : And_User_Is_Not_Authorized
 {
-    [TestFixture]
-    public class And_No_Current_Report_Exists : And_User_Is_Not_Authorized
+    protected override void Given()
     {
-        protected override void Given()
-        {
-            base.Given();
+        base.Given();
 
-            _mockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE")).Returns((Report)null).Verifiable("Current report wasn't requested");
+        MockReportService.Setup(r => r.GetReport(CurrentPeriod.PeriodString, "ABCDE"))
+            .ReturnsAsync((Report)null)
+            .Verifiable("Current report wasn't requested");
 
-        }
     }
 }

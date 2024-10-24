@@ -1,123 +1,127 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.ViewModels.Home;
-using StructureMap;
 
-namespace SFA.DAS.PSRService.IntegrationTests.Web
+namespace SFA.DAS.PSRService.IntegrationTests.Web;
+
+[TestFixture]
+public class WhenUserEntersSite
 {
-    [TestFixture]
-    public class WhenUserEntersSite
+    private static IHost _host;
+    private HomeController _homeController;
+
+    [SetUp]
+    public void SetUp()
     {
-        private static Container _container;
-        private HomeController _homeController;
+        TestHelper.ClearData();
+        _homeController = _host.Services.GetService<HomeController>();
+    }
 
-        [SetUp]
-        public void SetUp()
+    [OneTimeSetUp]
+    public void OneTimeSetUp()
+    {
+        var builder = Host.CreateApplicationBuilder();
+        builder.Services.ConfigureTestServices();
+
+        //Replace authorization service with one tailored to this test
+        builder.Services.AddSingleton(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
+        _host = builder.Build();
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTearDown()
+    {
+        _host?.Dispose();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        _homeController?.Dispose();
+    }
+
+    private static IAuthorizationService BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit()
+    {
+        var policyNames = new[] { PolicyNames.CanEditReport, PolicyNames.CanSubmitReport };
+
+        var service = new Mock<IAuthorizationService>();
+        service.Setup(m => m.AuthorizeAsync(
+                    It.IsAny<ClaimsPrincipal>(),
+                    It.IsAny<object>(),
+                    It.Is<string>(x => policyNames.Contains(x))))
+            .Returns(Task.FromResult(AuthorizationResult.Success()));
+
+        return service.Object;
+    }
+
+    [Test]
+    public async Task AndThereAreNoReportsThenCreateReportIsEnabled()
+    {
+        // arrange
+
+        // act
+        var result = await _homeController.Index() as ViewResult;
+
+        // assert
+        result.Should().NotBeNull();
+        result.Model.Should().BeOfType<IndexViewModel>();
+        var model = (IndexViewModel)result.Model;
+        model.CanCreateReport.Should().BeTrue();
+        model.CanEditReport.Should().BeFalse();
+    }
+
+    [Test]
+    public async Task AndThereIsSubmittedReportThenCreateReportIsDisabled()
+    {
+        // arrange
+        TestHelper.CreateReport(new ReportDto
         {
-            TestHelper.ClearData();
-            _homeController = _container.GetInstance<HomeController>();
-        }
+            Id = Guid.NewGuid(),
+            EmployerId = "111",
+            Submitted = true,
+            ReportingPeriod = TestHelper.CurrentPeriod.PeriodString,
+            ReportingData = "{OrganisationName: '1'}"
+        });
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        // act
+        var result = await _homeController.Index() as ViewResult;
+
+        // assert
+        result.Should().NotBeNull();
+        result.Model.Should().BeOfType<IndexViewModel>();
+        var model = (IndexViewModel)result.Model;
+        model.CanCreateReport.Should().BeFalse();
+        model.CanEditReport.Should().BeFalse();
+    }
+
+    [Test]
+    public async Task AndThereIsUnsubmittedReportThenEditReportIsEnabled()
+    {
+        // arrange
+        TestHelper.CreateReport(new ReportDto
         {
-            _container = new Container();
-            _container.Configure(TestHelper.ConfigureIoc());
+            Id = Guid.NewGuid(),
+            EmployerId = "111",
+            Submitted = false,
+            ReportingPeriod = TestHelper.CurrentPeriod.PeriodString,
+            ReportingData = "{OrganisationName: '1'}"
+        });
 
-            //Replace authorization service with one tailored to this test
-            //TODO: Refactor test to Geiven-Then-When style and find a better way of onfiguring authorization
-            _container.Inject<IAuthorizationService>(BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit());
-        }
+        // act
+        var result = await _homeController.Index() as ViewResult;
 
-        private static IAuthorizationService BuildMockAuthorizationServiceWhereUserCanEditAndCanSubmit()
-        {
-            var policyNames = new[] { PolicyNames.CanEditReport, PolicyNames.CanSubmitReport };
-
-            var service = new Mock<IAuthorizationService>();
-            service
-                .Setup(
-                    m => m.AuthorizeAsync(
-                        It.IsAny<ClaimsPrincipal>(),
-                        It.IsAny<object>(),
-                        It.Is<string>(x => policyNames.Contains(x))))
-                .Returns(
-                    Task.FromResult(AuthorizationResult.Success()));
-
-            return service.Object;
-        }
-
-        [Test]
-        public void AndThereAreNoReportsThenCreateReportIsEnabled()
-        {
-            // arrange
-
-            // act
-            var result = _homeController.Index() as ViewResult;
-            
-            // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IndexViewModel>(result.Model);
-            var model = (IndexViewModel) result.Model;
-            Assert.IsTrue(model.CanCreateReport);
-            Assert.IsFalse(model.CanEditReport);
-        }
-
-        [Test]
-        public void AndThereIsSubmittedReportThenCreateReportIsDisabled()
-        {
-            // arrange
-            TestHelper.CreateReport(new ReportDto
-            {
-                Id = Guid.NewGuid(),
-                EmployerId = "111",
-                Submitted = true,
-                ReportingPeriod = TestHelper.CurrentPeriod.PeriodString,
-                ReportingData = "{OrganisationName: '1'}"
-            });
-
-            // act
-            var result = _homeController.Index() as ViewResult;
-            
-            // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IndexViewModel>(result.Model);
-            var model = (IndexViewModel) result.Model;
-            Assert.IsFalse(model.CanCreateReport);
-            Assert.IsFalse(model.CanEditReport);
-        }
-
-        [Test]
-        public void AndThereIsUnsubmittedReportThenEditReportIsEnabled()
-        {
-            // arrange
-            TestHelper.CreateReport(new ReportDto
-            {
-                Id = Guid.NewGuid(),
-                EmployerId = "111",
-                Submitted = false,
-                ReportingPeriod = TestHelper.CurrentPeriod.PeriodString,
-                ReportingData = "{OrganisationName: '1'}"
-            });
-
-            // act
-            var result = _homeController.Index() as ViewResult;
-            
-            // assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IndexViewModel>(result.Model);
-            var model = (IndexViewModel) result.Model;
-            Assert.IsFalse(model.CanCreateReport);
-            Assert.IsTrue(model.CanEditReport);
-        }
+        // assert
+        result.Should().NotBeNull();
+        result.Model.Should().BeOfType<IndexViewModel>();
+        var model = (IndexViewModel)result.Model;
+        model.CanCreateReport.Should().BeFalse();
+        model.CanEditReport.Should().BeTrue();
     }
 }

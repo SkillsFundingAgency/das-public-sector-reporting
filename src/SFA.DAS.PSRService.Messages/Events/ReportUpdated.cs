@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace SFA.DAS.PSRService.Messages.Events
+namespace SFA.DAS.PSRService.Messages.Events;
+
+public class ReportUpdatedEvent
 {
-    public class ReportUpdatedEvent
-    {
-        public Guid Id { get; set; }
-        public string EmployerId { get; set; }
-        public string ReportingPeriod { get; set; }
-        public Answers Answers { get; set; }
-        public ReportingPercentages ReportingPercentages { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string EmployerId { get; set; }
+    public string ReportingPeriod { get; set; }
+    public Answers Answers { get; set; }
+    public ReportingPercentages ReportingPercentages { get; set; }
 }

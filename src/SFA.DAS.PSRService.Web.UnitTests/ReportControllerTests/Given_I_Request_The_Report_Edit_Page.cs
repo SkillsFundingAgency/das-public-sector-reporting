@@ -1,80 +1,72 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
+
+[TestFixture]
+public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
 {
-    [TestFixture]
-    public class Given_I_Request_The_Report_Edit_Page : ReportControllerTestBase
+    [Test]
+    public async Task The_Report_Exists_And_Is_Editable_Then_Show_Edit_Report()
     {
-        [Test]
-        public void The_Report_Exists_And_Is_Editable_Then_Show_Edit_Report()
-        {
-            // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(true).Verifiable();
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(CurrentValidNotSubmittedReport).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(true).Verifiable();
 
-            // act
-            var result = _controller.Edit();
+        // act
+        var result = await Controller.Edit();
 
-            // assert
-            _mockUrlHelper.VerifyAll();
-            _mockReportService.VerifyAll();
+        // assert
+        MockUrlHelper.VerifyAll();
+        MockReportService.VerifyAll();
 
-            Assert.AreEqual(typeof(ViewResult), result.GetType());
-            var editViewResult = result as ViewResult;
-            Assert.IsNotNull(editViewResult);
-            Assert.AreEqual("Edit", editViewResult.ViewName, "View name does not match, should be: List");
+        result.Should().BeOfType<ViewResult>();
+        var editViewResult = result as ViewResult;
+        editViewResult.Should().NotBeNull();
+        editViewResult.ViewName.Should().Be("Edit", "View name does not match, should be: List");
 
-            Assert.AreEqual(editViewResult.Model.GetType(), typeof(ReportViewModel));
-            var reportViewModel = editViewResult.Model as ReportViewModel;
-            Assert.IsNotNull(reportViewModel);
-            Assert.IsNotNull(reportViewModel.Report.Id);
-        }
+        editViewResult.Model.Should().BeOfType<ReportViewModel>();
+        var reportViewModel = editViewResult.Model as ReportViewModel;
+        reportViewModel.Should().NotBeNull();
+    }
 
-        [Test]
-        public void The_Report_Does_Not_Exist_Then_Should_Not_Error()
-        {
-            // arrange
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns("report/create");
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
+    [Test]
+    public async Task The_Report_Does_Not_Exist_Then_Should_Not_Error()
+    {
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
-            // act
-            var result = _controller.Edit();
+        // act
+        var result =await Controller.Edit() as RedirectToActionResult;
 
-            // assert
-            _mockUrlHelper.VerifyAll();
-            _mockReportService.VerifyAll();
-            Assert.IsAssignableFrom<RedirectResult>(result);
-        }
+        // assert
+        MockUrlHelper.VerifyAll();
+        MockReportService.VerifyAll();
 
-        [Test]
-        public void The_Report_Exists_And_Not_Editable_Then_Redirect_Home()
-        {
-            // arrange
-            const string url = "report/create";
-            UrlActionContext actualContext = null;
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(CurrentValidNotSubmittedReport).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(false).Verifiable();
+        result.ActionName.Should().Be("Index");
+        result.ControllerName.Should().Be("Home");
+    }
 
-            // act
-            var result = _controller.Edit();
+    [Test]
+    public async Task The_Report_Exists_And_Not_Editable_Then_Redirect_Home()
+    {
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(CurrentValidNotSubmittedReport).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(CurrentValidNotSubmittedReport)).Returns(false).Verifiable();
 
-            // assert
-            _mockUrlHelper.VerifyAll();
-            _mockReportService.VerifyAll();
+        // act
+        var result = await Controller.Edit();
 
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Index", actualContext.Action);
-            Assert.AreEqual("Home", actualContext.Controller);
-        }
+        // assert
+        MockUrlHelper.VerifyAll();
+        MockReportService.VerifyAll();
+
+        var redirectResult = result as RedirectToActionResult;
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 }

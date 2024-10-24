@@ -1,28 +1,23 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
-using SFA.DAS.PSRService.Application.Domain;
 using SFA.DAS.PSRService.Application.Interfaces;
 
-namespace SFA.DAS.PSRService.Application.ReportHandlers
+namespace SFA.DAS.PSRService.Application.ReportHandlers;
+
+public class UnSubmitReportHandler(IReportRepository reportRepository) : IRequestHandler<UnSubmitReportRequest>
 {
-    public class UnSubmitReportHandler : RequestHandler<UnSubmitReportRequest>
+    public async Task Handle(UnSubmitReportRequest request, CancellationToken cancellationToken)
     {
-        private IReportRepository _reportRepository;
+        var report = await reportRepository.Get(request.ReportingPeriod.PeriodString, request.HashedEmployerAccountId);
 
-        public UnSubmitReportHandler(IReportRepository reportRepository)
+        if (report == null)
         {
-            _reportRepository = reportRepository;
+            return;
         }
-        protected override void HandleCore(UnSubmitReportRequest request)
-        {
-            var report = _reportRepository.Get(request.ReportingPeriod.PeriodString, request.HashedEmployerAccountId);
 
-            if (report == null)
-                return;
+        report.Submitted = false;
 
-            report.Submitted = false;
-
-            _reportRepository.Update(report);
-        }
+        await reportRepository.Update(report);
     }
 }

@@ -2,91 +2,84 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.ViewModels;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
+
+[TestFixture]
+public class Given_I_Request_The_Report_List_Page : ReportControllerTestBase
 {
-    [TestFixture]
-    public class Given_I_Request_The_Report_List_Page :ReportControllerTestBase
+    [Test, MoqAutoData]
+    public async Task And_More_Than_One_Report_Then_Show_List(string hashedAccountId)
     {
- 
+        // arrange
+        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).ReturnsAsync(ReportList);
+        
+        // act
+        var result = await Controller.List(hashedAccountId);
 
-        [Test, MoqAutoData]
-        public void And_More_Than_One_Report_Then_Show_List(string hashedAccountId)
-        {
-            // arrange
-           _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList);
-           // _mockReportService.Setup(s => s.GetPeriod(It.IsAny<string>())).Returns(new CurrentPeriod());
-            // act
-            var result = _controller.List(hashedAccountId);
-
-            // assert
-            Assert.AreEqual(typeof(ViewResult), result.GetType());
-            var listViewResult = result as ViewResult;
-            Assert.IsNotNull(listViewResult);
-            Assert.AreEqual("List", listViewResult.ViewName,"View name does not match, should be: List");
-            
-            
-            var listViewModel = listViewResult.Model as ReportListViewModel;
-            Assert.IsNotNull(listViewModel);
-
-            var reportList = listViewModel.SubmittedReports;
-            Assert.IsNotEmpty(reportList);
-            CollectionAssert.AllItemsAreInstancesOfType(reportList, typeof(Report));
-            CollectionAssert.AreEqual(reportList, ReportList);
-      
-       
-        }
-        [Test, MoqAutoData]
-        [Ignore("No longer a requirement")]
-        public void And_Only_One_Report_Then_Redirect_To_Edit(string hashedAccountId)
-        {
-            // arrange
-            var url = "report/edit";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(ReportList.Take(1).ToList);
-            // act
-            var result = _controller.List(hashedAccountId);
-
-            // assert
-            _mockUrlHelper.VerifyAll();
-
-            Assert.AreEqual(typeof(RedirectResult), result.GetType());
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Edit", actualContext.Action);
-            Assert.Null(actualContext.Controller);
-        }
-        [Test, MoqAutoData]
-        [Ignore("No longer a requirement")]
-        public void And_No_Report_Then_Redirect_To_Start(string hashedAccountId)
-        {
-            var url = "home/index";
-            UrlActionContext actualContext = null;
-
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-
-            _mockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).Returns(new List<Report>());
-            // act
-            var result = _controller.List(hashedAccountId);
-
-            // assert
-            Assert.AreEqual(typeof(RedirectResult), result.GetType());
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Index", actualContext.Action);
-            Assert.AreEqual("Home", actualContext.Controller);
-        }
+        // assert
+        result.Should().BeOfType<ViewResult>();
+        var listViewResult = result as ViewResult;
+        listViewResult.Should().NotBeNull();
+        listViewResult.ViewName.Should().Be("List", "View name does not match, should be: List");
 
 
+        var listViewModel = listViewResult.Model as ReportListViewModel;
+        listViewModel.Should().NotBeNull();
+
+        var reportList = listViewModel.SubmittedReports;
+        reportList.Should().NotBeEmpty();
+        reportList.Should().AllBeOfType<Report>();
+        reportList.Should().BeEquivalentTo(ReportList);
+    }
+
+    [Test, MoqAutoData]
+    [Ignore("No longer a requirement")]
+    public async Task And_Only_One_Report_Then_Redirect_To_Edit(string hashedAccountId)
+    {
+        // arrange
+        const string url = "report/edit";
+        UrlActionContext actualContext = null;
+
+        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+
+        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).ReturnsAsync(ReportList.Take(1).ToList);
+        // act
+        var result = await Controller.List(hashedAccountId);
+
+        // assert
+        MockUrlHelper.VerifyAll();
+
+        result.Should().BeOfType<RedirectResult>();
+        var redirectResult = result as RedirectResult;
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Edit");
+        actualContext.Controller.Should().BeNull();
+    }
+
+    [Test, MoqAutoData]
+    [Ignore("No longer a requirement")]
+    public async Task And_No_Report_Then_Redirect_To_Start(string hashedAccountId)
+    {
+        const string url = "home/index";
+        UrlActionContext actualContext = null;
+
+        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+
+        MockReportService.Setup(s => s.GetSubmittedReports(It.IsAny<string>())).ReturnsAsync(new List<Report>());
+        // act
+        var result = await Controller.List(hashedAccountId);
+
+        // assert
+        result.Should().BeOfType<RedirectResult>();
+        var redirectResult = result as RedirectResult;
+        redirectResult.Should().NotBeNull();
+        redirectResult.Url.Should().Be(url);
+        actualContext.Action.Should().Be("Index");
+        actualContext.Controller.Should().Be("Home");
     }
 }

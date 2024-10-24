@@ -1,25 +1,22 @@
-﻿using System;
-using SFA.DAS.PSRService.Domain.Entities;
+﻿using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.Services
+namespace SFA.DAS.PSRService.Web.Services;
+
+public interface IPeriodService
 {
-    public class PeriodService : IPeriodService
+    Period GetCurrentPeriod();
+    bool PeriodIsCurrent(Period comparisonPeriod);
+}
+
+public class PeriodService(IDateTimeService dateTimeService) : IPeriodService
+{
+    public Period GetCurrentPeriod()
     {
-        private readonly IDateTimeService _dateTimeService;
+        return Period.FromInstantInPeriod(dateTimeService.UtcNow);
+    }
 
-        public PeriodService(IDateTimeService dateTimeService)
-        {
-            _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
-        }
-
-        public Period GetCurrentPeriod()
-        {
-            return Period.FromInstantInPeriod(_dateTimeService.UtcNow);
-        }
-
-        public bool PeriodIsCurrent(Period comparisonPeriod)
-        {
-            return comparisonPeriod.Equals(GetCurrentPeriod());
-        }
+    public bool PeriodIsCurrent(Period comparisonPeriod)
+    {
+        return comparisonPeriod.Equals(GetCurrentPeriod());
     }
 }

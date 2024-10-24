@@ -1,220 +1,208 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Collections.Generic;
+using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Domain.Enums;
 
-namespace SFA.DAS.PSRService.Web.UnitTests
+namespace SFA.DAS.PSRService.Web.UnitTests;
+
+[ExcludeFromCodeCoverage]
+public sealed class ReportBuilder
 {
-    [ExcludeFromCodeCoverage]
-    public sealed class ReportBuilder
+    private IEnumerable<Section> _sections = [];
+    private bool _submittedStatus;
+    private string _employerId = string.Empty;
+    private Period _reportingPeriod = Period.ParsePeriodString("1718");
+
+    public Report Build()
     {
-        private IEnumerable<Section> _sections = Enumerable.Empty<Section>();
-        private bool _submittedStatus;
-        private string _employerId = String.Empty;
-        private Period _reportingPeriod = Period.ParsePeriodString("1718");
-
-        public Report Build()
-        {
-            return
-                new Report
-                {
-                    ReportingPeriod = "1718",
-                    Sections = _sections,
-                    Period = _reportingPeriod,
-                    SubmittedDetails = new Submitted(),
-                    OrganisationName = $"Organisation {_employerId}",
-                    Submitted = _submittedStatus,
-                    EmployerId = _employerId
-                };
-        }
-
-        public ReportBuilder WithValidSections()
-        {
-            _sections = BuildValidReportSections();
-
-            return this;
-        }
-
-        public ReportBuilder WithInvalidSections()
-        {
-            _sections = BuildInvalidReportSections();
-
-            return this;
-        }
-
-        public ReportBuilder WhereReportIsAlreadySubmitted()
-        {
-            _submittedStatus = true;
-
-            return this;
-        }
-
-        public ReportBuilder WhereReportIsNotAlreadySubmitted()
-        {
-            _submittedStatus = false;
-
-            return this;
-        }
-
-
-        public ReportBuilder WithEmployerId(string employerId)
-        {
-            _employerId = employerId;
-
-            return this;
-        }
-
-
-        public ReportBuilder ForPeriod(Period period)
-        {
-            _reportingPeriod = period;
-
-            return this;
-        }
-
-
-        public ReportBuilder ForCurrentPeriod()
-        {
-            _reportingPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
-
-            return this;
-        }
-
-        private static IEnumerable<Section> BuildValidReportSections()
-        {
-            var questions = new List<Question>
+        return new Report
             {
-                new Question
+                ReportingPeriod = "1718",
+                Sections = _sections,
+                Period = _reportingPeriod,
+                SubmittedDetails = new Submitted(),
+                OrganisationName = $"Organisation {_employerId}",
+                Submitted = _submittedStatus,
+                EmployerId = _employerId
+            };
+    }
+
+    public ReportBuilder WithValidSections()
+    {
+        _sections = BuildValidReportSections();
+        return this;
+    }
+
+    public ReportBuilder WithInvalidSections()
+    {
+        _sections = BuildInvalidReportSections();
+        return this;
+    }
+
+    public ReportBuilder WhereReportIsAlreadySubmitted()
+    {
+        _submittedStatus = true;
+        return this;
+    }
+
+    public ReportBuilder WhereReportIsNotAlreadySubmitted()
+    {
+        _submittedStatus = false;
+        return this;
+    }
+
+
+    public ReportBuilder WithEmployerId(string employerId)
+    {
+        _employerId = employerId;
+        return this;
+    }
+
+    public ReportBuilder ForPeriod(Period period)
+    {
+        _reportingPeriod = period;
+        return this;
+    }
+
+    public ReportBuilder ForCurrentPeriod()
+    {
+        _reportingPeriod = Period.FromInstantInPeriod(DateTime.UtcNow);
+        return this;
+    }
+
+    public static IEnumerable<Section> BuildValidReportSections()
+    {
+        var questions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "123",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "123",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "123",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+        };
+
+        var sectionOne = new Section
+        {
+            Id = "SectionOne",
+            SubSections = new List<Section>
+            {
+                new()
                 {
-                    Id = "atStart",
-                    Answer = "123",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question
-                {
-                    Id = "atEnd",
-                    Answer = "123",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question
-                {
-                    Id = "newThisPeriod",
-                    Answer = "123",
-                    Type = QuestionType.Number,
-                    Optional = false
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionOne",
+                    SummaryText = ""
                 }
-            };
+            },
+            Questions = null,
+            Title = "SectionOne"
+        };
 
-            var sectionOne = new Section
-            {
-                Id = "SectionOne",
-                SubSections = new List<Section>
-                {
-                    new Section
-                    {
-                        Id = "SubSectionOne",
-                        Questions = questions,
-                        Title = "SubSectionOne",
-                        SummaryText = ""
-                    }
-                },
-                Questions = null,
-                Title = "SectionOne"
-            };
-
-            var sectionTwo = new Section
-            {
-                Id = "SectionTwo",
-                SubSections = new List<Section>
-                {
-                    new Section
-                    {
-                        Id = "SubSectionTwo",
-                        Questions = questions,
-                        Title = "SubSectionTwo",
-                        SummaryText = ""
-                    }
-                },
-                Questions = null,
-                Title = "SectionTwo"
-            };
-
-            var sectionThree = new Section
-            {
-                Id = "SectionThree",
-                SubSections = new List<Section>
-                {
-                    new Section
-                    {
-                        Id = "SubSectionThree",
-                        Questions = questions,
-                        Title = "SubSectionThree",
-                        SummaryText = ""
-                    }
-                },
-                Questions = null,
-                Title = "SectionThree"
-            };
-
-            List<Section> sections = new List<Section>(3);
-
-            sections.Add(sectionOne);
-            sections.Add(sectionTwo);
-            sections.Add(sectionThree);
-
-            return sections;
-        }
-        private static IEnumerable<Section> BuildInvalidReportSections()
+        var sectionTwo = new Section
         {
-            var questions = new List<Question>()
+            Id = "SectionTwo",
+            SubSections = new List<Section>
             {
-                new Question()
+                new()
                 {
-                    Id = "atStart",
-                    Answer = "",
-                    Type = QuestionType.Number,
-                    Optional = false
+                    Id = "SubSectionTwo",
+                    Questions = questions,
+                    Title = "SubSectionTwo",
+                    SummaryText = ""
                 }
-                ,new Question()
-                {
-                    Id = "atEnd",
-                    Answer = "",
-                    Type = QuestionType.Number,
-                    Optional = false
-                },
-                new Question()
-                {
-                    Id = "newThisPeriod",
-                    Answer = "1,000",
-                    Type = QuestionType.Number,
-                    Optional = false
-                }
+            },
+            Questions = null,
+            Title = "SectionTwo"
+        };
 
-            };
-
-            var sectionOne = new Section()
+        var sectionThree = new Section
+        {
+            Id = "SectionThree",
+            SubSections = new List<Section>
             {
-                Id = "SectionOne",
-                SubSections = new List<Section>()
+                new()
                 {
-                    new Section
-                    {
-                        Id = "SubSectionOne",
-                        Questions = questions,
-                        Title = "SubSectionOne",
-                        SummaryText = ""
+                    Id = "SubSectionThree",
+                    Questions = questions,
+                    Title = "SubSectionThree",
+                    SummaryText = ""
+                }
+            },
+            Questions = null,
+            Title = "SectionThree"
+        };
 
-                    }
-                },
-                Questions = null,
-                Title = "SectionOne"
-            };
+        List<Section> sections =
+        [
+            sectionOne,
+            sectionTwo,
+            sectionThree
+        ];
 
-            return new List<Section>() { sectionOne };
-        }
+        return sections;
+    }
+    private static List<Section> BuildInvalidReportSections()
+    {
+        var questions = new List<Question>
+        {
+            new()
+            {
+                Id = QuestionIdentities.AtStart,
+                Answer = "",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+            ,new()
+            {
+                Id = QuestionIdentities.AtEnd,
+                Answer = "",
+                Type = QuestionType.Number,
+                Optional = false
+            },
+            new()
+            {
+                Id = QuestionIdentities.NewThisPeriod,
+                Answer = "1,000",
+                Type = QuestionType.Number,
+                Optional = false
+            }
+
+        };
+
+        var sectionOne = new Section
+        {
+            Id = "SectionOne",
+            SubSections = new List<Section>
+            {
+                new()
+                {
+                    Id = "SubSectionOne",
+                    Questions = questions,
+                    Title = "SubSectionOne",
+                    SummaryText = ""
+
+                }
+            },
+            Questions = null,
+            Title = "SectionOne"
+        };
+
+        return new List<Section> { sectionOne };
     }
 }

@@ -1,188 +1,157 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Models;
 using SFA.DAS.PSRService.Web.Services;
 using SFA.DAS.PSRService.Web.ViewModels;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests
+namespace SFA.DAS.PSRService.Web.UnitTests.QuestionControllerTests;
+
+[TestFixture]
+public class Given_I_Request_A_Question
 {
-    [TestFixture]
-    public class Given_I_Request_A_Question
+    private QuestionController _controller;
+    private Mock<IReportService> _reportService;
+    private Mock<IEmployerAccountService> _employerAccountServiceMock;
+    private Mock<IUrlHelper> _mockUrlHelper;
+    private Mock<IPeriodService> _periodServiceMock;
+    private EmployerIdentifier _employerIdentifier;
+
+    [SetUp]
+    public void SetUp()
     {
-        private QuestionController _controller;
-        private Mock<IReportService> _reportService;
-        private Mock<IEmployerAccountService> _employerAccountServiceMock;
-        private Mock<IUrlHelper> _mockUrlHelper;
-        private Mock<IUserService> _mockUserService;
-        private Mock<IPeriodService> _periodServiceMock;
-        private EmployerIdentifier _employerIdentifier;
+        _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
+        _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
+        _reportService = new Mock<IReportService>(MockBehavior.Strict);
 
-        [SetUp]
-        public void SetUp()
-        {
-            _mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
-            _employerAccountServiceMock = new Mock<IEmployerAccountService>(MockBehavior.Strict);
-            _reportService = new Mock<IReportService>(MockBehavior.Strict);
+        _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
+        _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
 
-            _periodServiceMock = new Mock<IPeriodService>(MockBehavior.Strict);
-            _periodServiceMock.Setup(s => s.GetCurrentPeriod()).Returns(Period.FromInstantInPeriod(DateTime.UtcNow));
+        _controller = new QuestionController(
+                _reportService.Object,
+                _employerAccountServiceMock.Object,
+                null,
+                _periodServiceMock.Object)
+            { Url = _mockUrlHelper.Object };
 
-            _mockUserService = new Mock<IUserService>(MockBehavior.Strict);
+        _employerIdentifier = new EmployerIdentifier { AccountId = "ABCDE", EmployerName = "EmployerName" };
 
-            _controller =
-                new QuestionController(
-                        _reportService.Object,
-                        _employerAccountServiceMock.Object,
-                        null,
-                        _periodServiceMock.Object,
-                        _mockUserService.Object)
-                    {Url = _mockUrlHelper.Object};
-            
-            _employerIdentifier = new EmployerIdentifier() { AccountId = "ABCDE", EmployerName = "EmployerName" };
+        _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
+        _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
+    }
 
-            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(It.IsAny<HttpContext>())).Returns(_employerIdentifier);
-            _employerAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null)).Returns(_employerIdentifier);
-            
-        }
+    [TearDown]
+    public void TearDown() => _controller?.Dispose();
 
-        [Test]
-        public void And_A_Report_Does_Not_Exist_Then_Redirect_Home()
-        {
-            // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
+    [Test]
+    public async Task And_A_Report_Does_Not_Exist_Then_Redirect_Home()
+    {
+        // arrange
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null);
+        _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
 
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report)null);
-            _reportService.Setup(s => s.CanBeEdited(null)).Returns(false).Verifiable();
+        // act
+        var result = await _controller.Index("YourEmployees");
 
-            // act
-            var result = _controller.Index("YourEmployees");
+        // assert
+        _mockUrlHelper.VerifyAll();
 
-            // assert
-            _mockUrlHelper.VerifyAll();
+        var redirectResult = result as RedirectToActionResult;
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
+    }
 
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Index", actualContext.Action);
-            Assert.AreEqual("Home", actualContext.Controller);
-        }
+    [Test]
+    public async Task And_A_Valid_Report_Does_Not_Exist_Then_Redirect_Home()
+    {
+        // arrange
+        var report = new ReportBuilder()
+            .WithInvalidSections()
+            .WithEmployerId("ABCDE")
+            .ForCurrentPeriod()
+            .WhereReportIsNotAlreadySubmitted()
+            .Build();
+        
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report);
+        _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
 
-        [Test]
-        public void And_A_Valid_Report_Does_Not_Exist_Then_Redirect_Home()
-        {
-            // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
+        // act
+        var result = await _controller.Index("YourEmployees");
 
-            var report =
-                new ReportBuilder()
-                    .WithInvalidSections()
-                    .WithEmployerId("ABCDE")
-                    .ForCurrentPeriod()
-                    .WhereReportIsNotAlreadySubmitted()
-                    .Build();
+        // assert
+        _mockUrlHelper.VerifyAll();
 
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report);
-            _reportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
+        var redirectResult = result as RedirectToActionResult;
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
+    }
 
-            // act
-            var result = _controller.Index("YourEmployees");
+    [Test]
+    public async Task And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
+    {
+        // arrange
+        
+        _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
-            // assert
-            _mockUrlHelper.VerifyAll();
+        var stubReport = new ReportBuilder()
+            .WithValidSections()
+            .WithEmployerId("ABCDE")
+            .WhereReportIsNotAlreadySubmitted()
+            .ForCurrentPeriod()
+            .Build();
 
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual("Index", actualContext.Action);
-            Assert.AreEqual("Home", actualContext.Controller);
-        }
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(stubReport);
 
-        [Test]
-        public void And_The_Question_ID_Does_Not_Exist_Then_Return_Error()
-        {
-            // arrange
-            var url = "home/index";
-            UrlActionContext actualContext = null;
+        // act
+        var result = await _controller.Index("YourEmployees");
 
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
-            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
+        // assert
+        result.Should().BeOfType<NotFoundResult>();
+    }
 
-            var stubReport = new ReportBuilder()
-                .WithValidSections()
-                .WithEmployerId("ABCDE")
-                .WhereReportIsNotAlreadySubmitted()
-                .ForCurrentPeriod()
-                .Build();
-     
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
+    [Test]
+    public async Task The_Question_ID_Exists_And_Report_Is_Valid_Then_Show_Question_Page()
+    {
+        const string url = "home/index";
+        UrlActionContext actualContext = null;
 
-            // act
-            var result = _controller.Index("YourEmployees");
-            
-            // assert
-            Assert.IsAssignableFrom<NotFoundResult>(result);
-        }
+        _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-        [Test]
-        public void The_Question_ID_Exists_And_Report_Is_Valid_Then_Show_Question_Page()
-        {
-            
+        var stubReport = new ReportBuilder()
+            .WithValidSections()
+            .WithEmployerId("ABCDE")
+            .ForCurrentPeriod()
+            .WhereReportIsNotAlreadySubmitted()
+            .Build();
 
-            var url = "home/index";
-            UrlActionContext actualContext = null;
+        _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(stubReport);
+        _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
 
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        // act
+        var result = await _controller.Index("SectionOne");
 
-            var stubReport =
-                new ReportBuilder()
-                    .WithValidSections()
-                    .WithEmployerId("ABCDE")
-                    .ForCurrentPeriod()
-                    .WhereReportIsNotAlreadySubmitted()
-                    .Build();
+        // assert
+        var listViewResult = result as ViewResult;
+        listViewResult.Should().NotBeNull();
+        listViewResult.ViewName.Should().Be("Index", "View name does not match, should be: Index");
 
-            _reportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(stubReport);
-            _reportService.Setup(s => s.CanBeEdited(It.IsAny<Report>())).Returns(true).Verifiable();
+        var sectionViewModel = listViewResult.Model as SectionViewModel;
+        sectionViewModel.Should().NotBeNull();
 
-            // act
-            var result = _controller.Index("SectionOne");
+        var report = sectionViewModel.Report;
+        report.Should().NotBeNull();
 
-            // assert
-            Assert.AreEqual(typeof(ViewResult), result.GetType());
-            var listViewResult = result as ViewResult;
-            Assert.IsNotNull(listViewResult);
-            Assert.AreEqual("Index", listViewResult.ViewName, "View name does not match, should be: Index");
+        var questionSection = sectionViewModel.CurrentSection;
+        questionSection.Should().NotBeNull();
+        questionSection.Id.Should().Be("SectionOne");
 
+        var sectionOneQuestions = stubReport.Sections.Single(s => s.Id == "SectionOne").Questions;
 
-            var sectionViewModel = listViewResult.Model as SectionViewModel;
-            Assert.IsNotNull(sectionViewModel);
-
-            var report = sectionViewModel.Report;
-            Assert.IsNotNull(report);
-
-            var questionSection = sectionViewModel.CurrentSection;
-            Assert.IsNotNull(questionSection);
-            Assert.AreEqual(questionSection.Id, "SectionOne");
-
-            var sectionOneQuestions =
-            stubReport
-                .Sections
-                .Where(s => s.Id == "SectionOne")
-                .Single()
-                .Questions;
-
-            CollectionAssert.AreEqual(questionSection.Questions, sectionOneQuestions);
-        }
+        questionSection.Questions.Should().BeEquivalentTo(sectionOneQuestions);
     }
 }

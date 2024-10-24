@@ -1,185 +1,169 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
 using SFA.DAS.PSRService.Domain.Entities;
 
-namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests
+namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests;
+
+[TestFixture]
+public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
 {
-    [TestFixture]
-    public class Given_I_Request_The_Report_Confirm_Page : ReportControllerTestBase
+    [Test]
+    public async Task When_The_Report_Is_Valid_To_Submit_Then_Show_Confirm_View()
     {
-        [Test]
-        public void When_The_Report_Is_Valid_To_Submit_Then_Show_Confirm_View()
-        {
-            // arrange
-            var report =
-                new ReportBuilder()
-                    .WithValidSections()
-                    .WithEmployerId("ABCDEF")
-                    .ForCurrentPeriod()
-                    .WhereReportIsNotAlreadySubmitted()
-                    .Build();
+        // arrange
+        var report = new ReportBuilder()
+            .WithValidSections()
+            .WithEmployerId("ABCDEF")
+            .ForCurrentPeriod()
+            .WhereReportIsNotAlreadySubmitted()
+            .Build();
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
-            _controller.ObjectValidator = GetObjectValidator().Object;
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(report)).Returns(true).Verifiable();
+        Controller.ObjectValidator = GetObjectValidator().Object;
 
-            // act
-            var result = _controller.Confirm();
+        // act
+        var result = await Controller.Confirm();
 
-            // assert
-            Assert.IsAssignableFrom<ViewResult>(result);
-            Assert.IsTrue(((ViewResult) result).ViewName == "Confirm" || ((ViewResult) result).ViewName == null);
-            _mockReportService.VerifyAll();
-        }
+        // assert
+        result.Should().BeOfType<ViewResult>();
+        (((ViewResult)result).ViewName is "Confirm" or null).Should().BeTrue();
+        MockReportService.VerifyAll();
+    }
 
-        [Test]
-        public void When_Valid_Report_Confirmed_Then_Submit()
-        {
-            // arrange
-            var report = new Report(); // not submitted and empty sections, should be valid for submission
+    [Test]
+    public async Task When_Valid_Report_Confirmed_Then_Submit()
+    {
+        // arrange
+        var report = new Report(); // not submitted and empty sections, should be valid for submission
 
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
-            _mockReportService.Setup(s => s.SubmitReport(report)).Verifiable();
-            _controller.ObjectValidator = GetObjectValidator().Object;
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
+        MockReportService.Setup(s => s.SubmitReport(report))
+            .Returns(() => Task.CompletedTask)
+            .Verifiable();
 
-            // act
-            var result = _controller.SubmitPost();
+        Controller.ObjectValidator = GetObjectValidator().Object;
 
-            // assert
-            _mockReportService.VerifyAll();
-            Assert.IsAssignableFrom<ViewResult>(result);
-            Assert.AreEqual("SubmitConfirmation", ((ViewResult) result).ViewName);
-        }
+        // act
+        var result = await Controller.SubmitPost();
 
-        private static Mock<IObjectModelValidator> GetObjectValidator()
-        {
-            var objectValidator = new Mock<IObjectModelValidator>();
-            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
-                It.IsAny<ValidationStateDictionary>(),
-                It.IsAny<string>(),
-                It.IsAny<object>()));
-            return objectValidator;
-        }
+        // assert
+        MockReportService.VerifyAll();
+        result.Should().BeOfType<ViewResult>();
+        ((ViewResult)result).ViewName.Should().Be("SubmitConfirmation");
+    }
 
-        [Test]
-        public void When_Unconfirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
-        {
-            // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
-            _controller.ObjectValidator = GetFailingObjectValidator().Object;
+    private static Mock<IObjectModelValidator> GetObjectValidator()
+    {
+        var objectValidator = new Mock<IObjectModelValidator>();
+        objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+            It.IsAny<ValidationStateDictionary>(),
+            It.IsAny<string>(),
+            It.IsAny<object>()));
+        return objectValidator;
+    }
 
-            const string url = "report/create";
-            UrlActionContext actualContext = null;
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+    [Test]
+    public async Task When_Unconfirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
+    {
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Report()).Verifiable();
+        Controller.ObjectValidator = GetFailingObjectValidator().Object;
 
-            // act
-            var result = _controller.Confirm();
+        // act
+        var result = await Controller.Confirm() as RedirectToActionResult;
 
-            // assert
-            _mockReportService.VerifyAll();
-            Assert.IsAssignableFrom<RedirectResult>(result);
-            Assert.IsNotNull(actualContext);
-            Assert.AreEqual("Report", actualContext.Controller);
-            Assert.AreEqual("Summary", actualContext.Action);
-        }
+        // assert
+        MockReportService.VerifyAll();
+        result.Should().BeOfType<RedirectToActionResult>();
+        result.ControllerName.Should().Be("Report");
+        result.ActionName.Should().Be("Summary");
+    }
 
-        private static Mock<IObjectModelValidator> GetFailingObjectValidator()
-        {
-            var objectValidator = new Mock<IObjectModelValidator>();
-            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
-                It.IsAny<ValidationStateDictionary>(),
-                It.IsAny<string>(),
-                It.IsAny<object>())).Callback<ActionContext, ValidationStateDictionary, string, object>((a, d, s, o) => { a.ModelState.AddModelError("1", "error"); });
-            return objectValidator;
-        }
+    private static Mock<IObjectModelValidator> GetFailingObjectValidator()
+    {
+        var objectValidator = new Mock<IObjectModelValidator>();
+        objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+            It.IsAny<ValidationStateDictionary>(),
+            It.IsAny<string>(),
+            It.IsAny<object>())).Callback<ActionContext, ValidationStateDictionary, string, object>((a, d, s, o) => { a.ModelState.AddModelError("1", "error"); });
+        return objectValidator;
+    }
 
-        [Test]
-        public void When_Confirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
-        {
-            // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(new Report()).Verifiable();
+    [Test]
+    public async Task When_Confirmed_Report_Is_Not_Valid_To_Submit_Then_Redirect_To_Summary()
+    {
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Report()).Verifiable();
 
-            _controller.ObjectValidator = GetFailingObjectValidator().Object;
+        Controller.ObjectValidator = GetFailingObjectValidator().Object;
 
-            const string url = "report/create";
-            UrlActionContext actualContext = null;
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        const string url = "report/create";
+        UrlActionContext actualContext = null;
+        MockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
 
-            // act
-            var result = _controller.SubmitPost();
+        // act
+        var result = await Controller.SubmitPost() as RedirectToActionResult;
 
-            // assert
-            _mockReportService.VerifyAll();
-            Assert.IsAssignableFrom<RedirectResult>(result);
-            Assert.IsNotNull(actualContext);
-            Assert.AreEqual("Report", actualContext.Controller);
-            Assert.AreEqual("Summary", actualContext.Action);
-        }
+        // assert
+        MockReportService.VerifyAll();
+        result.ControllerName.Should().Be("Report");
+        result.ActionName.Should().Be("Summary");
+    }
 
-        [Test]
-        public void When_Unconfirmed_Report_Is_Not_Found_Then_Return_404()
-        {
-            // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns((Report) null).Verifiable();
+    [Test]
+    public async Task When_Unconfirmed_Report_Is_Not_Found_Then_Return_404()
+    {
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Report)null).Verifiable();
 
-            // act
-            var result = _controller.Confirm();
+        // act
+        var result = await Controller.Confirm();
 
-            // assert
-            _mockReportService.VerifyAll();
-            Assert.IsAssignableFrom<NotFoundResult>(result);
-        }
+        // assert
+        MockReportService.VerifyAll();
+        result.Should().BeOfType<NotFoundResult>();
+    }
 
-        [Test]
-        public void When_Confirmed_Report_Is_Not_Found_Then_Return_404()
-        {
-            // arrange
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), "ABCDE")).Returns((Report) null).Verifiable();
+    [Test]
+    public async Task When_Confirmed_Report_Is_Not_Found_Then_Return_404()
+    {
+        // arrange
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), "ABCDE")).ReturnsAsync((Report)null).Verifiable();
 
-            // act
-            var result = _controller.SubmitPost();
+        // act
+        var result = await Controller.SubmitPost();
 
-            // assert
-            _mockReportService.VerifyAll();
-            Assert.IsAssignableFrom<NotFoundResult>(result);
-        }
+        // assert
+        MockReportService.VerifyAll();
+        result.Should().BeOfType<NotFoundResult>();
+    }
 
-        [Test]
-        public void When_The_Report_Is_Submitted_Redirect_To_Home()
-        {
-            // arrange
-            var url = "home/Index";
-            UrlActionContext actualContext = null;
+    [Test]
+    public async Task When_The_Report_Is_Submitted_Redirect_To_Home()
+    {
+        // arrange
+        var report =
+            new ReportBuilder()
+                .WithValidSections()
+                .WithEmployerId("ABCDEF")
+                .ForCurrentPeriod()
+                .WhereReportIsAlreadySubmitted()
+                .Build();
 
-            _mockUrlHelper.Setup(h => h.Action(It.IsAny<UrlActionContext>())).Returns(url).Callback<UrlActionContext>(c => actualContext = c).Verifiable("Url.Action was never called");
+        MockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(report).Verifiable();
+        MockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
+        Controller.ObjectValidator = GetObjectValidator().Object;
 
+        // act
+        var result = await Controller.Confirm();
 
-            var report =
-                new ReportBuilder()
-                    .WithValidSections()
-                    .WithEmployerId("ABCDEF")
-                    .ForCurrentPeriod()
-                    .WhereReportIsAlreadySubmitted()
-                    .Build();
-                
-            _mockReportService.Setup(s => s.GetReport(It.IsAny<string>(), It.IsAny<string>())).Returns(report).Verifiable();
-            _mockReportService.Setup(s => s.CanBeEdited(report)).Returns(false).Verifiable();
-            _controller.ObjectValidator = GetObjectValidator().Object;
-
-            // act
-            var result = _controller.Confirm();
-
-            // assert
-            Assert.AreEqual(typeof(RedirectResult), result.GetType());
-            var redirectResult = result as RedirectResult;
-            Assert.IsNotNull(redirectResult);
-            Assert.AreEqual(url, redirectResult.Url);
-            Assert.AreEqual(actualContext.Action, "Index");
-            Assert.AreEqual(actualContext.Controller, actualContext.Controller);
-        }
-
+        // assert
+        result.Should().BeOfType<RedirectToActionResult>();
+        var redirectResult = result as RedirectToActionResult;
+        redirectResult.Should().NotBeNull();
+        redirectResult.ActionName.Should().Be("Index");
+        redirectResult.ControllerName.Should().Be("Home");
     }
 }

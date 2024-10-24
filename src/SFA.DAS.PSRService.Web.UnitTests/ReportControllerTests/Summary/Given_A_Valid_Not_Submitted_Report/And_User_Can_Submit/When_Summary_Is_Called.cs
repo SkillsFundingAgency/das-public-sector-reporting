@@ -1,100 +1,79 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.PSRService.Web.DisplayText;
 using SFA.DAS.PSRService.Web.ViewModels;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.ReportControllerTests.Summary.Given_A_Valid_Not_Submitted_Report.
-    And_User_Can_Submit
+    And_User_Can_Submit;
+
+[ExcludeFromCodeCoverage]
+[TestFixture]
+public class WhenSummaryIsCalled : And_User_Can_Submit
 {
-    [ExcludeFromCodeCoverage]
-    [TestFixture]
-    public class When_Summary_Is_Called
-        : And_User_Can_Submit
+    private IActionResult _result;
+    private ReportViewModel _model;
+
+    protected override async Task  When()
     {
-        private IActionResult result;
-        private ReportViewModel model;
+        const string hashedAccountId = "ABC123";
+        _result = await Controller.Summary(hashedAccountId, "1718");
 
-        protected override void When()
-        {
-            var hashedAccountId = "ABC123";
-            result = _controller.Summary(hashedAccountId, "1718");
+        var viewResult = _result as ViewResult;
 
-            var viewResult = result as ViewResult;
+        _model = viewResult?.Model as ReportViewModel;
+    }
 
-            model = viewResult?.Model as ReportViewModel;
-        }
+    [Test]
+    public void Then_ViewModel_UserCanSubmitReports_Is_True()
+    {
+        var reportViewModel = ((ViewResult)_result).Model as ReportViewModel;
 
-        [Test]
-        public void Then_ViewModel_UserCanSubmitReports_Is_True()
-        {
-            var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
+        reportViewModel.UserCanSubmitReports.Should().BeTrue();
+    }
 
-            Assert
-                .IsTrue(reportViewModel.UserCanSubmitReports);
-        }
+    [Test]
+    public void Then_Result_Is_ViewResult()
+    {
+        _result.Should().NotBeNull();
+        _result.Should().BeOfType<ViewResult>();
+    }
 
-        [Test]
-        public void Then_Result_Is_ViewResult()
-        {
-            Assert
-                .IsNotNull(result);
+    [Test]
+    public void Then_ViewName_Is_Summary()
+    {
+        ((ViewResult)_result).ViewName.Should().Be("Summary", "View name does not match, should be: Summary");
+    }
 
-            Assert
-                .IsInstanceOf<ViewResult>(result);
-        }
+    [Test]
+    public void Then_ViewModel_Is_ReportViewModel()
+    {
+        ((ViewResult)_result).Model.Should().NotBeNull();
+        ((ViewResult)_result).Model.Should().BeOfType<ReportViewModel>();
+    }
 
-        [Test]
-        public void Then_ViewName_Is_Summary()
-        {
-            Assert
-                .AreEqual("Summary", ((ViewResult) result).ViewName, "View name does not match, should be: Summary");
-        }
+    [Test]
+    public void Then_ViewModel_Has_Report()
+    {
+        var reportViewModel = ((ViewResult)_result).Model as ReportViewModel;
+        reportViewModel.Report.Should().NotBeNull();
+    }
 
-        [Test]
-        public void Then_ViewModel_Is_ReportViewModel()
-        {
-            Assert
-                .IsNotNull(((ViewResult) result).Model);
+    [Test]
+    public void Then_Subtitle_Is_Appropriate_For_User_Who_Can_Submit()
+    {
+        var expectText = SummaryPageMessageBuilder
+            .GetSubtitle()
+            .ForUserWhoCanSubmit();
 
-            Assert
-                .IsInstanceOf<ReportViewModel>(((ViewResult) result).Model);
-        }
+        _model.Subtitle
+            .Should()
+            .BeEquivalentTo(expectText);
+    }
 
-        [Test]
-        public void Then_ViewModel_Has_Report()
-        {
-            var reportViewModel = ((ViewResult) result).Model as ReportViewModel;
-
-            Assert
-                .IsNotNull(reportViewModel.Report);
-        }
-
-        [Test]
-        public void Then_Subtitle_Is_Appropriate_For_User_Who_Can_Submit()
-        {
-            var
-                expectText
-                    =
-                    SummaryPageMessageBuilder
-                        .GetSubtitle()
-                        .ForUserWhoCanSubmit();
-
-            model
-                .Subtitle
-                .Should()
-                .BeEquivalentTo(
-                    expectText);
-        }
-
-        [Test]
-        public void Then_ViewModel_IsReadOnly_Is_False()
-        {
-            model
-                .IsReadOnly
-                .Should()
-                .BeFalse();
-        }
+    [Test]
+    public void Then_ViewModel_IsReadOnly_Is_False()
+    {
+        _model.IsReadOnly
+            .Should()
+            .BeFalse();
     }
 }
