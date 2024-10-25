@@ -80,7 +80,7 @@ public class HomeController : BaseController
     {
         //if (string.IsNullOrEmpty(action))
         //{
-            RedirectToAction("Index");
+           return RedirectToAction("Index");
         //}
 
         return _submitLookup.TryGetValue(action, out var value)
