@@ -78,6 +78,11 @@ public class HomeController : BaseController
     [Authorize(Policy = nameof(PolicyNames.HasEmployerAccount))]
     public IActionResult Submit(string action)
     {
+        if (string.IsNullOrEmpty(action))
+        {
+            RedirectToAction("Index");
+        }
+
         return _submitLookup.TryGetValue(action, out var value)
             ? BuildRedirectResultForSubmitAction(value)
             : new BadRequestResult();
