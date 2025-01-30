@@ -42,8 +42,8 @@
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="3.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Mvc" Version="3.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Mvc.TagHelpers" Version="3.0.0" />
-    <PackageReference Include="SFA.DAS.Account.Api.Client" Version="1.6.3100" />
-    <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.108" />
+    <PackageReference Include="SFA.DAS.Account.Api.Client" Version="1.6.3195" />
+    <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.113" />
     <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.109" />
     <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.104" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.12" />
@@ -51,7 +51,7 @@
     <PackageReference Include="System.Net.Security" Version="4.3.2" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.12" />
   </ItemGroup>
 
   <ItemGroup>
