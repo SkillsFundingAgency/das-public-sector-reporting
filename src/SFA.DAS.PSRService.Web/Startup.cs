@@ -47,7 +47,7 @@ public class Startup
         services.AddApplicationServices(_webConfiguration);
         services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
         services.AddHttpClient<IOuterApiClient, OuterApiClient>();
-        services.AddAndConfigureAuthentication(_webConfiguration, _configuration);
+        services.AddAndConfigureAuthentication(_configuration);
         services.AddMaMenuConfiguration("SignOut", _configuration["ResourceEnvironmentName"]);
 
         services.AddAuthorizationService();
