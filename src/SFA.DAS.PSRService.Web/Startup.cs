@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Employer.Shared.UI;
+using SFA.DAS.GovUK.Auth.Extensions;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
@@ -47,7 +48,7 @@ public class Startup
         services.AddApplicationServices(_webConfiguration);
         services.AddDatabaseRegistration(_webConfiguration.SqlConnectionString);
         services.AddHttpClient<IOuterApiClient, OuterApiClient>();
-        services.AddAndConfigureAuthentication(_webConfiguration, _configuration);
+        services.AddAndConfigureAuthentication(_configuration);
         services.AddMaMenuConfiguration("SignOut", _configuration["ResourceEnvironmentName"]);
 
         services.AddAuthorizationService();
@@ -96,6 +97,8 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
+            endpoints.MapSessionKeepAliveEndpoint();
+            
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "accounts/{hashedEmployerAccountId}/{controller=Home}/{action=Index}/{id?}");

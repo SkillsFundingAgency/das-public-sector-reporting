@@ -1,7 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.EAS.Account.Api.Client;
-using SFA.DAS.PSRService.Application.EmployerUserAccounts;
+using SFA.DAS.GovUK.Auth.Employer;
 using SFA.DAS.PSRService.Application.Interfaces;
+using SFA.DAS.PSRService.Application.Services;
 using SFA.DAS.PSRService.Data;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Services;
@@ -13,7 +14,7 @@ public static class ApplicationServiceRegistrations
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IWebConfiguration webConfiguration)
     {
         services.AddTransient<IEmployerAccountService, EmployerAccountService>();
-        services.AddTransient<IEmployerUserAccountsService, EmployerUserAccountsService>();
+        services.AddTransient<IGovAuthEmployerAccountService, UserAccountService>();
         services.AddTransient<IAccountApiClient, AccountApiClient>();
         services.AddTransient<IAccountApiConfiguration, AccountApiConfiguration>();
         services.AddSingleton<IAccountApiConfiguration>(webConfiguration.AccountsApi);

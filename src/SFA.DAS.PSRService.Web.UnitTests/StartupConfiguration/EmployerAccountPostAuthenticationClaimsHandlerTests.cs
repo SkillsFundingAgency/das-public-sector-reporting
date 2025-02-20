@@ -5,11 +5,10 @@ using AutoFixture.NUnit3;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SFA.DAS.PSRService.Application.EmployerUserAccounts;
+using SFA.DAS.GovUK.Auth.Employer;
 using SFA.DAS.PSRService.Web.Configuration;
-using SFA.DAS.PSRService.Web.StartupConfiguration;
+using EmployerAccountPostAuthenticationClaimsHandler = SFA.DAS.PSRService.Web.StartupConfiguration.EmployerAccountPostAuthenticationClaimsHandler;
 
 namespace SFA.DAS.PSRService.Web.UnitTests.StartupConfiguration;
 
@@ -18,17 +17,23 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
     [Test, AutoData]
     public async Task Then_The_Claims_Are_Populated_For_Gov_User(string nameIdentifier, string emailAddress, EmployerUserAccounts accountData)
     {
+        // Arrange
         accountData.IsSuspended = false;
 
-        var accountService = new Mock<IEmployerUserAccountsService>();
+        var accountService = new Mock<IGovAuthEmployerAccountService>();
         var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object);
 
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, emailAddress);
-        accountService.Setup(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier)).ReturnsAsync(accountData);
-
+        accountService
+            .Setup(x => x.GetUserAccounts(nameIdentifier, emailAddress)).ReturnsAsync(accountData)
+            .Verifiable();
+        
+        // Act
         var actual = await handler.GetClaims(tokenValidatedContext);
 
-        accountService.Verify(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier), Times.Once);
+        // Assert
+        accountService.Verify();
+        accountService.VerifyNoOtherCalls();
         actual.Should().ContainSingle(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
 
         var actualClaimValue = actual.First(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)).Value;
@@ -45,15 +50,15 @@ public class EmployerAccountPostAuthenticationClaimsHandlerTests
     {
         accountData.IsSuspended = true;
 
-        var accountService = new Mock<IEmployerUserAccountsService>();
+        var accountService = new Mock<IGovAuthEmployerAccountService>();
         var handler = new EmployerAccountPostAuthenticationClaimsHandler(accountService.Object);
 
         var tokenValidatedContext = ArrangeTokenValidatedContext(nameIdentifier, emailAddress);
-        accountService.Setup(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier)).ReturnsAsync(accountData);
+        accountService.Setup(x => x.GetUserAccounts(nameIdentifier, emailAddress)).ReturnsAsync(accountData);
 
         var actual = await handler.GetClaims(tokenValidatedContext);
 
-        accountService.Verify(x => x.GetEmployerUserAccounts(emailAddress, nameIdentifier), Times.Once);
+        accountService.Verify(x => x.GetUserAccounts(nameIdentifier, emailAddress), Times.Once);
         actual.Should().ContainSingle(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier));
 
         var actualClaimValue = actual.First(c => c.Type.Equals(EmployerPsrsClaims.AccountsClaimsTypeIdentifier)).Value;

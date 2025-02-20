@@ -4,7 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.GovUK.Auth.AppStart;
 using SFA.DAS.GovUK.Auth.Authentication;
 using SFA.DAS.GovUK.Auth.Configuration;
+using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
+using SFA.DAS.PSRService.Application.Services;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Configuration.Authorization;
 using SFA.DAS.PSRService.Web.Middleware.Authorization;
@@ -43,11 +45,16 @@ public static class AuthenticationStartup
         services.AddTransient<IStubAuthenticationService, StubAuthenticationService>();
     }
 
-    public static void AddAndConfigureAuthentication(this IServiceCollection services, IWebConfiguration configuration, IConfiguration config)
+    public static void AddAndConfigureAuthentication(this IServiceCollection services, IConfiguration config)
     {
         services.AddTransient<ICustomClaims, EmployerAccountPostAuthenticationClaimsHandler>();
 
         services.Configure<GovUkOidcConfiguration>(config.GetSection("GovUkOidcConfiguration"));
-        services.AddAndConfigureGovUkAuthentication(config, typeof(EmployerAccountPostAuthenticationClaimsHandler), "", "/SignIn-Stub");
+        
+        services.AddAndConfigureGovUkAuthentication(config, new AuthRedirects
+        {
+            SignedOutRedirectUrl = "",
+            LocalStubLoginPath = "/service/SignIn-Stub"
+        }, null, typeof(UserAccountService));
     }
 }

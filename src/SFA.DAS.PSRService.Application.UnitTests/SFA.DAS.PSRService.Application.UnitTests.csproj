@@ -7,22 +7,20 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture.NUnit3" Version="4.18.1" />
-    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+    <PackageReference Include="coverlet.msbuild" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="6.12.1" /> 
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="moq" Version="4.20.72" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.6.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.6.0" />
-    <PackageReference Include="nunit" Version="4.2.2" /> 
-    <PackageReference Include="NUnit.Analyzers" Version="4.3.0">
+    <PackageReference Include="nunit" Version="4.3.2" /> 
+    <PackageReference Include="NUnit.Analyzers" Version="4.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference> 
-    <PackageReference Include="nunit3testadapter" Version="4.6.0" /> 
-    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" /> 
+    <PackageReference Include="nunit3testadapter" Version="5.0.0-beta.5" /> 
+    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="17.1.103" /> 
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,6 @@
 ﻿using System.Linq;
-using System.Security.Claims;
-using System.Text.Unicode;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.PSRService.Domain;
 using SFA.DAS.PSRService.Domain.Entities;
 using SFA.DAS.PSRService.Web.Controllers;
