@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using SFA.DAS.PSRService.Application.EmployerUserAccounts;
+using SFA.DAS.GovUK.Auth.Employer;
 using SFA.DAS.PSRService.Web.Controllers;
 using SFA.DAS.PSRService.Web.Filters;
 using SFA.DAS.PSRService.Web.Services;
@@ -34,7 +34,7 @@ public class WhenAddingServicesToTheContainer
     [TestCase(typeof(IReportService))]
     [TestCase(typeof(IPeriodService))]
     [TestCase(typeof(IDateTimeService))]
-    [TestCase(typeof(IEmployerUserAccountsService))]
+    [TestCase(typeof(IGovAuthEmployerAccountService))]
     public void Then_The_Dependencies_Are_Correctly_Resolved_For_Services(Type toResolve)
     {
         RunTestForType(toResolve);

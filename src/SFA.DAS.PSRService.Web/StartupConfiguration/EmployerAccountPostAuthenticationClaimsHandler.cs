@@ -1,15 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SFA.DAS.GovUK.Auth.Employer;
 using SFA.DAS.GovUK.Auth.Services;
-using SFA.DAS.PSRService.Application.EmployerUserAccounts;
 using SFA.DAS.PSRService.Web.Configuration;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration;
 
-public class EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccountsService employerUserAccountsService) : ICustomClaims
+public class EmployerAccountPostAuthenticationClaimsHandler(IGovAuthEmployerAccountService employerUserAccountsService) : ICustomClaims
 {
     public async Task<IEnumerable<Claim>> GetClaims(TokenValidatedContext tokenValidatedContext)
     {
@@ -21,7 +20,7 @@ public class EmployerAccountPostAuthenticationClaimsHandler(IEmployerUserAccount
             .First(c => c.Type.Equals(ClaimTypes.Email))
             .Value;
 
-        var accounts = await employerUserAccountsService.GetEmployerUserAccounts(email, userId);
+        var accounts = await employerUserAccountsService.GetUserAccounts(userId, email);
         var accountsAsJson = JsonConvert.SerializeObject(accounts.EmployerAccounts.ToDictionary(k => k.AccountId));
 
         var associatedAccountsClaim = new Claim(EmployerPsrsClaims.AccountsClaimsTypeIdentifier, accountsAsJson, JsonClaimValueTypes.Json);

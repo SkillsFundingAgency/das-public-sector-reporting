@@ -128,6 +128,7 @@ public class HomeController : BaseController
     }
 
     [Route("SignOut", Name = "SignOut")]
+    [Route("service/signout")]
     public async Task<IActionResult> Logout()
     {
         var idToken = await HttpContext.GetTokenAsync("id_token");
