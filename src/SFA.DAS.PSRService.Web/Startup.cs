@@ -97,8 +97,6 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapSessionKeepAliveEndpoint();
-            
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "accounts/{hashedEmployerAccountId}/{controller=Home}/{action=Index}/{id?}");
