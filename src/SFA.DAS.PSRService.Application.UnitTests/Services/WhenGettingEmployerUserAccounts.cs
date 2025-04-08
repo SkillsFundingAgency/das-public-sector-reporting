@@ -42,6 +42,7 @@ public class WhenGettingEmployerUserAccounts
                 Role = c.Role,
                 AccountId = c.AccountId,
                 EmployerName = c.EmployerName,
+                ApprenticeshipEmployerType = c.ApprenticeshipEmployerType,
             }).ToList() ?? [],
             FirstName = apiResponse.FirstName,
             IsSuspended = apiResponse.IsSuspended,
