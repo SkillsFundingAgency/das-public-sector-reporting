@@ -21,6 +21,7 @@ public class UserAccountService(IOuterApiClient outerApiClient) : IGovAuthEmploy
                 Role = c.Role,
                 AccountId = c.AccountId,
                 EmployerName = c.EmployerName,
+                ApprenticeshipEmployerType = c.ApprenticeshipEmployerType,
             }).ToList() : [],
             FirstName = actual.FirstName,
             IsSuspended = actual.IsSuspended,
