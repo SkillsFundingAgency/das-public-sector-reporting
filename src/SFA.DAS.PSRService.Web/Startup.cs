@@ -97,7 +97,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapSessionKeepAliveEndpoint();
+            //endpoints.MapSessionKeepAliveEndpoint();
             
             endpoints.MapControllerRoute(
                 name: "default",
