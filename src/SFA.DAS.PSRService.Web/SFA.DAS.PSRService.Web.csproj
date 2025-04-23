@@ -45,13 +45,8 @@
     <PackageReference Include="SFA.DAS.Account.Api.Client" Version="1.6.3195" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.113" />
     <PackageReference Include="SFA.DAS.Employer.Shared.UI" Version="17.1.131" />
-<<<<<<< HEAD
-    <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.134" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
-=======
     <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.141" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0" />
->>>>>>> master
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.15" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="8.8.0" />
