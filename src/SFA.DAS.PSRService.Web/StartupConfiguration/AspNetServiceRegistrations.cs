@@ -1,20 +1,27 @@
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.Employer.Shared.UI;
+using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Filters;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration;
 
 public static class AspNetServiceRegistrations
 {
-    public static IServiceCollection AddWebServices(this IServiceCollection services)
+    public static IServiceCollection AddWebServices(this IServiceCollection services,
+        IConfiguration webConfiguration)
     {
         services.AddMvc(opts =>
             {
                 opts.EnableEndpointRouting = false;
-                opts.Filters.Add(new AuthorizeFilter());
                 opts.Filters.AddService<GoogleAnalyticsFilter>();
                 opts.Filters.AddService<ZenDeskApiFilter>();
+                
+                if (!webConfiguration.IsDev())
+                {
+                    opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                }
             })
             .AddControllersAsServices()
             .AddSessionStateTempDataProvider()
@@ -22,6 +29,8 @@ public static class AspNetServiceRegistrations
 
         services.AddScoped<GoogleAnalyticsFilter>();
         services.AddScoped<ZenDeskApiFilter>();
+        
+        
 
         return services;
     }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Employer.Shared.UI;
-using SFA.DAS.GovUK.Auth.Extensions;
 using SFA.DAS.PSRService.Application.Mapping;
 using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
@@ -54,7 +54,7 @@ public class Startup
         services.AddAuthorizationService();
         services.AddHealthChecks();
         services.AddDataProtectionSettings(_hostingEnvironment, _webConfiguration);
-        services.AddWebServices();
+        services.AddWebServices(_configuration);
         services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
         services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
         services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
@@ -83,7 +83,9 @@ public class Startup
 
         app.UseCookiePolicy(new CookiePolicyOptions
         {
-            Secure = CookieSecurePolicy.Always
+            Secure = CookieSecurePolicy.Always,
+            MinimumSameSitePolicy = SameSiteMode.None,
+            HttpOnly = HttpOnlyPolicy.Always
         });
 
         app.UseStaticFiles()

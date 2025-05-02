@@ -15,7 +15,6 @@ public class ContentPolicyReportController(
 {
     [AllowAnonymous]
     [HttpPost("contentpolicyreport/report")]
-    [IgnoreAntiforgeryToken]
     public IActionResult Report([FromBody] CspReportRequest request)
     {
         logger.LogWarning("CSP Violation: {cspReport}", request);

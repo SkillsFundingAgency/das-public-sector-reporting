@@ -59,7 +59,6 @@ public class QuestionController(
 
     [HttpPost]
     [Route("{id}")]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Submit(SectionModel section)
     {
         var report = await reportService.GetReport(section.ReportingPeriod, EmployerAccount.AccountId);
