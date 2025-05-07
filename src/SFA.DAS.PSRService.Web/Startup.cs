@@ -81,6 +81,7 @@ public class Startup
             app.UseExceptionHandler("/Home/Error");
         }
 
+        app.UseAuthentication();
         app.UseCookiePolicy(new CookiePolicyOptions
         {
             Secure = CookieSecurePolicy.Always,

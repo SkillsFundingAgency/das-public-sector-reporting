@@ -18,7 +18,7 @@ public static class AspNetServiceRegistrations
                 opts.Filters.AddService<GoogleAnalyticsFilter>();
                 opts.Filters.AddService<ZenDeskApiFilter>();
                 
-                if (!webConfiguration.IsDev())
+                if (!webConfiguration.IsDev() && !webConfiguration.IsLocal())
                 {
                     opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }
