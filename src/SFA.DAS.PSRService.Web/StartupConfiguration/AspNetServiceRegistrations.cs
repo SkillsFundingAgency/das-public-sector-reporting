@@ -17,11 +17,7 @@ public static class AspNetServiceRegistrations
                 opts.EnableEndpointRouting = false;
                 opts.Filters.AddService<GoogleAnalyticsFilter>();
                 opts.Filters.AddService<ZenDeskApiFilter>();
-                
-                if (!webConfiguration.IsDev() && !webConfiguration.IsLocal())
-                {
-                    opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                }
+                opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             })
             .AddControllersAsServices()
             .AddSessionStateTempDataProvider()
