@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 using SFA.DAS.Employer.Shared.UI;
-using SFA.DAS.PSRService.Web.Extensions;
 using SFA.DAS.PSRService.Web.Filters;
 
 namespace SFA.DAS.PSRService.Web.StartupConfiguration;
@@ -22,6 +22,13 @@ public static class AspNetServiceRegistrations
             .AddControllersAsServices()
             .AddSessionStateTempDataProvider()
             .SetDefaultNavigationSection(NavigationSection.ApprenticesHome);
+
+        services.AddAntiforgery(options =>
+        {
+            options.Cookie.Name = "psr-x-csrf";
+            options.FormFieldName = "_csrfToken";
+            options.HeaderName = "X-XSRF-TOKEN";
+        });
 
         services.AddScoped<GoogleAnalyticsFilter>();
         services.AddScoped<ZenDeskApiFilter>();
