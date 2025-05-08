@@ -20,34 +20,18 @@ using SFA.DAS.PSRService.Web.ViewModels.Home;
 namespace SFA.DAS.PSRService.Web.Controllers;
 
 [Authorize]
-public class HomeController : BaseController
+public class HomeController(
+    IReportService reportService,
+    IEmployerAccountService employerAccountService,
+    IWebConfiguration webConfiguration,
+    IPeriodService periodService,
+    IAuthorizationService authorizationService,
+    IConfiguration config)
+    : BaseController(webConfiguration, employerAccountService)
 {
-    private readonly IReportService _reportService;
-    private readonly IAuthorizationService _authorizationService;
-    private readonly IConfiguration _config;
-    private readonly IStubAuthenticationService _stubAuthenticationService;
+    private readonly Period _currentPeriod = periodService.GetCurrentPeriod();
 
-    private readonly Period _currentPeriod;
-
-    private readonly ReadOnlyDictionary<string, SubmitAction> _submitLookup;
-
-    public HomeController(IReportService reportService, 
-        IEmployerAccountService employerAccountService,
-        IWebConfiguration webConfiguration,
-        IPeriodService periodService,
-        IAuthorizationService authorizationService,
-        IConfiguration config,
-        IStubAuthenticationService stubAuthenticationService)
-        : base(webConfiguration, employerAccountService)
-    {
-        _reportService = reportService;
-        _authorizationService = authorizationService;
-        _config = config;
-        _stubAuthenticationService = stubAuthenticationService;
-        
-        _currentPeriod = periodService.GetCurrentPeriod();
-        _submitLookup = BuildSubmitLookups();
-    }
+    private readonly ReadOnlyDictionary<string, SubmitAction> _submitLookup = BuildSubmitLookups();
 
     private static ReadOnlyDictionary<string, SubmitAction> BuildSubmitLookups()
     {
@@ -68,7 +52,7 @@ public class HomeController : BaseController
     {
         var model = new IndexViewModel { Period = _currentPeriod };
 
-        var report = await _reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
+        var report = await reportService.GetReport(_currentPeriod.PeriodString, EmployerAccount.AccountId);
 
         await PopulateModelBasedOnReportStateAndUserAuthorization(model, report);
 
@@ -82,40 +66,6 @@ public class HomeController : BaseController
             ? BuildRedirectResultForSubmitAction(value)
             : new BadRequestResult();
     }
-
-#if DEBUG
-    [AllowAnonymous]
-    [HttpGet]
-    [Route("SignIn-Stub")]
-    public IActionResult SigninStub()
-    {
-        return View("SigninStub", new List<string> { _config["StubId"], _config["StubEmail"] });
-    }
-
-    [AllowAnonymous]
-    [HttpPost]
-    [Route("SignIn-Stub")]
-    public async Task<IActionResult> SigninStubPost()
-    {
-        var claims = await _stubAuthenticationService.GetStubSignInClaims(new StubAuthUserDetails
-        {
-            Email = _config["StubEmail"],
-            Id = _config["StubId"]
-        });
-
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims, new AuthenticationProperties());
-
-        return RedirectToRoute("Signed-in-stub");
-    }
-
-    [Authorize(Policy = "StubAuth")]
-    [HttpGet]
-    [Route("signed-in-stub", Name = "Signed-in-stub")]
-    public IActionResult SignedInStub()
-    {
-        return View();
-    }
-#endif
 
     private RedirectToActionResult BuildRedirectResultForSubmitAction(SubmitAction submitAction)
     {
@@ -141,7 +91,7 @@ public class HomeController : BaseController
             CookieAuthenticationDefaults.AuthenticationScheme
         };
 
-        _ = bool.TryParse(_config["StubAuth"], out var stubAuth);
+        _ = bool.TryParse(config["StubAuth"], out var stubAuth);
 
         if (!stubAuth)
         {
@@ -159,7 +109,7 @@ public class HomeController : BaseController
 
     private async Task<bool> UserIsAuthorizedForReportEdit()
     {
-        var result = await _authorizationService.AuthorizeAsync(User, ControllerContext, PolicyNames.CanEditReport);
+        var result = await authorizationService.AuthorizeAsync(User, ControllerContext, PolicyNames.CanEditReport);
         return result.Succeeded;
     }
 
@@ -183,7 +133,7 @@ public class HomeController : BaseController
 
     private async Task<string> BuildWelcomeMessageFromReportStatusAndUserAuthorization(Report report)
     {
-        return await new HomePageMessageProvider(this, _authorizationService)
+        return await new HomePageMessageProvider(this, authorizationService)
             .GetWelcomeMessage()
             .ForPeriod(_currentPeriod)
             .AndReport(report);

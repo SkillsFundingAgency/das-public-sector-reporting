@@ -416,7 +416,6 @@ public class ReportController : BaseController
 
     [Route("TotalEmployees")]
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Authorize(Policy = PolicyNames.CanEditReport)]
     public async Task<IActionResult> PostTotalEmployees(bool? hasMinimumEmployeeHeadcount)
     {
@@ -453,7 +452,6 @@ public class ReportController : BaseController
 
     [Route("Change")]
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Authorize(Policy = PolicyNames.CanEditReport)]
     public async Task<IActionResult> Change(OrganisationViewModel organisationVm)
     {

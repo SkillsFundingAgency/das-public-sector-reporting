@@ -16,7 +16,7 @@
         <p>
             @Model.WelcomeMessage
         </p>
-        <form id="SelectOption" action="@Url.Action("Submit")" method="post">
+        <form id="SelectOption" asp-controller="Home" asp-action="Submit" method="post">
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">

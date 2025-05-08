@@ -22,7 +22,7 @@ public class WhenFormSubmittedWith
         _mockPeriodService = new Mock<IPeriodService>();
         _authorizationServiceMock = new Mock<IAuthorizationService>(MockBehavior.Strict);
 
-        _controller = new HomeController(null, _employeeAccountServiceMock.Object, null, _mockPeriodService.Object, _authorizationServiceMock.Object, null, null) { Url = _mockUrlHelper.Object };
+        _controller = new HomeController(null, _employeeAccountServiceMock.Object, null, _mockPeriodService.Object, _authorizationServiceMock.Object, null) { Url = _mockUrlHelper.Object };
     }
 
     [TearDown]
