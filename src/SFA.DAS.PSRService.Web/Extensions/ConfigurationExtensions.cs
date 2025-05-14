@@ -35,10 +35,10 @@ public static class ConfigurationExtensions
     
     public static bool IsDev(this IConfiguration configuration)
     {
-        return configuration["Environment"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
+        return configuration["ResourceEnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
     }
     public static bool IsLocal(this IConfiguration configuration)
     {
-        return configuration["Environment"].StartsWith("LOCAL", StringComparison.CurrentCultureIgnoreCase);
+        return configuration["ResourceEnvironmentName"].StartsWith("LOCAL", StringComparison.CurrentCultureIgnoreCase);
     }
 }

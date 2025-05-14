@@ -37,6 +37,6 @@ public abstract class Given_Home_Controller :GivenWhenThen<HomeController>
         _employeeAccountServiceMock.Setup(s => s.GetCurrentEmployerAccountId(null))
             .Returns(_employerIdentifier);
 
-        Sut = new HomeController(MockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, AuthorizationServiceMock.Object, null, null);
+        Sut = new HomeController(MockReportService.Object, _employeeAccountServiceMock.Object, _webConfiguration, _mockPeriodService.Object, AuthorizationServiceMock.Object, null);
     }
 }
