@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
 using SFA.DAS.Employer.Shared.UI;
 using SFA.DAS.PSRService.Web.Filters;
 
@@ -9,8 +7,7 @@ namespace SFA.DAS.PSRService.Web.StartupConfiguration;
 
 public static class AspNetServiceRegistrations
 {
-    public static IServiceCollection AddWebServices(this IServiceCollection services,
-        IConfiguration webConfiguration)
+    public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         services.AddMvc(opts =>
             {

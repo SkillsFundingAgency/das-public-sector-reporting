@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SFA.DAS.EAS.Account.Api.Client;
 using SFA.DAS.PSRService.Application.OuterApi;
 
@@ -15,6 +15,8 @@ public class WebConfiguration : IWebConfiguration
     [JsonRequired]
     public string EmployerCommitmentsV2BaseUrl { get; set; }
     [JsonRequired]
+    public string EmployerAccountsBaseUrl { get; set; }
+    [JsonRequired]
     public string DataProtectionKeysDatabase { get; set; }
     [JsonRequired]
     public SessionStoreConfiguration SessionStore { get; set; }
@@ -22,4 +24,5 @@ public class WebConfiguration : IWebConfiguration
     public ZenDeskConfiguration ZenDeskConfig { get; set; }      
     [JsonRequired]
     public OuterApiConfiguration OuterApiConfiguration { get; set; }
+    public bool ShutterPageEnabled { get; set; }
 }
