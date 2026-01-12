@@ -14,6 +14,7 @@ using SFA.DAS.PSRService.Application.OuterApi;
 using SFA.DAS.PSRService.Application.ReportHandlers;
 using SFA.DAS.PSRService.Web.Configuration;
 using SFA.DAS.PSRService.Web.Extensions;
+using SFA.DAS.PSRService.Web.Middleware;
 using SFA.DAS.PSRService.Web.StartupConfiguration;
 
 namespace SFA.DAS.PSRService.Web;
@@ -54,7 +55,7 @@ public class Startup
         services.AddAuthorizationService();
         services.AddHealthChecks();
         services.AddDataProtectionSettings(_hostingEnvironment, _webConfiguration);
-        services.AddWebServices(_configuration);
+        services.AddWebServices();
         services.AddSession(config => config.IdleTimeout = TimeSpan.FromHours(1));
         services.AddAutoMapper(typeof(ReportMappingProfile), typeof(AuditRecordMappingProfile));
         services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<SubmitReportHandler>());
@@ -91,6 +92,7 @@ public class Startup
 
         app.UseStaticFiles()
             .UseHttpsRedirection()
+            .UseMiddleware<ShutterPageMiddleware>()
             .UseSession()
             .UseAuthentication()
             .UseHealthChecks("/ping");

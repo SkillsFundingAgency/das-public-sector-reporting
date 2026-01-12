@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Service unavailable";
+    Layout = "_Layout";
+    var homeUrl = ViewData["HomeUrl"] as string ?? "/";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">This service has been decommissioned</h1>
+        
+        <p class="govuk-body">
+            The Public Sector Reporting service is no longer available.
+        </p>
+        
+        <p class="govuk-body">
+            This service has been decommissioned and is no longer accepting submissions or providing access to reports.
+        </p>
+        
+        <h2 class="govuk-heading-m">What you can do</h2>
+        
+        <p class="govuk-body">
+            You can return to your account homepage to access other services.
+        </p>
+        
+        <p class="govuk-body">
+            <a href="@homeUrl" class="govuk-link">Return to your account homepage</a>
+        </p>
+    </div>
+</div>
